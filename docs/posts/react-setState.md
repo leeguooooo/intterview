@@ -1,6 +1,13 @@
-以下是一篇关于 React setState 面试题的文章：
+---
+date: 2024-06-02
+category:
+  - react
+tag:
+  - react setState
+author: leeguoo
+---
 
-**《React setState 面试题解析》**
+# 《React setState 面试题解析》
 
 在 React 开发中，`setState` 是一个至关重要的方法。以下是一些常见的与 `setState` 相关的面试题：
 

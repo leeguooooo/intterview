@@ -1,5 +1,4 @@
-<template><div><p>以下是一篇关于 React setState 面试题的文章：</p>
-<p><strong>《React setState 面试题解析》</strong></p>
+<template><div><h1 id="《react-setstate-面试题解析》" tabindex="-1"><a class="header-anchor" href="#《react-setstate-面试题解析》"><span>《React setState 面试题解析》</span></a></h1>
 <p>在 React 开发中，<code v-pre>setState</code> 是一个至关重要的方法。以下是一些常见的与 <code v-pre>setState</code> 相关的面试题：</p>
 <ol>
 <li>
