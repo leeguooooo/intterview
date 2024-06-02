@@ -1,10 +1,6 @@
-# [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#%E9%AB%98%E9%A2%91%E8%80%83%E7%82%B9)
-高频考点
+# 高频考点
 
-## [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_1-typeof%E7%B1%BB%E5%9E%8B%E5%88%A4%E6%96%AD)
-1 typeof类型判断
+## 1 typeof类型判断
 
 > `typeof` 是否能正确判断类型？`instanceof` 能正确判断对象的原理是什么
 
@@ -17,8 +13,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_1-typeof%E7%B1%BB%E5%9E%8B%E5%88
     typeof Symbol() // 'symbol'
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > `typeof` 对于对象来说，除了函数都会显示 `object`，所以说 `typeof` 并不能准确判断变量到底是什么类型
 ```js
     typeof [] // 'object'
@@ -26,28 +20,22 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_1-typeof%E7%B1%BB%E5%9E%8B%E5%88
     typeof console.log // 'function'
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 如果我们想判断一个对象的正确类型，这时候可以考虑使用 `instanceof`，因为内部机制是通过原型链来判断的
 ```js
     const Person = function() {}
     const p1 = new Person()
     p1 instanceof Person // true
-
+    
     var str = 'hello world'
     str instanceof String // false
-
+    
     var str1 = new String('hello world')
     str1 instanceof String // true
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 对于原始类型来说，你想直接通过 `instanceof`来判断类型是不行的
 
-## [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_2-%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2)
-2 类型转换
+## 2 类型转换
 
 > 首先我们要知道，在 `JS` 中类型转换只有三种情况，分别是：
 
@@ -87,8 +75,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_2-%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6
     1 + a // => 3
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 **四则运算符**
 
 > 它有以下几个特点：
@@ -101,8 +87,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_2-%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6
     4 + [1,2,3] // "41,2,3"
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
   * 对于第一行代码来说，触发特点一，所以将数字 `1` 转换为字符串，得到结果 `'11'`
   * 对于第二行代码来说，触发特点二，所以将 `true` 转为数字 `1`
   * 对于第三行代码来说，触发特点二，所以将数组通过 `toString`转为字符串 `1,2,3`，得到结果 `41,2,3`
@@ -112,17 +96,13 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_2-%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6
     'a' + + 'b' // -> "aNaN"
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
-  * 因为 `+ 'b'` 等于 `NaN`，所以结果为 `"aNaN"`，你可能也会在一些代码中看到过 `+ '1'`的形式来快速获取 `number` 类型。
+  * 因为 `+ 'b'` 等于 `NaN`，所以结果为 `"aNaN"`，你可能也会在一些代码中看到过 `+ '1'`的形式来快速获取 `number` 类型。 
   * 那么对于除了加法的运算符来说，只要其中一方是数字，那么另一方就会被转为数字
 ```js
     4 * '3' // 12
     4 * [] // 0
     4 * [1, 2] // NaN
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 **比较运算符**
 
@@ -140,12 +120,9 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_2-%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6
     a > -1 // true
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 在以上代码中，因为 `a` 是对象，所以会通过 `valueOf` 转换为原始类型再比较值。
 
-## [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_3-this) 3 This
+## 3 This
 
 > 我们先来看几个函数调用的场景
 ```js
@@ -154,20 +131,18 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_3-this) 3 This
     }
     var a = 1
     foo()
-
+    
     const obj = {
       a: 2,
       foo: foo
     }
     obj.foo()
-
+    
     const c = new foo()
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
   * 对于直接调用 `foo` 来说，不管 `foo` 函数被放在了什么地方，`this` 一定是`window`
-  * 对于 `obj.foo()` 来说，我们只需要记住，谁调用了函数，谁就是 `this`，所以在这个场景下 `foo` 函数中的 `this` 就是 `obj` 对象
+  * 对于 `obj.foo()` 来说，我们只需要记住，谁调用了函数，谁就是 `this`，所以在这个场景下 `foo` 函数中的 `this` 就是 `obj` 对象 
   * 对于 `new` 的方式来说，`this` 被永远绑定在了 `c` 上面，不会被任何方式改变 `this`
 
 > 说完了以上几种情况，其实很多代码中的 `this` 应该就没什么问题了，下面让我们看看箭头函数中的 `this`
@@ -182,9 +157,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_3-this) 3 This
     console.log(a()()())
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
-  * 首先箭头函数其实是没有 `this` 的，箭头函数中的 `this` 只取决包裹箭头函数的第一个普通函数的 `this`。在这个例子中，因为包裹箭头函数的第一个普通函数是 `a`，所以此时的 `this` 是 `window`。另外对箭头函数使用 `bind` 这类函数是无效的。
+  * 首先箭头函数其实是没有 `this` 的，箭头函数中的 `this` 只取决包裹箭头函数的第一个普通函数的 `this`。在这个例子中，因为包裹箭头函数的第一个普通函数是 `a`，所以此时的 `this` 是 `window`。另外对箭头函数使用 `bind` 这类函数是无效的。 
   * 最后种情况也就是 `bind` 这些改变上下文的 `API` 了，对于这些函数来说，`this` 取决于第一个参数，如果第一个参数为空，那么就是 `window`。
   * 那么说到 `bind`，不知道大家是否考虑过，如果对一个函数进行多次 `bind`，那么上下文会是什么呢？
 ```js
@@ -192,8 +165,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_3-this) 3 This
     let fn = function () { console.log(this) }
     fn.bind().bind(a)() // => ?
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 > 如果你认为输出结果是 `a`，那么你就错了，其实我们可以把上述代码转换成另一种形式
 ```js
@@ -206,8 +177,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_3-this) 3 This
     fn2()
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 可以从上述代码中发现，不管我们给函数 `bind` 几次，`fn` 中的 `this` 永远由第一次 `bind` 决定，所以结果永远是
 > `window`
 ```js
@@ -218,8 +187,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_3-this) 3 This
     foo.bind(a)() // => 'poetries'
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 以上就是 `this` 的规则了，但是可能会发生多个规则同时出现的情况，这时候不同的规则之间会根据优先级最高的来决定 `this` 最终指向哪里。
 
 > 首先，`new` 的方式优先级最高，接下来是 `bind` 这些函数，然后是 `obj.foo()` 这种调用方式，最后是 `foo`
@@ -227,9 +194,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_3-this) 3 This
 
 ![image.png](/images/s_poetries_work_gitee_2020_07_2.png)
 
-## [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_4-%E5%92%8C-%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB)
-4 == 和 === 有什么区别
+## 4 == 和 === 有什么区别
 
 > 对于 `==` 来说，如果对比双方的类型不一样的话，就会进行类型转换
 
@@ -245,8 +210,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_4-%E5%92%8C-%E6%9C%89%E4%BB%80%E
     1 ==  1
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
   5. 判断其中一方是否为 `boolean`，是的话就会把 `boolean` 转为 `number` 再进行判断
 ```javascript
     '1' == true
@@ -256,23 +219,18 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_4-%E5%92%8C-%E6%9C%89%E4%BB%80%E
      1  ==  1
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
-  6. 判断其中一方是否为 `object` 且另一方为 `string`、`number` 或者 `symbol`，是的话就会把 `object` 转为原始类型再进行判断
+  6. 判断其中一方是否为 `object` 且另一方为 `string`、`number` 或者 `symbol`，是的话就会把 `object` 转为原始类型再进行判断 
 ```javascript
     '1' == { name: 'test' }
             ↓
     '1' == '[object Object]'
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 ![image.png](/images/s_poetries_work_gitee_2020_07_3.png)
 
 > 对于 `===` 来说就简单多了，就是判断两者类型和值是否相同
 
-## [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_5-%E9%97%AD%E5%8C%85) 5 闭包
+## 5 闭包
 
 > 闭包的定义其实很简单：函数 `A` 内部有一个函数 `B`，函数 `B` 可以访问到函数 `A` 中的变量，那么函数 `B` 就是闭包
 ```js
@@ -286,8 +244,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_5-%E9%97%AD%E5%8C%85) 5 闭包
     B() // 1
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 **闭包存在的意义就是让我们可以间接访问函数内部的变量**
 
 > 经典面试题，循环中使用闭包解决 `var` 定义函数的问题
@@ -298,8 +254,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_5-%E9%97%AD%E5%8C%85) 5 闭包
       }, i * 1000)
     }
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 > 首先因为 `setTimeout` 是个异步函数，所以会先把循环全部执行完毕，这时候 `i`就是 `6` 了，所以会输出一堆 `6`
 
@@ -315,8 +269,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_5-%E9%97%AD%E5%8C%85) 5 闭包
       })(i)
     }
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 > 在上述代码中，我们首先使用了立即执行函数将 `i` 传入函数内部，这个时候值就被固定在了参数 `j` 上面不会改变，当下次执行 `timer`
 > 这个闭包的时候，就可以使用外部函数的变量 `j`，从而达到目的
@@ -334,8 +286,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_5-%E9%97%AD%E5%8C%85) 5 闭包
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
   3. 第三种就是使用 `let` 定义 `i` 了来解决问题了，这个也是最为推荐的方式
 ```js
     for (let i = 1; i <= 5; i++) {
@@ -345,11 +295,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_5-%E9%97%AD%E5%8C%85) 5 闭包
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
-## [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_6-%E6%B7%B1%E6%B5%85%E6%8B%B7%E8%B4%9D)
-6 深浅拷贝
+## 6 深浅拷贝
 
 **浅拷贝**
 
@@ -364,8 +310,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_6-%E6%B7%B1%E6%B5%85%E6%8B%B7%E8
     console.log(b.age) // 1
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 另外我们还可以通过展开运算符 `...` 来实现浅拷贝
 ```js
     let a = {
@@ -375,8 +319,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_6-%E6%B7%B1%E6%B5%85%E6%8B%B7%E8
     a.age = 2
     console.log(b.age) // 1
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 > 通常浅拷贝就能解决大部分问题了，但是当我们遇到如下情况就可能需要使用到深拷贝了
 ```js
@@ -390,8 +332,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_6-%E6%B7%B1%E6%B5%85%E6%8B%B7%E8
     a.jobs.first = 'native'
     console.log(b.jobs.first) // native
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 > 浅拷贝只解决了第一层的问题，如果接下去的值中还有对象的话，那么就又回到最开始的话题了，两者享有相同的地址。要解决这个问题，我们就得使用深拷贝了。
 
@@ -409,8 +349,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_6-%E6%B7%B1%E6%B5%85%E6%8B%B7%E8
     a.jobs.first = 'native'
     console.log(b.jobs.first) // FE
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 **但是该方法也是有局限性的** ：
 
@@ -435,12 +373,9 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_6-%E6%B7%B1%E6%B5%85%E6%8B%B7%E8
     console.log(newObj)
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 更多详情 https://www.jianshu.com/p/2d8a26b3958f
 
-## [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_7-%E5%8E%9F%E5%9E%8B) 7 原型
+## 7 原型
 
 > 原型链就是多个对象通过 `__proto__` 的方式连接了起来。为什么 `obj` 可以访问到 `valueOf` 函数，就是因为 `obj`
 > 通过原型链找到了 `valueOf` 函数
@@ -452,9 +387,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_7-%E5%8E%9F%E5%9E%8B) 7 原型
   * 函数的 `prototype` 是一个对象
   * 对象的`__proto__` 属性指向原型， `__proto__` 将对象和原型连接起来组成了原型链
 
-## [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_8-var%E3%80%81let-%E5%8F%8A-const-%E5%8C%BA%E5%88%AB)
-8 var、let 及 const 区别
+## 8 var、let 及 const 区别
 
 > 涉及面试题：什么是提升？什么是暂时性死区？`var`、`let` 及 `const` 区别？
 
@@ -463,9 +396,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_8-var%E3%80%81let-%E5%8F%8A-cons
   * `var` 在全局作用域下声明变量会导致变量挂载在 `window`上，其他两者不会
   * `let` 和 `const` 作用基本一致，但是后者声明的变量不能再次赋值
 
-## [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_9-%E5%8E%9F%E5%9E%8B%E7%BB%A7%E6%89%BF%E5%92%8C-class-%E7%BB%A7%E6%89%BF)
-9 原型继承和 Class 继承
+## 9 原型继承和 Class 继承
 
 > 涉及面试题：原型如何实现继承？`Class` 如何实现继承？`Class` 本质是什么？
 
@@ -474,8 +405,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_9-%E5%8E%9F%E5%9E%8B%E7%BB%A7%E6
     class Person {}
     Person instanceof Function // true
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 **组合继承**
 
@@ -491,17 +420,15 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_9-%E5%8E%9F%E5%9E%8B%E7%BB%A7%E6
       Parent.call(this, value)
     }
     Child.prototype = new Parent()
-
+    
     const child = new Child(1)
-
+    
     child.getValue() // 1
     child instanceof Parent // true
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
   * 以上继承的方式核心是在子类的构造函数中通过 `Parent.call(this)` 继承父类的属性，然后改变子类的原型为 `new Parent()` 来继承父类的函数。
-  * 这种继承方式优点在于构造函数可以传参，不会与父类引用属性共享，可以复用父类的函数，但是也存在一个缺点就是在继承父类函数的时候调用了父类构造函数，导致子类的原型上多了不需要的父类属性，存在内存上的浪费
+  * 这种继承方式优点在于构造函数可以传参，不会与父类引用属性共享，可以复用父类的函数，但是也存在一个缺点就是在继承父类函数的时候调用了父类构造函数，导致子类的原型上多了不需要的父类属性，存在内存上的浪费 
 
 **寄生组合继承**
 
@@ -513,7 +440,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_9-%E5%8E%9F%E5%9E%8B%E7%BB%A7%E6
     Parent.prototype.getValue = function() {
       console.log(this.val)
     }
-
+    
     function Child(value) {
       Parent.call(this, value)
     }
@@ -525,14 +452,12 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_9-%E5%8E%9F%E5%9E%8B%E7%BB%A7%E6
         configurable: true
       }
     })
-
+    
     const child = new Child(1)
-
+    
     child.getValue() // 1
     child instanceof Parent // true
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 > 以上继承实现的核心就是将父类的原型赋值给了子类，并且将构造函数设置为子类，这样既解决了无用的父类属性问题，还能正确的找到子类的构造函数。
 
@@ -559,14 +484,10 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_9-%E5%8E%9F%E5%9E%8B%E7%BB%A7%E6
     child instanceof Parent // true
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > `class` 实现继承的核心在于使用 `extends` 表明继承自哪个父类，并且在子类构造函数中必须调用 `super`，因为这段代码可以看成
 > `Parent.call(this, value)`。
 
-## [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_10-%E6%A8%A1%E5%9D%97%E5%8C%96)
-10 模块化
+## 10 模块化
 
 > 涉及面试题：为什么要使用模块化？都有哪几种方式可以实现模块化，各有什么特点？
 
@@ -585,8 +506,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_10-%E6%A8%A1%E5%9D%97%E5%8C%96)
        // ... 声明各种变量、函数都不会污染全局作用域
     })(globalVariable)
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 **AMD 和 CMD**
 
@@ -607,8 +526,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_10-%E6%A8%A1%E5%9D%97%E5%8C%96)
     })
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 **CommonJS**
 
 > `CommonJS` 最早是 `Node` 在使用，目前也仍然广泛使用，比如在 `Webpack` 中你就能见到它，当然目前在 `Node`
@@ -620,13 +537,11 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_10-%E6%A8%A1%E5%9D%97%E5%8C%96)
     }
     // or
     exports.a = 1
-
+    
     // b.js
     var module = require('./a.js')
     module.a // -> log 1
-```
-
-@程序员poetry: 代码已经复制到剪贴板
+```  
 ```js
     ar module = require('./a.js')
     module.a
@@ -652,8 +567,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_10-%E6%A8%A1%E5%9D%97%E5%8C%96)
     // id，然后将要使用的东西用立即执行函数包装下，over
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 另外虽然 `exports` 和 `module.exports` 用法相似，但是不能对 `exports` 直接赋值。因为 `var exports
 > = module.exports` 这句代码表明了 `exports` 和
 > `module.exports`享有相同地址，通过改变对象的属性值会对两者都起效，但是如果直接对 `exports`
@@ -664,7 +577,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_10-%E6%A8%A1%E5%9D%97%E5%8C%96)
 > `ES Module` 是原生实现的模块化方案，与 `CommonJS` 有以下几个区别
 
   1. `CommonJS` 支持动态导入，也就是 `require(${path}/xx.js)`，后者目前不支持，但是已有提案
-  2. `CommonJS` 是同步导入，因为用于服务端，文件都在本地，同步导入即使卡住主线程影响也不大。而后者是异步导入，因为用于浏览器，需要下载文件，如果也采用同步导入会对渲染有很大影响
+  2. `CommonJS` 是同步导入，因为用于服务端，文件都在本地，同步导入即使卡住主线程影响也不大。而后者是异步导入，因为用于浏览器，需要下载文件，如果也采用同步导入会对渲染有很大影响 
   3. `CommonJS` 在导出时都是值拷贝，就算导出的值变了，导入的值也不会改变，所以如果想更新值，必须重新导入一次。但是 `ES Module` 采用实时绑定的方式，导入导出的值都指向同一个内存地址，所以导入值会跟随导出值变化
   4. `ES Module` 会编译成 `require/exports`来执行的
 ```js
@@ -676,35 +589,31 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_10-%E6%A8%A1%E5%9D%97%E5%8C%96)
     export default function() {}
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
-## [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_11-%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%AE%80%E6%B4%81%E7%89%88%E7%9A%84promise)
-11 实现一个简洁版的promise
+## 11 实现一个简洁版的promise
 ```js
     // 三个常量用于表示状态
     const PENDING = 'pending'
     const RESOLVED = 'resolved'
     const REJECTED = 'rejected'
-
+    
     function MyPromise(fn) {
         const that = this
         this.state = PENDING
-
+    
         // value 变量用于保存 resolve 或者 reject 中传入的值
         this.value = null
-
+    
         // 用于保存 then 中的回调，因为当执行完 Promise 时状态可能还是等待中，这时候应该把 then 中的回调保存起来用于状态改变时使用
         that.resolvedCallbacks = []
         that.rejectedCallbacks = []
-
-
+    
+    
         function resolve(value) {
              // 首先两个函数都得判断当前状态是否为等待中
             if(that.state === PENDING) {
                 that.state = RESOLVED
                 that.value = value
-
+    
                 // 遍历回调数组并执行
                 that.resolvedCallbacks.map(cb=>cb(that.value))
             }
@@ -716,7 +625,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_11-%E5%AE%9E%E7%8E%B0%E4%B8%80%E
                 that.rejectedCallbacks.map(cb=>cb(that.value))
             }
         }
-
+    
         // 完成以上两个函数以后，我们就该实现如何执行 Promise 中传入的函数了
         try {
             fn(resolve,reject)
@@ -724,15 +633,15 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_11-%E5%AE%9E%E7%8E%B0%E4%B8%80%E
             reject(e)
         }
     }
-
+    
     // 最后我们来实现较为复杂的 then 函数
     MyPromise.prototype.then = function(onFulfilled,onRejected){
       const that = this
-
+    
       // 判断两个参数是否为函数类型，因为这两个参数是可选参数
       onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : v=>v
       onRejected = typeof onRejected === 'function' ? onRejected : e=>throw e
-
+    
       // 当状态不是等待态时，就去执行相对应的函数。如果状态是等待态的话，就往回调函数中 push 函数
       if(this.state === PENDING) {
           this.resolvedCallbacks.push(onFulfilled)
@@ -747,14 +656,9 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_11-%E5%AE%9E%E7%8E%B0%E4%B8%80%E
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
+## 12 Event Loop
 
-## [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_12-event-loop) 12 Event Loop
-
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_12-1-%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B)
-12.1 进程与线程
+### 12.1 进程与线程
 
 > 涉及面试题：进程与线程区别？`JS` 单线程带来的好处？
 
@@ -767,9 +671,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_12-1-%E8%BF%9B%E7%A8%8B%E4%B8%8E
 
   * 上文说到了 `JS` 引擎线程和渲染线程，大家应该都知道，在 `JS` 运行的时候可能会阻止 `UI` 渲染，这说明了两个线程是互斥的。这其中的原因是因为 JS 可以修改 `DOM`，如果在 `JS` 执行的时候 `UI` 线程还在工作，就可能导致不能安全的渲染 `UI`。这其实也是一个单线程的好处，得益于 `JS` 是单线程运行的，可以达到节省内存，节约上下文切换时间，没有锁的问题的好处
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_12-2-%E6%89%A7%E8%A1%8C%E6%A0%88)
-12.2 执行栈
+### 12.2 执行栈
 
 > 涉及面试题：什么是执行栈？
 
@@ -791,8 +693,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_12-2-%E6%89%A7%E8%A1%8C%E6%A0%88
     bar()
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 ![](/images/s_poetries_work_gitee_2020_07_fe_2.png)
 
 > 大家可以在上图清晰的看到报错在 `foo` 函数，`foo` 函数又是在 `bar` 函数中调用的
@@ -805,43 +705,37 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_12-2-%E6%89%A7%E8%A1%8C%E6%A0%88
     bar()
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 ![](/images/s_poetries_work_gitee_2020_07_fe_1.png)
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_12-3-%E6%B5%8F%E8%A7%88%E5%99%A8%E4%B8%AD%E7%9A%84-event-
-loop) 12.3 浏览器中的 Event Loop
+### 12.3 浏览器中的 Event Loop
 
 > 涉及面试题：异步代码执行顺序？解释一下什么是 `Event Loop` ？
 
 > 众所周知 `JS` 是门非阻塞单线程语言，因为在最初 `JS` 就是为了和浏览器交互而诞生的。如果 `JS` 是门多线程的语言话，我们在多个线程中处理
 > `DOM` 就可能会发生问题（一个线程中新加节点，另一个线程中删除节点）
 
-  * `JS` 在执行的过程中会产生执行环境，这些执行环境会被顺序的加入到执行栈中。如果遇到异步的代码，会被挂起并加入到 `Task`（有多种 `task`） 队列中。一旦执行栈为空，`Event Loop` 就会从 `Task` 队列中拿出需要执行的代码并放入执行栈中执行，所以本质上来说 `JS` 中的异步还是同步行为
+  * `JS` 在执行的过程中会产生执行环境，这些执行环境会被顺序的加入到执行栈中。如果遇到异步的代码，会被挂起并加入到 `Task`（有多种 `task`） 队列中。一旦执行栈为空，`Event Loop` 就会从 `Task` 队列中拿出需要执行的代码并放入执行栈中执行，所以本质上来说 `JS` 中的异步还是同步行为 
 
 ![](/images/s_poetries_work_gitee_2020_07_fe_4.png)
 ```js
     console.log('script start');
-
+    
     setTimeout(function() {
       console.log('setTimeout');
     }, 0);
-
+    
     console.log('script end');
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 > 不同的任务源会被分配到不同的 `Task` 队列中，任务源可以分为 微任务（`microtask`） 和 宏任务（`macrotask`）。在
 > `ES6` 规范中，`microtask` 称为 `jobs`，`macrotask` 称为 `task`
 ```javascript
     console.log('script start');
-
+    
     setTimeout(function() {
       console.log('setTimeout');
     }, 0);
-
+    
     new Promise((resolve) => {
         console.log('Promise')
         resolve()
@@ -850,12 +744,10 @@ loop) 12.3 浏览器中的 Event Loop
     }).then(function() {
       console.log('promise2');
     });
-
+    
     console.log('script end');
     // script start => Promise => script end => promise1 => promise2 => setTimeout
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 > 以上代码虽然 `setTimeout` 写在 `Promise` 之前，但是因为 `Promise` 属于微任务而 `setTimeout` 属于宏任务
 
@@ -888,9 +780,7 @@ loop) 12.3 浏览器中的 Event Loop
 > 通过上述的 `Event loop` 顺序可知，如果宏任务中的异步代码有大量的计算并且需要操作 `DOM` 的话，为了更快的响应界面响应，我们可以把操作
 > `DOM` 放入微任务中
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_12-4-node-%E4%B8%AD%E7%9A%84-event-
-loop) 12.4 Node 中的 Event loop
+### 12.4 Node 中的 Event loop
 
   * `Node` 中的 `Event loop` 和浏览器中的不相同。
   * `Node` 的 `Event loop` 分为`6`个阶段，它们会按照顺序反复运行
@@ -914,8 +804,6 @@ loop) 12.4 Node 中的 Event loop
     └──┤    close callbacks    │
        └───────────────────────┘
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 **timer**
 
@@ -961,59 +849,51 @@ loop) 12.4 Node 中的 Event loop
     // 否则会执行 setTimeout
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 上面介绍的都是 `macrotask` 的执行情况，`microtask` 会在以上每个阶段完成后立即执行
 ```js
     setTimeout(()=>{
         console.log('timer1')
-
+    
         Promise.resolve().then(function() {
             console.log('promise1')
         })
     }, 0)
-
+    
     setTimeout(()=>{
         console.log('timer2')
-
+    
         Promise.resolve().then(function() {
             console.log('promise2')
         })
     }, 0)
-
+    
     // 以上代码在浏览器和 node 中打印情况是不同的
     // 浏览器中一定打印 timer1, promise1, timer2, promise2
     // node 中可能打印 timer1, timer2, promise1, promise2
     // 也可能打印 timer1, promise1, timer2, promise2
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > `Node` 中的 `process.nextTick` 会先于其他 `microtask` 执行
 ```js
     setTimeout(() => {
      console.log("timer1");
-
+    
      Promise.resolve().then(function() {
        console.log("promise1");
      });
     }, 0);
-
+    
     process.nextTick(() => {
      console.log("nextTick");
     });
     // nextTick, timer1, promise1
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 对于 `microtask` 来说，它会在以上每个阶段完成前清空 `microtask` 队列，下图中的 `Tick` 就代表了 `microtask`
 
 ![](/images/s_poetries_work_gitee_2020_07_fe_5.png)
 
-## [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_13-%E6%89%8B%E5%86%99-call%E3%80%81apply-%E5%8F%8A-bind-%E5%87%BD%E6%95%B0)
-13 手写 call、apply 及 bind 函数
+## 13 手写 call、apply 及 bind 函数
 
 > 首先从以下几点来考虑如何实现这几个函数
 
@@ -1040,8 +920,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_13-%E6%89%8B%E5%86%99-call%E3%80
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 **apply实现**
 
 > `apply` 的实现也类似，区别在于对参数的处理
@@ -1063,8 +941,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_13-%E6%89%8B%E5%86%99-call%E3%80
       return result
     }
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 **bind 的实现**
 
@@ -1091,10 +967,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_13-%E6%89%8B%E5%86%99-call%E3%80
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
-## [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_14-new) 14 new
+## 14 new
 
 > 涉及面试题：`new` 的原理是什么？通过 `new`的方式创建对象和通过字面量创建有什么区别？
 
@@ -1122,10 +995,8 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_14-new) 14 new
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
-  * 对于对象来说，其实都是通过 `new` 产生的，无论是 `function Foo()` 还是 `let a = { b : 1 }`。
-  * 对于创建一个对象来说，更推荐使用字面量的方式创建对象（无论性能上还是可读性）。因为你使用 `new Object()` 的方式创建对象需要通过作用域链一层层找到 `Object`，但是你使用字面量的方式就没这个问题
+  * 对于对象来说，其实都是通过 `new` 产生的，无论是 `function Foo()` 还是 `let a = { b : 1 }`。 
+  * 对于创建一个对象来说，更推荐使用字面量的方式创建对象（无论性能上还是可读性）。因为你使用 `new Object()` 的方式创建对象需要通过作用域链一层层找到 `Object`，但是你使用字面量的方式就没这个问题 
 ```js
     function Foo() {}
     // function 就是个语法糖
@@ -1134,11 +1005,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_14-new) 14 new
     // 这个字面量内部也是使用了 new Object()
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
-## [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_15-instanceof-%E7%9A%84%E5%8E%9F%E7%90%86)
-15 instanceof 的原理
+## 15 instanceof 的原理
 
 > 涉及面试题：`instanceof` 的原理是什么？
 
@@ -1154,7 +1021,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_15-instanceof-%E7%9A%84%E5%8E%9F
       // 由于instance要检测的是某对象，需要有一个前置判断条件
       //基本数据类型直接返回false
       if(typeof left !== 'object' || left === null) return false;
-
+    
       let prototype = right.prototype
       left = left.__proto__
       while (true) {
@@ -1165,18 +1032,14 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_15-instanceof-%E7%9A%84%E5%8E%9F
         left = left.__proto__
       }
     }
-
+    
     console.log('test', myInstanceof(null, Array)) // false
     console.log('test', myInstanceof([], Array)) // true
     console.log('test', myInstanceof('', Array)) // false
     console.log('test', myInstanceof({}, Object)) // true
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
-## [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_16-%E4%B8%BA%E4%BB%80%E4%B9%88-0-1-0-2-0-3)
-16 为什么 0.1 + 0.2 != 0.3
+## 16 为什么 0.1 + 0.2 != 0.3
 
 > 涉及面试题：为什么 `0.1 + 0.2 != 0.3`？如何解决这个问题？
 
@@ -1187,8 +1050,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_16-%E4%B8%BA%E4%BB%80%E4%B9%88-0
     // (0011) 表示循环
     0.1 = 2^-4 * 1.10011(0011)
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 > 我们可以发现，`0.1` 在二进制中是无限循环的一些数字，其实不只是 `0.1`，其实很多十进制小数用二进制表示都是无限循环的。这样其实没什么问题，但是
 > `JS`采用的浮点数标准却会裁剪掉我们的数字。
@@ -1205,21 +1066,15 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_16-%E4%B8%BA%E4%BB%80%E4%B9%88-0
     0.100000000000000002 === 0.1 // true
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 那么同样的，`0.2` 在二进制也是无限循环的，被裁剪后也失去了精度变成了 `0.200000000000000002`
 ```javascript
     0.200000000000000002 === 0.2 // true
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 所以这两者相加不等于 `0.3` 而是 `0.300000000000000004`
 ```javascript
     0.1 + 0.2 === 0.30000000000000004 // true
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 > 那么可能你又会有一个疑问，既然 `0.1` 不是 `0.1`，那为什么 `console.log(0.1)` 却是正确的呢？
 
@@ -1229,24 +1084,16 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_16-%E4%B8%BA%E4%BB%80%E4%B9%88-0
     console.log(0.100000000000000002) // 0.1
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 **解决**
 ```js
     parseFloat((0.1 + 0.2).toFixed(10)) === 0.3 // true
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
-## [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_17-%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B6)
-17 事件机制
+## 17 事件机制
 
 > 涉及面试题：事件的触发过程是怎么样的？知道什么是事件代理嘛？
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_17-1-%E4%BA%8B%E4%BB%B6%E8%A7%A6%E5%8F%91%E4%B8%89%E9%98%B6%E6%AE%B5)
-17.1 事件触发三阶段
+### 17.1 事件触发三阶段
 
 **事件触发有三个阶段** ：
 
@@ -1273,11 +1120,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_17-1-%E4%BA%8B%E4%BB%B6%E8%A7%A6
     )
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_17-2-%E6%B3%A8%E5%86%8C%E4%BA%8B%E4%BB%B6)
-17.2 注册事件
+### 17.2 注册事件
 
 > 通常我们使用 `addEventListener` 注册事件，该函数的第三个参数可以是布尔值，也可以是对象。对于布尔值 `useCapture`
 > 参数来说，该参数默认值为 `false` ，`useCapture` 决定了注册的事件是捕获事件还是冒泡事件。对于对象参数来说，可以使用以下几个属性
@@ -1308,11 +1151,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_17-2-%E6%B3%A8%E5%86%8C%E4%BA%8B
     )
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_17-3-%E4%BA%8B%E4%BB%B6%E4%BB%A3%E7%90%86)
-17.3 事件代理
+### 17.3 事件代理
 
 > 如果一个节点中的子节点是动态生成的，那么子节点需要注册事件的话应该注册在父节点上
 ```html
@@ -1331,15 +1170,12 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_17-3-%E4%BA%8B%E4%BB%B6%E4%BB%A3
     </script>
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 **事件代理的方式相较于直接给目标注册事件来说，有以下优点** ：
 
   * 节省内存
   * 不需要给子节点注销事件
 
-## [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_18-%E8%B7%A8%E5%9F%9F) 18 跨域
+## 18 跨域
 
 > 涉及面试题：什么是跨域？为什么浏览器要使用同源策略？你有几种方式可以解决跨域问题？了解预检请求嘛？
 
@@ -1355,8 +1191,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_18-%E8%B7%A8%E5%9F%9F) 18 跨域
 
 接下来我们将来学习几种常见的方式来解决跨域的问题
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_18-1-jsonp) 18.1 JSONP
+### 18.1 JSONP
 
 > `JSONP` 的原理很简单，就是利用 `<script>` 标签没有跨域限制的漏洞。通过
 > `<script>`标签指向一个需要访问的地址并提供一个回调函数来接收数据当需要通讯时
@@ -1368,8 +1203,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_18-1-jsonp) 18.1 JSONP
     	}
     </script>
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 > `JSONP` 使用简单且兼容性不错，但是只限于 `get` 请求。
 
@@ -1390,10 +1223,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_18-1-jsonp) 18.1 JSONP
     })
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_18-2-cors) 18.2 CORS
+### 18.2 CORS
 
   * `CORS` 需要浏览器和后端同时支持。`IE 8` 和 `9` 需要通过 `XDomainRequest` 来实现。
   * 浏览器会自动进行 `CORS` 通信，实现 `CORS` 通信的关键是后端。只要后端实现了 `CORS`，就实现了跨域。
@@ -1437,10 +1267,8 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_18-2-cors) 18.2 CORS
     })
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
   * 该请求会验证你的 `Authorization` 字段，没有的话就会报错。
-  * 当前端发起了复杂请求后，你会发现就算你代码是正确的，返回结果也永远是报错的。因为预检请求也会进入回调中，也会触发 `next` 方法，因为预检请求并不包含 `Authorization` 字段，所以服务端会报错。
+  * 当前端发起了复杂请求后，你会发现就算你代码是正确的，返回结果也永远是报错的。因为预检请求也会进入回调中，也会触发 `next` 方法，因为预检请求并不包含 `Authorization` 字段，所以服务端会报错。 
 
 > 想解决这个问题很简单，只需要在回调中过滤 `option` 方法即可
 ```js
@@ -1449,19 +1277,13 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_18-2-cors) 18.2 CORS
     res.end()
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_18-3-document-domain) 18.3
-document.domain
+### 18.3 document.domain
 
   * 该方式只能用于主域名相同的情况下，比如 `a.test.com` 和 `b.test.com` 适用于该方式。
   * 只需要给页面添加 `document.domain = 'test.com'` 表示主域名都相同就可以实现跨域
   * 自 `Chrome 101` 版本开始，`document.domain` 将变为可读属性，也就是意味着上述这种跨域的方式被禁用了
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_18-4-postmessage) 18.4
-postMessage
+### 18.4 postMessage
 
 > 这种方式通常用于获取嵌入页面中的第三方页面数据。一个页面发送消息，另一个页面判断来源并接收消息
 ```js
@@ -1477,37 +1299,34 @@ postMessage
     })
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
-## [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_19-%E5%AD%98%E5%82%A8) 19 存储
+## 19 存储
 
 > 涉及面试题：有几种方式可以实现存储功能，分别有什么优缺点？什么是 `Service Worker`？
 
 **cookie，localStorage，sessionStorage，indexDB**
 
-特性 | cookie | localStorage | sessionStorage | indexDB
----|---|---|---|---
-数据生命周期 | 一般由服务器生成，可以设置过期时间 | 除非被清理，否则一直存在 | 页面关闭就清理 | 除非被清理，否则一直存在
-数据存储大小 | `4KB` | `5M` | `5M` | 无限
-与服务端通信 | 每次都会携带在 `header` 中，对于请求性能影响 | 不参与 | 不参与 | 不参与
-
+特性 | cookie | localStorage | sessionStorage | indexDB  
+---|---|---|---|---  
+数据生命周期 | 一般由服务器生成，可以设置过期时间 | 除非被清理，否则一直存在 | 页面关闭就清理 | 除非被清理，否则一直存在  
+数据存储大小 | `4KB` | `5M` | `5M` | 无限  
+与服务端通信 | 每次都会携带在 `header` 中，对于请求性能影响 | 不参与 | 不参与 | 不参与  
+  
 > 从上表可以看到，`cookie` 已经不建议用于存储。如果没有大量数据存储需求的话，可以使用 `localStorage` 和
 > `sessionStorage` 。对于不怎么改变的数据尽量使用 `localStorage` 存储，否则可以用 `sessionStorage`存储
 
 **对于 cookie 来说，我们还需要注意安全性。**
 
-属性 | 作用
----|---
-`value` | 如果用于保存用户登录态，应该将该值加密，不能使用明文的用户标识
-`http-only` | 不能通过 `JS` 访问 `Cookie`，减少 `XSS` 攻击
-`secure` | 只能在协议为 `HTTPS` 的请求中携带
-`same-site` | 规定浏览器不能在跨域请求中携带 `Cookie`，减少 `CSRF` 攻击
-
+属性 | 作用  
+---|---  
+`value` | 如果用于保存用户登录态，应该将该值加密，不能使用明文的用户标识  
+`http-only` | 不能通过 `JS` 访问 `Cookie`，减少 `XSS` 攻击  
+`secure` | 只能在协议为 `HTTPS` 的请求中携带  
+`same-site` | 规定浏览器不能在跨域请求中携带 `Cookie`，减少 `CSRF` 攻击  
+  
 **Service Worker**
 
-  * `Service Worker` 是运行在浏览器背后的独立线程，一般可以用来实现缓存功能。使用 `Service Worker`的话，传输协议必须为 `HTTPS`。因为 `Service Worker` 中涉及到请求拦截，所以必须使用 `HTTPS` 协议来保障安全
-  * `Service Worker` 实现缓存功能一般分为三个步骤：首先需要先注册 `Service Worker`，然后监听到 `install` 事件以后就可以缓存需要的文件，那么在下次用户访问的时候就可以通过拦截请求的方式查询是否存在缓存，存在缓存的话就可以直接读取缓存文件，否则就去请求数据。以下是这个步骤的实现：
+  * `Service Worker` 是运行在浏览器背后的独立线程，一般可以用来实现缓存功能。使用 `Service Worker`的话，传输协议必须为 `HTTPS`。因为 `Service Worker` 中涉及到请求拦截，所以必须使用 `HTTPS` 协议来保障安全 
+  * `Service Worker` 实现缓存功能一般分为三个步骤：首先需要先注册 `Service Worker`，然后监听到 `install` 事件以后就可以缓存需要的文件，那么在下次用户访问的时候就可以通过拦截请求的方式查询是否存在缓存，存在缓存的话就可以直接读取缓存文件，否则就去请求数据。以下是这个步骤的实现： 
 ```js
     // index.js
     if (navigator.serviceWorker) {
@@ -1529,7 +1348,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_19-%E5%AD%98%E5%82%A8) 19 存储
         })
       )
     })
-
+    
     // 拦截所有请求事件
     // 如果缓存中已经有请求的数据就直接用缓存，否则去请求数据
     self.addEventListener('fetch', e => {
@@ -1544,8 +1363,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_19-%E5%AD%98%E5%82%A8) 19 存储
     })
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 打开页面，可以在开发者工具中的 `Application` 看到 `Service Worker` 已经启动了
 
 > 在 `Cache` 中也可以发现我们所需的文件已被缓存
@@ -1554,14 +1371,12 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_19-%E5%AD%98%E5%82%A8) 19 存储
 
 > 当我们重新刷新页面可以发现我们缓存的数据是从 `Service Worker` 中读取的
 
-## [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_20-%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6)
-20 浏览器缓存机制
+## 20 浏览器缓存机制
 
 > 注意：该知识点属于性能优化领域，并且整一章节都是一个面试题
 
   * 缓存可以说是性能优化中简单高效的一种优化方式了，它可以显著减少网络传输所带来的损耗。
-  * 对于一个数据请求来说，可以分为发起网络请求、后端处理、浏览器响应三个步骤。浏览器缓存可以帮助我们在第一和第三步骤中优化性能。比如说直接使用缓存而不发起请求，或者发起了请求但后端存储的数据和前端一致，那么就没有必要再将数据回传回来，这样就减少了响应数据。
+  * 对于一个数据请求来说，可以分为发起网络请求、后端处理、浏览器响应三个步骤。浏览器缓存可以帮助我们在第一和第三步骤中优化性能。比如说直接使用缓存而不发起请求，或者发起了请求但后端存储的数据和前端一致，那么就没有必要再将数据回传回来，这样就减少了响应数据。 
 
 > 接下来的内容中我们将通过以下几个部分来探讨浏览器缓存机制：
 
@@ -1569,9 +1384,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_20-%E6%B5%8F%E8%A7%88%E5%99%A8%E
   * 缓存策略
   * 实际场景应用缓存策略
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_20-1-%E7%BC%93%E5%AD%98%E4%BD%8D%E7%BD%AE)
-20.1 缓存位置
+### 20.1 缓存位置
 
 > 从缓存位置上来说分为四种，并且各自有优先级，当依次查找缓存且都没有命中的时候，才会去请求网络
 
@@ -1584,24 +1397,24 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_20-1-%E7%BC%93%E5%AD%98%E4%BD%8D
 **1\. Service Worker**
 
   * `service Worker` 的缓存与浏览器其他内建的缓存机制不同，它可以让我们自由控制缓存哪些文件、如何匹配缓存、如何读取缓存，并且缓存是持续性的。
-  * 当 `Service Worker` 没有命中缓存的时候，我们需要去调用 `fetch` 函数获取数据。也就是说，如果我们没有在 `Service Worker` 命中缓存的话，会根据缓存查找优先级去查找数据。但是不管我们是从 `Memory Cache` 中还是从网络请求中获取的数据，浏览器都会显示我们是从 `Service Worker` 中获取的内容。
+  * 当 `Service Worker` 没有命中缓存的时候，我们需要去调用 `fetch` 函数获取数据。也就是说，如果我们没有在 `Service Worker` 命中缓存的话，会根据缓存查找优先级去查找数据。但是不管我们是从 `Memory Cache` 中还是从网络请求中获取的数据，浏览器都会显示我们是从 `Service Worker` 中获取的内容。 
 
 **2\. Memory Cache**
 
-  * `Memory Cache` 也就是内存中的缓存，读取内存中的数据肯定比磁盘快。但是内存缓存虽然读取高效，可是缓存持续性很短，会随着进程的释放而释放。 一旦我们关闭 `Tab` 页面，内存中的缓存也就被释放了。
+  * `Memory Cache` 也就是内存中的缓存，读取内存中的数据肯定比磁盘快。但是内存缓存虽然读取高效，可是缓存持续性很短，会随着进程的释放而释放。 一旦我们关闭 `Tab` 页面，内存中的缓存也就被释放了。 
   * 当我们访问过页面以后，再次刷新页面，可以发现很多数据都来自于内存缓存
 
 ![](/images/s_poetries_work_gitee_2020_07_fe_7.png)
 
 > 那么既然内存缓存这么高效，我们是不是能让数据都存放在内存中呢？
 
-  * 先说结论，这是不可能的。首先计算机中的内存一定比硬盘容量小得多，操作系统需要精打细算内存的使用，所以能让我们使用的内存必然不多。内存中其实可以存储大部分的文件，比如说 `JS`、`HTML`、`CSS`、图片等等
+  * 先说结论，这是不可能的。首先计算机中的内存一定比硬盘容量小得多，操作系统需要精打细算内存的使用，所以能让我们使用的内存必然不多。内存中其实可以存储大部分的文件，比如说 `JS`、`HTML`、`CSS`、图片等等 
   * 当然，我通过一些实践和猜测也得出了一些结论：
   * 对于大文件来说，大概率是不存储在内存中的，反之优先当前系统内存使用率高的话，文件优先存储进硬盘
 
 **3\. Disk Cache**
 
-  * `Disk Cache` 也就是存储在硬盘中的缓存，读取速度慢点，但是什么都能存储到磁盘中，比之 `Memory Cache` 胜在容量和存储时效性上。
+  * `Disk Cache` 也就是存储在硬盘中的缓存，读取速度慢点，但是什么都能存储到磁盘中，比之 `Memory Cache` 胜在容量和存储时效性上。 
   * 在所有浏览器缓存中，`Disk Cache` 覆盖面基本是最大的。它会根据 `HTTP Herder` 中的字段判断哪些资源需要缓存，哪些资源可以不请求直接使用，哪些资源已经过期需要重新请求。并且即使在跨站点的情况下，相同地址的资源一旦被硬盘缓存下来，就不会再次去请求数据
 
 **4\. Push Cache**
@@ -1624,15 +1437,11 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_20-1-%E7%BC%93%E5%AD%98%E4%BD%8D
   * 如果所有缓存都没有命中的话，那么只能发起请求来获取资源了。
   * 那么为了性能上的考虑，大部分的接口都应该选择好缓存策略，接下来我们就来学习缓存策略这部分的内容
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_20-2-%E7%BC%93%E5%AD%98%E7%AD%96%E7%95%A5)
-20.2 缓存策略
+### 20.2 缓存策略
 
 > 通常浏览器缓存策略分为两种：强缓存和协商缓存，并且缓存策略都是通过设置 `HTTP Header` 来实现的
 
-#### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_20-2-1-%E5%BC%BA%E7%BC%93%E5%AD%98)
-20.2.1 强缓存
+#### 20.2.1 强缓存
 
 > 强缓存可以通过设置两种 `HTTP Header` 实现：`Expires` 和 `Cache-Control`
 > 。强缓存表示在缓存期间不需要请求，`state code` 为 `200`
@@ -1642,8 +1451,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_20-2-1-%E5%BC%BA%E7%BC%93%E5%AD%
     Expires: Wed, 22 Oct 2018 08:41:00 GMT
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > `Expires` 是 `HTTP/1` 的产物，表示资源会在 `Wed, 22 Oct 2018 08:41:00 GMT`
 > 后过期，需要再次请求。并且 `Expires` 受限于本地时间，如果修改了本地时间，可能会造成缓存失效。
 
@@ -1652,9 +1459,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_20-2-1-%E5%BC%BA%E7%BC%93%E5%AD%
     Cache-control: max-age=30
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
-  * `Cache-Control` 出现于 `HTTP/1.1`，优先级高于 `Expires` 。该属性值表示资源会在 `30` 秒后过期，需要再次请求。
+  * `Cache-Control` 出现于 `HTTP/1.1`，优先级高于 `Expires` 。该属性值表示资源会在 `30` 秒后过期，需要再次请求。 
   * `Cache-Control` 可以在请求头或者响应头中设置，并且可以组合使用多种指令
 
 ![](/images/s_poetries_work_gitee_2020_07_fe_8.png)
@@ -1666,9 +1471,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_20-2-1-%E5%BC%BA%E7%BC%93%E5%AD%
 
 ![](/images/s_poetries_work_gitee_2020_07_fe_9.png)
 
-#### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_20-2-2-%E5%8D%8F%E5%95%86%E7%BC%93%E5%AD%98)
-20.2.2 协商缓存
+#### 20.2.2 协商缓存
 
   * 如果缓存过期了，就需要发起请求验证资源是否有更新。协商缓存可以通过设置两种 `HTTP Header` 实现：`Last-Modified` 和 `ETag`
   * 当浏览器发起请求验证资源时，如果资源没有做改变，那么服务端就会返回 `304` 状态码，并且更新浏览器缓存有效期。
@@ -1687,15 +1490,13 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_20-2-2-%E5%8D%8F%E5%95%86%E7%BC%
 
 **ETag 和 If-None-Match**
 
-  * `ETag` 类似于文件指纹，`If-None-Match` 会将当前 `ETag` 发送给服务器，询问该资源 `ETag` 是否变动，有变动的话就将新的资源发送回来。并且 `ETag` 优先级比 `Last-Modified` 高。
+  * `ETag` 类似于文件指纹，`If-None-Match` 会将当前 `ETag` 发送给服务器，询问该资源 `ETag` 是否变动，有变动的话就将新的资源发送回来。并且 `ETag` 优先级比 `Last-Modified` 高。 
 
 > 以上就是缓存策略的所有内容了，看到这里，不知道你是否存在这样一个疑问。如果什么缓存策略都没设置，那么浏览器会怎么处理？
 
 对于这种情况，浏览器会采用一个启发式的算法，通常会取响应头中的 `Date` 减去 `Last-Modified` 值的 `10%` 作为缓存时间。
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_20-3-%E5%AE%9E%E9%99%85%E5%9C%BA%E6%99%AF%E5%BA%94%E7%94%A8%E7%BC%93%E5%AD%98%E7%AD%96%E7%95%A5)
-20.3 实际场景应用缓存策略
+### 20.3 实际场景应用缓存策略
 
 **频繁变动的资源**
 
@@ -1712,15 +1513,11 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_20-3-%E5%AE%9E%E9%99%85%E5%9C%BA
 
 > 更多缓存知识详解 http://blog.poetries.top/2019/01/02/browser-cache
 
-## [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_21-%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86)
-21 浏览器渲染原理
+## 21 浏览器渲染原理
 
 > 注意：该章节都是一个面试题。
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_21-1-%E6%B8%B2%E6%9F%93%E8%BF%87%E7%A8%8B)
-21.1 渲染过程
+### 21.1 渲染过程
 
 **1\. 浏览器接收到 HTML 文件并转换为 DOM 树**
 
@@ -1756,7 +1553,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_21-1-%E6%B8%B2%E6%9F%93%E8%BF%87
 
 ![](/images/s_poetries_work_gitee_2020_07_fe_16.png)
 
-  * 在这一过程中，浏览器会确定下每一个节点的样式到底是什么，并且这一过程其实是很消耗资源的。因为样式你可以自行设置给某个节点，也可以通过继承获得。在这一过程中，浏览器得递归 `CSSOM` 树，然后确定具体的元素到底是什么样式。
+  * 在这一过程中，浏览器会确定下每一个节点的样式到底是什么，并且这一过程其实是很消耗资源的。因为样式你可以自行设置给某个节点，也可以通过继承获得。在这一过程中，浏览器得递归 `CSSOM` 树，然后确定具体的元素到底是什么样式。 
 
 如果你有点不理解为什么会消耗资源的话，我这里举个例子
 ```html
@@ -1773,8 +1570,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_21-1-%E6%B8%B2%E6%9F%93%E8%BF%87
     </style>
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 对于第一种设置样式的方式来说，浏览器只需要找到页面中所有的 `span` 标签然后设置颜色，但是对于第二种设置样式的方式来说，浏览器首先需要找到所有的
 > `span` 标签，然后找到 `span` 标签上的 `a` 标签，最后再去找到 `div` 标签，然后给符合这种条件的 `span`
 > 标签设置颜色，这样的递归过程就很复杂。所以我们应该尽可能的避免写过于具体的 `CSS` 选择器，然后对于 `HTML`
@@ -1789,17 +1584,15 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_21-1-%E6%B8%B2%E6%9F%93%E8%BF%87
   * 在这一过程中，不是简单的将两者合并就行了。渲染树只会包括需要显示的节点和这些节点的样式信息，如果某个节点是 `display: none` 的，那么就不会在渲染树中显示。
   * 当浏览器生成渲染树以后，就会根据渲染树来进行布局（也可以叫做回流），然后调用 `GPU` 绘制，合成图层，显示在屏幕上。对于这一部分的内容因为过于底层，还涉及到了硬件相关的知识，这里就不再继续展开内容了。
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_21-2-%E4%B8%BA%E4%BB%80%E4%B9%88%E6%93%8D%E4%BD%9C-dom-%E6%85%A2)
-21.2 为什么操作 DOM 慢
+### 21.2 为什么操作 DOM 慢
 
 > 想必大家都听过操作 `DOM` 性能很差，但是这其中的原因是什么呢？
 
-  * 因为 `DOM`是属于渲染引擎中的东西，而 `JS` 又是 `JS` 引擎中的东西。当我们通过 `JS` 操作 `DOM` 的时候，其实这个操作涉及到了两个线程之间的通信，那么势必会带来一些性能上的损耗。操作 `DOM` 次数一多，也就等同于一直在进行线程之间的通信，并且操作 `DOM` 可能还会带来重绘回流的情况，所以也就导致了性能上的问题。
+  * 因为 `DOM`是属于渲染引擎中的东西，而 `JS` 又是 `JS` 引擎中的东西。当我们通过 `JS` 操作 `DOM` 的时候，其实这个操作涉及到了两个线程之间的通信，那么势必会带来一些性能上的损耗。操作 `DOM` 次数一多，也就等同于一直在进行线程之间的通信，并且操作 `DOM` 可能还会带来重绘回流的情况，所以也就导致了性能上的问题。 
 
 > 经典面试题：插入几万个 `DOM`，如何实现页面不卡顿？
 
-  * 对于这道题目来说，首先我们肯定不能一次性把几万个 `DOM` 全部插入，这样肯定会造成卡顿，所以解决问题的重点应该是如何分批次部分渲染 `DOM`。大部分人应该可以想到通过 `requestAnimationFrame` 的方式去循环的插入 `DOM`，其实还有种方式去解决这个问题：虚拟滚动（`virtualized scroller`）。
+  * 对于这道题目来说，首先我们肯定不能一次性把几万个 `DOM` 全部插入，这样肯定会造成卡顿，所以解决问题的重点应该是如何分批次部分渲染 `DOM`。大部分人应该可以想到通过 `requestAnimationFrame` 的方式去循环的插入 `DOM`，其实还有种方式去解决这个问题：虚拟滚动（`virtualized scroller`）。 
   * 这种技术的原理就是只渲染可视区域内的内容，非可见区域的那就完全不渲染了，当用户在滚动的时候就实时去替换渲染的内容
 
 ![](/images/s_poetries_work_gitee_2020_07_fe_18.png)
@@ -1807,19 +1600,15 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_21-2-%E4%B8%BA%E4%BB%80%E4%B9%88
 > 从上图中我们可以发现，即使列表很长，但是渲染的 `DOM` 元素永远只有那么几个，当我们滚动页面的时候就会实时去更新
 > `DOM`，这个技术就能顺利解决这道经典面试题
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_21-3-%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%E9%98%BB%E5%A1%9E%E6%B8%B2%E6%9F%93)
-21.3 什么情况阻塞渲染
+### 21.3 什么情况阻塞渲染
 
   * 首先渲染的前提是生成渲染树，所以 `HTML` 和 `CSS` 肯定会阻塞渲染。如果你想渲染的越快，你越应该降低一开始需要渲染的文件大小，并且扁平层级，优化选择器。
-  * 然后当浏览器在解析到 `script` 标签时，会暂停构建 `DOM`，完成后才会从暂停的地方重新开始。也就是说，如果你想首屏渲染的越快，就越不应该在首屏就加载 `JS`文件，这也是都建议将 `script` 标签放在 `body` 标签底部的原因。
-  * 当然在当下，并不是说 `script` 标签必须放在底部，因为你可以给 `script` 标签添加 `defer` 或者 `async` 属性。
+  * 然后当浏览器在解析到 `script` 标签时，会暂停构建 `DOM`，完成后才会从暂停的地方重新开始。也就是说，如果你想首屏渲染的越快，就越不应该在首屏就加载 `JS`文件，这也是都建议将 `script` 标签放在 `body` 标签底部的原因。 
+  * 当然在当下，并不是说 `script` 标签必须放在底部，因为你可以给 `script` 标签添加 `defer` 或者 `async` 属性。 
   * 当 `script` 标签加上 `defer` 属性以后，表示该 `JS` 文件会并行下载，但是会放到 `HTML` 解析完成后顺序执行，所以对于这种情况你可以把 `script`标签放在任意位置。
   * 对于没有任何依赖的 `JS` 文件可以加上 `async` 属性，表示 `JS` 文件下载和解析不会阻塞渲染。
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_21-4-%E9%87%8D%E7%BB%98-repaint-%E5%92%8C%E5%9B%9E%E6%B5%81-reflow)
-21.4 重绘（Repaint）和回流（Reflow）
+### 21.4 重绘（Repaint）和回流（Reflow）
 
 > 重绘和回流会在我们设置节点样式时频繁出现，同时也会很大程度上影响性能。
 
@@ -1838,8 +1627,8 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_21-4-%E9%87%8D%E7%BB%98-repaint-
 
 > 并且很多人不知道的是，重绘和回流其实也和 `Eventloop` 有关。
 
-  * 当 `Eventloop` 执行完 `Microtasks` 后，会判断 `document` 是否需要更新，因为浏览器是 `60Hz` 的刷新率，每 `16.6ms` 才会更新一次。
-  * 然后判断是否有 `resize` 或者 `scroll` 事件，有的话会去触发事件，所以 `resize` 和 `scroll` 事件也是至少 `16ms` 才会触发一次，并且自带节流功能。
+  * 当 `Eventloop` 执行完 `Microtasks` 后，会判断 `document` 是否需要更新，因为浏览器是 `60Hz` 的刷新率，每 `16.6ms` 才会更新一次。 
+  * 然后判断是否有 `resize` 或者 `scroll` 事件，有的话会去触发事件，所以 `resize` 和 `scroll` 事件也是至少 `16ms` 才会触发一次，并且自带节流功能。 
   * 判断是否触发了 `media query`
   * 更新动画并且发送事件
   * 判断是否有全屏操作事件
@@ -1847,9 +1636,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_21-4-%E9%87%8D%E7%BB%98-repaint-
   * 执行 `IntersectionObserver` 回调，该方法用于判断元素是否可见，可以用于懒加载上，但是兼容性不好 更新界面
   * 以上就是一帧中可能会做的事情。如果在一帧中有空闲时间，就会去执行 `requestIdleCallback`回调
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_21-5-%E5%87%8F%E5%B0%91%E9%87%8D%E7%BB%98%E5%92%8C%E5%9B%9E%E6%B5%81)
-21.5 减少重绘和回流
+### 21.5 减少重绘和回流
 
   1. 使用 `transform` 替代 `top`
 ```html
@@ -1871,8 +1658,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_21-5-%E5%87%8F%E5%B0%91%E9%87%8D
     </script>
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
   2. 使用 `visibility` 替换`display: none` ，因为前者只会引起重绘，后者会引发回流（改变了布局）
   3. 不要把节点的属性值放在一个循环里当成循环里的变量
 ```js
@@ -1881,8 +1666,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_21-5-%E5%87%8F%E5%B0%91%E9%87%8D
         console.log(document.querySelector('.test').style.offsetTop)
     }
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
   4. 不要使用 `table` 布局，可能很小的一个小改动会造成整个 `table` 的重新布局
   5. 动画实现的速度的选择，动画速度越快，回流次数越多，也可以选择使用 `requestAnimationFrame`
@@ -1894,12 +1677,9 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_21-5-%E5%87%8F%E5%B0%91%E9%87%8D
   * `will-change`
   * `video`、`iframe` 标签
 
-## [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_22-%E5%AE%89%E5%85%A8%E9%98%B2%E8%8C%83)
-22 安全防范
+## 22 安全防范
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_22-1-xss) 22.1 XSS
+### 22.1 XSS
 
 > 涉及面试题：什么是 `XSS` 攻击？如何防范 `XSS` 攻击？什么是 `CSP`？
 
@@ -1919,8 +1699,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_22-1-xss) 22.1 XSS
     <!-- http://www.domain.com?name=<script>alert(1)</script> -->
     <div>{{name}}</div>
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 > 但是对于这种攻击方式来说，如果用户使用 `Chrome`
 > 这类浏览器的话，浏览器就能自动帮助用户防御攻击。但是我们不能因此就不防御此类攻击了，因为我不能确保用户都使用了该类浏览器。
@@ -1945,15 +1723,11 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_22-1-xss) 22.1 XSS
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 通过转义可以将攻击代码 `<script>alert(1)</script>` 变成
 ```js
     // -> &lt;script&gt;alert(1)&lt;&#x2F;script&gt;
     escape('<script>alert(1)</script>')
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 >
 > 但是对于显示富文本来说，显然不能通过上面的办法来转义所有字符，因为这样会把需要的格式也过滤掉。对于这种情况，通常采用白名单过滤的办法，当然也可以通过黑名单过滤，但是考虑到需要过滤的标签和标签属性实在太多，更加推荐使用白名单的方式
@@ -1963,8 +1737,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_22-1-xss) 22.1 XSS
     // -> <h1>XSS Demo</h1>&lt;script&gt;alert("xss");&lt;/script&gt;
     console.log(html)
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 > 以上示例使用了 `js-xss` 来实现，可以看到在输出中保留了 `h1` 标签且过滤了 `script`标签
 
@@ -1986,21 +1758,15 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_22-1-xss) 22.1 XSS
     Content-Security-Policy: default-src ‘self’
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 **只允许加载 HTTPS 协议图片**
 ```javascript
     Content-Security-Policy: img-src https://*
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 **允许加载任何来源框架**
 ```javascript
     Content-Security-Policy: child-src 'none'
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 > 当然可以设置的属性远不止这些，你可以通过查阅 [文档 (opens new
 > window)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-
@@ -2010,8 +1776,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_22-1-xss) 22.1 XSS
 
 ![](/images/s_poetries_work_gitee_2020_07_fe_20.png)
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_22-2-csrf) 22.2 CSRF
+### 22.2 CSRF
 
 > 涉及面试题：什么是 `CSRF` 攻击？如何防范 `CSRF` 攻击？
 
@@ -2022,8 +1787,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_22-2-csrf) 22.2 CSRF
 ```html
     <img src="http://www.domain.com/xxx?comment='attack'"/>
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 > 那么你是否会想到使用 `POST`
 > 方式提交请求是不是就没有这个问题了呢？其实并不是，使用这种方式也不是百分百安全的，攻击者同样可以诱导用户进入某个页面，在页面中通过表单提交 `POST`
@@ -2049,9 +1812,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_22-2-csrf) 22.2 CSRF
 
 > 服务器下发一个随机 `Token`，每次发起请求时将 `Token` 携带上，服务器验证 `Token` 是否有效
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_22-3-%E7%82%B9%E5%87%BB%E5%8A%AB%E6%8C%81)
-22.3 点击劫持
+### 22.3 点击劫持
 
 > 涉及面试题：什么是点击劫持？如何防范点击劫持？
 
@@ -2096,19 +1857,13 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_22-3-%E7%82%B9%E5%87%BB%E5%8A%AB
     </body>
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 以上代码的作用就是当通过 `iframe` 的方式加载页面时，攻击者的网页直接不显示所有内容了
 
-## [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_23-%E4%BB%8E-v8-%E4%B8%AD%E7%9C%8B-js-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96)
-23 从 V8 中看 JS 性能优化
+## 23 从 V8 中看 JS 性能优化
 
 > 注意：该知识点属于性能优化领域
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_23-1-%E6%B5%8B%E8%AF%95%E6%80%A7%E8%83%BD%E5%B7%A5%E5%85%B7)
-23.1 测试性能工具
+### 23.1 测试性能工具
 
 > `Chrome` 已经提供了一个大而全的性能测试工具 `Audits`
 
@@ -2136,9 +1891,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_23-1-%E6%B5%8B%E8%AF%95%E6%80%A7
 
 > 在这张图中，我们可以详细的看到每个时间段中浏览器在处理什么事情，哪个过程最消耗时间，便于我们更加详细的了解性能瓶颈
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_23-2-js-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96)
-23.2 JS 性能优化
+### 23.2 JS 性能优化
 
 > `JS` 是编译型还是解释型语言其实并不固定。首先 `JS` 需要有引擎才能运行起来，无论是浏览器还是在 `Node` 中，这是解释型语言的特性。但是在
 > V8 引擎下，又引入了 `TurboFan` 编译器，他会在特定的情况下进行优化，将代码编译成执行效率更高的 `Machine
@@ -2162,8 +1915,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_23-2-js-%E6%80%A7%E8%83%BD%E4%BC
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 然后 `Ignition` 负责将 `AST` 转化为 `Bytecode`，`TurboFan` 负责编译出优化后的 `Machine
 > Code`，并且 `Machine Code` 在执行效率上优于 `Bytecode`
 
@@ -2175,21 +1926,19 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_23-2-js-%E6%80%A7%E8%83%BD%E4%BC
     function test(x) {
       return x + x
     }
-
+    
     test(1)
     test(2)
     test(3)
     test(4)
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
-  * 对于以上代码来说，如果一个函数被多次调用并且参数一直传入 `number` 类型，那么 `V8` 就会认为该段代码可以编译为 `Machine Code`，因为你固定了类型，不需要再执行很多判断逻辑了。
-  * 但是如果一旦我们传入的参数类型改变，那么 `Machine Code` 就会被 `DeOptimized`为 `Bytecode`，这样就有性能上的一个损耗了。所以如果我们希望代码能多的编译为 `Machine Code` 并且 `DeOptimized`的次数减少，就应该尽可能保证传入的类型一致。
+  * 对于以上代码来说，如果一个函数被多次调用并且参数一直传入 `number` 类型，那么 `V8` 就会认为该段代码可以编译为 `Machine Code`，因为你固定了类型，不需要再执行很多判断逻辑了。 
+  * 但是如果一旦我们传入的参数类型改变，那么 `Machine Code` 就会被 `DeOptimized`为 `Bytecode`，这样就有性能上的一个损耗了。所以如果我们希望代码能多的编译为 `Machine Code` 并且 `DeOptimized`的次数减少，就应该尽可能保证传入的类型一致。 
   * 那么你可能会有一个疑问，到底优化前后有多少的提升呢，接下来我们就来实践测试一下到底有多少的提升
 ```js
     const { performance, PerformanceObserver } = require('perf_hooks')
-
+    
     function test(x) {
       return x + x
     }
@@ -2200,22 +1949,20 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_23-2-js-%E6%80%A7%E8%83%BD%E4%BC
       observer.disconnect()
     })
     obs.observe({ entryTypes: ['measure'], buffered: true })
-
+    
     performance.mark('start')
-
+    
     let number = 10000000
     // 不优化代码
     %NeverOptimizeFunction(test)
-
+    
     while (number--) {
       test(1)
     }
-
+    
     performance.mark('end')
     performance.measure('test', 'start', 'end')
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 > 以上代码中我们使用了 `performance API`，这个 `API`
 > 在性能测试上十分好用。不仅可以用来测量代码的执行时间，还能用来测量各种网络连接中的时间消耗等等，并且这个 API 也可以在浏览器中使
@@ -2232,22 +1979,16 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_23-2-js-%E6%80%A7%E8%83%BD%E4%BC
     })
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 但是不可能我们为了性能优化，给所有的函数都去套上括号，并且也不是所有函数都需要这样做。我们可以通过 `optimize-js`
 > 实现这个功能，这个库会分析一些函数的使用情况，然后给需要的函数添加括号，当然这个库很久没人维护了，如果需要使用的话，还是需要测试过相关内容的。
 
 其实很简单，我们只需要给函数套上括号就可以了
 
-## [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_24-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96)
-24 性能优化
+## 24 性能优化
 
 > 总的来说性能优化这个领域的很多内容都很碎片化，这一章节我们将来学习这些碎片化的内容。
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_24-1-%E5%9B%BE%E7%89%87%E4%BC%98%E5%8C%96)
-24.1 图片优化
+### 24.1 图片优化
 
 **计算图片大小**
 
@@ -2261,33 +2002,25 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_24-1-%E5%9B%BE%E7%89%87%E4%BC%98
   1. 减少像素点
   2. 减少每个像素点能够显示的颜色
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_24-2-%E5%9B%BE%E7%89%87%E5%8A%A0%E8%BD%BD%E4%BC%98%E5%8C%96)
-24.2 图片加载优化
+### 24.2 图片加载优化
 
   * 不用图片。很多时候会使用到很多修饰类图片，其实这类修饰图片完全可以用 `CSS` 去代替。
   * 对于移动端来说，屏幕宽度就那么点，完全没有必要去加载原图浪费带宽。一般图片都用 `CDN` 加载，可以计算出适配屏幕的宽度，然后去请求相应裁剪好的图片。
   * 小图使用 `base64` 格式
   * 将多个图标文件整合到一张图片中（雪碧图）
-  * 选择正确的图片格式：
+  * 选择正确的图片格式： 
     * 对于能够显示 `WebP`格式的浏览器尽量使用 `WebP` 格式。因为 `WebP` 格式具有更好的图像数据压缩算法，能带来更小的图片体积，而且拥有肉眼识别无差异的图像质量，缺点就是兼容性并不好
     * 小图使用 `PNG`，其实对于大部分图标这类图片，完全可以使用 `SVG`代替
     * 照片使用 `JPEG`
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_24-3-dns-%E9%A2%84%E8%A7%A3%E6%9E%90)
-24.3 DNS 预解析
+### 24.3 DNS 预解析
 
 > `DNS` 解析也是需要时间的，可以通过预解析的方式来预先获得域名所对应的 `IP`。
 ```html
     <link rel="dns-prefetch" href="//blog.poetries.top">
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_24-4-%E8%8A%82%E6%B5%81) 24.4
-节流
+### 24.4 节流
 
 > 考虑一个场景，滚动事件中会发起网络请求，但是我们并不希望用户在滚动过程中一直发起请求，而是隔一段时间发起一次，对于这种情况我们就可以使用节流。
 
@@ -2309,7 +2042,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_24-4-%E8%8A%82%E6%B5%81) 24.4
         }
       }
     }
-
+    
     setInterval(
       throttle(() => {
         console.log(1)
@@ -2318,11 +2051,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_24-4-%E8%8A%82%E6%B5%81) 24.4
     )
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_24-5-%E9%98%B2%E6%8A%96) 24.5
-防抖
+### 24.5 防抖
 
 >
 > 考虑一个场景，有一个按钮点击会触发网络请求，但是我们并不希望每次点击都发起网络请求，而是当用户点击按钮一段时间后没有再次点击的情况才去发起网络请求，对于这种情况我们就可以使用防抖。
@@ -2346,11 +2075,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_24-5-%E9%98%B2%E6%8A%96) 24.5
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_24-6-%E9%A2%84%E5%8A%A0%E8%BD%BD)
-24.6 预加载
+### 24.6 预加载
 
   * 在开发中，可能会遇到这样的情况。有些资源不需要马上用到，但是希望尽早获取，这时候就可以使用预加载。
   * 预加载其实是声明式的 `fetch` ，强制浏览器请求资源，并且不会阻塞 `onload` 事件，可以使用以下代码开启预加载
@@ -2358,58 +2083,43 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_24-6-%E9%A2%84%E5%8A%A0%E8%BD%BD
     <link rel="preload" href="http://blog.poetries.top">
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 预加载可以一定程度上降低首屏的加载时间，因为可以将一些不影响首屏但重要的文件延后加载，唯一缺点就是兼容性不好。
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_24-7-%E9%A2%84%E6%B8%B2%E6%9F%93)
-24.7 预渲染
+### 24.7 预渲染
 
 > 可以通过预渲染将下载的文件预先在后台渲染，可以使用以下代码开启预渲染
 ```html
     <link rel="prerender" href="http://blog.poetries.top">
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 预渲染虽然可以提高页面的加载速度，但是要确保该页面大概率会被用户在之后打开，否则就是白白浪费资源去渲染。
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_24-8-%E6%87%92%E6%89%A7%E8%A1%8C)
-24.8 懒执行
+### 24.8 懒执行
 
 >
 > 懒执行就是将某些逻辑延迟到使用时再计算。该技术可以用于首屏优化，对于某些耗时逻辑并不需要在首屏就使用的，就可以使用懒执行。懒执行需要唤醒，一般可以通过定时器或者事件的调用来唤醒。
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_24-9-%E6%87%92%E5%8A%A0%E8%BD%BD)
-24.9 懒加载
+### 24.9 懒加载
 
   * 懒加载就是将不关键的资源延后加载。
   * 懒加载的原理就是只加载自定义区域（通常是可视区域，但也可以是即将进入可视区域）内需要加载的东西。对于图片来说，先设置图片标签的 `src` 属性为一张占位图，将真实的图片资源放入一个自定义属性中，当进入自定义区域时，就将自定义属性替换为 `src` 属性，这样图片就会去下载资源，实现了图片懒加载。
   * 懒加载不仅可以用于图片，也可以使用在别的资源上。比如进入可视区域才开始播放视频等等。
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_24-10-cdn) 24.10 CDN
+### 24.10 CDN
 
 > `CDN`的原理是尽可能的在各个地方分布机房缓存数据，这样即使我们的根服务器远在国外，在国内的用户也可以通过国内的机房迅速加载资源。
 
 > 因此，我们可以将静态资源尽量使用 `CDN` 加载，由于浏览器对于单个域名有并发请求上限，可以考虑使用多个 `CDN` 域名。并且对于 `CDN`
 > 加载静态资源需要注意 `CDN` 域名要与主站不同，否则每次请求都会带上主站的 `Cookie`，平白消耗流量
 
-## [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_25-webpack-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96)
-25 Webpack 性能优化
+## 25 Webpack 性能优化
 
 > 在这部分的内容中，我们会聚焦于以下两个知识点，并且每一个知识点都属于高频考点：
 
   * 有哪些方式可以减少 `Webpack` 的打包时间
   * 有哪些方式可以让 `Webpack` 打出来的包更小
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_25-1-%E5%87%8F%E5%B0%91-webpack-%E6%89%93%E5%8C%85%E6%97%B6%E9%97%B4)
-25.1 减少 Webpack 打包时间
+### 25.1 减少 Webpack 打包时间
 
 **1\. 优化 Loader**
 
@@ -2435,8 +2145,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_25-1-%E5%87%8F%E5%B0%91-webpack-
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 对于 `Babel` 来说，我们肯定是希望只作用在 `JS`代码上的，然后 `node_modules`
 > 中使用的代码都是编译过的，所以我们也完全没有必要再去处理一遍
 
@@ -2444,8 +2152,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_25-1-%E5%87%8F%E5%B0%91-webpack-
 ```js
     loader: 'babel-loader?cacheDirectory=true'
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 **2\. HappyPack**
 
@@ -2474,8 +2180,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_25-1-%E5%87%8F%E5%B0%91-webpack-
       })
     ]
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 **3\. DllPlugin**
 
@@ -2510,8 +2214,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_25-1-%E5%87%8F%E5%B0%91-webpack-
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 然后我们需要执行这个配置文件生成依赖文件，接下来我们需要使用 `DllReferencePlugin` 将依赖文件引入项目中
 ```js
     // webpack.conf.js
@@ -2527,8 +2229,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_25-1-%E5%87%8F%E5%B0%91-webpack-
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 **4\. 代码压缩**
 
 > 在 `Webpack3` 中，我们一般使用 `UglifyJS` 来压缩代码，但是这个是单线程运行的，为了加快效率，我们可以使用 `webpack-
@@ -2542,13 +2242,11 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_25-1-%E5%87%8F%E5%B0%91-webpack-
 
 > 我们还可以通过一些小的优化点来加快打包速度
 
-  * `resolve.extensions`：用来表明文件后缀列表，默认查找顺序是 `['.js', '.json']`，如果你的导入文件没有添加后缀就会按照这个顺序查找文件。我们应该尽可能减少后缀列表长度，然后将出现频率高的后缀排在前面
+  * `resolve.extensions`：用来表明文件后缀列表，默认查找顺序是 `['.js', '.json']`，如果你的导入文件没有添加后缀就会按照这个顺序查找文件。我们应该尽可能减少后缀列表长度，然后将出现频率高的后缀排在前面 
   * `resolve.alias`：可以通过别名的方式来映射一个路径，能让 `Webpack` 更快找到路径
   * `module.noParse`：如果你确定一个文件下没有其他依赖，就可以使用该属性让 Webpack 不扫描该文件，这种方式对于大型的类库很有帮助
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_25-2-%E5%87%8F%E5%B0%91-webpack-%E6%89%93%E5%8C%85%E5%90%8E%E7%9A%84%E6%96%87%E4%BB%B6%E4%BD%93%E7%A7%AF)
-25.2 减少 Webpack 打包后的文件体积
+### 25.2 减少 Webpack 打包后的文件体积
 
 **1\. 按需加载**
 
@@ -2568,12 +2266,10 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_25-2-%E5%87%8F%E5%B0%91-webpack-
 ```js
     // test.js
     export const a = 1
-
+    
     // index.js
     import { a } from './test.js'
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 > 对于这种情况，我们打包出来的代码会类似这样
 ```js
@@ -2589,8 +2285,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_25-2-%E5%87%8F%E5%B0%91-webpack-
     ]
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 但是如果我们使用 `Scope Hoisting` 的话，代码就会尽可能的合并到一个函数中去，也就变成了这样的类似代码
 ```js
     [
@@ -2601,8 +2295,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_25-2-%E5%87%8F%E5%B0%91-webpack-
     ]
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 这样的打包方式生成的代码明显比之前的少多了。如果在 `Webpack4` 中你希望开启这个功能，只需要启用
 > `optimization.concatenateModules`就可以了。
 ```js
@@ -2612,8 +2304,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_25-2-%E5%87%8F%E5%B0%91-webpack-
       }
     }
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 **3\. Tree Shaking**
 
@@ -2626,14 +2316,10 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_25-2-%E5%87%8F%E5%B0%91-webpack-
     import { a } from './test.js'
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
   * 对于以上情况，`test` 文件中的变量 `b` 如果没有在项目中使用到的话，就不会被打包到文件中。
   * 如果你使用 `Webpack 4` 的话，开启生产环境就会自动启动这个优化功能。
 
-## [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_26-%E5%AE%9E%E7%8E%B0%E5%B0%8F%E5%9E%8B%E6%89%93%E5%8C%85%E5%B7%A5%E5%85%B7)
-26 实现小型打包工具
+## 26 实现小型打包工具
 
 > 该工具可以实现以下两个功能
 
@@ -2649,8 +2335,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_26-%E5%AE%9E%E7%8E%B0%E5%B0%8F%E
     yarn add babylon babel-traverse babel-core babel-preset-env
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 接下来我们将这些工具引入文件中
 ```js
     const fs = require('fs')
@@ -2659,8 +2343,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_26-%E5%AE%9E%E7%8E%B0%E5%B0%8F%E
     const traverse = require('babel-traverse').default
     const { transformFromAst } = require('babel-core')
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 首先，我们先来实现如何使用 `Babel` 转换代码
 ```js
@@ -2689,8 +2371,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_26-%E5%AE%9E%E7%8E%B0%E5%B0%8F%E
       }
     }
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
   * 首先我们传入一个文件路径参数，然后通过 `fs` 将文件中的内容读取出来
   * 接下来我们通过 `babylon` 解析代码获取 `AST`，目的是为了分析代码中是否还引入了别的文件
@@ -2741,13 +2421,11 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_26-%E5%AE%9E%E7%8E%B0%E5%B0%8F%E
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
   * 首先我们读取入口文件，然后创建一个数组，该数组的目的是存储代码中涉及到的所有文件
   * 接下来我们遍历这个数组，一开始这个数组中只有入口文件，在遍历的过程中，如果入口文件有依赖其他的文件，那么就会被 `push` 到这个数组中
   * 在遍历的过程中，我们先获得该文件对应的目录，然后遍历当前文件的依赖关系
   * 在遍历当前文件依赖关系的过程中，首先生成依赖文件的绝对路径，然后判断当前文件是 `CSS` 文件还是 `JS` 文件
-  * 如果是 `CSS` 文件的话，我们就不能用 `Babel` 去编译了，只需要读取 `CSS` 文件中的代码，然后创建一个 `style` 标签，将代码插入进标签并且放入 `head` 中即可
+  * 如果是 `CSS` 文件的话，我们就不能用 `Babel` 去编译了，只需要读取 `CSS` 文件中的代码，然后创建一个 `style` 标签，将代码插入进标签并且放入 `head` 中即可 
   * 如果是 `JS` 文件的话，我们还需要分析 `JS` 文件是否还有别的依赖关系
   * 最后将读取文件后的对象 `push` 进数组中
   * 现在我们已经获取到了所有的依赖文件，接下来就是实现打包的功能了
@@ -2778,8 +2456,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_26-%E5%AE%9E%E7%8E%B0%E5%B0%8F%E
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 这段代码需要结合着 `Babel` 转换后的代码来看，这样大家就能理解为什么需要这样写了
 ```js
     // entry.js
@@ -2797,8 +2473,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_26-%E5%AE%9E%E7%8E%B0%E5%B0%8F%E
     exports.default = a
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > `Babel` 将我们 `ES6`的模块化代码转换为了 `CommonJS`的代码，但是浏览器是不支持 `CommonJS`
 > 的，所以如果这段代码需要在浏览器环境下运行的话，我们需要自己实现 `CommonJS` 相关的代码，这就是 `bundle` 函数做的大部分事情。
 
@@ -2809,7 +2483,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_26-%E5%AE%9E%E7%8E%B0%E5%B0%8F%E
     * `module` 参数对应 `CommonJS` 中的 `module`
     * `exports` 参数对应 `CommonJS` 中的 `module.export`
     * `require` 参数对应我们自己创建的 `require` 函数
-  * 接下来就是构造一个使用参数的函数了，函数做的事情很简单，就是内部创建一个 `require`函数，然后调用 `require(entry)`，也就是 `require('./entry.js')`，这样就会从函数参数中找到 `./entry.js` 对应的函数并执行，最后将导出的内容通过 `module.export` 的方式让外部获取到
+  * 接下来就是构造一个使用参数的函数了，函数做的事情很简单，就是内部创建一个 `require`函数，然后调用 `require(entry)`，也就是 `require('./entry.js')`，这样就会从函数参数中找到 `./entry.js` 对应的函数并执行，最后将导出的内容通过 `module.export` 的方式让外部获取到 
   * 最后再将打包出来的内容写入到单独的文件中
 
 > 如果你对于上面的实现还有疑惑的话，可以阅读下打包后的部分简化代码
@@ -2840,19 +2514,14 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_26-%E5%AE%9E%E7%8E%B0%E5%B0%8F%E
     })
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 虽然实现这个工具只写了不到 `100` 行的代码，但是打包工具的核心原理就是这些了
 
   * 找出入口文件所有的依赖关系
   * 然后通过构建 `CommonJS` 代码来获取 `exports` 导出的内容
 
-## [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_27-mvvm-%E8%99%9A%E6%8B%9Fdom-%E5%89%8D%E7%AB%AF%E8%B7%AF%E7%94%B1)
-27 MVVM/虚拟DOM/前端路由
+## 27 MVVM/虚拟DOM/前端路由
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_27-1-mvvm) 27.1 MVVM
+### 27.1 MVVM
 
 > 涉及面试题：什么是 `MVVM`？比之 `MVC` 有什么区别？
 
@@ -2869,21 +2538,19 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_27-1-mvvm) 27.1 MVVM
 ![](/images/s_poetries_work_gitee_2020_07_fe_27.png)
 
   * 但是 `MVC` 有一个巨大的缺陷就是控制器承担的责任太大了，随着项目愈加复杂，控制器中的代码会越来越臃肿，导致出现不利于维护的情况。
-  * 在 `MVVM` 架构中，引入了 `ViewModel` 的概念。`ViewModel` 只关心数据和业务的处理，不关心 `View` 如何处理数据，在这种情况下，`View`和 `Model` 都可以独立出来，任何一方改变了也不一定需要改变另一方，并且可以将一些可复用的逻辑放在一个 `ViewModel` 中，让多个 `View` 复用这个 `ViewModel`。
+  * 在 `MVVM` 架构中，引入了 `ViewModel` 的概念。`ViewModel` 只关心数据和业务的处理，不关心 `View` 如何处理数据，在这种情况下，`View`和 `Model` 都可以独立出来，任何一方改变了也不一定需要改变另一方，并且可以将一些可复用的逻辑放在一个 `ViewModel` 中，让多个 `View` 复用这个 `ViewModel`。 
 
 ![](/images/s_poetries_work_gitee_2020_07_fe_28.png)
 
   * 以 `Vue` 框架来举例，`ViewModel` 就是组件的实例。`View` 就是模板，`Model` 的话在引入 `Vuex` 的情况下是完全可以和组件分离的。
-  * 除了以上三个部分，其实在 `MVVM` 中还引入了一个隐式的 `Binder` 层，实现了 `View` 和 `ViewModel` 的绑定
+  * 除了以上三个部分，其实在 `MVVM` 中还引入了一个隐式的 `Binder` 层，实现了 `View` 和 `ViewModel` 的绑定 
 
 ![](/images/s_poetries_work_gitee_2020_07_fe_29.png)
 
-  * 同样以 `Vue` 框架来举例，这个隐式的 `Binder` 层就是 `Vue` 通过解析模板中的插值和指令从而实现 `View` 与 `ViewModel` 的绑定。
-  * 对于 `MVVM`来说，其实最重要的并不是通过双向绑定或者其他的方式将 `View` 与 `ViewModel` 绑定起来，而是通过 `ViewModel` 将视图中的状态和用户的行为分离出一个抽象，这才是 `MVVM` 的精髓
+  * 同样以 `Vue` 框架来举例，这个隐式的 `Binder` 层就是 `Vue` 通过解析模板中的插值和指令从而实现 `View` 与 `ViewModel` 的绑定。 
+  * 对于 `MVVM`来说，其实最重要的并不是通过双向绑定或者其他的方式将 `View` 与 `ViewModel` 绑定起来，而是通过 `ViewModel` 将视图中的状态和用户的行为分离出一个抽象，这才是 `MVVM` 的精髓 
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_27-2-virtual-dom) 27.2 Virtual
-DOM
+### 27.2 Virtual DOM
 
 > 涉及面试题：什么是 `Virtual DOM`？为什么 `Virtual DOM` 比原生 `DOM` 快？
 
@@ -2901,16 +2568,12 @@ DOM
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 上述代码对应的 `DOM` 就是
 ```html
     <ul class='list'>
       <li>1</li>
     </ul>
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
   * 那么既然 `DOM` 可以通过 `JS` 对象来模拟，反之也可以通过 `JS` 对象来渲染出对应的 `DOM`。当然了，通过 `JS` 来模拟 `DOM` 并且渲染对应的 `DOM` 只是第一步，难点在于如何判断新旧两个 `JS` 对象的最小差异并且实现局部更新 `DOM`
 
@@ -2934,8 +2597,6 @@ DOM
     [1, 2, 5, 4]
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 从上述例子中，我们一眼就可以看出先前的 `ul` 中的第三个`li`被移除了，四五替换了位置。
 
 > 那么在实际的算法中，我们如何去识别改动的是哪个节点呢？这就引入了 `key` 这个属性，想必大家在 `Vue` 或者 `React`
@@ -2950,9 +2611,7 @@ DOM
   * 同样的，通过 `Virtual DOM`我们可以渲染到其他的平台，比如实现 `SSR`、同构渲染等等。
   * 实现组件的高度抽象化
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_27-3-%E8%B7%AF%E7%94%B1%E5%8E%9F%E7%90%86)
-27.3 路由原理
+### 27.3 路由原理
 
 > 涉及面试题：前端路由原理？两种实现方式有什么区别？
 
@@ -2971,8 +2630,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_27-3-%E8%B7%AF%E7%94%B1%E5%8E%9F
     })
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > `Hash` 模式相对来说更简单，并且兼容性也更好
 
 **2\. History 模式**
@@ -2988,8 +2645,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_27-3-%E8%B7%AF%E7%94%B1%E5%8E%9F
     history.replaceState(stateObject, title, URL)
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 当用户做出浏览器动作时，比如点击后退按钮时会触发 `popState` 事件
 ```js
     window.addEventListener('popstate', e => {
@@ -2998,42 +2653,32 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_27-3-%E8%B7%AF%E7%94%B1%E5%8E%9F
     })
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 **两种模式对比**
 
   * `Hash`模式只可以更改 `#` 后面的内容，`History` 模式可以通过 `API` 设置任意的同源 `URL`
   * `History` 模式可以通过 `API` 添加任意类型的数据到历史记录中，`Hash` 模式只能更改哈希值，也就是字符串
   * `Hash` 模式无需后端配置，并且兼容性好。`History` 模式在用户手动输入地址或者刷新页面的时候会发起 `URL` 请求，后端需要配置 `index.html` 页面用于匹配不到静态资源的时候
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_27-4-vue-%E5%92%8C-react-%E4%B9%8B%E9%97%B4%E7%9A%84%E5%8C%BA%E5%88%AB)
-27.4 Vue 和 React 之间的区别
+### 27.4 Vue 和 React 之间的区别
 
-  * `Vue` 的表单可以使用 `v-model` 支持双向绑定，相比于 `React` 来说开发上更加方便，当然了 `v-model` 其实就是个语法糖，本质上和 `React` 写表单的方式没什么区别
-  * 改变数据方式不同，`Vue` 修改状态相比来说要简单许多，`React` 需要使用 `setState` 来改变状态，并且使用这个 `API` 也有一些坑点。并且 `Vue` 的底层使用了依赖追踪，页面更新渲染已经是最优的了，但是 `React` 还是需要用户手动去优化这方面的问题。
+  * `Vue` 的表单可以使用 `v-model` 支持双向绑定，相比于 `React` 来说开发上更加方便，当然了 `v-model` 其实就是个语法糖，本质上和 `React` 写表单的方式没什么区别 
+  * 改变数据方式不同，`Vue` 修改状态相比来说要简单许多，`React` 需要使用 `setState` 来改变状态，并且使用这个 `API` 也有一些坑点。并且 `Vue` 的底层使用了依赖追踪，页面更新渲染已经是最优的了，但是 `React` 还是需要用户手动去优化这方面的问题。 
   * `React 16`以后，有些钩子函数会执行多次，这是因为引入 `Fiber` 的原因
-  * `React` 需要使用 `JSX`，有一定的上手成本，并且需要一整套的工具链支持，但是完全可以通过 `JS` 来控制页面，更加的灵活。`Vue` 使用了模板语法，相比于 `JSX` 来说没有那么灵活，但是完全可以脱离工具链，通过直接编写 `render` 函数就能在浏览器中运行。
+  * `React` 需要使用 `JSX`，有一定的上手成本，并且需要一整套的工具链支持，但是完全可以通过 `JS` 来控制页面，更加的灵活。`Vue` 使用了模板语法，相比于 `JSX` 来说没有那么灵活，但是完全可以脱离工具链，通过直接编写 `render` 函数就能在浏览器中运行。 
   * 在生态上来说，两者其实没多大的差距，当然 `React`的用户是远远高于`Vue` 的
 
-## [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_28-vue%E5%B8%B8%E8%80%83%E7%9F%A5%E8%AF%86%E7%82%B9)
-28 Vue常考知识点
+## 28 Vue常考知识点
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_28-1-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E9%92%A9%E5%AD%90%E5%87%BD%E6%95%B0)
-28.1 生命周期钩子函数
+### 28.1 生命周期钩子函数
 
-  * 在 `beforeCreate` 钩子函数调用的时候，是获取不到 `props` 或者 `data` 中的数据的，因为这些数据的初始化都在 `initState` 中。
+  * 在 `beforeCreate` 钩子函数调用的时候，是获取不到 `props` 或者 `data` 中的数据的，因为这些数据的初始化都在 `initState` 中。 
   * 然后会执行 `created` 钩子函数，在这一步的时候已经可以访问到之前不能访问到的数据，但是这时候组件还没被挂载，所以是看不到的。
-  * 接下来会先执行 `beforeMount` 钩子函数，开始创建 `VDOM`，最后执行 `mounted` 钩子，并将 `VDOM`渲染为真实 `DOM` 并且渲染数据。组件中如果有子组件的话，会递归挂载子组件，只有当所有子组件全部挂载完毕，才会执行根组件的挂载钩子。
-  * 接下来是数据更新时会调用的钩子函数 `beforeUpdate` 和 `updated`，这两个钩子函数没什么好说的，就是分别在数据更新前和更新后会调用。
-  * 另外还有 `keep-alive` 独有的生命周期，分别为 `activated` 和 `deactivated`。用 `keep-alive` 包裹的组件在切换时不会进行销毁，而是缓存到内存中并执行 `deactivated` 钩子函数，命中缓存渲染后会执行 `actived` 钩子函数。
-  * 最后就是销毁组件的钩子函数 `beforeDestroy` 和 `destroyed`。前者适合移除事件、定时器等等，否则可能会引起内存泄露的问题。然后进行一系列的销毁操作，如果有子组件的话，也会递归销毁子组件，所有子组件都销毁完毕后才会执行根组件的 `destroyed` 钩子函数
+  * 接下来会先执行 `beforeMount` 钩子函数，开始创建 `VDOM`，最后执行 `mounted` 钩子，并将 `VDOM`渲染为真实 `DOM` 并且渲染数据。组件中如果有子组件的话，会递归挂载子组件，只有当所有子组件全部挂载完毕，才会执行根组件的挂载钩子。 
+  * 接下来是数据更新时会调用的钩子函数 `beforeUpdate` 和 `updated`，这两个钩子函数没什么好说的，就是分别在数据更新前和更新后会调用。 
+  * 另外还有 `keep-alive` 独有的生命周期，分别为 `activated` 和 `deactivated`。用 `keep-alive` 包裹的组件在切换时不会进行销毁，而是缓存到内存中并执行 `deactivated` 钩子函数，命中缓存渲染后会执行 `actived` 钩子函数。 
+  * 最后就是销毁组件的钩子函数 `beforeDestroy` 和 `destroyed`。前者适合移除事件、定时器等等，否则可能会引起内存泄露的问题。然后进行一系列的销毁操作，如果有子组件的话，也会递归销毁子组件，所有子组件都销毁完毕后才会执行根组件的 `destroyed` 钩子函数 
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_28-2-%E7%BB%84%E4%BB%B6%E9%80%9A%E4%BF%A1)
-28.2 组件通信
+### 28.2 组件通信
 
 > 组件通信一般分为以下几种情况：
 
@@ -3046,8 +2691,8 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_28-2-%E7%BB%84%E4%BB%B6%E9%80%9A
 **1\. 父子通信**
 
   * 父组件通过 `props` 传递数据给子组件，子组件通过 `emit` 发送事件传递数据给父组件，这两种方式是最常用的父子通信实现办法。
-  * 这种父子通信方式也就是典型的单向数据流，父组件通过 `props` 传递数据，子组件不能直接修改 `props`，而是必须通过发送事件的方式告知父组件修改数据。
-  * 另外这两种方式还可以使用语法糖 `v-model` 来直接实现，因为 `v-model` 默认会解析成名为 `value` 的 `prop` 和名为 `input` 的事件。这种语法糖的方式是典型的双向绑定，常用于 `UI` 控件上，但是究其根本，还是通过事件的方法让父组件修改数据。
+  * 这种父子通信方式也就是典型的单向数据流，父组件通过 `props` 传递数据，子组件不能直接修改 `props`，而是必须通过发送事件的方式告知父组件修改数据。 
+  * 另外这两种方式还可以使用语法糖 `v-model` 来直接实现，因为 `v-model` 默认会解析成名为 `value` 的 `prop` 和名为 `input` 的事件。这种语法糖的方式是典型的双向绑定，常用于 `UI` 控件上，但是究其根本，还是通过事件的方法让父组件修改数据。 
   * 当然我们还可以通过访问 `$parent` 或者 `$children` 对象来访问组件实例中的方法和数据。
   * 另外如果你使用 `Vue 2.3` 及以上版本的话还可以使用 `$listeners` 和 `.sync` 这两个属性。
   * `$listeners` 属性会将父组件中的 (不含 `.native` 修饰器的) `v-on` 事件监听器传递给子组件，子组件可以通过访问 `$listeners` 来自定义监听器
@@ -3062,8 +2707,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_28-2-%E7%BB%84%E4%BB%B6%E9%80%9A
       this.$emit('update:value', 1)
     </script>
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 **2\. 兄弟组件通信**
 
@@ -3093,15 +2736,11 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_28-2-%E7%BB%84%E4%BB%B6%E9%80%9A
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 **终极办法解决一切通信问题**
 
 > 只要你不怕麻烦，可以使用 `Vuex` 或者 `Event Bus` 解决上述所有的通信情况。
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_28-3-extend-%E8%83%BD%E5%81%9A%E4%BB%80%E4%B9%88)
-28.3 extend 能做什么
+### 28.3 extend 能做什么
 
 > 这个 `API` 很少用到，作用是扩展组件生成一个构造器，通常会与 `$mount` 一起使用。
 ```js
@@ -3121,11 +2760,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_28-3-extend-%E8%83%BD%E5%81%9A%E
     new SuperComponent().$mount('#app')
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_28-4-mixin-%E5%92%8C-mixins-%E5%8C%BA%E5%88%AB)
-28.4 mixin 和 mixins 区别
+### 28.4 mixin 和 mixins 区别
 
 > `mixin` 用于全局混入，会影响到每个组件实例，通常插件都是这样做初始化的
 ```js
@@ -3137,15 +2772,11 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_28-4-mixin-%E5%92%8C-mixins-%E5%
     })
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
   * 虽然文档不建议我们在应用中直接使用 `mixin`，但是如果不滥用的话也是很有帮助的，比如可以全局混入封装好的 `ajax` 或者一些工具函数等等。
   * `mixins` 应该是我们最常使用的扩展组件的方式了。如果多个组件中有相同的业务逻辑，就可以将这些逻辑剥离出来，通过 `mixins` 混入代码，比如上拉下拉加载数据这种逻辑等等。
   * 另外需要注意的是 `mixins` 混入的钩子函数会先于组件内的钩子函数执行，并且在遇到同名选项的时候也会有选择性的进行合并，具体可以阅读 文档。
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_28-5-computed-%E5%92%8C-watch-%E5%8C%BA%E5%88%AB)
-28.5 computed 和 watch 区别
+### 28.5 computed 和 watch 区别
 
   * `computed` 是计算属性，依赖其他属性计算值，并且 `computed` 的值有缓存，只有当计算值变化才会返回内容。
   * `watch` 监听到值的变化就会执行回调，在回调中可以进行一些逻辑操作。
@@ -3177,28 +2808,18 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_28-5-computed-%E5%92%8C-watch-%E
     })
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_28-6-keep-
-alive-%E7%BB%84%E4%BB%B6%E6%9C%89%E4%BB%80%E4%B9%88%E4%BD%9C%E7%94%A8) 28.6
-keep-alive 组件有什么作用
+### 28.6 keep-alive 组件有什么作用
 
   * 如果你需要在组件切换的时候，保存一些组件的状态防止多次渲染，就可以使用 `keep-alive` 组件包裹需要保存的组件。
-  * 对于 `keep-alive` 组件来说，它拥有两个独有的生命周期钩子函数，分别为 `activated` 和 `deactivated` 。用 `keep-alive` 包裹的组件在切换时不会进行销毁，而是缓存到内存中并执行 `deactivated` 钩子函数，命中缓存渲染后会执行 `actived` 钩子函数。
+  * 对于 `keep-alive` 组件来说，它拥有两个独有的生命周期钩子函数，分别为 `activated` 和 `deactivated` 。用 `keep-alive` 包裹的组件在切换时不会进行销毁，而是缓存到内存中并执行 `deactivated` 钩子函数，命中缓存渲染后会执行 `actived` 钩子函数。 
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_28-7-v-show-%E4%B8%8E-v-
-if-%E5%8C%BA%E5%88%AB) 28.7 v-show 与 v-if 区别
+### 28.7 v-show 与 v-if 区别
 
   * `v-show` 只是在 `display: none` 和 `display: block` 之间切换。无论初始条件是什么都会被渲染出来，后面只需要切换 `CSS`，`DOM` 还是一直保留着的。所以总的来说 `v-show` 在初始渲染时有更高的开销，但是切换开销很小，更适合于频繁切换的场景。
-  * `v-if` 的话就得说到 `Vue` 底层的编译了。当属性初始为 `false` 时，组件就不会被渲染，直到条件为 `true`，并且切换条件时会触发销毁/挂载组件，所以总的来说在切换时开销更高，更适合不经常切换的场景。
+  * `v-if` 的话就得说到 `Vue` 底层的编译了。当属性初始为 `false` 时，组件就不会被渲染，直到条件为 `true`，并且切换条件时会触发销毁/挂载组件，所以总的来说在切换时开销更高，更适合不经常切换的场景。 
   * 并且基于 `v-if` 的这种惰性渲染机制，可以在必要的时候才去渲染组件，减少整个页面的初始渲染开销。
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_28-8-%E7%BB%84%E4%BB%B6%E4%B8%AD-
-data-%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8%E5%AF%B9%E8%B1%A1)
-28.8 组件中 data 什么时候可以使用对象
+### 28.8 组件中 data 什么时候可以使用对象
 
 > 这道题目其实更多考的是 `JS` 功底。
 
@@ -3207,9 +2828,7 @@ data-%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8%E5
 
 > 以下是进阶部分
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_28-9-%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86)
-28.9 响应式原理
+### 28.9 响应式原理
 
 > `Vue` 内部使用了 `Object.defineProperty()` 来实现数据响应式，通过这个函数可以监听到 `set` 和 `get` 的事件
 ```js
@@ -3217,7 +2836,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_28-9-%E5%93%8D%E5%BA%94%E5%BC%8F
     observe(data)
     let name = data.name // -> get value
     data.name = 'yyy' // -> change value
-
+    
     function observe(obj) {
       // 判断类型
       if (!obj || typeof obj !== 'object') {
@@ -3227,7 +2846,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_28-9-%E5%93%8D%E5%BA%94%E5%BC%8F
         defineReactive(obj, key, obj[key])
       })
     }
-
+    
     function defineReactive(obj, key, val) {
       // 递归子属性
       observe(val)
@@ -3249,8 +2868,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_28-9-%E5%93%8D%E5%BA%94%E5%BC%8F
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 以上代码简单的实现了如何监听数据的 `set` 和 `get`
 > 的事件，但是仅仅如此是不够的，因为自定义的函数一开始是不会执行的。只有先执行了依赖收集，从能在属性更新的时候派发更新，所以接下来我们需要先触发依赖收集
 ```html
@@ -3258,8 +2875,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_28-9-%E5%93%8D%E5%BA%94%E5%BC%8F
         {{name}}
     </div>
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
   * 在解析如上模板代码时，遇到 `{name}` 就会进行依赖收集。
   * 接下来我们先来实现一个 `Dep` 类，用于解耦属性的依赖收集和派发更新操作
@@ -3283,8 +2898,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_28-9-%E5%93%8D%E5%BA%94%E5%BC%8F
     // 全局属性，通过该属性配置 Watcher
     Dep.target = null
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 > 以上的代码实现很简单，当需要依赖收集的时候调用 `addSub`，当需要派发更新的时候调用 `notify`。
 
@@ -3314,8 +2927,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_28-9-%E5%93%8D%E5%BA%94%E5%BC%8F
       }
     }
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 > 以上就是 `Watcher`的简单实现，在执行构造函数的时候将 `Dep.target`指向自身，从而使得收集到了对应的
 > `Watcher`，在派发更新的时候取出对应的 `Watcher` 然后执行 `update` 函数。
@@ -3347,8 +2958,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_28-9-%E5%93%8D%E5%BA%94%E5%BC%8F
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 以上所有代码实现了一个简易的数据响应式，核心思路就是手动触发一次属性的 `getter` 来实现依赖收集。
 
 现在我们就来测试下代码的效果，只需要把所有的代码复制到浏览器中执行，就会发现页面的内容全部被替换了
@@ -3364,11 +2973,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_28-9-%E5%93%8D%E5%BA%94%E5%BC%8F
     data.name = 'yyy'
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
-#### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_28-9-1-object-
-defineproperty-%E7%9A%84%E7%BC%BA%E9%99%B7) 28.9.1 Object.defineProperty 的缺陷
+#### 28.9.1 Object.defineProperty 的缺陷
 
   * 以上已经分析完了 `Vue` 的响应式原理，接下来说一点 `Object.defineProperty` 中的缺陷。
   * 如果通过下标方式修改数组数据或者给对象新增属性并不会触发组件的重新渲染，因为 `Object.defineProperty` 不能拦截到这些操作，更精确的来说，对于数组而言，大部分操作都是拦截不到的，只是 `Vue` 内部通过重写函数的方式解决了这个问题。
@@ -3401,8 +3006,6 @@ defineproperty-%E7%9A%84%E7%BC%BA%E9%99%B7) 28.9.1 Object.defineProperty 的缺�
       return val
     }
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 > 对于数组而言，`Vue`内部重写了以下函数实现派发更新
 ```js
@@ -3446,11 +3049,7 @@ defineproperty-%E7%9A%84%E7%BC%BA%E9%99%B7) 28.9.1 Object.defineProperty 的缺�
     })
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
-#### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_28-9-2-%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B)
-28.9.2 编译过程
+#### 28.9.2 编译过程
 
 > 想必大家在使用 Vue 开发的过程中，基本都是使用模板的方式。那么你有过「模板是怎么在浏览器中运行的」这种疑虑嘛？
 
@@ -3480,20 +3079,16 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_28-9-2-%E7%BC%96%E8%AF%91%E8%BF%
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
   * 然后会根据这个最基本的 AST 对象中的属性，进一步扩展 `AST`。
-  * 当然在这一阶段中，还会进行其他的一些判断逻辑。比如说对比前后开闭标签是否一致，判断根组件是否只存在一个，判断是否符合 `HTML5 Content Model`规范等等问题。
-  * 接下来就是优化 AST 的阶段。在当前版本下，`Vue` 进行的优化内容其实还是不多的。只是对节点进行了静态内容提取，也就是将永远不会变动的节点提取了出来，实现复用 `Virtual DOM`，跳过对比算法的功能。在下一个大版本中，`Vue` 会在优化 `AST` 的阶段继续发力，实现更多的优化功能，尽可能的在编译阶段压榨更多的性能，比如说提取静态的属性等等优化行为。
-  * 最后一个阶段就是通过 `AST` 生成 `render` 函数了。其实这一阶段虽然分支有很多，但是最主要的目的就是遍历整个 `AST`，根据不同的条件生成不同的代码罢了。
+  * 当然在这一阶段中，还会进行其他的一些判断逻辑。比如说对比前后开闭标签是否一致，判断根组件是否只存在一个，判断是否符合 `HTML5 Content Model`规范等等问题。 
+  * 接下来就是优化 AST 的阶段。在当前版本下，`Vue` 进行的优化内容其实还是不多的。只是对节点进行了静态内容提取，也就是将永远不会变动的节点提取了出来，实现复用 `Virtual DOM`，跳过对比算法的功能。在下一个大版本中，`Vue` 会在优化 `AST` 的阶段继续发力，实现更多的优化功能，尽可能的在编译阶段压榨更多的性能，比如说提取静态的属性等等优化行为。 
+  * 最后一个阶段就是通过 `AST` 生成 `render` 函数了。其实这一阶段虽然分支有很多，但是最主要的目的就是遍历整个 `AST`，根据不同的条件生成不同的代码罢了。 
 
-#### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_28-9-3-nexttick-%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90)
-28.9.3 NextTick 原理分析
+#### 28.9.3 NextTick 原理分析
 
 > `nextTick` 可以让我们在下次 `DOM` 更新循环结束之后执行延迟回调，用于获得更新后的 `DOM`。
 
-  * 在 `Vue 2.4` 之前都是使用的 `microtasks`，但是`microtasks` 的优先级过高，在某些情况下可能会出现比事件冒泡更快的情况，但如果都使用 `macrotasks` 又可能会出现渲染的性能问题。所以在新版本中，会默认使用 `microtasks`，但在特殊情况下会使用 `macrotasks`，比如 `v-on`。
+  * 在 `Vue 2.4` 之前都是使用的 `microtasks`，但是`microtasks` 的优先级过高，在某些情况下可能会出现比事件冒泡更快的情况，但如果都使用 `macrotasks` 又可能会出现渲染的性能问题。所以在新版本中，会默认使用 `microtasks`，但在特殊情况下会使用 `macrotasks`，比如 `v-on`。 
   * 对于实现 `macrotasks` ，会先判断是否能使用 `setImmediate` ，不能的话降级为 `MessageChannel` ，以上都不行的话就使用 `setTimeout`
 ```js
     if (typeof setImmediate !== 'undefined' && isNative(setImmediate)) {
@@ -3519,17 +3114,11 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_28-9-3-nexttick-%E5%8E%9F%E7%90%
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 以上代码很简单，就是判断能不能使用相应的`API`
 
-## [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_29-react%E5%B8%B8%E8%80%83%E7%9F%A5%E8%AF%86%E7%82%B9)
-29 React常考知识点
+## 29 React常考知识点
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_29-1-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F)
-29.1 生命周期
+### 29.1 生命周期
 
 > 在 `V16` 版本中引入了 `Fiber` 机制。这个机制一定程度上的影响了部分生命周期的调用，并且也引入了新的 `2` 个 `API` 来解决问题
 
@@ -3543,7 +3132,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_29-1-%E7%94%9F%E5%91%BD%E5%91%A8
 ![](/images/s_poetries_work_gitee_2020_07_fe_31.png)
 
   * 对于如何区别优先级，`React` 有自己的一套逻辑。对于动画这种实时性很高的东西，也就是 `16 ms` 必须渲染一次保证不卡顿的情况下，`React` 会每 `16 ms`（以内） 暂停一下更新，返回来继续渲染动画
-  * 对于异步渲染，现在渲染有两个阶段：`reconciliation` 和 `commit` 。前者过程是可以打断的，后者不能暂停，会一直更新界面直到完成。
+  * 对于异步渲染，现在渲染有两个阶段：`reconciliation` 和 `commit` 。前者过程是可以打断的，后者不能暂停，会一直更新界面直到完成。 
 
 **1\. Reconciliation 阶段**
 
@@ -3569,7 +3158,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_29-1-%E7%94%9F%E5%91%BD%E5%91%A8
       // Initialize state in constructor,
       // Or with a property initializer.
       state = {};
-
+    
       static getDerivedStateFromProps(nextProps, prevState) {
         if (prevState.someMirroredValue !== nextProps.someValue) {
           return {
@@ -3577,24 +3166,21 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_29-1-%E7%94%9F%E5%91%BD%E5%91%A8
             someMirroredValue: nextProps.someValue
           };
         }
-
+    
         // Return null to indicate no change to state.
         return null;
       }
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > `getSnapshotBeforeUpdate` 用于替换 `componentWillUpdate` ，该函数会在 `update` 后 `DOM`
 > 更新前被调用，用于读取最新的 `DOM` 数据
 
 > 更多详情 http://blog.poetries.top/2018/11/18/react-lifecircle
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_29-2-setstate) 29.2 setState
+### 29.2 setState
 
-  * `setState` 在 `React` 中是经常使用的一个 `API`，但是它存在一些的问题经常会导致初学者出错，核心原因就是因为这个 `API` 是异步的。
+  * `setState` 在 `React` 中是经常使用的一个 `API`，但是它存在一些的问题经常会导致初学者出错，核心原因就是因为这个 `API` 是异步的。 
   * 首先 `setState` 的调用并不会马上引起 `state` 的改变，并且如果你一次调用了多个 `setState` ，那么结果可能并不如你期待的一样。
 ```js
     handle() {
@@ -3607,9 +3193,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_29-2-setstate) 29.2 setState
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
-  * 第一，两次的打印都为 `0`，因为 `setState` 是个异步 `API`，只有同步代码运行完毕才会执行。`setState` 异步的原因我认为在于，`setState` 可能会导致 `DOM` 的重绘，如果调用一次就马上去进行重绘，那么调用多次就会造成不必要的性能损失。设计成异步的话，就可以将多次调用放入一个队列中，在恰当的时候统一进行更新过程。
+  * 第一，两次的打印都为 `0`，因为 `setState` 是个异步 `API`，只有同步代码运行完毕才会执行。`setState` 异步的原因我认为在于，`setState` 可能会导致 `DOM` 的重绘，如果调用一次就马上去进行重绘，那么调用多次就会造成不必要的性能损失。设计成异步的话，就可以将多次调用放入一个队列中，在恰当的时候统一进行更新过程。 
 ```js
     Object.assign(
       {},
@@ -3618,8 +3202,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_29-2-setstate) 29.2 setState
       { count: this.state.count + 1 },
     )
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 > 当然你也可以通过以下方式来实现调用三次 `setState`使得 `count` 为 `3`
 ```js
@@ -3630,8 +3212,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_29-2-setstate) 29.2 setState
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 如果你想在每次调用 `setState` 后获得正确的 `state`，可以通过如下代码实现
 ```js
     handle() {
@@ -3641,16 +3221,12 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_29-2-setstate) 29.2 setState
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 更多详情 http://blog.poetries.top/2018/12/20/react-setState
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_29-3-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96)
-29.3 性能优化
+### 29.3 性能优化
 
-  * 在 `shouldComponentUpdate` 函数中我们可以通过返回布尔值来决定当前组件是否需要更新。这层代码逻辑可以是简单地浅比较一下当前 `state` 和之前的 `state` 是否相同，也可以是判断某个值更新了才触发组件更新。一般来说不推荐完整地对比当前 `state` 和之前的 `state` 是否相同，因为组件更新触发可能会很频繁，这样的完整对比性能开销会有点大，可能会造成得不偿失的情况。
-  * 当然如果真的想完整对比当前 `state` 和之前的 `state` 是否相同，并且不影响性能也是行得通的，可以通过 `immutable` 或者 `immer` 这些库来生成不可变对象。这类库对于操作大规模的数据来说会提升不错的性能，并且一旦改变数据就会生成一个新的对象，对比前后 `state` 是否一致也就方便多了，同时也很推荐阅读下 `immer` 的源码实现
+  * 在 `shouldComponentUpdate` 函数中我们可以通过返回布尔值来决定当前组件是否需要更新。这层代码逻辑可以是简单地浅比较一下当前 `state` 和之前的 `state` 是否相同，也可以是判断某个值更新了才触发组件更新。一般来说不推荐完整地对比当前 `state` 和之前的 `state` 是否相同，因为组件更新触发可能会很频繁，这样的完整对比性能开销会有点大，可能会造成得不偿失的情况。 
+  * 当然如果真的想完整对比当前 `state` 和之前的 `state` 是否相同，并且不影响性能也是行得通的，可以通过 `immutable` 或者 `immer` 这些库来生成不可变对象。这类库对于操作大规模的数据来说会提升不错的性能，并且一旦改变数据就会生成一个新的对象，对比前后 `state` 是否一致也就方便多了，同时也很推荐阅读下 `immer` 的源码实现 
   * 另外如果只是单纯的浅比较一下，可以直接使用 `PureComponent`，底层就是实现了浅比较 `state`
 ```js
     class Test extends React.PureComponent {
@@ -3664,8 +3240,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_29-3-%E6%80%A7%E8%83%BD%E4%BC%98
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 这时候你可能会考虑到函数组件就不能使用这种方式了，如果你使用 `16.6.0` 之后的版本的话，可以使用 `React.memo` 来实现相同的功能
 ```js
     const Test = React.memo(() => (
@@ -3675,13 +3249,9 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_29-3-%E6%80%A7%E8%83%BD%E4%BC%98
     ))
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 通过这种方式我们就可以既实现了 `shouldComponentUpdate` 的浅比较，又能够使用函数组件
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_29-4-%E9%80%9A%E4%BF%A1) 29.4
-通信
+### 29.4 通信
 
 **1\. 父子通信**
 
@@ -3723,15 +3293,11 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_29-4-%E9%80%9A%E4%BF%A1) 29.4
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 **4\. 任意组件**
 
 > 这种方式可以通过 `Redux` 或者 `Event Bus` 解决，另外如果你不怕麻烦的话，可以使用这种方式解决上述所有的通信情况
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_29-5-hoc-%E6%98%AF%E4%BB%80%E4%B9%88-%E7%9B%B8%E6%AF%94-mixins-%E6%9C%89%E4%BB%80%E4%B9%88%E4%BC%98%E7%82%B9)
-29.5 HOC 是什么？相比 mixins 有什么优点？
+### 29.5 HOC 是什么？相比 mixins 有什么优点？
 
 > 很多人看到高阶组件（`HOC`）这个概念就被吓到了，认为这东西很难，其实这东西概念真的很简单，我们先来看一个例子。
 ```js
@@ -3739,8 +3305,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_29-5-hoc-%E6%98%AF%E4%BB%80%E4%B
         return a + b
     }
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 > 现在如果我想给这个 `add` 函数添加一个输出结果的功能，那么你可能会考虑我直接使用 `console.log`
 > 不就实现了么。说的没错，但是如果我们想做的更加优雅并且容易复用和扩展，我们可以这样去做
@@ -3757,20 +3321,16 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_29-5-hoc-%E6%98%AF%E4%BB%80%E4%B
     withLogAdd(1, 2)
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
+  * 其实这个做法在函数式编程里称之为高阶函数，大家都知道 `React` 的思想中是存在函数式编程的，高阶组件和高阶函数就是同一个东西。我们实现一个函数，传入一个组件，然后在函数内部再实现一个函数去扩展传入的组件，最后返回一个新的组件，这就是高阶组件的概念，作用就是为了更好的复用代码。 
+  * 其实 `HOC` 和 `Vue` 中的 `mixins` 作用是一致的，并且在早期 `React` 也是使用 `mixins` 的方式。但是在使用 `class` 的方式创建组件以后，`mixins` 的方式就不能使用了，并且其实 `mixins` 也是存在一些问题的，比如 
 
-  * 其实这个做法在函数式编程里称之为高阶函数，大家都知道 `React` 的思想中是存在函数式编程的，高阶组件和高阶函数就是同一个东西。我们实现一个函数，传入一个组件，然后在函数内部再实现一个函数去扩展传入的组件，最后返回一个新的组件，这就是高阶组件的概念，作用就是为了更好的复用代码。
-  * 其实 `HOC` 和 `Vue` 中的 `mixins` 作用是一致的，并且在早期 `React` 也是使用 `mixins` 的方式。但是在使用 `class` 的方式创建组件以后，`mixins` 的方式就不能使用了，并且其实 `mixins` 也是存在一些问题的，比如
-
-  1. 隐含了一些依赖，比如我在组件中写了某个 `state` 并且在 `mixin` 中使用了，就这存在了一个依赖关系。万一下次别人要移除它，就得去 `mixin` 中查找依赖
+  1. 隐含了一些依赖，比如我在组件中写了某个 `state` 并且在 `mixin` 中使用了，就这存在了一个依赖关系。万一下次别人要移除它，就得去 `mixin` 中查找依赖 
   2. 多个 `mixin` 中可能存在相同命名的函数，同时代码组件中也不能出现相同命名的函数，否则就是重写了，其实我一直觉得命名真的是一件麻烦事。。
   3. 雪球效应，虽然我一个组件还是使用着同一个 `mixin`，但是一个 `mixin` 会被多个组件使用，可能会存在需求使得 `mixin` 修改原本的函数或者新增更多的函数，这样可能就会产生一个维护成本
 
 > `HOC` 解决了这些问题，并且它们达成的效果也是一致的，同时也更加的政治正确（毕竟更加函数式了）
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_29-6-%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B6)
-29.6 事件机制
+### 29.6 事件机制
 
 > `React` 其实自己实现了一套事件机制，首先我们考虑一下以下代码：
 ```js
@@ -3781,26 +3341,21 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_29-6-%E4%BA%8B%E4%BB%B6%E6%9C%BA
     })
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
   * 以上类似代码想必大家经常会写到，但是你是否考虑过点击事件是否绑定在了每一个标签上？事实当然不是，`JSX` 上写的事件并没有绑定在对应的真实 `DOM` 上，而是通过事件代理的方式，将所有的事件都统一绑定在了 `document` 上。这样的方式不仅减少了内存消耗，还能在组件挂载销毁时统一订阅和移除事件。
   * 另外冒泡到 `document` 上的事件也不是原生浏览器事件，而是 `React` 自己实现的合成事件（`SyntheticEvent`）。因此我们如果不想要事件冒泡的话，调用 `event.stopPropagation` 是无效的，而应该调用 `event.preventDefault`
 
 > 那么实现合成事件的目的是什么呢？总的来说在我看来好处有两点，分别是：
 
   1. 合成事件首先抹平了浏览器之间的兼容问题，另外这是一个跨浏览器原生事件包装器，赋予了跨浏览器开发的能力
-  2. 对于原生浏览器事件来说，浏览器会给监听器创建一个事件对象。如果你有很多的事件监听，那么就需要分配很多的事件对象，造成高额的内存分配问题。但是对于合成事件来说，有一个事件池专门来管理它们的创建和销毁，当事件需要被使用时，就会从池子中复用对象，事件回调结束后，就会销毁事件对象上的属性，从而便于下次复用事件对象。
+  2. 对于原生浏览器事件来说，浏览器会给监听器创建一个事件对象。如果你有很多的事件监听，那么就需要分配很多的事件对象，造成高额的内存分配问题。但是对于合成事件来说，有一个事件池专门来管理它们的创建和销毁，当事件需要被使用时，就会从池子中复用对象，事件回调结束后，就会销毁事件对象上的属性，从而便于下次复用事件对象。 
 
-## [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_30-%E7%9B%91%E6%8E%A7) 30 监控
+## 30 监控
 
 > 前端监控一般分为三种，分别为页面埋点、性能监控以及异常监控。
 
 这一章节我们将来学习这些监控相关的内容，但是基本不会涉及到代码，只是让大家了解下前端监控该用什么方式实现。毕竟大部分公司都只是使用到了第三方的监控工具，而不是选择自己造轮子
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_30-1-%E9%A1%B5%E9%9D%A2%E5%9F%8B%E7%82%B9)
-30.1 页面埋点
+### 30.1 页面埋点
 
 > 页面埋点应该是大家最常写的监控了，一般起码会监控以下几个数据：
 
@@ -3815,9 +3370,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_30-1-%E9%A1%B5%E9%9D%A2%E5%9F%8B
 
 另一种无埋点的方式基本不需要开发者手写埋点了，而是统计所有的事件并且定时上报。这种方式虽然没有前一种方式繁琐了，但是因为统计的是所有事件，所以还需要后期过滤出需要的数据。
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_30-2-%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7)
-30.2 性能监控
+### 30.2 性能监控
 
   * 性能监控可以很好的帮助开发者了解在各种真实环境下，页面的性能情况是如何的。
   * 对于性能监控来说，我们可以直接使用浏览器自带的 `Performance API` 来实现这个功能。
@@ -3829,9 +3382,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_30-2-%E6%80%A7%E8%83%BD%E7%9B%91
 
 ![](/images/s_poetries_work_gitee_2020_07_fe_33.png)
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_30-3-%E5%BC%82%E5%B8%B8%E7%9B%91%E6%8E%A7)
-30.3 异常监控
+### 30.3 异常监控
 
   * 对于异常监控来说，以下两种监控是必不可少的，分别是代码报错以及接口异常上报。
   * 对于代码运行错误，通常的办法是使用 `window.onerror` 拦截报错。该方法能拦截到大部分的详细报错信息，但是也有例外
@@ -3844,11 +3395,9 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_30-3-%E5%BC%82%E5%B8%B8%E7%9B%91
   * 对于捕获的错误需要上传给服务器，通常可以通过 `img` 标签的 `src` 发起一个请求。
   * 另外接口异常就相对来说简单了，可以列举出出错的状态码。一旦出现此类的状态码就可以立即上报出错。接口异常上报可以让开发人员迅速知道有哪些接口出现了大面积的报错，以便迅速修复问题。
 
-## [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_31-tcp-udp) 31 TCP/UDP
+## 31 TCP/UDP
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_31-1-udp) 31.1 UDP
+### 31.1 UDP
 
 > 网络协议是每个前端工程师都必须要掌握的知识，我们将先来学习传输层中的两个协议：`UDP`
 > 以及`TCP`。对于大部分工程师来说最常用的协议也就是这两个了，并且面试中经常会提问的也是关于这两个协议的区别
@@ -3866,7 +3415,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_31-1-udp) 31.1 UDP
 
 > 具体来说就是：
 
-  * 在发送端，应用层将数据传递给传输层的 `UDP` 协议，`UDP` 只会给数据增加一个 `UDP` 头标识下是 `UDP` 协议，然后就传递给网络层了 在接收端，网络层将数据传递给传输层，`UDP` 只去除 `IP` 报文头就传递给应用层，不会任何拼接操作
+  * 在发送端，应用层将数据传递给传输层的 `UDP` 协议，`UDP` 只会给数据增加一个 `UDP` 头标识下是 `UDP` 协议，然后就传递给网络层了 在接收端，网络层将数据传递给传输层，`UDP` 只去除 `IP` 报文头就传递给应用层，不会任何拼接操作 
 
 **2\. 不可靠性**
 
@@ -3904,10 +3453,9 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_31-1-udp) 31.1 UDP
 **5.2 王者荣耀**
 
   * 首先对于王者荣耀来说，用户体量是相当大的，如果使用 `TCP` 连接的话，就可能会出现服务器不够用的情况，因为每台服务器可供支撑的 `TCP` 连接数量是有限制的。
-  * 再者，因为 `TCP` 会严格控制传输的正确性，如果因为用户网络条件不好就造成页面卡顿然后再传输旧的游戏画面是肯定不能接受的，毕竟对于这类实时性要求很高的游戏来说，最新的游戏画面才是最需要的，而不是老旧的画面，否则角色都不知道死多少次了。
+  * 再者，因为 `TCP` 会严格控制传输的正确性，如果因为用户网络条件不好就造成页面卡顿然后再传输旧的游戏画面是肯定不能接受的，毕竟对于这类实时性要求很高的游戏来说，最新的游戏画面才是最需要的，而不是老旧的画面，否则角色都不知道死多少次了。 
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_31-2-tcp) 31.2 TCP
+### 31.2 TCP
 
 > 常考面试题：`UDP` 与 `TCP` 的区别是什么？
 
@@ -3924,11 +3472,11 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_31-2-tcp) 31.2 TCP
   * `Acknowledgement Number`，这个序号表示数据接收端期望接收的下一个字节的编号是多少，同时也表示上一个序号的数据已经收到
   * `Window Size`，窗口大小，表示还能接收多少字节的数据，用于流量控制
   * **标识符**
-    * `URG=1`：该字段为一表示本数据报的数据部分包含紧急信息，是一个高优先级数据报文，此时紧急指针有效。紧急数据一定位于当前数据包数据部分的最前面，紧急指针标明了紧急数据的尾部。
-    * `ACK=1`：该字段为一表示确认号字段有效。此外，`TCP` 还规定在连接建立后传送的所有报文段都必须把 `ACK` 置为一。
+    * `URG=1`：该字段为一表示本数据报的数据部分包含紧急信息，是一个高优先级数据报文，此时紧急指针有效。紧急数据一定位于当前数据包数据部分的最前面，紧急指针标明了紧急数据的尾部。 
+    * `ACK=1`：该字段为一表示确认号字段有效。此外，`TCP` 还规定在连接建立后传送的所有报文段都必须把 `ACK` 置为一。 
     * `PSH=1`：该字段为一表示接收端应该立即将数据 `push` 给应用层，而不是等到缓冲区满后再提交。
     * `RST=1`：该字段为一表示当前 `TCP` 连接出现严重问题，可能需要重新建立 TCP 连接，也可以用于拒绝非法的报文段和拒绝连接请求。
-    * `SYN=1`：当`SYN=1`，`ACK=0`时，表示当前报文段是一个连接请求报文。当 `SYN=1`，`ACK=1`时，表示当前报文段是一个同意建立连接的应答报文。
+    * `SYN=1`：当`SYN=1`，`ACK=0`时，表示当前报文段是一个连接请求报文。当 `SYN=1`，`ACK=1`时，表示当前报文段是一个同意建立连接的应答报文。 
     * `FIN=1`：该字段为一表示此报文段是一个释放连接的请求报文。
 
 **2\. 状态机**
@@ -3942,7 +3490,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_31-2-tcp) 31.2 TCP
 **2.1. 建立连接三次握手**
 
   * 首先假设主动发起请求的一端称为客户端，被动连接的一端称为服务端。不管是客户端还是服务端，`TCP` 连接建立完后都能发送和接收数据，所以 `TCP` 是一个全双工的协议。
-  * 起初，两端都为 `CLOSED` 状态。在通信开始前，双方都会创建 `TCB`。 服务器创建完 `TCB` 后便进入 `LISTEN` 状态，此时开始等待客户端发送数据
+  * 起初，两端都为 `CLOSED` 状态。在通信开始前，双方都会创建 `TCB`。 服务器创建完 `TCB` 后便进入 `LISTEN` 状态，此时开始等待客户端发送数据 
 
 **第一次握手**
 
@@ -3954,13 +3502,13 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_31-2-tcp) 31.2 TCP
 
 **第三次握手**
 
-  * 当客户端收到连接同意的应答后，还要向服务端发送一个确认报文。客户端发完这个报文段后便进入 `ESTABLISHED` 状态，服务端收到这个应答后也进入 `ESTABLISHED` 状态，此时连接建立成功。
+  * 当客户端收到连接同意的应答后，还要向服务端发送一个确认报文。客户端发完这个报文段后便进入 `ESTABLISHED` 状态，服务端收到这个应答后也进入 `ESTABLISHED` 状态，此时连接建立成功。 
   * PS：第三次握手中可以包含数据，通过快速打开（`TFO`）技术就可以实现这一功能。其实只要涉及到握手的协议，都可以使用类似 `TFO` 的方式，客户端和服务端存储相同的 `cookie`，下次握手时发出 `cookie` 达到减少 `RTT` 的目的。
 
 > 常考面试题：为什么 `TCP` 建立连接需要三次握手，明明两次就可以建立起连接
 
   * 因为这是为了防止出现失效的连接请求报文段被服务端接收的情况，从而产生错误。
-  * 可以想象如下场景。客户端发送了一个连接请求 `A`，但是因为网络原因造成了超时，这时 `TCP` 会启动超时重传的机制再次发送一个连接请求 `B`。此时请求顺利到达服务端，服务端应答完就建立了请求，然后接收数据后释放了连接。
+  * 可以想象如下场景。客户端发送了一个连接请求 `A`，但是因为网络原因造成了超时，这时 `TCP` 会启动超时重传的机制再次发送一个连接请求 `B`。此时请求顺利到达服务端，服务端应答完就建立了请求，然后接收数据后释放了连接。 
 
 > 假设这时候连接请求 `A` 在两端关闭后终于抵达了服务端，那么此时服务端会认为客户端又需要建立 `TCP` 连接，从而应答了该请求并进入
 > `ESTABLISHED` 状态。但是客户端其实是 `CLOSED` 的状态，那么就会导致服务端一直等待，造成资源的浪费。
@@ -4001,7 +3549,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_31-2-tcp) 31.2 TCP
 
 **第三次握手**
 
-  * `B` 如果此时还有没发完的数据会继续发送，完毕后会向 `A` 发送连接释放请求，然后 `B` 便进入 `LAST-ACK` 状态。
+  * `B` 如果此时还有没发完的数据会继续发送，完毕后会向 `A` 发送连接释放请求，然后 `B` 便进入 `LAST-ACK` 状态。 
   * PS：通过延迟确认的技术（通常有时间限制，否则对方会误认为需要重传），可以将第二次和第三次握手合并，延迟 `ACK` 包的发送。
 
 **第四次握手**
@@ -4017,7 +3565,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_31-2-tcp) 31.2 TCP
 
   * 对端传输的应答也可能出现丢失或超时的情况。那么超过定时器时间 A 端照样会重传报文。这时候 B 端收到相同序号的报文会丢弃该报文并重传应答，直到 A 端发送下一个序号的报文。
   * 在超时的情况下也可能出现应答很迟到达，这时 A 端会判断该序号是否已经接收过，如果接收过只需要丢弃应答即可。
-  * 从上面的描述中大家肯定可以发现这肯定不是一个高效的方式。假设在良好的网络环境中，每次发送数据都需要等待片刻肯定是不能接受的。那么既然我们不能接受这个不那么高效的协议，就来继续学习相对高效的协议吧。
+  * 从上面的描述中大家肯定可以发现这肯定不是一个高效的方式。假设在良好的网络环境中，每次发送数据都需要等待片刻肯定是不能接受的。那么既然我们不能接受这个不那么高效的协议，就来继续学习相对高效的协议吧。 
 
 **连续 ARQ**
 
@@ -4106,12 +3654,9 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_31-2-tcp) 31.2 TCP
 > 知道对端是有多个包未收到，会继续发送序号为 7 的报文，接收方顺利接收并会发送 ACK 序号为 11
 > 的应答，这时发送端认为这个分段接收端已经顺利接收，接下来会退出快恢复阶段。
 
-## [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_32-http-tls) 32 HTTP/TLS
+## 32 HTTP/TLS
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_32-1-http-%E8%AF%B7%E6%B1%82%E4%B8%AD%E7%9A%84%E5%86%85%E5%AE%B9)
-32.1 HTTP 请求中的内容
+### 32.1 HTTP 请求中的内容
 
 > `HTTP` 请求由三部分构成，分别为：
 
@@ -4145,65 +3690,65 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_32-1-http-%E8%AF%B7%E6%B1%82%E4%
 
 **1.1 通用首部**
 
-通用字段 | 作用
----|---
-`Cache-Control` | 控制缓存的行为
-`Connection` | 浏览器想要优先使用的连接类型，比如 `keep-alive`
-`Date` | 创建报文时间
-`Pragma` | 报文指令
-`Via` | 代理服务器相关信息
-`Transfer-Encoding` | 传输编码方式
-`Upgrade` | 要求客户端升级协议
-`Warning` | 在内容中可能存在错误
-
+通用字段 | 作用  
+---|---  
+`Cache-Control` | 控制缓存的行为  
+`Connection` | 浏览器想要优先使用的连接类型，比如 `keep-alive`  
+`Date` | 创建报文时间  
+`Pragma` | 报文指令  
+`Via` | 代理服务器相关信息  
+`Transfer-Encoding` | 传输编码方式  
+`Upgrade` | 要求客户端升级协议  
+`Warning` | 在内容中可能存在错误  
+  
 **1.2 请求首部**
 
-请求首部 | 作用
----|---
-`Accept` | 能正确接收的媒体类型
-`Accept-Charset` | 能正确接收的字符集
-`Accept-Encoding` | 能正确接收的编码格式列表
-`Accept-Language` | 能正确接收的语言列表
-`Expect` | 期待服务端的指定行为
-`From` | 请求方邮箱地址
-`Host` | 服务器的域名
-`If-Match` | 两端资源标记比较
-`If-Modified-Since` | 本地资源未修改返回 `304`（比较时间）
-`If-None-Match` | 本地资源未修改返回 `304`（比较标记）
-`User-Agent` | 客户端信息
-`Max-Forwards` | 限制可被代理及网关转发的次数
-`Proxy-Authorization` | 向代理服务器发送验证信息
-`Range` | 请求某个内容的一部分
-`Referer` | 表示浏览器所访问的前一个页面
-`TE` | 传输编码方式
-
+请求首部 | 作用  
+---|---  
+`Accept` | 能正确接收的媒体类型  
+`Accept-Charset` | 能正确接收的字符集  
+`Accept-Encoding` | 能正确接收的编码格式列表  
+`Accept-Language` | 能正确接收的语言列表  
+`Expect` | 期待服务端的指定行为  
+`From` | 请求方邮箱地址  
+`Host` | 服务器的域名  
+`If-Match` | 两端资源标记比较  
+`If-Modified-Since` | 本地资源未修改返回 `304`（比较时间）  
+`If-None-Match` | 本地资源未修改返回 `304`（比较标记）  
+`User-Agent` | 客户端信息  
+`Max-Forwards` | 限制可被代理及网关转发的次数  
+`Proxy-Authorization` | 向代理服务器发送验证信息  
+`Range` | 请求某个内容的一部分  
+`Referer` | 表示浏览器所访问的前一个页面  
+`TE` | 传输编码方式  
+  
 **1.3 响应首部**
 
-响应首部 | 作用
----|---
-`Accept-Ranges` | 是否支持某些种类的范围
-`Age` | 资源在代理缓存中存在的时间
-`ETag` | 资源标识
-`Location` | 客户端重定向到某个 `URL`
-`Proxy-Authenticate` | 向代理服务器发送验证信息
-`Server` | 服务器名字
-`WWW-Authenticate` | 获取资源需要的验证信息
-
+响应首部 | 作用  
+---|---  
+`Accept-Ranges` | 是否支持某些种类的范围  
+`Age` | 资源在代理缓存中存在的时间  
+`ETag` | 资源标识  
+`Location` | 客户端重定向到某个 `URL`  
+`Proxy-Authenticate` | 向代理服务器发送验证信息  
+`Server` | 服务器名字  
+`WWW-Authenticate` | 获取资源需要的验证信息  
+  
 **1.4 实体首部**
 
-实体首部 | 作用
----|---
-`Allow` | 资源的正确请求方式
-`Content-Encoding` | 内容的编码格式
-`Content-Language` | 内容使用的语言
-`Content-Length` | `request body` 长度
-`Content-Location` | 返回数据的备用地址
-`Content-MD5` | `Base64`加密格式的内容 `MD5`检验值
-`Content-Range` | 内容的位置范围
-`Content-Type` | 内容的媒体类型
-`Expires` | 内容的过期时间
-`Last_modified` | 内容的最后修改时间
-
+实体首部 | 作用  
+---|---  
+`Allow` | 资源的正确请求方式  
+`Content-Encoding` | 内容的编码格式  
+`Content-Language` | 内容使用的语言  
+`Content-Length` | `request body` 长度  
+`Content-Location` | 返回数据的备用地址  
+`Content-MD5` | `Base64`加密格式的内容 `MD5`检验值  
+`Content-Range` | 内容的位置范围  
+`Content-Type` | 内容的媒体类型  
+`Expires` | 内容的过期时间  
+`Last_modified` | 内容的最后修改时间  
+  
 **2\. 常见状态码**
 
 >
@@ -4237,11 +3782,10 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_32-1-http-%E8%AF%B7%E6%B1%82%E4%
   * `501 Not Implemented`，表示服务器不支持当前请求所需要的某个功能
   * `503 service unavailable`，表明服务器暂时处于超负载或正在停机维护，无法处理请求
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_32-2-tls) 32.2 TLS
+### 32.2 TLS
 
   * `HTTPS` 还是通过了 `HTTP` 来传输信息，但是信息通过 `TLS` 协议进行了加密。
-  * `TLS` 协议位于传输层之上，应用层之下。首次进行 `TLS` 协议传输需要两个 `RTT` ，接下来可以通过 `Session Resumption` 减少到一个 `RTT`。
+  * `TLS` 协议位于传输层之上，应用层之下。首次进行 `TLS` 协议传输需要两个 `RTT` ，接下来可以通过 `Session Resumption` 减少到一个 `RTT`。 
   * 在 `TLS` 中使用了两种加密技术，分别为：对称加密和非对称加密。
 
 **对称加密**
@@ -4269,8 +3813,7 @@ TLS 握手过程如下图：
 
 > PS：以上说明的都是 `TLS 1.2` 协议的握手情况，在 1.3 协议中，首次建立连接只需要一个 RTT，后面恢复连接不需要 RTT 了
 
-## [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_33-http2-0) 33 HTTP2.0
+## 33 HTTP2.0
 
 >   * `HTTP/2` 很好的解决了当下最常用的 `HTTP/1`
 > 所存在的一些性能问题，只需要升级到该协议就可以减少很多之前需要做的性能优化工作，当然兼容问题以及如何优雅降级应该是国内还不普遍使用的原因之一。
@@ -4278,8 +3821,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_33-http2-0) 33 HTTP2.0
 > 所存在的一些问题而被推出来的。
 >
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_33-1-http-2) 33.1 HTTP/2
+### 33.1 HTTP/2
 
   * `HTTP/2` 相比于 `HTTP/1`，可以说是大幅度提高了网页的性能。
   * 在 `HTTP/1` 中，为了性能考虑，我们会引入雪碧图、将小图内联、使用多个域名等等的方式。这一切都是因为浏览器限制了同一个域名下的请求数量（Chrome 下一般是限制六个连接），当页面中需要请求很多资源的时候，队头阻塞（Head of line blocking）会导致在达到最大请求数量时，剩余的资源需要等待其他资源请求完成后才能发起请求。
@@ -4298,47 +3840,38 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_33-1-http-2) 33.1 HTTP/2
 
 ![](/images/s_poetries_work_gitee_2020_07_fe_40.png)
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_33-2-%E4%BA%8C%E8%BF%9B%E5%88%B6%E4%BC%A0%E8%BE%93)
-33.2 二进制传输
+### 33.2 二进制传输
 
 > `HTTP/2` 中所有加强性能的核心点在于此。在之前的 `HTTP` 版本中，我们是通过文本的方式传输数据。在 `HTTP/2`
 > 中引入了新的编码机制，所有传输的数据都会被分割，并采用二进制格式编码。
 
 ![](/images/s_poetries_work_gitee_2020_07_fe_41.png)
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_33-3-%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8)
-33.3 多路复用
+### 33.3 多路复用
 
   * 在 `HTTP/2` 中，有两个非常重要的概念，分别是帧（frame）和流（stream）。
   * 帧代表着最小的数据单位，每个帧会标识出该帧属于哪个流，流也就是多个帧组成的数据流。
-  * 多路复用，就是在一个 `TCP` 连接中可以存在多条流。换句话说，也就是可以发送多个请求，对端可以通过帧中的标识知道属于哪个请求。通过这个技术，可以避免 `HTTP` 旧版本中的队头阻塞问题，极大的提高传输性能。
+  * 多路复用，就是在一个 `TCP` 连接中可以存在多条流。换句话说，也就是可以发送多个请求，对端可以通过帧中的标识知道属于哪个请求。通过这个技术，可以避免 `HTTP` 旧版本中的队头阻塞问题，极大的提高传输性能。 
 
 ![](/images/s_poetries_work_gitee_2020_07_fe_42.png)
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_33-4-header-%E5%8E%8B%E7%BC%A9)
-33.4 Header 压缩
+### 33.4 Header 压缩
 
   * 在 `HTTP/1` 中，我们使用文本的形式传输 `header`，在 `header` 携带 cookie 的情况下，可能每次都需要重复传输几百到几千的字节。
-  * 在 `HTTP / 2`中，使用了 `HPACK` 压缩格式对传输的 `header` 进行编码，减少了 `header` 的大小。并在两端维护了索引表，用于记录出现过的 `header` ，后面在传输过程中就可以传输已经记录过的 `header` 的键名，对端收到数据后就可以通过键名找到对应的值。
+  * 在 `HTTP / 2`中，使用了 `HPACK` 压缩格式对传输的 `header` 进行编码，减少了 `header` 的大小。并在两端维护了索引表，用于记录出现过的 `header` ，后面在传输过程中就可以传输已经记录过的 `header` 的键名，对端收到数据后就可以通过键名找到对应的值。 
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_33-5-%E6%9C%8D%E5%8A%A1%E7%AB%AF-
-push) 33.5 服务端 Push
+### 33.5 服务端 Push
 
   * 在 `HTTP/2` 中，服务端可以在客户端某个请求后，主动推送其他资源。
   * 可以想象以下情况，某些资源客户端是一定会请求的，这时就可以采取服务端 `push` 的技术，提前给客户端推送必要的资源，这样就可以相对减少一点延迟时间。当然在浏览器兼容的情况下你也可以使用 `prefetch`
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_33-6-http-3) 33.6 HTTP/3
+### 33.6 HTTP/3
 
-  * 虽然 `HTTP/2` 解决了很多之前旧版本的问题，但是它还是存在一个巨大的问题，虽然这个问题并不是它本身造成的，而是底层支撑的 `TCP` 协议的问题。
-  * 因为 `HTTP/2` 使用了多路复用，一般来说同一域名下只需要使用一个 `TCP` 连接。当这个连接中出现了丢包的情况，那就会导致 `HTTP/2` 的表现情况反倒不如 `HTTP/1` 了。
-  * 因为在出现丢包的情况下，整个 `TCP` 都要开始等待重传，也就导致了后面的所有数据都被阻塞了。但是对于 `HTTP/1` 来说，可以开启多个 `TCP` 连接，出现这种情况反到只会影响其中一个连接，剩余的 `TCP` 连接还可以正常传输数据。
+  * 虽然 `HTTP/2` 解决了很多之前旧版本的问题，但是它还是存在一个巨大的问题，虽然这个问题并不是它本身造成的，而是底层支撑的 `TCP` 协议的问题。 
+  * 因为 `HTTP/2` 使用了多路复用，一般来说同一域名下只需要使用一个 `TCP` 连接。当这个连接中出现了丢包的情况，那就会导致 `HTTP/2` 的表现情况反倒不如 `HTTP/1` 了。 
+  * 因为在出现丢包的情况下，整个 `TCP` 都要开始等待重传，也就导致了后面的所有数据都被阻塞了。但是对于 `HTTP/1` 来说，可以开启多个 `TCP` 连接，出现这种情况反到只会影响其中一个连接，剩余的 `TCP` 连接还可以正常传输数据。 
   * 那么可能就会有人考虑到去修改 TCP 协议，其实这已经是一件不可能完成的任务了。因为 TCP 存在的时间实在太长，已经充斥在各种设备中，并且这个协议是由操作系统实现的，更新起来不大现实。
-  * 基于这个原因，Google 就更起炉灶搞了一个基于 `UDP` 协议的 `QUIC` 协议，并且使用在了 `HTTP/3` 上，当然 `HTTP/3` 之前名为 `HTTP-over-QUIC`，从这个名字中我们也可以发现，HTTP/3 最大的改造就是使用了 `QUIC`，接下来我们就来学习关于这个协议的内容。
+  * 基于这个原因，Google 就更起炉灶搞了一个基于 `UDP` 协议的 `QUIC` 协议，并且使用在了 `HTTP/3` 上，当然 `HTTP/3` 之前名为 `HTTP-over-QUIC`，从这个名字中我们也可以发现，HTTP/3 最大的改造就是使用了 `QUIC`，接下来我们就来学习关于这个协议的内容。 
 
 **QUIC**
 
@@ -4351,7 +3884,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_33-6-http-3) 33.6 HTTP/3
 > 虽然 HTTP/2 支持了多路复用，但是 TCP 协议终究是没有这个功能的。QUIC
 > 原生就实现了这个功能，并且传输的单个数据流可以保证有序交付且不会影响其他的数据流，这样的技术就解决了之前 TCP 存在的问题。
 
-  * 并且 `QUIC` 在移动端的表现也会比 `TCP` 好。因为 `TCP` 是基于 `IP` 和端口去识别连接的，这种方式在多变的移动端网络环境下是很脆弱的。但是 `QUIC` 是通过 `ID`** 的方式去识别一个连接，不管你网络环境如何变化，只要 `ID` 不变，就能迅速重连上。
+  * 并且 `QUIC` 在移动端的表现也会比 `TCP` 好。因为 `TCP` 是基于 `IP` 和端口去识别连接的，这种方式在多变的移动端网络环境下是很脆弱的。但是 `QUIC` 是通过 `ID`** 的方式去识别一个连接，不管你网络环境如何变化，只要 `ID` 不变，就能迅速重连上。 
 
 **0-RTT**
 
@@ -4363,15 +3896,11 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_33-6-http-3) 33.6 HTTP/3
   * 当出现其中的非校验包丢包的情况时，可以通过另外三个包计算出丢失的数据包的内容。
   * 当然这种技术只能使用在丢失一个包的情况下，如果出现丢失多个包就不能使用纠错机制了，只能使用重传的方式了
 
-## [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_34-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F)
-34 设计模式
+## 34 设计模式
 
 > 设计模式总的来说是一个抽象的概念，前人通过无数次的实践总结出的一套写代码的方式，通过这种方式写的代码可以让别人更加容易阅读、维护以及复用。
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_34-1-%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F)
-34.1 工厂模式
+### 34.1 工厂模式
 
 > 工厂模式分为好几种，这里就不一一讲解了，以下是一个简单工厂模式的例子
 ```js
@@ -4383,20 +3912,18 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_34-1-%E5%B7%A5%E5%8E%82%E6%A8%A1
         alert(this.name)
       }
     }
-
+    
     class Factory {
       static create(name) {
         return new Man(name)
       }
     }
-
+    
     Factory.create('test').alertName()
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
   * 当然工厂模式并不仅仅是用来 `new` 出实例。
-  * 可以想象一个场景。假设有一份很复杂的代码需要用户去调用，但是用户并不关心这些复杂的代码，只需要你提供给我一个接口去调用，用户只负责传递需要的参数，至于这些参数怎么使用，内部有什么逻辑是不关心的，只需要你最后返回我一个实例。这个构造过程就是工厂。
+  * 可以想象一个场景。假设有一份很复杂的代码需要用户去调用，但是用户并不关心这些复杂的代码，只需要你提供给我一个接口去调用，用户只负责传递需要的参数，至于这些参数怎么使用，内部有什么逻辑是不关心的，只需要你最后返回我一个实例。这个构造过程就是工厂。 
   * 工厂起到的作用就是隐藏了创建实例的复杂度，只需要提供一个接口，简单清晰。
   * 在 `Vue` 源码中，你也可以看到工厂模式的使用，比如创建异步组件
 ```js
@@ -4407,28 +3934,24 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_34-1-%E5%B7%A5%E5%8E%82%E6%A8%A1
       children: ?Array<VNode>,
       tag?: string
     ): VNode | Array<VNode> | void {
-
+    
         // 逻辑处理...
-
+    
       const vnode = new VNode(
         `vue-component-${Ctor.cid}${name ? `-${name}` : ''}`,
         data, undefined, undefined, undefined, context,
         { Ctor, propsData, listeners, tag, children },
         asyncFactory
       )
-
+    
       return vnode
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 在上述代码中，我们可以看到我们只需要调用 `createComponent`
 > 传入参数就能创建一个组件实例，但是创建这个实例是很复杂的一个过程，工厂帮助我们隐藏了这个复杂的过程，只需要一句代码调用就能实现功能
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_34-2-%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F)
-34.2 单例模式
+### 34.2 单例模式
 
   * 单例模式很常用，比如全局缓存、全局状态管理等等这些只需要一个对象，就可以使用单例模式。
   * 单例模式的核心就是保证全局只有一个对象可以访问。因为 `JS` 是门无类的语言，所以别的语言实现单例的方式并不能套入 `JS` 中，我们只需要用一个变量确保实例只创建一次就行，以下是如何实现单例模式的例子
@@ -4436,7 +3959,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_34-2-%E5%8D%95%E4%BE%8B%E6%A8%A1
     class Singleton {
       constructor() {}
     }
-
+    
     Singleton.getInstance = (function() {
       let instance
       return function() {
@@ -4446,18 +3969,16 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_34-2-%E5%8D%95%E4%BE%8B%E6%A8%A1
         return instance
       }
     })()
-
+    
     let s1 = Singleton.getInstance()
     let s2 = Singleton.getInstance()
     console.log(s1 === s2) // true
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 在 `Vuex` 源码中，你也可以看到单例模式的使用，虽然它的实现方式不大一样，通过一个外部变量来控制只安装一次 `Vuex`
 ```js
     let Vue // bind on install
-
+    
     export function install (_Vue) {
       if (Vue && _Vue === Vue) {
         // 如果发现 Vue 有值，就不重新创建实例了
@@ -4468,11 +3989,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_34-2-%E5%8D%95%E4%BE%8B%E6%A8%A1
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_34-3-%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F)
-34.3 适配器模式
+### 34.3 适配器模式
 
   * 适配器用来解决两个接口不兼容的情况，不需要改变已有的接口，通过包装一层的方式实现两个接口的正常协作。
   * 以下是如何实现适配器模式的例子
@@ -4482,7 +3999,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_34-3-%E9%80%82%E9%85%8D%E5%99%A8
         return '港版插头'
       }
     }
-
+    
     class Target {
       constructor() {
         this.plug = new Plug()
@@ -4491,19 +4008,15 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_34-3-%E9%80%82%E9%85%8D%E5%99%A8
         return this.plug.getName() + ' 适配器转二脚插头'
       }
     }
-
+    
     let target = new Target()
     target.getName() // 港版插头 适配器转二脚插头
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 在 `Vue` 中，我们其实经常使用到适配器模式。比如父组件传递给子组件一个时间戳属性，组件内部需要将时间戳转为正常的日期显示，一般会使用
 > `computed` 来做转换这件事情，这个过程就使用到了适配器模式
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_34-4-%E8%A3%85%E9%A5%B0%E6%A8%A1%E5%BC%8F)
-34.4 装饰模式
+### 34.4 装饰模式
 
   * 装饰模式不需要改变已有的接口，作用是给对象添加功能。就像我们经常需要给手机戴个保护套防摔一样，不改变手机自身，给手机添加了保护套提供防摔功能。
   * 以下是如何实现装饰模式的例子，使用了 ES7 中的装饰器语法
@@ -4512,18 +4025,16 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_34-4-%E8%A3%85%E9%A5%B0%E6%A8%A1
       descriptor.writable = false
       return descriptor
     }
-
+    
     class Test {
       @readonly
       name = 'test'
     }
-
+    
     let t = new Test()
-
+    
     t.test = '111' // 不可修改
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 > 在 `React` 中，装饰模式其实随处可见
 ```js
@@ -4534,11 +4045,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_34-4-%E8%A3%85%E9%A5%B0%E6%A8%A1
     export default connect(mapStateToProps)(MyComponent)
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_34-5-%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F)
-34.5 代理模式
+### 34.5 代理模式
 
   * 代理是为了控制对对象的访问，不让外部直接访问到对象。在现实生活中，也有很多代理的场景。比如你需要买一件国外的产品，这时候你可以通过代购来购买产品。
   * 在实际代码中其实代理的场景很多，也就不举框架中的例子了，比如事件代理就用到了代理模式
@@ -4558,15 +4065,11 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_34-5-%E4%BB%A3%E7%90%86%E6%A8%A1
     </script>
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 因为存在太多的 li，不可能每个都去绑定事件。这时候可以通过给父节点绑定一个事件，让父节点作为代理去拿到真实点击的节点。
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_34-6-%E5%8F%91%E5%B8%83-%E8%AE%A2%E9%98%85%E6%A8%A1%E5%BC%8F)
-34.6 发布-订阅模式
+### 34.6 发布-订阅模式
 
-  * 发布-订阅模式也叫做观察者模式。通过一对一或者一对多的依赖关系，当对象发生改变时，订阅方都会收到通知。在现实生活中，也有很多类似场景，比如我需要在购物网站上购买一个产品，但是发现该产品目前处于缺货状态，这时候我可以点击有货通知的按钮，让网站在产品有货的时候通过短信通知我。
+  * 发布-订阅模式也叫做观察者模式。通过一对一或者一对多的依赖关系，当对象发生改变时，订阅方都会收到通知。在现实生活中，也有很多类似场景，比如我需要在购物网站上购买一个产品，但是发现该产品目前处于缺货状态，这时候我可以点击有货通知的按钮，让网站在产品有货的时候通过短信通知我。 
   * 在实际代码中其实发布-订阅模式也很常见，比如我们点击一个按钮触发了点击事件就是使用了该模式
 ```html
     <ul id="ul"></ul>
@@ -4578,14 +4081,10 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_34-6-%E5%8F%91%E5%B8%83-%E8%AE%A
     </script>
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 在 `Vue` 中，如何实现响应式也是使用了该模式。对于需要实现响应式的对象来说，在 `get`
 > 的时候会进行依赖收集，当改变了对象的属性时，就会触发派发更新。
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_34-7-%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F)
-34.7 外观模式
+### 34.7 外观模式
 
   * 外观模式提供了一个接口，隐藏了内部的逻辑，更加方便外部调用。
   * 个例子来说，我们现在需要实现一个兼容多种浏览器的添加事件方法
@@ -4603,29 +4102,22 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_34-7-%E5%A4%96%E8%A7%82%E6%A8%A1
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 >
 > 对于不同的浏览器，添加事件的方式可能会存在兼容问题。如果每次都需要去这样写一遍的话肯定是不能接受的，所以我们将这些判断逻辑统一封装在一个接口中，外部需要添加事件只需要调用
 > `addEvent` 即可。
 
-## [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-%E5%B8%B8%E8%A7%81%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84)
-35 常见数据结构
+## 35 常见数据结构
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-1-%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6)
-35.1 时间复杂度
+### 35.1 时间复杂度
 
 在进入正题之前，我们先来了解下什么是时间复杂度。
 
   * 通常使用最差的时间复杂度来衡量一个算法的好坏。
   * 常数时间 `O(1)` 代表这个操作和数据量没关系，是一个固定时间的操作，比如说四则运算。
-  * 对于一个算法来说，可能会计算出操作次数为 `aN + 1`，`N` 代表数据量。那么该算法的时间复杂度就是 `O(N)`。因为我们在计算时间复杂度的时候，数据量通常是非常大的，这时候低阶项和常数项可以忽略不计。
+  * 对于一个算法来说，可能会计算出操作次数为 `aN + 1`，`N` 代表数据量。那么该算法的时间复杂度就是 `O(N)`。因为我们在计算时间复杂度的时候，数据量通常是非常大的，这时候低阶项和常数项可以忽略不计。 
   * 当然可能会出现两个算法都是 `O(N)` 的时间复杂度，那么对比两个算法的好坏就要通过对比低阶项和常数项了
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-2-%E6%A0%88) 35.2 栈
+### 35.2 栈
 
 **概念**
 
@@ -4660,11 +4152,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-2-%E6%A0%88) 35.2 栈
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-3-%E5%BA%94%E7%94%A8) 35.3
-应用
+### 35.3 应用
 
 > 选取了 LeetCode 上序号为 [20 的题 (opens new
 > window)](https://leetcode.com/problems/valid-
@@ -4693,13 +4181,9 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-3-%E5%BA%94%E7%94%A8) 35.3
     };
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 其实在 `Vue` 中关于模板解析的代码，就有应用到匹配尖括号的内容
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-4-%E9%98%9F%E5%88%97) 35.4
-队列
+### 35.4 队列
 
 **概念**
 
@@ -4734,8 +4218,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-4-%E9%98%9F%E5%88%97) 35.4
       }
     }
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 > 因为单链队列在出队操作的时候需要 `O(n)` 的时间复杂度，所以引入了循环队列。循环队列的出队操作平均是 `O(1)` 的时间复杂度。
 
@@ -4802,11 +4284,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-4-%E9%98%9F%E5%88%97) 35.4
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-5-%E9%93%BE%E8%A1%A8) 35.5
-链表
+### 35.5 链表
 
 **概念**
 
@@ -4894,10 +4372,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-5-%E9%93%BE%E8%A1%A8) 35.5
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-6-%E6%A0%91) 35.6 树
+### 35.6 树
 
 **二叉树**
 
@@ -4953,10 +4428,8 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-6-%E6%A0%91) 35.6 树
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
   * 以上是最基本的二分搜索树实现，接下来实现树的遍历。
-  * 对于树的遍历来说，有三种遍历方法，分别是先序遍历、中序遍历、后序遍历。三种遍历的区别在于何时访问节点。在遍历树的过程中，每个节点都会遍历三次，分别是遍历到自己，遍历左子树和遍历右子树。如果需要实现先序遍历，那么只需要第一次遍历到节点时进行操作即可。
+  * 对于树的遍历来说，有三种遍历方法，分别是先序遍历、中序遍历、后序遍历。三种遍历的区别在于何时访问节点。在遍历树的过程中，每个节点都会遍历三次，分别是遍历到自己，遍历左子树和遍历右子树。如果需要实现先序遍历，那么只需要第一次遍历到节点时进行操作即可。 
 ```js
     // 先序遍历可用于打印树的结构
     // 先序遍历先访问根节点，然后访问左节点，最后访问右节点。
@@ -4999,8 +4472,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-6-%E6%A0%91) 35.6 树
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 以上的这几种遍历都可以称之为深度遍历，对应的还有种遍历叫做广度遍历，也就是一层层地遍历树。对于广度遍历来说，我们需要利用之前讲过的队列结构来完成。
 ```js
     breadthTraversal() {
@@ -5021,8 +4492,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-6-%E6%A0%91) 35.6 树
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 接下来先介绍如何在树中寻找最小值或最大数。因为二分搜索树的特性，所以最小值一定在根节点的最左边，最大值相反
 ```js
     getMin() {
@@ -5040,8 +4509,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-6-%E6%A0%91) 35.6 树
       return this._getMin(node.right)
     }
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 >
 > 向上取整和向下取整，这两个操作是相反的，所以代码也是类似的，这里只介绍如何向下取整。既然是向下取整，那么根据二分搜索树的特性，值一定在根节点的左侧。只需要一直遍历左子树直到当前节点的值不再大于等于需要的值，然后判断节点是否还拥有右子树。如果有的话，继续上面的递归判断。
@@ -5063,8 +4530,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-6-%E6%A0%91) 35.6 树
       return node
     }
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 >
 > 排名，这是用于获取给定值的排名或者排名第几的节点的值，这两个操作也是相反的，所以这个只介绍如何获取排名第几的节点的值。对于这个操作而言，我们需要略微的改造点代码，让每个节点拥有一个
@@ -5116,8 +4581,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-6-%E6%A0%91) 35.6 树
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 接下来讲解的是二分搜索树中最难实现的部分：删除节点。因为对于删除节点来说，会存在以下几种情况
 
   * 需要删除的节点没有子树
@@ -5143,11 +4606,9 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-6-%E6%A0%91) 35.6 树
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
   * 最后讲解的就是如何删除任意节点了。对于这个操作，T.Hibbard 在 1962 年提出了解决这个难题的办法，也就是如何解决第三种情况。
   * 当遇到这种情况时，需要取出当前节点的后继节点（也就是当前节点右子树的最小节点）来替换需要删除的节点。然后将需要删除节点的左子树赋值给后继结点，右子树删除后继结点后赋值给他。
-  * 你如果对于这个解决办法有疑问的话，可以这样考虑。因为二分搜索树的特性，父节点一定比所有左子节点大，比所有右子节点小。那么当需要删除父节点时，势必需要拿出一个比父节点大的节点来替换父节点。这个节点肯定不存在于左子树，必然存在于右子树。然后又需要保持父节点都是比右子节点小的，那么就可以取出右子树中最小的那个节点来替换父节点。
+  * 你如果对于这个解决办法有疑问的话，可以这样考虑。因为二分搜索树的特性，父节点一定比所有左子节点大，比所有右子节点小。那么当需要删除父节点时，势必需要拿出一个比父节点大的节点来替换父节点。这个节点肯定不存在于左子树，必然存在于右子树。然后又需要保持父节点都是比右子节点小的，那么就可以取出右子树中最小的那个节点来替换父节点。 
 ```js
     delect(v) {
       this.root = this._delect(this.root, v)
@@ -5182,10 +4643,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-6-%E6%A0%91) 35.6 树
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-7-avl-%E6%A0%91) 35.7 AVL 树
+### 35.7 AVL 树
 
 **概念**
 
@@ -5215,7 +4673,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-7-avl-%E6%A0%91) 35.7 AVL 树
         this.height = 1
       }
     }
-
+    
     class AVL {
       constructor() {
         this.root = null
@@ -5257,7 +4715,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-7-avl-%E6%A0%91) 35.7 AVL 树
           node.right = this._rightRotate(node.right)
           return this._leftRotate(node)
         }
-
+    
         return node
       }
       _getHeight(node) {
@@ -5290,7 +4748,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-7-avl-%E6%A0%91) 35.7 AVL 树
         newRoot.height =
           1 +
           Math.max(this._getHeight(newRoot.left), this._getHeight(newRoot.right))
-
+    
         return newRoot
       }
       // 节点左旋
@@ -5316,16 +4774,13 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-7-avl-%E6%A0%91) 35.7 AVL 树
         newRoot.height =
           1 +
           Math.max(this._getHeight(newRoot.left), this._getHeight(newRoot.right))
-
+    
         return newRoot
       }
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-8-trie) 35.8 Trie
+### 35.8 Trie
 
 **概念**
 
@@ -5407,11 +4862,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-8-trie) 35.8 Trie
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-9-%E5%B9%B6%E6%9F%A5%E9%9B%86)
-35.9 并查集
+### 35.9 并查集
 
 **概念**
 
@@ -5472,10 +4923,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-9-%E5%B9%B6%E6%9F%A5%E9%9B%86
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-10-%E5%A0%86) 35.10 堆
+### 35.10 堆
 
 **概念**
 
@@ -5552,11 +5000,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-10-%E5%A0%86) 35.10 堆
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
-## [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_36-%E5%B8%B8%E8%80%83%E7%AE%97%E6%B3%95%E9%A2%98%E8%A7%A3%E6%9E%90)
-36 常考算法题解析
+## 36 常考算法题解析
 
 >
 > 对于大部分公司的面试来说，排序的内容已经足以应付了，由此为了更好的符合大众需求，排序的内容是最多的。当然如果你还想冲击更好的公司，那么整一个章节的内容都是需要掌握的。对于字节跳动这类十分看重算法的公司来说，这一章节是远远不够的，剑指Offer应该是你更好的选择
@@ -5566,9 +5010,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_36-%E5%B8%B8%E8%80%83%E7%AE%97%E
 > 另外学习算法的时候，有一个可视化界面会相对减少点学习的难度，具体可以阅读 [algorithm-visualizer (opens new
 > window)](https://github.com/algorithm-visualizer/algorithm-visualizer) 这个仓库
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_36-1-%E4%BD%8D%E8%BF%90%E7%AE%97)
-36.1 位运算
+### 36.1 位运算
 
   * 在进入正题之前，我们先来学习一下位运算的内容。因为位运算在算法中很有用，速度可以比四则运算快很多。
   * 在学习位运算之前应该知道十进制如何转二进制，二进制如何转十进制。这里说明下简单的计算方式
@@ -5581,8 +5023,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_36-1-%E4%BD%8D%E8%BF%90%E7%AE%97
     10 << 1 // -> 20
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 左移就是将二进制全部往左移动，`10` 在二进制中表示为 `1010`，左移一位后变成 `10100` ，转换为十进制也就是
 > `20`，所以基本可以把左移看成以下公式 `a * (2 ^ b)`
 
@@ -5591,8 +5031,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_36-1-%E4%BD%8D%E8%BF%90%E7%AE%97
     10 >> 1 // -> 5
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 算数右移就是将二进制全部往右移动并去除多余的右边，`10` 在二进制中表示为 `1010` ，右移一位后变成 101 ，转换为十进制也就是
 > `5`，所以基本可以把右移看成以下公式 `int v = a / (2 ^ b)`
 
@@ -5600,8 +5038,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_36-1-%E4%BD%8D%E8%BF%90%E7%AE%97
 ```javascript
     13 >> 1 // -> 6
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 **3\. 按位操作**
 
@@ -5613,8 +5049,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_36-1-%E4%BD%8D%E8%BF%90%E7%AE%97
     // 1000 & 0111 -> 0000 -> 0
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 **3.2 按位或**
 
 > 其中一位为 `1`，结果就是 `1`
@@ -5622,8 +5056,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_36-1-%E4%BD%8D%E8%BF%90%E7%AE%97
     8 | 7 // -> 15
     // 1000 | 0111 -> 1111 -> 15
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 **3.3 按位异或**
 
@@ -5634,8 +5066,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_36-1-%E4%BD%8D%E8%BF%90%E7%AE%97
     // 1000 ^ 0111 -> 1111 -> 15
     // 1000 ^ 1000 -> 0000 -> 0
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
   * 从以上代码中可以发现按位异或就是不进位加法
   * 面试题：两个数不使用四则运算得出和
@@ -5653,11 +5083,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_36-1-%E4%BD%8D%E8%BF%90%E7%AE%97
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_36-2-%E6%8E%92%E5%BA%8F) 36.2
-排序
+### 36.2 排序
 
 > 以下两个函数是排序中会用到的通用函数，就不一一写了
 ```js
@@ -5671,11 +5097,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_36-2-%E6%8E%92%E5%BA%8F) 36.2
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
-#### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_36-2-1-%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F)
-36.2.1 冒泡排序
+#### 36.2.1 冒泡排序
 
 >
 > 冒泡排序的原理如下，从第一个元素开始，把当前元素和下一个索引元素进行比较。如果当前元素大，那么就交换位置，重复操作直到比较到最后一个元素，那么此时最后一个元素就是该数组中最大的数。下一轮重复以上操作，但是此时最后一个元素已经是最大数了，所以不需要再比较最后一个元素，只需要比较到
@@ -5702,13 +5124,9 @@ target="_blank">https://s.poetries.work/gitee/2020/09/104.png</a></p>
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 该算法的操作次数是一个等差数列 `n + (n - 1) + (n - 2) + 1` ，去掉常数项以后得出时间复杂度是 `O(n * n)`
 
-#### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_36-2-2-%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F)
-36.2.2 插入排序
+#### 36.2.2 插入排序
 
 >
 > 插入排序的原理如下。第一个元素默认是已排序元素，取出下一个元素和当前元素比较，如果当前元素大就交换位置。那么此时第一个元素就是当前的最小数，所以下次取出操作从第三个元素开始，向前对比，重复之前的操作
@@ -5729,13 +5147,9 @@ cdn.xitu.io/2018/4/12/162b895c7e59dcd1</a></p>
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 该算法的操作次数是一个等差数列 `n + (n - 1) + (n - 2) + 1` ，去掉常数项以后得出时间复杂度是 `O(n * n)`
 
-#### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_36-2-3-%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F)
-36.2.3 选择排序
+#### 36.2.3 选择排序
 
 > 选择排序的原理如下。遍历数组，设置最小值的索引为
 > 0，如果取出的值比当前最小值小，就替换最小值索引，遍历完成后，将第一个元素和最小值索引上的值交换。如上操作后，第一个元素就是数组中的最小值，下次遍历就可以从索引
@@ -5760,13 +5174,9 @@ cdn.xitu.io/2018/4/13/162bc8ea14567e2e</a></p>
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 该算法的操作次数是一个等差数列`n + (n - 1) + (n - 2) + 1` ，去掉常数项以后得出时间复杂度是 `O(n * n)`
 
-#### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_36-2-4-%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F)
-36.2.4 归并排序
+#### 36.2.4 归并排序
 
 > 归并排序的原理如下。递归的将数组两两分开直到最多包含两个元素，然后将数组排序合并，最终合并为排序好的数组。假设我有一组数组 `[3, 1, 2, 8,
 > 9, 7, 6]`，中间数索引是 `3`，先排序数组 `[3, 1, 2, 8]`
@@ -5785,7 +5195,7 @@ cdn.xitu.io/2018/4/13/162be13c7e30bd86</a></p>
       mergeSort(array, 0, array.length - 1);
       return array;
     }
-
+    
     function mergeSort(array, left, right) {
       // 左右索引相同说明已经只有一个数
       if (left === right) return;
@@ -5795,7 +5205,7 @@ cdn.xitu.io/2018/4/13/162be13c7e30bd86</a></p>
       let mid = parseInt(left + ((right - left) >> 1));
       mergeSort(array, left, mid);
       mergeSort(array, mid + 1, right);
-
+    
       let help = [];
       let i = 0;
       let p1 = left;
@@ -5816,8 +5226,6 @@ cdn.xitu.io/2018/4/13/162be13c7e30bd86</a></p>
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 >
 > 以上算法使用了递归的思想。递归的本质就是压栈，每递归执行一次函数，就将该函数的信息（比如参数，内部的变量，执行到的行数）压栈，直到遇到终止条件，然后出栈并继续执行函数。对于以上递归函数的调用轨迹如下
 ```js
@@ -5837,14 +5245,10 @@ cdn.xitu.io/2018/4/13/162be13c7e30bd86</a></p>
       // 左边数组排序完毕，右边也是如上轨迹
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 该算法的操作次数是可以这样计算：递归了两次，每次数据量是数组的一半，并且最后把整个数组迭代了一次，所以得出表达式 `2T(N / 2) + T(N)`
 > （`T` 代表时间，`N` 代表数据量）。根据该表达式可以套用 该公式 得出时间复杂度为 `O(N * logN)`
 
-#### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_36-2-5-%E5%BF%AB%E6%8E%92)
-36.2.5 快排
+#### 36.2.5 快排
 
 >
 > 快排的原理如下。随机选取一个数组中的值作为基准值，从左至右取值与基准值对比大小。比基准值小的放数组左边，大的放右边，对比完成后将基准值和第一个比基准值大的值交换位置。然后将数组以基准值的位置分为两部分，继续递归以上操作
@@ -5860,7 +5264,7 @@ cdn.xitu.io/2018/4/16/162cd23e69ca9ea3</a></p>
       quickSort(array, 0, array.length - 1);
       return array;
     }
-
+    
     function quickSort(array, left, right) {
       if (left < right) {
         swap(array, , right)
@@ -5894,8 +5298,6 @@ cdn.xitu.io/2018/4/16/162cd23e69ca9ea3</a></p>
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 该算法的复杂度和归并排序是相同的，但是额外空间复杂度比归并排序少，只需 `O(logN)`，并且相比归并排序来说，所需的常数时间也更少
 
 **面试题**
@@ -5921,8 +5323,6 @@ cdn.xitu.io/2018/4/16/162cd23e69ca9ea3</a></p>
       }
     };
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 > Kth Largest Element in an Array：该题目来自 LeetCode，题目需要找出数组中第 K
 > 大的元素，这问题也可以使用快排的思路。并且因为是找出第 K 大元素，所以在分离数组的过程中，可以找出需要的元素在哪边，然后只需要排序相应的一边数组就好。
@@ -5966,11 +5366,7 @@ cdn.xitu.io/2018/4/16/162cd23e69ca9ea3</a></p>
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
-#### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_36-2-6-%E5%A0%86%E6%8E%92%E5%BA%8F)
-36.2.6 堆排序
+#### 36.2.6 堆排序
 
 >
 > 堆排序利用了二叉堆的特性来做，二叉堆通常用数组表示，并且二叉堆是一颗完全二叉树（所有叶节点（最底层的节点）都是从左往右顺序排序，并且其他层的节点都是满的）。二叉堆又分为大根堆与小根堆
@@ -6008,7 +5404,7 @@ cdn.xitu.io/2018/4/17/162d2a9ff258dfe1</a></p>
       }
       return array;
     }
-
+    
     function heapInsert(array, index) {
       // 如果当前节点比父节点大，就交换
       while (array[index] > array[parseInt((index - 1) / 2)]) {
@@ -6033,14 +5429,10 @@ cdn.xitu.io/2018/4/17/162d2a9ff258dfe1</a></p>
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
   * 以上代码实现了小根堆，如果需要实现大根堆，只需要把节点对比反一下就好。
   * 该算法的复杂度是 `O(logN)`
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_36-3-%E9%93%BE%E8%A1%A8) 36.3
-链表
+### 36.3 链表
 
 **反转单向链表**
 
@@ -6070,10 +5462,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_36-3-%E9%93%BE%E8%A1%A8) 36.3
     };
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_36-4-%E6%A0%91) 36.4 树
+### 36.4 树
 
 **二叉树的先序，中序，后序遍历**
 
@@ -6095,15 +5484,13 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_36-4-%E6%A0%91) 36.4 树
         console.log(root);
         traversal(root.left);
         // 中序
-        // console.log(root);
+        // console.log(root); 
         traversal(root.right);
         // 后序
         // console.log(root);
       }
     };
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 > 对于递归的实现来说，只需要理解每个节点都会被访问三次就明白为什么这样实现了。
 
@@ -6136,8 +5523,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_36-4-%E6%A0%91) 36.4 树
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 以下是中序遍历代码实现
 ```js
     function mid(root) {
@@ -6161,8 +5546,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_36-4-%E6%A0%91) 36.4 树
       }
     }
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 > 以下是后序遍历代码实现，该代码使用了两个栈来实现遍历，相比一个栈的遍历来说要容易理解很多
 ```js
@@ -6191,8 +5574,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_36-4-%E6%A0%91) 36.4 树
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 **中序遍历的前驱后继节点**
 
 > 实现这个算法的前提是节点有一个 `parent` 的指针指向父节点，根节点指向 `null` 。
@@ -6208,8 +5589,8 @@ cdn.xitu.io/2018/4/24/162f61ad8e8588b7</a></p>
 > 对于节点 2 来说，他的前驱节点就是 4 ，按照中序遍历原则，可以得出以下结论
 
   1. 如果选取的节点的左节点不为空，就找该左节点最右的节点。对于节点 1 来说，他有左节点 `2` ，那么节点 `2` 的最右节点就是 `5`
-  2. 如果左节点为空，且目标节点是父节点的右节点，那么前驱节点为父节点。对于节点 5 来说，没有左节点，且是节点 `2` 的右节点，所以节点 `2` 是前驱节点
-  3. 如果左节点为空，且目标节点是父节点的左节点，向上寻找到第一个是父节点的右节点的节点。对于节点 `6` 来说，没有左节点，且是节点 `3` 的左节点，所以向上寻找到节点 `1` ，发现节点 `3` 是节点 `1` 的右节点，所以节点 `1` 是节点 `6` 的前驱节点
+  2. 如果左节点为空，且目标节点是父节点的右节点，那么前驱节点为父节点。对于节点 5 来说，没有左节点，且是节点 `2` 的右节点，所以节点 `2` 是前驱节点 
+  3. 如果左节点为空，且目标节点是父节点的左节点，向上寻找到第一个是父节点的右节点的节点。对于节点 `6` 来说，没有左节点，且是节点 `3` 的左节点，所以向上寻找到节点 `1` ，发现节点 `3` 是节点 `1` 的右节点，所以节点 `1` 是节点 `6` 的前驱节点 
 
 以下是算法实现
 ```js
@@ -6235,8 +5616,6 @@ cdn.xitu.io/2018/4/24/162f61ad8e8588b7</a></p>
       return node
     }
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 **后继节点**
 
@@ -6271,8 +5650,6 @@ cdn.xitu.io/2018/4/24/162f61ad8e8588b7</a></p>
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 **树的深度**
 
 > 树的最大深度：该题目来自 Leetcode，题目需要求出一颗二叉树的最大深度
@@ -6285,13 +5662,9 @@ cdn.xitu.io/2018/4/24/162f61ad8e8588b7</a></p>
     };
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 对于该递归函数可以这样理解：一旦没有找到节点就会返回 0，每弹出一次递归函数就会加一，树有三层就会得到3。
 
-### [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_36-5-%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92)
-36.5 动态规划
+### 36.5 动态规划
 
   * 动态规划背后的基本思想非常简单。就是将一个问题拆分为子问题，一般来说这些子问题都是非常相似的，那么我们可以通过只解决一次每个子问题来达到减少计算量的目的。
   * 一旦得出每个子问题的解，就存储该结果以便下次使用。
@@ -6303,8 +5676,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_36-5-%E5%8A%A8%E6%80%81%E8%A7%84
     0，1，1，2，3，5，8，13，21，34，55，89....
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 那么显然易见，我们可以通过递归的方式来完成求解斐波那契数列
 ```js
     function fib(n) {
@@ -6313,8 +5684,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_36-5-%E5%8A%A8%E6%80%81%E8%A7%84
     }
     fib(10)
 ```
-
-@程序员poetry: 代码已经复制到剪贴板
 
 > 以上代码已经可以完美的解决问题。但是以上解法却存在很严重的性能问题，当 `n`
 > 越大的时候，需要的时间是指数增长的，这时候就可以通过动态规划来解决这个问题。
@@ -6341,39 +5710,37 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_36-5-%E5%8A%A8%E6%80%81%E8%A7%84
     fib(10)
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 **0 - 1背包问题**
 
 > 该问题可以描述为：给定一组物品，每种物品都有自己的重量和价格，在限定的总重量内，我们如何选择，才能使得物品的总价格最高。每个问题只能放入至多一次。
 
 假设我们有以下物品
 
-物品 ID / 重量 | 价值
----|---
-1 | 3
-2 | 7
-3 | 12
-
+物品 ID / 重量 | 价值  
+---|---  
+1 | 3  
+2 | 7  
+3 | 12  
+  
   * 对于一个总容量为 5 的背包来说，我们可以放入重量 2 和 3 的物品来达到背包内的物品总价值最高。
   * 对于这个问题来说，子问题就两个，分别是放物品和不放物品，可以通过以下表格来理解子问题
 
-物品 ID / 剩余容量 | 0 | 1 | 2 | 3 | 4 | 5
----|---|---|---|---|---|---
-1 | 0 | 3 | 3 | 3 | 3 | 3
-2 | 0 | 3 | 7 | 10 | 10 | 10
-3 | 0 | 3 | 7 | 12 | 15 | 19
-
+物品 ID / 剩余容量 | 0 | 1 | 2 | 3 | 4 | 5  
+---|---|---|---|---|---|---  
+1 | 0 | 3 | 3 | 3 | 3 | 3  
+2 | 0 | 3 | 7 | 10 | 10 | 10  
+3 | 0 | 3 | 7 | 12 | 15 | 19  
+  
 > 直接来分析能放三种物品的情况，也就是最后一行
 
   * 当容量少于 3 时，只取上一行对应的数据，因为当前容量不能容纳物品 3
-  * 当容量 为 3 时，考虑两种情况，分别为放入物品 3 和不放物品 3
+  * 当容量 为 3 时，考虑两种情况，分别为放入物品 3 和不放物品 3 
     * 不放物品 3 的情况下，总价值为 10
     * 放入物品 3 的情况下，总价值为 12，所以应该放入物品 3
-  * 当容量 为 4 时，考虑两种情况，分别为放入物品 3 和不放物品 3
+  * 当容量 为 4 时，考虑两种情况，分别为放入物品 3 和不放物品 3 
     * 不放物品 3 的情况下，总价值为 10
     * 放入物品 3 的情况下，和放入物品 1 的价值相加，得出总价值为 15，所以应该放入物品 3
-  * 当容量 为 5 时，考虑两种情况，分别为放入物品 3 和不放物品 3
+  * 当容量 为 5 时，考虑两种情况，分别为放入物品 3 和不放物品 3 
     * 不放物品 3 的情况下，总价值为 10
     * 放入物品 3 的情况下，和放入物品 2 的价值相加，得出总价值为 19，所以应该放入物品 3
 
@@ -6388,11 +5755,11 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_36-5-%E5%8A%A8%E6%80%81%E8%A7%84
     function knapsack(w, v, C) {
       let length = w.length
       if (length === 0) return 0
-
+    
       // 对照表格，生成的二维数组，第一维代表物品，第二维代表背包剩余容量
       // 第二维中的元素代表背包物品总价值
       let array = new Array(length).fill().map(() => new Array(C + 1).fill(null))
-
+    
       // 完成底部子问题的解
       for (let i = 0; i <= C; i++) {
         // 对照表格第一行， array[0] 代表物品 1
@@ -6400,7 +5767,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_36-5-%E5%8A%A8%E6%80%81%E8%A7%84
         // 当剩余总容量大于物品 1 的重量时，记录下背包物品总价值，否则价值为 0
         array[0][i] = i >= w[0] ? v[0] : 0
       }
-
+    
       // 自底向上开始解决子问题，从物品 2 开始
       for (let i = 1; i < length; i++) {
         for (let j = 0; j <= C; j++) {
@@ -6419,8 +5786,6 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_36-5-%E5%8A%A8%E6%80%81%E8%A7%84
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 **最长递增子序列**
 
 > 最长递增子序列意思是在一组数字中，找出最长一串递增的数字，比如
@@ -6428,14 +5793,12 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_36-5-%E5%8A%A8%E6%80%81%E8%A7%84
     0, 3, 4, 17, 2, 8, 6, 10
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
 > 对于以上这串数字来说，最长递增子序列就是 `0, 3, 4, 8, 10`，可以通过以下表格更清晰的理解
 
-数字 | 0 | 3 | 4 | 17 | 2 | 8 | 6 | 10
----|---|---|---|---|---|---|---|---
-长度 | 1 | 2 | 3 | 4 | 2 | 4 4 | 5 |
-
+数字 | 0 | 3 | 4 | 17 | 2 | 8 | 6 | 10  
+---|---|---|---|---|---|---|---|---  
+长度 | 1 | 2 | 3 | 4 | 2 | 4 4 | 5 |   
+  
 通过以上表格可以很清晰的发现一个规律，找出刚好比当前数字小的数，并且在小的数组成的长度基础上加一。
 
 这个问题的动态思路解法很简单，直接上代码
@@ -6462,11 +5825,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_36-5-%E5%8A%A8%E6%80%81%E8%A7%84
     }
 ```
 
-@程序员poetry: 代码已经复制到剪贴板
-
-## [#](https://interview.poetries.top/docs/excellent-
-docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_37-css%E5%B8%B8%E8%80%83%E9%9D%A2%E8%AF%95%E9%A2%98%E8%A7%A3%E6%9E%90)
-37 css常考面试题解析
+## 37 css常考面试题解析
 
   * [50道CSS基础面试题（附答案） (opens new window)](https://segmentfault.com/a/1190000013325778)
   * [《50道CSS基础面试题（附答案）》中的答案真的就只是答案吗？ (opens new window)](https://segmentfault.com/a/1190000013860482)

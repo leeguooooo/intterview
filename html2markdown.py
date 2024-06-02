@@ -44,8 +44,25 @@ def preprocess_html(html_content):
     # Then, remove sidebar content
     html_content = remove_sidebar(html_content)
 
+    # Remove div with class "code-copy"
+    soup = BeautifulSoup(html_content, 'html.parser')
+    for div in soup.find_all('div', class_='code-copy'):
+        div.decompose()
+    html_content = str(soup)
+
+    # Replace custom headers with Markdown headers
+    header_pattern = re.compile(r'<h(\d) id="[^"]*"><a[^>]*>#</a>(.*?)</h\d>', re.DOTALL)
+
+    def replace_header(match):
+        level = match.group(1)
+        text = match.group(2).strip()
+        # return f"{'#' * int(level)} {text}\n"
+        return f"<h{level}>{text}</h{level}>\n"
+
+    html_content = re.sub(header_pattern, replace_header, html_content)
+
     # Match and replace code blocks with the appropriate language tag
-    code_block_pattern = re.compile(r'<div class="language-(\w*) extra-class"><pre.*?><code>(.*?)</code>', re.DOTALL)
+    code_block_pattern = re.compile(r'<div class="language-(\w*) extra-class">\s*<pre.*?>\s*<code>(.*?)</code>\s*</pre>\s*</div>', re.DOTALL)
 
     def replace_code_block(match):
         language = match.group(1) if match.group(1) else 'javascript'  # Default to 'javascript' if no language specified
