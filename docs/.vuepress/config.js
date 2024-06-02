@@ -29,10 +29,6 @@ export default defineUserConfig({
         text: '高频篇',
         link: '/high-frequency.html',
       },
-      // {
-      //   text: '精选篇',
-      //   link: '/excellent.html',
-      // },
       {
         text: 'HTML',
         link: '/html.html',
