@@ -1,4 +1,4 @@
-export const categoriesMap = {"category":{"/":{"path":"/category/","map":{"react":{"path":"/category/react/","indexes":[0]},"CategoryC":{"path":"/category/categoryc/","indexes":[1,2]}}}},"tag":{"/":{"path":"/tag/","map":{"react setState":{"path":"/tag/react-setstate/","indexes":[0]},"tag E":{"path":"/tag/tag-e/","indexes":[1,2]}}}}};
+export const categoriesMap = {"category":{"/":{"path":"/category/","map":{"React":{"path":"/category/react/","indexes":[0]},"Frontend Development":{"path":"/category/frontend-development/","indexes":[0]}}}},"tag":{"/":{"path":"/tag/","map":{"React":{"path":"/tag/react/","indexes":[0]},"setState":{"path":"/tag/setstate/","indexes":[0]},"useState":{"path":"/tag/usestate/","indexes":[0]},"JavaScript":{"path":"/tag/javascript/","indexes":[0]},"Web Development":{"path":"/tag/web-development/","indexes":[0]}}}}};
 
 if (import.meta.webpackHot) {
   import.meta.webpackHot.accept();

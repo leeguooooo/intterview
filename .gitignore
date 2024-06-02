@@ -1,0 +1,3 @@
+.venv/
+docs/.vuepress/.temp/
+docs/.vuepress/blog/

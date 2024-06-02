@@ -12,7 +12,7 @@ actions:
     type: secondary
 
   - text: 文章专栏
-    link: https://interview.leeguoo.top:16666/article/
+    link: /article/
     type: secondary
 
 features:
