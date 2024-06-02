@@ -33,10 +33,10 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_1-typeof%E7%B1%BB%E5%9E%8B%E5%88
     const Person = function() {}
     const p1 = new Person()
     p1 instanceof Person // true
-    
+
     var str = 'hello world'
     str instanceof String // false
-    
+
     var str1 = new String('hello world')
     str1 instanceof String // true
 ```
@@ -154,13 +154,13 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_3-this) 3 This
     }
     var a = 1
     foo()
-    
+
     const obj = {
       a: 2,
       foo: foo
     }
     obj.foo()
-    
+
     const c = new foo()
 ```
 
@@ -267,7 +267,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_4-%E5%92%8C-%E6%9C%89%E4%BB%80%E
 
 @程序员poetry: 代码已经复制到剪贴板
 
-![image.png](./高频考点 _ 前端进阶之旅_files/3.png)
+![image.png](/images/s_poetries_work_gitee_2020_07_3.png)
 
 > 对于 `===` 来说就简单多了，就是判断两者类型和值是否相同
 
@@ -445,7 +445,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_7-%E5%8E%9F%E5%9E%8B) 7 原型
 > 原型链就是多个对象通过 `__proto__` 的方式连接了起来。为什么 `obj` 可以访问到 `valueOf` 函数，就是因为 `obj`
 > 通过原型链找到了 `valueOf` 函数
 
-![](./高频考点 _ 前端进阶之旅_files/1\(1\).png)
+![](/images/s_poetries_work_gitee_2020_07_fe_1.png)
 
   * `Object` 是所有对象的爸爸，所有对象都可以通过 `__proto__`找到它
   * `Function` 是所有函数的爸爸，所有函数都可以通过 `__proto__` 找到它
@@ -491,9 +491,9 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_9-%E5%8E%9F%E5%9E%8B%E7%BB%A7%E6
       Parent.call(this, value)
     }
     Child.prototype = new Parent()
-    
+
     const child = new Child(1)
-    
+
     child.getValue() // 1
     child instanceof Parent // true
 ```
@@ -513,7 +513,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_9-%E5%8E%9F%E5%9E%8B%E7%BB%A7%E6
     Parent.prototype.getValue = function() {
       console.log(this.val)
     }
-    
+
     function Child(value) {
       Parent.call(this, value)
     }
@@ -525,9 +525,9 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_9-%E5%8E%9F%E5%9E%8B%E7%BB%A7%E6
         configurable: true
       }
     })
-    
+
     const child = new Child(1)
-    
+
     child.getValue() // 1
     child instanceof Parent // true
 ```
@@ -620,7 +620,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_10-%E6%A8%A1%E5%9D%97%E5%8C%96)
     }
     // or
     exports.a = 1
-    
+
     // b.js
     var module = require('./a.js')
     module.a // -> log 1
@@ -686,25 +686,25 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_11-%E5%AE%9E%E7%8E%B0%E4%B8%80%E
     const PENDING = 'pending'
     const RESOLVED = 'resolved'
     const REJECTED = 'rejected'
-    
+
     function MyPromise(fn) {
         const that = this
         this.state = PENDING
-    
+
         // value 变量用于保存 resolve 或者 reject 中传入的值
         this.value = null
-    
+
         // 用于保存 then 中的回调，因为当执行完 Promise 时状态可能还是等待中，这时候应该把 then 中的回调保存起来用于状态改变时使用
         that.resolvedCallbacks = []
         that.rejectedCallbacks = []
-    
-    
+
+
         function resolve(value) {
              // 首先两个函数都得判断当前状态是否为等待中
             if(that.state === PENDING) {
                 that.state = RESOLVED
                 that.value = value
-    
+
                 // 遍历回调数组并执行
                 that.resolvedCallbacks.map(cb=>cb(that.value))
             }
@@ -716,7 +716,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_11-%E5%AE%9E%E7%8E%B0%E4%B8%80%E
                 that.rejectedCallbacks.map(cb=>cb(that.value))
             }
         }
-    
+
         // 完成以上两个函数以后，我们就该实现如何执行 Promise 中传入的函数了
         try {
             fn(resolve,reject)
@@ -724,15 +724,15 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_11-%E5%AE%9E%E7%8E%B0%E4%B8%80%E
             reject(e)
         }
     }
-    
+
     // 最后我们来实现较为复杂的 then 函数
     MyPromise.prototype.then = function(onFulfilled,onRejected){
       const that = this
-    
+
       // 判断两个参数是否为函数类型，因为这两个参数是可选参数
       onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : v=>v
       onRejected = typeof onRejected === 'function' ? onRejected : e=>throw e
-    
+
       // 当状态不是等待态时，就去执行相对应的函数。如果状态是等待态的话，就往回调函数中 push 函数
       if(this.state === PENDING) {
           this.resolvedCallbacks.push(onFulfilled)
@@ -775,7 +775,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_12-2-%E6%89%A7%E8%A1%8C%E6%A0%88
 
 可以把执行栈认为是一个存储函数调用的栈结构，遵循先进后出的原则
 
-![](./高频考点 _ 前端进阶之旅_files/102.png)
+![](/images/s_poetries_work_gitee_2020_09_102.png)
 
 > 当开始执行 `JS` 代码时，首先会执行一个 `main`
 > 函数，然后执行我们的代码。根据先进后出的原则，后执行的函数会先弹出栈，在图中我们也可以发现，`foo` 函数后执行，当执行完毕后就从栈中弹出了
@@ -793,7 +793,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_12-2-%E6%89%A7%E8%A1%8C%E6%A0%88
 
 @程序员poetry: 代码已经复制到剪贴板
 
-![](./高频考点 _ 前端进阶之旅_files/2\(1\).png)
+![](/images/s_poetries_work_gitee_2020_07_fe_2.png)
 
 > 大家可以在上图清晰的看到报错在 `foo` 函数，`foo` 函数又是在 `bar` 函数中调用的
 
@@ -823,11 +823,11 @@ loop) 12.3 浏览器中的 Event Loop
 ![](/images/s_poetries_work_gitee_2020_07_fe_4.png)
 ```js
     console.log('script start');
-    
+
     setTimeout(function() {
       console.log('setTimeout');
     }, 0);
-    
+
     console.log('script end');
 ```
 
@@ -837,11 +837,11 @@ loop) 12.3 浏览器中的 Event Loop
 > `ES6` 规范中，`microtask` 称为 `jobs`，`macrotask` 称为 `task`
 ```javascript
     console.log('script start');
-    
+
     setTimeout(function() {
       console.log('setTimeout');
     }, 0);
-    
+
     new Promise((resolve) => {
         console.log('Promise')
         resolve()
@@ -850,7 +850,7 @@ loop) 12.3 浏览器中的 Event Loop
     }).then(function() {
       console.log('promise2');
     });
-    
+
     console.log('script end');
     // script start => Promise => script end => promise1 => promise2 => setTimeout
 ```
@@ -967,20 +967,20 @@ loop) 12.4 Node 中的 Event loop
 ```js
     setTimeout(()=>{
         console.log('timer1')
-    
+
         Promise.resolve().then(function() {
             console.log('promise1')
         })
     }, 0)
-    
+
     setTimeout(()=>{
         console.log('timer2')
-    
+
         Promise.resolve().then(function() {
             console.log('promise2')
         })
     }, 0)
-    
+
     // 以上代码在浏览器和 node 中打印情况是不同的
     // 浏览器中一定打印 timer1, promise1, timer2, promise2
     // node 中可能打印 timer1, timer2, promise1, promise2
@@ -993,12 +993,12 @@ loop) 12.4 Node 中的 Event loop
 ```js
     setTimeout(() => {
      console.log("timer1");
-    
+
      Promise.resolve().then(function() {
        console.log("promise1");
      });
     }, 0);
-    
+
     process.nextTick(() => {
      console.log("nextTick");
     });
@@ -1154,7 +1154,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_15-instanceof-%E7%9A%84%E5%8E%9F
       // 由于instance要检测的是某对象，需要有一个前置判断条件
       //基本数据类型直接返回false
       if(typeof left !== 'object' || left === null) return false;
-    
+
       let prototype = right.prototype
       left = left.__proto__
       while (true) {
@@ -1165,7 +1165,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_15-instanceof-%E7%9A%84%E5%8E%9F
         left = left.__proto__
       }
     }
-    
+
     console.log('test', myInstanceof(null, Array)) // false
     console.log('test', myInstanceof([], Array)) // true
     console.log('test', myInstanceof('', Array)) // false
@@ -1366,7 +1366,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_18-1-jsonp) 18.1 JSONP
         function jsonp(data) {
         	console.log(data)
     	}
-    </script>    
+    </script>
 ```
 
 @程序员poetry: 代码已经复制到剪贴板
@@ -1486,24 +1486,24 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_19-%E5%AD%98%E5%82%A8) 19 存储
 
 **cookie，localStorage，sessionStorage，indexDB**
 
-特性 | cookie | localStorage | sessionStorage | indexDB  
----|---|---|---|---  
-数据生命周期 | 一般由服务器生成，可以设置过期时间 | 除非被清理，否则一直存在 | 页面关闭就清理 | 除非被清理，否则一直存在  
-数据存储大小 | `4KB` | `5M` | `5M` | 无限  
-与服务端通信 | 每次都会携带在 `header` 中，对于请求性能影响 | 不参与 | 不参与 | 不参与  
-  
+特性 | cookie | localStorage | sessionStorage | indexDB
+---|---|---|---|---
+数据生命周期 | 一般由服务器生成，可以设置过期时间 | 除非被清理，否则一直存在 | 页面关闭就清理 | 除非被清理，否则一直存在
+数据存储大小 | `4KB` | `5M` | `5M` | 无限
+与服务端通信 | 每次都会携带在 `header` 中，对于请求性能影响 | 不参与 | 不参与 | 不参与
+
 > 从上表可以看到，`cookie` 已经不建议用于存储。如果没有大量数据存储需求的话，可以使用 `localStorage` 和
 > `sessionStorage` 。对于不怎么改变的数据尽量使用 `localStorage` 存储，否则可以用 `sessionStorage`存储
 
 **对于 cookie 来说，我们还需要注意安全性。**
 
-属性 | 作用  
----|---  
-`value` | 如果用于保存用户登录态，应该将该值加密，不能使用明文的用户标识  
-`http-only` | 不能通过 `JS` 访问 `Cookie`，减少 `XSS` 攻击  
-`secure` | 只能在协议为 `HTTPS` 的请求中携带  
-`same-site` | 规定浏览器不能在跨域请求中携带 `Cookie`，减少 `CSRF` 攻击  
-  
+属性 | 作用
+---|---
+`value` | 如果用于保存用户登录态，应该将该值加密，不能使用明文的用户标识
+`http-only` | 不能通过 `JS` 访问 `Cookie`，减少 `XSS` 攻击
+`secure` | 只能在协议为 `HTTPS` 的请求中携带
+`same-site` | 规定浏览器不能在跨域请求中携带 `Cookie`，减少 `CSRF` 攻击
+
 **Service Worker**
 
   * `Service Worker` 是运行在浏览器背后的独立线程，一般可以用来实现缓存功能。使用 `Service Worker`的话，传输协议必须为 `HTTPS`。因为 `Service Worker` 中涉及到请求拦截，所以必须使用 `HTTPS` 协议来保障安全
@@ -1529,7 +1529,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_19-%E5%AD%98%E5%82%A8) 19 存储
         })
       )
     })
-    
+
     // 拦截所有请求事件
     // 如果缓存中已经有请求的数据就直接用缓存，否则去请求数据
     self.addEventListener('fetch', e => {
@@ -1728,24 +1728,24 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_21-1-%E6%B8%B2%E6%9F%93%E8%BF%87
 > 文件，也就是字符串，但是计算机硬件是不理解这些字符串的，所以在网络中传输的内容其实都是 `0` 和 `1`
 > 这些字节数据。当浏览器接收到这些字节数据以后，它会将这些字节数据转换为字符串，也就是我们写的代码。
 
-![](./高频考点 _ 前端进阶之旅_files/11.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_11.png)
 
 > 当数据转换为字符串以后，浏览器会先将这些字符串通过词法分析转换为标记（`token`），这一过程在词法分析中叫做标记化（`tokenization`）
 
-![](./高频考点 _ 前端进阶之旅_files/12.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_12.png)
 
 >
 > 那么什么是标记呢？这其实属于编译原理这一块的内容了。简单来说，标记还是字符串，是构成代码的最小单位。这一过程会将代码分拆成一块块，并给这些内容打上标记，便于理解这些最小单位的代码是什么意思
 
-![](./高频考点 _ 前端进阶之旅_files/13.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_13.png)
 
 > 当结束标记化后，这些标记会紧接着转换为 `Node`，最后这些 `Node` 会根据不同 `Node` 之前的联系构建为一颗 `DOM` 树
 
-![](./高频考点 _ 前端进阶之旅_files/14.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_14.png)
 
 > 以上就是浏览器从网络中接收到 `HTML` 文件然后一系列的转换过程
 
-![](./高频考点 _ 前端进阶之旅_files/15.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_15.png)
 
 > 当然，在解析 `HTML` 文件的时候，浏览器还会遇到 `CSS` 和 `JS`
 > 文件，这时候浏览器也会去下载并解析这些文件，接下来就让我们先来学习浏览器如何解析 `CSS` 文件
@@ -1754,7 +1754,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_21-1-%E6%B8%B2%E6%9F%93%E8%BF%87
 
 > 其实转换 `CSS` 到 `CSSOM` 树的过程和上一小节的过程是极其类似的
 
-![](./高频考点 _ 前端进阶之旅_files/16.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_16.png)
 
   * 在这一过程中，浏览器会确定下每一个节点的样式到底是什么，并且这一过程其实是很消耗资源的。因为样式你可以自行设置给某个节点，也可以通过继承获得。在这一过程中，浏览器得递归 `CSSOM` 树，然后确定具体的元素到底是什么样式。
 
@@ -1784,7 +1784,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_21-1-%E6%B8%B2%E6%9F%93%E8%BF%87
 
 > 当我们生成 `DOM` 树和 `CSSOM` 树以后，就需要将这两棵树组合为渲染树
 
-![](./高频考点 _ 前端进阶之旅_files/17.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_17.png)
 
   * 在这一过程中，不是简单的将两者合并就行了。渲染树只会包括需要显示的节点和这些节点的样式信息，如果某个节点是 `display: none` 的，那么就不会在渲染树中显示。
   * 当浏览器生成渲染树以后，就会根据渲染树来进行布局（也可以叫做回流），然后调用 `GPU` 绘制，合成图层，显示在屏幕上。对于这一部分的内容因为过于底层，还涉及到了硬件相关的知识，这里就不再继续展开内容了。
@@ -1802,7 +1802,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_21-2-%E4%B8%BA%E4%BB%80%E4%B9%88
   * 对于这道题目来说，首先我们肯定不能一次性把几万个 `DOM` 全部插入，这样肯定会造成卡顿，所以解决问题的重点应该是如何分批次部分渲染 `DOM`。大部分人应该可以想到通过 `requestAnimationFrame` 的方式去循环的插入 `DOM`，其实还有种方式去解决这个问题：虚拟滚动（`virtualized scroller`）。
   * 这种技术的原理就是只渲染可视区域内的内容，非可见区域的那就完全不渲染了，当用户在滚动的时候就实时去替换渲染的内容
 
-![](./高频考点 _ 前端进阶之旅_files/18.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_18.png)
 
 > 从上图中我们可以发现，即使列表很长，但是渲染的 `DOM` 元素永远只有那么几个，当我们滚动页面的时候就会实时去更新
 > `DOM`，这个技术就能顺利解决这道经典面试题
@@ -1917,7 +1917,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_22-1-xss) 22.1 XSS
 > 举个例子，如果页面需要从 `URL` 中获取某些参数作为内容的话，不经过过滤就会导致攻击代码被执行
 ```html
     <!-- http://www.domain.com?name=<script>alert(1)</script> -->
-    <div>{{name}}</div>                                                  
+    <div>{{name}}</div>
 ```
 
 @程序员poetry: 代码已经复制到剪贴板
@@ -2058,7 +2058,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_22-3-%E7%82%B9%E5%87%BB%E5%8A%AB
 > 点击劫持是一种视觉欺骗的攻击手段。攻击者将需要攻击的网站通过 `iframe` 嵌套的方式嵌入自己的网页中，并将 `iframe`
 > 设置为透明，在页面中透出一个按钮诱导用户点击
 
-![image.png](./高频考点 _ 前端进阶之旅_files/5\(1\).png)
+![image.png](/images/s_poetries_work_gitee_2020_07_5.png)
 
 > 对于这种攻击方式，推荐防御的方法有两种
 
@@ -2112,19 +2112,19 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_23-1-%E6%B5%8B%E8%AF%95%E6%80%A7
 
 > `Chrome` 已经提供了一个大而全的性能测试工具 `Audits`
 
-![](./高频考点 _ 前端进阶之旅_files/21.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_21.png)
 
 > 点我们点击 `Audits` 后，可以看到如下的界面
 
-![](./高频考点 _ 前端进阶之旅_files/22.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_22.png)
 
 > 在这个界面中，我们可以选择想测试的功能然后点击 `Run audits` ，工具就会自动运行帮助我们测试问题并且给出一个完整的报告
 
-![](./高频考点 _ 前端进阶之旅_files/23.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_23.png)
 
 > 上图是给掘金首页测试性能后给出的一个报告，可以看到报告中分别为性能、体验、SEO 都给出了打分，并且每一个指标都有详细的评估
 
-![](./高频考点 _ 前端进阶之旅_files/24.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_24.png)
 
 评估结束后，工具还提供了一些建议便于我们提高这个指标的分数
 
@@ -2132,7 +2132,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_23-1-%E6%B5%8B%E8%AF%95%E6%80%A7
 
 > 除了 `Audits` 工具之外，还有一个 `Performance`工具也可以供我们使用。
 
-![](./高频考点 _ 前端进阶之旅_files/25.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_25.png)
 
 > 在这张图中，我们可以详细的看到每个时间段中浏览器在处理什么事情，哪个过程最消耗时间，便于我们更加详细的了解性能瓶颈
 
@@ -2149,7 +2149,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_23-2-js-%E6%80%A7%E8%83%BD%E4%BC
 > 在这一过程中，`JS` 代码首先会解析为抽象语法树（`AST`），然后会通过解释器或者编译器转化为 `Bytecode` 或者`Machine
 > Code`
 
-![](./高频考点 _ 前端进阶之旅_files/26.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_26.png)
 
 > 从上图中我们可以发现，`JS` 会首先被解析为
 > `AST`，解析的过程其实是略慢的。代码越多，解析的过程也就耗费越长，这也是我们需要压缩代码的原因之一。另外一种减少解析时间的方式是预解析，会作用于未执行的函数，这个我们下面再谈
@@ -2175,7 +2175,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_23-2-js-%E6%80%A7%E8%83%BD%E4%BC
     function test(x) {
       return x + x
     }
-    
+
     test(1)
     test(2)
     test(3)
@@ -2189,7 +2189,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_23-2-js-%E6%80%A7%E8%83%BD%E4%BC
   * 那么你可能会有一个疑问，到底优化前后有多少的提升呢，接下来我们就来实践测试一下到底有多少的提升
 ```js
     const { performance, PerformanceObserver } = require('perf_hooks')
-    
+
     function test(x) {
       return x + x
     }
@@ -2200,17 +2200,17 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_23-2-js-%E6%80%A7%E8%83%BD%E4%BC
       observer.disconnect()
     })
     obs.observe({ entryTypes: ['measure'], buffered: true })
-    
+
     performance.mark('start')
-    
+
     let number = 10000000
     // 不优化代码
     %NeverOptimizeFunction(test)
-    
+
     while (number--) {
       test(1)
     }
-    
+
     performance.mark('end')
     performance.measure('test', 'start', 'end')
 ```
@@ -2269,7 +2269,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_24-2-%E5%9B%BE%E7%89%87%E5%8A%A0
   * 对于移动端来说，屏幕宽度就那么点，完全没有必要去加载原图浪费带宽。一般图片都用 `CDN` 加载，可以计算出适配屏幕的宽度，然后去请求相应裁剪好的图片。
   * 小图使用 `base64` 格式
   * 将多个图标文件整合到一张图片中（雪碧图）
-  * 选择正确的图片格式： 
+  * 选择正确的图片格式：
     * 对于能够显示 `WebP`格式的浏览器尽量使用 `WebP` 格式。因为 `WebP` 格式具有更好的图像数据压缩算法，能带来更小的图片体积，而且拥有肉眼识别无差异的图像质量，缺点就是兼容性并不好
     * 小图使用 `PNG`，其实对于大部分图标这类图片，完全可以使用 `SVG`代替
     * 照片使用 `JPEG`
@@ -2309,7 +2309,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_24-4-%E8%8A%82%E6%B5%81) 24.4
         }
       }
     }
-    
+
     setInterval(
       throttle(() => {
         console.log(1)
@@ -2568,7 +2568,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_25-2-%E5%87%8F%E5%B0%91-webpack-
 ```js
     // test.js
     export const a = 1
-    
+
     // index.js
     import { a } from './test.js'
 ```
@@ -2646,7 +2646,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_26-%E5%AE%9E%E7%8E%B0%E5%B0%8F%E
 
 > 因为涉及到 `ES6` 转 `ES5`，所以我们首先需要安装一些 `Babel` 相关的工具
 ```javascript
-    yarn add babylon babel-traverse babel-core babel-preset-env  
+    yarn add babylon babel-traverse babel-core babel-preset-env
 ```
 
 @程序员poetry: 代码已经复制到剪贴板
@@ -2866,17 +2866,17 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_27-1-mvvm) 27.1 MVVM
 
 > 传统的 `MVC` 架构通常是使用控制器更新模型，视图从模型中获取数据去渲染。当用户有输入时，会通过控制器去更新模型，并且通知视图进行更新
 
-![](./高频考点 _ 前端进阶之旅_files/27.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_27.png)
 
   * 但是 `MVC` 有一个巨大的缺陷就是控制器承担的责任太大了，随着项目愈加复杂，控制器中的代码会越来越臃肿，导致出现不利于维护的情况。
   * 在 `MVVM` 架构中，引入了 `ViewModel` 的概念。`ViewModel` 只关心数据和业务的处理，不关心 `View` 如何处理数据，在这种情况下，`View`和 `Model` 都可以独立出来，任何一方改变了也不一定需要改变另一方，并且可以将一些可复用的逻辑放在一个 `ViewModel` 中，让多个 `View` 复用这个 `ViewModel`。
 
-![](./高频考点 _ 前端进阶之旅_files/28.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_28.png)
 
   * 以 `Vue` 框架来举例，`ViewModel` 就是组件的实例。`View` 就是模板，`Model` 的话在引入 `Vuex` 的情况下是完全可以和组件分离的。
   * 除了以上三个部分，其实在 `MVVM` 中还引入了一个隐式的 `Binder` 层，实现了 `View` 和 `ViewModel` 的绑定
 
-![](./高频考点 _ 前端进阶之旅_files/29.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_29.png)
 
   * 同样以 `Vue` 框架来举例，这个隐式的 `Binder` 层就是 `Vue` 通过解析模板中的插值和指令从而实现 `View` 与 `ViewModel` 的绑定。
   * 对于 `MVVM`来说，其实最重要的并不是通过双向绑定或者其他的方式将 `View` 与 `ViewModel` 绑定起来，而是通过 `ViewModel` 将视图中的状态和用户的行为分离出一个抽象，这才是 `MVVM` 的精髓
@@ -3217,7 +3217,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_28-9-%E5%93%8D%E5%BA%94%E5%BC%8F
     observe(data)
     let name = data.name // -> get value
     data.name = 'yyy' // -> change value
-    
+
     function observe(obj) {
       // 判断类型
       if (!obj || typeof obj !== 'object') {
@@ -3227,7 +3227,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_28-9-%E5%93%8D%E5%BA%94%E5%BC%8F
         defineReactive(obj, key, obj[key])
       })
     }
-    
+
     function defineReactive(obj, key, val) {
       // 递归子属性
       observe(val)
@@ -3535,12 +3535,12 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_29-1-%E7%94%9F%E5%91%BD%E5%91%A8
 
 > 在之前的版本中，如果你拥有一个很复杂的复合组件，然后改动了最上层组件的 `state`，那么调用栈可能会很长
 
-![](./高频考点 _ 前端进阶之旅_files/30.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_30.png)
 
   * 调用栈过长，再加上中间进行了复杂的操作，就可能导致长时间阻塞主线程，带来不好的用户体验。`Fiber` 就是为了解决该问题而生
   * `Fiber` 本质上是一个虚拟的堆栈帧，新的调度器会按照优先级自由调度这些帧，从而将之前的同步渲染改成了异步渲染，在不影响体验的情况下去分段计算更新
 
-![](./高频考点 _ 前端进阶之旅_files/31.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_31.png)
 
   * 对于如何区别优先级，`React` 有自己的一套逻辑。对于动画这种实时性很高的东西，也就是 `16 ms` 必须渲染一次保证不卡顿的情况下，`React` 会每 `16 ms`（以内） 暂停一下更新，返回来继续渲染动画
   * 对于异步渲染，现在渲染有两个阶段：`reconciliation` 和 `commit` 。前者过程是可以打断的，后者不能暂停，会一直更新界面直到完成。
@@ -3569,7 +3569,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_29-1-%E7%94%9F%E5%91%BD%E5%91%A8
       // Initialize state in constructor,
       // Or with a property initializer.
       state = {};
-    
+
       static getDerivedStateFromProps(nextProps, prevState) {
         if (prevState.someMirroredValue !== nextProps.someValue) {
           return {
@@ -3577,7 +3577,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_29-1-%E7%94%9F%E5%91%BD%E5%91%A8
             someMirroredValue: nextProps.someValue
           };
         }
-    
+
         // Return null to indicate no change to state.
         return null;
       }
@@ -3611,7 +3611,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_29-2-setstate) 29.2 setState
 
   * 第一，两次的打印都为 `0`，因为 `setState` 是个异步 `API`，只有同步代码运行完毕才会执行。`setState` 异步的原因我认为在于，`setState` 可能会导致 `DOM` 的重绘，如果调用一次就马上去进行重绘，那么调用多次就会造成不必要的性能损失。设计成异步的话，就可以将多次调用放入一个队列中，在恰当的时候统一进行更新过程。
 ```js
-    Object.assign(  
+    Object.assign(
       {},
       { count: this.state.count + 1 },
       { count: this.state.count + 1 },
@@ -3823,11 +3823,11 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_30-2-%E6%80%A7%E8%83%BD%E7%9B%91
   * 对于性能监控来说，我们可以直接使用浏览器自带的 `Performance API` 来实现这个功能。
   * 对于性能监控来说，其实我们只需要调用 `performance.getEntriesByType('navigation')` 这行代码就行了。对，你没看错，一行代码我们就可以获得页面中各种详细的性能相关信息
 
-![](./高频考点 _ 前端进阶之旅_files/32.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_32.png)
 
 > 我们可以发现这行代码返回了一个数组，内部包含了相当多的信息，从数据开始在网络中传输到页面加载完成都提供了相应的数据
 
-![](./高频考点 _ 前端进阶之旅_files/33.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_33.png)
 
 ### [#](https://interview.poetries.top/docs/excellent-
 docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_30-3-%E5%BC%82%E5%B8%B8%E7%9B%91%E6%8E%A7)
@@ -3935,7 +3935,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_31-2-tcp) 31.2 TCP
 
 > `TCP` 的状态机是很复杂的，并且与建立断开连接时的握手息息相关，接下来就来详细描述下两种握手
 
-![](./高频考点 _ 前端进阶之旅_files/34.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_34.png)
 
 > 在这之前需要了解一个重要的性能指标 `RTT`。该指标表示发送端发送数据到接收到对端数据所需的往返时间
 
@@ -3970,7 +3970,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_31-2-tcp) 31.2 TCP
 
 **2.2. 断开链接四次握手**
 
-![](./高频考点 _ 前端进阶之旅_files/35.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_35.png)
 
 > `TCP` 是全双工的，在断开连接时两端都需要发送 `FIN` 和 `ACK`
 
@@ -4038,12 +4038,12 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_31-2-tcp) 31.2 TCP
   * 上面小节中讲到了发送窗口。在 `TCP` 中，两端其实都维护着窗口：分别为发送端窗口和接收端窗口。
   * 发送端窗口包含已发送但未收到应答的数据和可以发送但是未发送的数据。
 
-![](./高频考点 _ 前端进阶之旅_files/36.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_36.png)
 
   * 发送端窗口是由接收窗口剩余大小决定的。接收方会把当前接收窗口的剩余大小写入应答报文，发送端收到应答后根据该值和当前网络拥塞情况设置发送窗口的大小，所以发送窗口的大小是不断变化的。
   * 当发送端接收到应答报文后，会随之将窗口进行滑动
 
-![](./高频考点 _ 前端进阶之旅_files/37.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_37.png)
 
 > 滑动窗口是一个很重要的概念，它帮助 TCP
 > 实现了流量控制的功能。接收方通过报文告知发送方还可以发送多少数据，从而保证接收方能够来得及接收数据，防止出现接收方带宽已满，但是发送方还一直发送数据的情况
@@ -4145,65 +4145,65 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_32-1-http-%E8%AF%B7%E6%B1%82%E4%
 
 **1.1 通用首部**
 
-通用字段 | 作用  
----|---  
-`Cache-Control` | 控制缓存的行为  
-`Connection` | 浏览器想要优先使用的连接类型，比如 `keep-alive`  
-`Date` | 创建报文时间  
-`Pragma` | 报文指令  
-`Via` | 代理服务器相关信息  
-`Transfer-Encoding` | 传输编码方式  
-`Upgrade` | 要求客户端升级协议  
-`Warning` | 在内容中可能存在错误  
-  
+通用字段 | 作用
+---|---
+`Cache-Control` | 控制缓存的行为
+`Connection` | 浏览器想要优先使用的连接类型，比如 `keep-alive`
+`Date` | 创建报文时间
+`Pragma` | 报文指令
+`Via` | 代理服务器相关信息
+`Transfer-Encoding` | 传输编码方式
+`Upgrade` | 要求客户端升级协议
+`Warning` | 在内容中可能存在错误
+
 **1.2 请求首部**
 
-请求首部 | 作用  
----|---  
-`Accept` | 能正确接收的媒体类型  
-`Accept-Charset` | 能正确接收的字符集  
-`Accept-Encoding` | 能正确接收的编码格式列表  
-`Accept-Language` | 能正确接收的语言列表  
-`Expect` | 期待服务端的指定行为  
-`From` | 请求方邮箱地址  
-`Host` | 服务器的域名  
-`If-Match` | 两端资源标记比较  
-`If-Modified-Since` | 本地资源未修改返回 `304`（比较时间）  
-`If-None-Match` | 本地资源未修改返回 `304`（比较标记）  
-`User-Agent` | 客户端信息  
-`Max-Forwards` | 限制可被代理及网关转发的次数  
-`Proxy-Authorization` | 向代理服务器发送验证信息  
-`Range` | 请求某个内容的一部分  
-`Referer` | 表示浏览器所访问的前一个页面  
-`TE` | 传输编码方式  
-  
+请求首部 | 作用
+---|---
+`Accept` | 能正确接收的媒体类型
+`Accept-Charset` | 能正确接收的字符集
+`Accept-Encoding` | 能正确接收的编码格式列表
+`Accept-Language` | 能正确接收的语言列表
+`Expect` | 期待服务端的指定行为
+`From` | 请求方邮箱地址
+`Host` | 服务器的域名
+`If-Match` | 两端资源标记比较
+`If-Modified-Since` | 本地资源未修改返回 `304`（比较时间）
+`If-None-Match` | 本地资源未修改返回 `304`（比较标记）
+`User-Agent` | 客户端信息
+`Max-Forwards` | 限制可被代理及网关转发的次数
+`Proxy-Authorization` | 向代理服务器发送验证信息
+`Range` | 请求某个内容的一部分
+`Referer` | 表示浏览器所访问的前一个页面
+`TE` | 传输编码方式
+
 **1.3 响应首部**
 
-响应首部 | 作用  
----|---  
-`Accept-Ranges` | 是否支持某些种类的范围  
-`Age` | 资源在代理缓存中存在的时间  
-`ETag` | 资源标识  
-`Location` | 客户端重定向到某个 `URL`  
-`Proxy-Authenticate` | 向代理服务器发送验证信息  
-`Server` | 服务器名字  
-`WWW-Authenticate` | 获取资源需要的验证信息  
-  
+响应首部 | 作用
+---|---
+`Accept-Ranges` | 是否支持某些种类的范围
+`Age` | 资源在代理缓存中存在的时间
+`ETag` | 资源标识
+`Location` | 客户端重定向到某个 `URL`
+`Proxy-Authenticate` | 向代理服务器发送验证信息
+`Server` | 服务器名字
+`WWW-Authenticate` | 获取资源需要的验证信息
+
 **1.4 实体首部**
 
-实体首部 | 作用  
----|---  
-`Allow` | 资源的正确请求方式  
-`Content-Encoding` | 内容的编码格式  
-`Content-Language` | 内容使用的语言  
-`Content-Length` | `request body` 长度  
-`Content-Location` | 返回数据的备用地址  
-`Content-MD5` | `Base64`加密格式的内容 `MD5`检验值  
-`Content-Range` | 内容的位置范围  
-`Content-Type` | 内容的媒体类型  
-`Expires` | 内容的过期时间  
-`Last_modified` | 内容的最后修改时间  
-  
+实体首部 | 作用
+---|---
+`Allow` | 资源的正确请求方式
+`Content-Encoding` | 内容的编码格式
+`Content-Language` | 内容使用的语言
+`Content-Length` | `request body` 长度
+`Content-Location` | 返回数据的备用地址
+`Content-MD5` | `Base64`加密格式的内容 `MD5`检验值
+`Content-Range` | 内容的位置范围
+`Content-Type` | 内容的媒体类型
+`Expires` | 内容的过期时间
+`Last_modified` | 内容的最后修改时间
+
 **2\. 常见状态码**
 
 >
@@ -4259,7 +4259,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_32-2-tls) 32.2 TLS
 
 TLS 握手过程如下图：
 
-![](./高频考点 _ 前端进阶之旅_files/38.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_38.png)
 
   * 客户端发送一个随机值以及需要的协议和加密方式。
   * 服务端收到客户端的随机值，自己也产生一个随机值，并根据客户端需求的协议和加密方式来使用对应的方式，并且发送自己的证书（如果需要验证客户端证书需要说明）
@@ -4288,15 +4288,15 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_33-1-http-2) 33.1 HTTP/2
 > 大家可以通过 [该链接 (opens new window)](https://http2.akamai.com/demo) 感受下 HTTP/2 比
 > HTTP/1 到底快了多少
 
-![](./高频考点 _ 前端进阶之旅_files/103.png)
+![](/images/s_poetries_work_gitee_2020_09_103.png)
 
 > 在 `HTTP/1` 中，因为队头阻塞的原因，你会发现发送请求是长这样的
 
-![](./高频考点 _ 前端进阶之旅_files/39.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_39.png)
 
 > 在 `HTTP/2` 中，因为可以复用同一个 `TCP` 连接，你会发现发送请求是长这样的
 
-![](./高频考点 _ 前端进阶之旅_files/40.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_40.png)
 
 ### [#](https://interview.poetries.top/docs/excellent-
 docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_33-2-%E4%BA%8C%E8%BF%9B%E5%88%B6%E4%BC%A0%E8%BE%93)
@@ -4305,7 +4305,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_33-2-%E4%BA%8C%E8%BF%9B%E5%88%B6
 > `HTTP/2` 中所有加强性能的核心点在于此。在之前的 `HTTP` 版本中，我们是通过文本的方式传输数据。在 `HTTP/2`
 > 中引入了新的编码机制，所有传输的数据都会被分割，并采用二进制格式编码。
 
-![](./高频考点 _ 前端进阶之旅_files/41.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_41.png)
 
 ### [#](https://interview.poetries.top/docs/excellent-
 docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_33-3-%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8)
@@ -4315,7 +4315,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_33-3-%E5%A4%9A%E8%B7%AF%E5%A4%8D
   * 帧代表着最小的数据单位，每个帧会标识出该帧属于哪个流，流也就是多个帧组成的数据流。
   * 多路复用，就是在一个 `TCP` 连接中可以存在多条流。换句话说，也就是可以发送多个请求，对端可以通过帧中的标识知道属于哪个请求。通过这个技术，可以避免 `HTTP` 旧版本中的队头阻塞问题，极大的提高传输性能。
 
-![](./高频考点 _ 前端进阶之旅_files/42.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_42.png)
 
 ### [#](https://interview.poetries.top/docs/excellent-
 docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_33-4-header-%E5%8E%8B%E7%BC%A9)
@@ -4383,13 +4383,13 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_34-1-%E5%B7%A5%E5%8E%82%E6%A8%A1
         alert(this.name)
       }
     }
-    
+
     class Factory {
       static create(name) {
         return new Man(name)
       }
     }
-    
+
     Factory.create('test').alertName()
 ```
 
@@ -4407,16 +4407,16 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_34-1-%E5%B7%A5%E5%8E%82%E6%A8%A1
       children: ?Array<VNode>,
       tag?: string
     ): VNode | Array<VNode> | void {
-        
+
         // 逻辑处理...
-      
+
       const vnode = new VNode(
         `vue-component-${Ctor.cid}${name ? `-${name}` : ''}`,
         data, undefined, undefined, undefined, context,
         { Ctor, propsData, listeners, tag, children },
         asyncFactory
       )
-    
+
       return vnode
     }
 ```
@@ -4436,7 +4436,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_34-2-%E5%8D%95%E4%BE%8B%E6%A8%A1
     class Singleton {
       constructor() {}
     }
-    
+
     Singleton.getInstance = (function() {
       let instance
       return function() {
@@ -4446,7 +4446,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_34-2-%E5%8D%95%E4%BE%8B%E6%A8%A1
         return instance
       }
     })()
-    
+
     let s1 = Singleton.getInstance()
     let s2 = Singleton.getInstance()
     console.log(s1 === s2) // true
@@ -4457,7 +4457,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_34-2-%E5%8D%95%E4%BE%8B%E6%A8%A1
 > 在 `Vuex` 源码中，你也可以看到单例模式的使用，虽然它的实现方式不大一样，通过一个外部变量来控制只安装一次 `Vuex`
 ```js
     let Vue // bind on install
-    
+
     export function install (_Vue) {
       if (Vue && _Vue === Vue) {
         // 如果发现 Vue 有值，就不重新创建实例了
@@ -4482,7 +4482,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_34-3-%E9%80%82%E9%85%8D%E5%99%A8
         return '港版插头'
       }
     }
-    
+
     class Target {
       constructor() {
         this.plug = new Plug()
@@ -4491,7 +4491,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_34-3-%E9%80%82%E9%85%8D%E5%99%A8
         return this.plug.getName() + ' 适配器转二脚插头'
       }
     }
-    
+
     let target = new Target()
     target.getName() // 港版插头 适配器转二脚插头
 ```
@@ -4512,14 +4512,14 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_34-4-%E8%A3%85%E9%A5%B0%E6%A8%A1
       descriptor.writable = false
       return descriptor
     }
-    
+
     class Test {
       @readonly
       name = 'test'
     }
-    
+
     let t = new Test()
-    
+
     t.test = '111' // 不可修改
 ```
 
@@ -4632,7 +4632,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-2-%E6%A0%88) 35.2 栈
   * 栈是一个线性结构，在计算机中是一个相当常见的数据结构。
   * 栈的特点是只能在某一端添加或删除数据，遵循先进后出的原则
 
-![](./高频考点 _ 前端进阶之旅_files/43.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_43.png)
 
 **实现**
 
@@ -4705,7 +4705,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-4-%E9%98%9F%E5%88%97) 35.4
 
 > 队列是一个线性结构，特点是在某一端添加数据，在另一端删除数据，遵循先进先出的原则
 
-![](./高频考点 _ 前端进阶之旅_files/44.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_44.png)
 
 **实现**
 
@@ -4818,7 +4818,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-5-%E9%93%BE%E8%A1%A8) 35.5
 >
 > 链表是一个线性结构，同时也是一个天然的递归结构。链表结构可以充分利用计算机内存空间，实现灵活的内存动态管理。但是链表失去了数组随机读取的优点，同时链表由于增加了结点的指针域，空间开销比较大。
 
-![](./高频考点 _ 前端进阶之旅_files/46.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_46.png)
 
 **实现**
 
@@ -4904,14 +4904,14 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-6-%E6%A0%91) 35.6 树
   * 树拥有很多种结构，二叉树是树中最常用的结构，同时也是一个天然的递归结构。
   * 二叉树拥有一个根节点，每个节点至多拥有两个子节点，分别为：左节点和右节点。树的最底部节点称之为叶节点，当一颗树的叶数量数量为满时，该树可以称之为满二叉树。
 
-![](./高频考点 _ 前端进阶之旅_files/47.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_47.png)
 
 **二分搜索树**
 
   * 二分搜索树也是二叉树，拥有二叉树的特性。但是区别在于二分搜索树每个节点的值都比他的左子树的值大，比右子树的值小。
   * 这种存储方式很适合于数据搜索。如下图所示，当需要查找 6 的时候，因为需要查找的值比根节点的值大，所以只需要在根节点的右子树上寻找，大大提高了搜索效率。
 
-![](./高频考点 _ 前端进阶之旅_files/48.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_48.png)
 
 **实现**
 ```js
@@ -5199,7 +5199,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-7-avl-%E6%A0%91) 35.7 AVL 树
   * 因为 `AVL` 树是改进了二分搜索树，所以部分代码是于二分搜索树重复的，对于重复内容不作再次解析。
   * 对于 AVL 树来说，添加节点会有四种情况
 
-![](./高频考点 _ 前端进阶之旅_files/49.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_49.png)
 
   * 对于左左情况来说，新增加的节点位于节点 `2` 的左侧，这时树已经不平衡，需要旋转。因为搜索树的特性，节点比左节点大，比右节点小，所以旋转以后也要实现这个特性。
   * 旋转之前：`new < 2 < C < 3 < B < 5 < A`，右旋之后节点 `3` 为根节点，这时候需要将节点 3 的右节点加到节点 5 的左边，最后还需要更新节点的高度。
@@ -5215,7 +5215,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-7-avl-%E6%A0%91) 35.7 AVL 树
         this.height = 1
       }
     }
-    
+
     class AVL {
       constructor() {
         this.root = null
@@ -5257,7 +5257,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-7-avl-%E6%A0%91) 35.7 AVL 树
           node.right = this._rightRotate(node.right)
           return this._leftRotate(node)
         }
-    
+
         return node
       }
       _getHeight(node) {
@@ -5290,7 +5290,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-7-avl-%E6%A0%91) 35.7 AVL 树
         newRoot.height =
           1 +
           Math.max(this._getHeight(newRoot.left), this._getHeight(newRoot.right))
-    
+
         return newRoot
       }
       // 节点左旋
@@ -5316,7 +5316,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-7-avl-%E6%A0%91) 35.7 AVL 树
         newRoot.height =
           1 +
           Math.max(this._getHeight(newRoot.left), this._getHeight(newRoot.right))
-    
+
         return newRoot
       }
     }
@@ -5337,7 +5337,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-8-trie) 35.8 Trie
   * 节点不存储字符，只有路径才存储，这点和其他的树结构不同
   * 从根节点开始到任意一个节点，将沿途经过的字符连接起来就是该节点对应的字符串
 
-![](./高频考点 _ 前端进阶之旅_files/50.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_50.png)
 
 **实现**
 
@@ -5422,7 +5422,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-9-%E5%B9%B6%E6%9F%A5%E9%9B%86
   * `Find`：确定元素属于哪一个子集。它可以被用来确定两个元素是否属于同一子集。
   * `Union`：将两个子集合并成同一个集合。
 
-![](./高频考点 _ 前端进阶之旅_files/51.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_51.png)
 
 **实现**
 ```js
@@ -5496,7 +5496,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_35-10-%E5%A0%86) 35.10 堆
   * `shiftUp` 的核心思路是一路将节点与父节点对比大小，如果比父节点大，就和父节点交换位置。
   * `shiftDown` 的核心思路是先将根节点和末尾交换位置，然后移除末尾元素。接下来循环判断父节点和两个子节点的大小，如果子节点大，就把最大的子节点和父节点交换。
 
-![](./高频考点 _ 前端进阶之旅_files/52.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_52.png)
 ```js
     class MaxHeap {
       constructor() {
@@ -5785,7 +5785,7 @@ cdn.xitu.io/2018/4/13/162be13c7e30bd86</a></p>
       mergeSort(array, 0, array.length - 1);
       return array;
     }
-    
+
     function mergeSort(array, left, right) {
       // 左右索引相同说明已经只有一个数
       if (left === right) return;
@@ -5795,7 +5795,7 @@ cdn.xitu.io/2018/4/13/162be13c7e30bd86</a></p>
       let mid = parseInt(left + ((right - left) >> 1));
       mergeSort(array, left, mid);
       mergeSort(array, mid + 1, right);
-    
+
       let help = [];
       let i = 0;
       let p1 = left;
@@ -5860,7 +5860,7 @@ cdn.xitu.io/2018/4/16/162cd23e69ca9ea3</a></p>
       quickSort(array, 0, array.length - 1);
       return array;
     }
-    
+
     function quickSort(array, left, right) {
       if (left < right) {
         swap(array, , right)
@@ -6008,7 +6008,7 @@ cdn.xitu.io/2018/4/17/162d2a9ff258dfe1</a></p>
       }
       return array;
     }
-    
+
     function heapInsert(array, index) {
       // 如果当前节点比父节点大，就交换
       while (array[index] > array[parseInt((index - 1) / 2)]) {
@@ -6092,10 +6092,10 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_36-4-%E6%A0%91) 36.4 树
     var traversal = function(root) {
       if (root) {
         // 先序
-        console.log(root); 
+        console.log(root);
         traversal(root.left);
         // 中序
-        // console.log(root); 
+        // console.log(root);
         traversal(root.right);
         // 后序
         // console.log(root);
@@ -6214,7 +6214,7 @@ cdn.xitu.io/2018/4/24/162f61ad8e8588b7</a></p>
 以下是算法实现
 ```js
     function predecessor(node) {
-      if (!node) return 
+      if (!node) return
       // 结论 1
       if (node.left) {
         return getRight(node.left)
@@ -6229,7 +6229,7 @@ cdn.xitu.io/2018/4/24/162f61ad8e8588b7</a></p>
       }
     }
     function getRight(node) {
-      if (!node) return 
+      if (!node) return
       node = node.right
       while(node) node = node.right
       return node
@@ -6248,7 +6248,7 @@ cdn.xitu.io/2018/4/24/162f61ad8e8588b7</a></p>
 以下是算法实现
 ```js
     function successor(node) {
-      if (!node) return 
+      if (!node) return
       // 结论 1
       if (node.right) {
         return getLeft(node.right)
@@ -6264,7 +6264,7 @@ cdn.xitu.io/2018/4/24/162f61ad8e8588b7</a></p>
       }
     }
     function getLeft(node) {
-      if (!node) return 
+      if (!node) return
       node = node.left
       while(node) node = node.left
       return node
@@ -6280,7 +6280,7 @@ cdn.xitu.io/2018/4/24/162f61ad8e8588b7</a></p>
 以下是算法实现
 ```js
     var maxDepth = function(root) {
-        if (!root) return 0 
+        if (!root) return 0
         return Math.max(maxDepth(root.left), maxDepth(root.right)) + 1
     };
 ```
@@ -6349,31 +6349,31 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_36-5-%E5%8A%A8%E6%80%81%E8%A7%84
 
 假设我们有以下物品
 
-物品 ID / 重量 | 价值  
----|---  
-1 | 3  
-2 | 7  
-3 | 12  
-  
+物品 ID / 重量 | 价值
+---|---
+1 | 3
+2 | 7
+3 | 12
+
   * 对于一个总容量为 5 的背包来说，我们可以放入重量 2 和 3 的物品来达到背包内的物品总价值最高。
   * 对于这个问题来说，子问题就两个，分别是放物品和不放物品，可以通过以下表格来理解子问题
 
-物品 ID / 剩余容量 | 0 | 1 | 2 | 3 | 4 | 5  
----|---|---|---|---|---|---  
-1 | 0 | 3 | 3 | 3 | 3 | 3  
-2 | 0 | 3 | 7 | 10 | 10 | 10  
-3 | 0 | 3 | 7 | 12 | 15 | 19  
-  
+物品 ID / 剩余容量 | 0 | 1 | 2 | 3 | 4 | 5
+---|---|---|---|---|---|---
+1 | 0 | 3 | 3 | 3 | 3 | 3
+2 | 0 | 3 | 7 | 10 | 10 | 10
+3 | 0 | 3 | 7 | 12 | 15 | 19
+
 > 直接来分析能放三种物品的情况，也就是最后一行
 
   * 当容量少于 3 时，只取上一行对应的数据，因为当前容量不能容纳物品 3
-  * 当容量 为 3 时，考虑两种情况，分别为放入物品 3 和不放物品 3 
+  * 当容量 为 3 时，考虑两种情况，分别为放入物品 3 和不放物品 3
     * 不放物品 3 的情况下，总价值为 10
     * 放入物品 3 的情况下，总价值为 12，所以应该放入物品 3
-  * 当容量 为 4 时，考虑两种情况，分别为放入物品 3 和不放物品 3 
+  * 当容量 为 4 时，考虑两种情况，分别为放入物品 3 和不放物品 3
     * 不放物品 3 的情况下，总价值为 10
     * 放入物品 3 的情况下，和放入物品 1 的价值相加，得出总价值为 15，所以应该放入物品 3
-  * 当容量 为 5 时，考虑两种情况，分别为放入物品 3 和不放物品 3 
+  * 当容量 为 5 时，考虑两种情况，分别为放入物品 3 和不放物品 3
     * 不放物品 3 的情况下，总价值为 10
     * 放入物品 3 的情况下，和放入物品 2 的价值相加，得出总价值为 19，所以应该放入物品 3
 
@@ -6388,11 +6388,11 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_36-5-%E5%8A%A8%E6%80%81%E8%A7%84
     function knapsack(w, v, C) {
       let length = w.length
       if (length === 0) return 0
-    
+
       // 对照表格，生成的二维数组，第一维代表物品，第二维代表背包剩余容量
       // 第二维中的元素代表背包物品总价值
       let array = new Array(length).fill().map(() => new Array(C + 1).fill(null))
-    
+
       // 完成底部子问题的解
       for (let i = 0; i <= C; i++) {
         // 对照表格第一行， array[0] 代表物品 1
@@ -6400,7 +6400,7 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_36-5-%E5%8A%A8%E6%80%81%E8%A7%84
         // 当剩余总容量大于物品 1 的重量时，记录下背包物品总价值，否则价值为 0
         array[0][i] = i >= w[0] ? v[0] : 0
       }
-    
+
       // 自底向上开始解决子问题，从物品 2 开始
       for (let i = 1; i < length; i++) {
         for (let j = 0; j <= C; j++) {
@@ -6432,10 +6432,10 @@ docs/%E9%AB%98%E9%A2%91%E6%A8%A1%E5%9D%97.html#_36-5-%E5%8A%A8%E6%80%81%E8%A7%84
 
 > 对于以上这串数字来说，最长递增子序列就是 `0, 3, 4, 8, 10`，可以通过以下表格更清晰的理解
 
-数字 | 0 | 3 | 4 | 17 | 2 | 8 | 6 | 10  
----|---|---|---|---|---|---|---|---  
-长度 | 1 | 2 | 3 | 4 | 2 | 4 4 | 5 |   
-  
+数字 | 0 | 3 | 4 | 17 | 2 | 8 | 6 | 10
+---|---|---|---|---|---|---|---|---
+长度 | 1 | 2 | 3 | 4 | 2 | 4 4 | 5 |
+
 通过以上表格可以很清晰的发现一个规律，找出刚好比当前数字小的数，并且在小的数组成的长度基础上加一。
 
 这个问题的动态思路解法很简单，直接上代码

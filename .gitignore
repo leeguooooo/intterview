@@ -1,5 +1,5 @@
 .venv/
-docs/.vuepress/.temp/
+docs/.vuepress/.temp/*
 docs/.vuepress/blog/
 dist/
 docs/.vuepress/dist/*
