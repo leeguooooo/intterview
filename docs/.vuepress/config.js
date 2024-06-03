@@ -13,169 +13,49 @@ export default defineUserConfig({
     logo: 'images/logo.webp',
 
     navbar: [
-      {
-        text: '首页',
-        link: '/',
-      },
-      {
-        text: '基础篇',
-        link: '/base.html',
-      },
-      {
-        text: '进阶篇',
-        link: '/improve.html',
-      },
-      {
-        text: '高频篇',
-        link: '/high-frequency.html',
-      },
-      {
-        text: 'HTML',
-        link: '/html.html',
-      },
-      {
-        text: 'CSS',
-        link: '/css.html',
-      },
-      {
-        text: 'JavaScript',
-        link: '/js.html',
-      },
-      {
-        text: 'ES6',
-        link: '/ES6.html',
-      }, {
-        text: '浏览器',
-        link: '/browser.html',
-      },
-      {
-        text: 'React',
-        link: '/react.html',
-      },
-      {
-        text: 'Vue',
-        link: '/vue.html',
-      }, {
-        text: 'Node',
-        link: '/node.html',
-      }, {
-        text: '前端工程化',
-        link: '/engineering.html',
-      },
-      {
-        text: '移动多端开发',
-        link: '/mobile.html',
-      },
-      {
-        text: '小程序',
-        link: '/mini-program.html',
-      },
-      {
-        text: 'Uniapp',
-        link: '/uniapp.html',
-      },
-      {
-        text: '前端安全',
-        link: '/security.html',
-      },
-      {
-        text: '性能优化',
-        link: '/performance.html',
-      }, {
-        text: 'HTTP',
-        link: '/http.html',
-
-      },
-      {
-        text: '设计模式',
-        link: '/design.html',
-      },
-      {
-        text: '框架通识',
-        link: '/framework.html',
-      }, {
-        text: '排序算法',
-        link: '/sort.html'
-      },
-      {
-        text: '计算机通识',
-        link: '/computer.html',
-      },
-
-      {
-        text: '高频模块',
-        link: '/high-frequency-module.html',
-      },
-      {
-        text: '面试指南',
-        link: '/guide.html',
-      },
-      {
-        text: '进阶性能优化',
-        link: '/advanced-performance.html',
-      },
-      {
-        text: '手写篇',
-        link: '/handwriting.html',
-      },
-      {
-        text: '综合题型',
-        link: '/comprehensive.html',
-      },
-      {
-        text: '其他问题',
-        link: '/other.html',
-      },
-
-      {
-        text: '算法篇',
-        link: '/algorithm.html',
-      },
-      {
-        text: '前端篇',
-        link: '/frontend.html',
-      },
-      {
-        text: '后端篇',
-        link: '/backend.html',
-      },
-      {
-        text: '数据库篇',
-        link: '/database.html',
-      },
-      {
-        text: '网络篇',
-        link: '/network.html',
-      },
-      {
-        text: '工具篇',
-        link: '/tool.html',
-      },
-      {
-        text: '面试篇',
-        link: '/interview.html',
-      },
-      {
-        text: '关于',
-        link: '/about.html',
-      },
-      {
-        text: '文章',
-        link: '/article/',
-      },
-      {
-        text: '分类',
-        link: '/category/',
-      },
-      {
-        text: '标签',
-        link: '/tag/',
-      },
-      {
-        text: '时间线',
-        link: '/timeline/',
-      },
-    ],
+{'text': '首页', 'link': '/', 'test': '123'},
+{'text': '基础篇', 'link': '/基础篇.md', 'originUrl': 'https://interview.poetries.top/docs/base.html#%E4%B8%80%E3%80%81html%E3%80%81http%E3%80%81web%E7%BB%BC%E5%90%88%E9%97%AE%E9%A2%98', 'updateTime': '2024-06-03 07.35.17'},
+{'text': '进阶篇', 'link': '/进阶篇.html', 'originUrl': 'https://interview.poetries.top/docs/base/improve.html', 'updateTime': '2024-06-03 08.39.19'},
+{'text': '高频篇', 'link': '/高频篇.html', 'originUrl': 'https://interview.poetries.top/docs/base/high-frequency.html', 'updateTime': '2024-06-03 08.39.42'},
+{'text': 'HTML', 'link': '/HTML.md', 'originUrl': 'https://interview.poetries.top/docs/excellent-docs/1-HTML%E6%A8%A1%E5%9D%97.html', 'updateTime': '2024-06-03 08.11.20'},
+{'text': 'CSS', 'link': '/CSS.md', 'originUrl': 'https://interview.poetries.top/docs/excellent-docs/2-CSS%E6%A8%A1%E5%9D%97.html', 'updateTime': '2024-06-03 08.11.51'},
+{'text': 'JavaScript', 'link': '/JavaScript.md', 'originUrl': 'https://interview.poetries.top/docs/excellent-docs/3-JS%E6%A8%A1%E5%9D%97.html', 'updateTime': '2024-06-03 08.12.26'},
+{'text': 'ES6', 'link': '/ES6.md', 'originUrl': 'https://interview.poetries.top/docs/excellent-docs/4-ES6%E6%A8%A1%E5%9D%97.html', 'updateTime': '2024-06-03 08.12.49'},
+{'text': '浏览器', 'link': '/浏览器.html', 'originUrl': 'https://interview.poetries.top/docs/excellent-docs/5-%E6%B5%8F%E8%A7%88%E5%99%A8%E6%A8%A1%E5%9D%97.html', 'updateTime': '2024-06-03 08.23.31'},
+{'text': 'React', 'link': '/React.html', 'originUrl': 'https://interview.poetries.top/docs/excellent-docs/6-React.html', 'updateTime': '2024-06-03 08.24.09'},
+{'text': 'Vue', 'link': '/Vue.html', 'originUrl': 'https://interview.poetries.top/docs/excellent-docs/7-Vue.html', 'updateTime': '2024-06-03 08.24.31'},
+{'text': 'Node', 'link': '/Node.html', 'originUrl': 'https://interview.poetries.top/docs/excellent-docs/8-Node%E6%A8%A1%E5%9D%97.html', 'updateTime': '2024-06-03 08.25.10'},
+{'text': '前端工程化', 'link': '/前端工程化.html', 'originUrl': 'https://interview.poetries.top/docs/excellent-docs/9-%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E6%A8%A1%E5%9D%97.html', 'updateTime': '2024-06-03 08.25.35'},
+{'text': '移动多端开发', 'link': '/移动多端开发.html', 'originUrl': 'https://interview.poetries.top/docs/excellent-docs/10-%E7%A7%BB%E5%8A%A8%E5%A4%9A%E7%AB%AF%E5%BC%80%E5%8F%91.html', 'updateTime': '2024-06-03 08.27.01'},
+{'text': '小程序', 'link': '/小程序.html', 'originUrl': 'https://interview.poetries.top/docs/excellent-docs/11-%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%A8%A1%E5%9D%97.html', 'updateTime': '2024-06-03 08.27.22'},
+{'text': 'Uniapp', 'link': '/Uniapp.html', 'originUrl': 'https://interview.poetries.top/docs/excellent-docs/12-Uniapp%E6%A8%A1%E5%9D%97.html', 'updateTime': '2024-06-03 08.29.10'},
+{'text': '前端安全', 'link': '/前端安全.html', 'originUrl': 'https://interview.poetries.top/docs/excellent-docs/13-%E5%89%8D%E7%AB%AF%E5%AE%89%E5%85%A8%E6%A8%A1%E5%9D%97.html', 'updateTime': '2024-06-03 08.29.53'},
+{'text': '性能优化', 'link': '/性能优化.html', 'originUrl': 'https://interview.poetries.top/docs/excellent-docs/14-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%A8%A1%E5%9D%97.html', 'updateTime': '2024-06-03 08.31.25'},
+{'text': 'HTTP', 'link': '/HTTP.html', 'originUrl': 'https://interview.poetries.top/docs/excellent-docs/15-HTTP%E6%A8%A1%E5%9D%97.html', 'updateTime': '2024-06-03 08.31.51'},
+{'text': '常用设计模式', 'link': '/常用设计模式.html', 'originUrl': 'https://interview.poetries.top/docs/excellent-docs/16-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F.html', 'updateTime': '2024-06-03 08.32.56'},
+{'text': '设计模式 2', 'link': '/设计模式 2.md', 'originUrl': 'https://interview.poetries.top/docs/base/design-pattern.html', 'updateTime': '2024-06-03 08.04.01'},
+{'text': '框架通识', 'link': '/框架通识.html', 'originUrl': 'https://interview.poetries.top/docs/excellent-docs/17-%E6%A1%86%E6%9E%B6%E9%80%9A%E8%AF%86.html', 'updateTime': '2024-06-03 08.33.15'},
+{'text': '排序算法', 'link': '/排序算法.html', 'originUrl': 'https://interview.poetries.top/docs/excellent-docs/18-%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.html', 'updateTime': '2024-06-03 08.33.48'},
+{'text': '计算机通识', 'link': '/计算机通识.html', 'originUrl': 'https://interview.poetries.top/docs/excellent-docs/19-%E8%AE%A1%E7%AE%97%E6%9C%BA%E9%80%9A%E8%AF%86.html', 'updateTime': '2024-06-03 08.34.01'},
+{'text': '高频考点', 'link': '/高频考点.html', 'originUrl': '/Users/zhihu/Downloads/高频考点 _ 前端进阶之旅.html', 'updateTime': '2024-06-03 08.42.11'},
+{'text': '面试指南', 'link': '/面试指南.html', 'updateTime': '2024-06-03 08.38.22', 'originUrl': 'https://interview.poetries.top/docs/excellent-docs/%E9%9D%A2%E8%AF%95%E6%8C%87%E5%8D%97.html'},
+{'text': '进阶性能优化', 'link': '/进阶性能优化.html', 'originUrl': 'https://interview.poetries.top/docs/excellent-docs/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96.html', 'updateTime': '2024-06-03 08.38.43'},
+{'text': '手写篇', 'link': '/手写篇.md', 'originUrl': 'https://interview.poetries.top/docs/base/handwritten.html', 'updateTime': '2024-06-03 07.56.37'},
+{'text': '综合题型', 'link': '/综合题型.md', 'originUrl': 'https://interview.poetries.top/docs/base/comprehensive.html', 'updateTime': '2024-06-03 08.02.08'},
+{'text': '其他问题', 'link': '/其他问题.md', 'originUrl': 'https://interview.poetries.top/docs/base/other-questions.html', 'updateTime': '2024-06-03 08.02.52'},
+{'text': '算法篇', 'link': '/algorithm.html'},
+{'text': '前端篇', 'link': '/frontend.html'},
+{'text': '后端篇', 'link': '/backend.html'},
+{'text': '数据库篇', 'link': '/database.html'},
+{'text': '网络篇', 'link': '/network.html'},
+{'text': '工具篇', 'link': '/tool.html'},
+{'text': '面试篇', 'link': '/interview.html'},
+{'text': '关于', 'link': '/about.html'},
+{'text': '文章', 'link': '/article/'},
+{'text': '分类', 'link': '/category/'},
+{'text': '标签', 'link': '/tag/'},
+{'text': '时间线', 'link': '/timeline/'}
+],
   }),
 
   plugins: [

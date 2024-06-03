@@ -1,3 +1,5 @@
+原文链接: [https://interview.poetries.top/docs/excellent-docs/7-Vue.html](https://interview.poetries.top/docs/excellent-docs/7-Vue.html)
+
 ## 1 谈谈你对MVVM的理解
 
 为什么要有这些模式，目的：职责划分、分层（将`Model`层、`View`层进行分类）借鉴后端思想，对于前端而已，就是如何将数据同步到页面上
@@ -31,7 +33,7 @@
       <p>{{message}}</p>
       <button v-on:click="showMessage()">Click me</button>
     </div>
-```
+```  
 ```js
     var app = new Vue({
       el: '#app',

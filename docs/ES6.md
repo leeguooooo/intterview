@@ -1,3 +1,5 @@
+原文链接: [https://interview.poetries.top/docs/excellent-docs/4-ES6%E6%A8%A1%E5%9D%97.html](https://interview.poetries.top/docs/excellent-docs/4-ES6%E6%A8%A1%E5%9D%97.html)
+
 ## 1 ES5、ES6和ES2015有什么区别?
 
 >

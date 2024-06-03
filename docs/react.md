@@ -1,3 +1,5 @@
+原文链接: [https://interview.poetries.top/docs/excellent-docs/6-React.html](https://interview.poetries.top/docs/excellent-docs/6-React.html)
+
 ## 0 如何理解React State不可变性的原则
 
 在 React 中，不可变性是指数据一旦被创建，就不能被修改。React
@@ -33,13 +35,13 @@
     // - 第一个参数是必填，传入的是似HTML标签名称，eg: ul, li
     // - 第二个参数是选填，表示的是属性，eg: className
     // - 第三个参数是选填, 子节点，eg: 要显示的文本内容
-```
+```  
 ```js
     // React.createElement写法
     React.createElement('tag', null, [child1,child2])
     React.createElement('tag', props, child1,child2,child3)
     React.createElement(Comp, props, child1,child2,'文本节点')
-```
+```  
 ```jsx
     // jsx基本用法
     <div className="container">

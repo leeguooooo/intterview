@@ -1,3 +1,5 @@
+原文链接: [https://interview.poetries.top/docs/excellent-docs/12-Uniapp%E6%A8%A1%E5%9D%97.html](https://interview.poetries.top/docs/excellent-docs/12-Uniapp%E6%A8%A1%E5%9D%97.html)
+
 > 入门uniapp
 
 ## 1 基础部分总结

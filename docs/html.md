@@ -1,3 +1,5 @@
+原文链接: [https://interview.poetries.top/docs/excellent-docs/1-HTML%E6%A8%A1%E5%9D%97.html](https://interview.poetries.top/docs/excellent-docs/1-HTML%E6%A8%A1%E5%9D%97.html)
+
 ## 1 如何理解HTML语义化
 
   * 用正确的标签做正确的事情！

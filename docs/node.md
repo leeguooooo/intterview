@@ -1,3 +1,5 @@
+原文链接: [https://interview.poetries.top/docs/excellent-docs/8-Node%E6%A8%A1%E5%9D%97.html](https://interview.poetries.top/docs/excellent-docs/8-Node%E6%A8%A1%E5%9D%97.html)
+
 >
 > 当面试官问你`node`的时候，更多引导面试官用`node`做前端工程化，去引导到`webpack`、`npm`、打包工具上面去说说自己的想法，不要引导到自己会后端，后台不是会一点`node`语法就能写的
 
