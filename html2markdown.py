@@ -1,7 +1,6 @@
 import html2text
 import requests
 import re
-import pickle
 import os
 import urllib.parse
 from bs4 import BeautifulSoup
@@ -12,91 +11,72 @@ CONFIG_FILE = 'docs/.vuepress/config.js'
 ERROR_IMAGE_PATH = '/images/error.webp'
 
 def update_config_file(title, origin_url, new_link):
-    # new_link 的 .md 替换成 .html
     new_link = new_link.replace('.md', '.html')
     with open(CONFIG_FILE, 'r', encoding='utf-8') as file:
         config_content = file.read()
 
-    # 提取 navbar 配置部分
-    navbar_pattern = re.compile(r'navbar:\s*\[(.*?)\]', re.DOTALL)
-    match = navbar_pattern.search(config_content)
-    if not match:
-        raise ValueError("Could not find navbar configuration in config file.")
+    config_json = extract_json_from_config(config_content)
 
-    navbar_content = match.group(1)
-    navbar_items = re.findall(r'\{.*?\}', navbar_content, re.DOTALL)
+    def update_or_add_item(nav_items, title, new_link, origin_url):
+        for item in nav_items:
+            if 'text' in item and item['text'] == title:
+                item['link'] = new_link
+                item['originUrl'] = origin_url
+                item['updateTime'] = datetime.now().strftime("%Y-%m-%d %H.%M.%S")
+                return True
+            if 'children' in item:
+                if update_or_add_item(item['children'], title, new_link, origin_url):
+                    return True
+        return False
 
-    # 转换为 Python 对象
-    navbar = []
-    for item in navbar_items:
-        # 所有单引号替换为双引号
-        item = item.replace("'", '"')
-        # 替换单引号为双引号
-        item = re.sub(r"(?<=\s)'|'(?=\s|[:,])", '"', item)
-        # 添加双引号到键名
-        item = re.sub(r'(\b\w+\b):', r'"\1":', item)
-        # 移除对象末尾多余的逗号
-        item = re.sub(r',(\s*\n\s*})', r'\1', item)
-        # 处理内部的双引号
-        item = re.sub(r'(?<=: )"([^"]*)"', r'"\1"', item)
-        # 修复 originUrl 和 updateTime 字段中的双引号问题
-        item = re.sub(r'""https":', '"https:', item)
-        navbar.append(json.loads(item))
-
-    # 查找并更新或添加配置项
-    found = False
-    for item in navbar:
-        if 'text' in item and item['text'] == title:
-            item['link'] = new_link
-            item['originUrl'] = origin_url
-            item['updateTime'] = datetime.now().strftime("%Y-%m-%d %H.%M.%S")
-            found = True
-            break
+    found = update_or_add_item(config_json['navbar'], title, new_link, origin_url)
 
     if not found:
-        navbar.append({
+        config_json['navbar'].append({
             'text': title,
             'link': new_link,
             'originUrl': origin_url,
             'updateTime': datetime.now().strftime("%Y-%m-%d %H.%M.%S")
         })
 
-    # 转换回字符串并替换回原始内容
-    new_navbar_content = '[\n' + ',\n'.join(json.dumps(item, ensure_ascii=False).replace('"', "'") for item in navbar) + '\n]'
-    config_content = config_content[:match.start()] + 'navbar: ' + new_navbar_content + config_content[match.end():]
+    new_config_content = replace_json_in_config(config_content, config_json)
 
     with open(CONFIG_FILE, 'w', encoding='utf-8') as file:
-        file.write(config_content)
+        file.write(new_config_content)
     print(f"Config file '{CONFIG_FILE}' has been updated successfully.")
+
+def extract_json_from_config(config_content):
+    config_pattern = re.compile(r'defaultTheme\((\{.*\})\)', re.DOTALL)
+    match = config_pattern.search(config_content)
+    if not match:
+        raise ValueError("Could not find the main configuration object in config file.")
+    config_str = match.group(1)
+    config_str = re.sub(r'"plugins":\s*\[.*?viteBundler\(\)', '', config_str, flags=re.DOTALL)
+    config_str = re.sub(r'\}\),', '', config_str, flags=re.DOTALL)
+    print(config_str)
+    config_json = json.loads(config_str)
+    return config_json
+
+def replace_json_in_config(config_content, config_json):
+    json_str = json.dumps(config_json['navbar'], ensure_ascii=False, indent=2)
+    # 获取 "navbar": [ 到 ]}) 部分内容，替换成 json_str
+    navbar_pattern = re.compile(r'"navbar":\s*\[.*?\].*?\}\)', re.DOTALL)
+    # 打印匹配到的内容
+    match = navbar_pattern.search(config_content)
+    if not match:
+        raise ValueError("Could not find the navbar configuration in config file.")
+    print(match.group(0))
+    config_content = navbar_pattern.sub(f'"navbar": {json_str}\\n}})', config_content)
+    print(config_content)
+    return config_content
 
 def load_config():
     with open(CONFIG_FILE, 'r', encoding='utf-8') as file:
         config_content = file.read()
 
-    # 提取 navbar 配置部分
-    navbar_pattern = re.compile(r'navbar:\s*\[(.*?)\]', re.DOTALL)
-    match = navbar_pattern.search(config_content)
-    if not match:
-        raise ValueError("Could not find navbar configuration in config file.")
+    config_json = extract_json_from_config(config_content)
 
-    navbar_content = match.group(1)
-    navbar_items = re.findall(r'\{.*?\}', navbar_content, re.DOTALL)
-
-    # 转换为 Python 对象
-    navbar = []
-    for item in navbar_items:
-        item = item.replace("'", '"')
-        item = re.sub(r"(?<=\s)'|'(?=\s|[:,])", '"', item)
-        item = re.sub(r'(\b\w+\b):', r'"\1":', item)
-        item = re.sub(r',(\s*\n\s*})', r'\1', item)
-        item = re.sub(r'(?<=: )"([^"]*)"', r'"\1"', item)
-        item = re.sub(r'""https":', '"https:', item)
-        newJson = json.loads(item)
-        # 更改 link 的 .html 替换成 .md
-        newJson['link'] = newJson['link'].replace('.html', '.md').replace('/', '')
-        print(newJson)
-        navbar.append(newJson)
-
+    navbar = config_json['navbar']
     return navbar
 
 def load_history():
@@ -213,8 +193,7 @@ def generate_markdown_filename(url, title):
     return filename
 
 def html_to_markdown_from_url_or_file(input_source, markdown_file, title, is_url=True):
-    # Update the config file
-    update_config_file(title, input_source, f"/{markdown_file}")
+    update_config_file(title, input_source, f"{markdown_file}")
 
     session = requests.Session()
     if is_url:
@@ -243,12 +222,17 @@ def html_to_markdown_from_url_or_file(input_source, markdown_file, title, is_url
     output_dir = os.path.join('docs')
     os.makedirs(output_dir, exist_ok=True)
 
+    # 替换成 md
+    markdown_file = markdown_file.replace('.html', '.md').replace('/', '')
     markdown_file_path = os.path.join(output_dir, markdown_file)
     print(f"Markdown file will be saved to '{markdown_file_path}'.")
     with open(markdown_file_path, 'w', encoding='utf-8') as file:
         file.write(formatted_markdown_content)
 
+    # 执行命令 格式化文件
+    os.system(f"npx prettier --write {markdown_file_path}")
     print(f"Markdown file '{markdown_file_path}' has been created successfully.")
+
 
 if __name__ == "__main__":
     history_dict = load_history()

@@ -4,3 +4,4 @@ docs/.vuepress/blog/
 dist/
 docs/.vuepress/dist/*
 node_modules/*
+docs/.vuepress/.cache/*
