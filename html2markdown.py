@@ -230,7 +230,7 @@ def html_to_markdown_from_url_or_file(input_source, markdown_file, title, is_url
         file.write(formatted_markdown_content)
 
     # 执行命令 格式化文件
-    os.system(f"npx prettier --write {markdown_file_path}")
+    os.system(f"npx prettier --write ./docs/.vuepress/config.js")
     print(f"Markdown file '{markdown_file_path}' has been created successfully.")
 
 

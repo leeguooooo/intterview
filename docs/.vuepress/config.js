@@ -249,6 +249,83 @@ const config = defineUserConfig({
             "originUrl":
               "https://interview.poetries.top/principle-docs/vue/09-%E6%B8%B2%E6%9F%93%E5%99%A8%E4%B9%8Bpatch.html",
             "updateTime": "2024-06-03 08.07.07"
+          },
+          {
+            "text": "Vue-图解 Vue 响应式原理",
+            "link": "Vue-图解 Vue 响应式原理.html",
+            "originUrl":
+              "https://interview.poetries.top/principle-docs/vue/10-%E5%9B%BE%E8%A7%A3%20Vue%20%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86.html",
+            "updateTime": "2024-06-05 02.28.54"
+          },
+          {
+            "text": "Vue-图解 Vue 异步更新",
+            "link": "Vue-图解 Vue 异步更新.html",
+            "originUrl":
+              "https://interview.poetries.top/principle-docs/vue/11-%E5%9B%BE%E8%A7%A3%20Vue%20%E5%BC%82%E6%AD%A5%E6%9B%B4%E6%96%B0.html",
+            "updateTime": "2024-06-05 02.36.32"
+          },
+          {
+            "text": "Vue-剖析 Vue 内部运行机制",
+            "link": "Vue-剖析 Vue 内部运行机制.html",
+            "originUrl":
+              "https://interview.poetries.top/principle-docs/vue/12-%E5%89%96%E6%9E%90%20Vue%20%E5%86%85%E9%83%A8%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6.html",
+            "updateTime": "2024-06-05 02.37.02"
+          },
+          {
+            "text": "Vue-vue响应式原理模拟",
+            "link": "Vue-vue响应式原理模拟.html",
+            "originUrl":
+              "https://interview.poetries.top/principle-docs/vue/13-vue%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86%E6%A8%A1%E6%8B%9F.html",
+            "updateTime": "2024-06-05 02.38.23"
+          },
+          {
+            "text": "Vue-vue状态管理之vuex",
+            "link": "Vue-vue状态管理之vuex.html",
+            "originUrl":
+              "https://interview.poetries.top/principle-docs/vue/14-vue%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E4%B9%8Bvuex.html",
+            "updateTime": "2024-06-05 02.40.35"
+          },
+          {
+            "text": "Vue-理解Vue的设计思想及实现Vue",
+            "link": "Vue-理解Vue的设计思想及实现Vue.html",
+            "originUrl":
+              "https://interview.poetries.top/principle-docs/vue/15-%E7%90%86%E8%A7%A3Vue%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3%E5%8F%8A%E5%AE%9E%E7%8E%B0Vue.html",
+            "updateTime": "2024-06-05 02.41.16"
+          },
+          {
+            "text": "Vue-diff算法深入",
+            "link": "Vue-diff算法深入.html",
+            "originUrl":
+              "https://interview.poetries.top/principle-docs/vue/16-diff%E7%AE%97%E6%B3%95%E6%B7%B1%E5%85%A5.html",
+            "updateTime": "2024-06-05 02.42.09"
+          },
+          {
+            "text": "Vue-vue router vuex原理分析",
+            "link": "Vue-vue router vuex原理分析.html",
+            "originUrl":
+              "https://interview.poetries.top/principle-docs/vue/17-vue%20router%20vuex%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90.html#vue-router",
+            "updateTime": "2024-06-05 02.42.41"
+          },
+          {
+            "text": "Vue-Vue3初探响应式原理.",
+            "link": "Vue-Vue3初探响应式原理..html",
+            "originUrl":
+              "https://interview.poetries.top/principle-docs/vue/18-Vue3%E5%88%9D%E6%8E%A2%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86..html",
+            "updateTime": "2024-06-05 02.43.16"
+          },
+          {
+            "text": "Vue-vue2源码分析",
+            "link": "Vue-vue2源码分析.html",
+            "originUrl":
+              "https://interview.poetries.top/principle-docs/vue/19-vue2%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90.html",
+            "updateTime": "2024-06-05 02.45.10"
+          },
+          {
+            "text": "Vue-vue组件化实践",
+            "link": "Vue-vue组件化实践.html",
+            "originUrl":
+              "https://interview.poetries.top/principle-docs/vue/20-vue%E7%BB%84%E4%BB%B6%E5%8C%96%E5%AE%9E%E8%B7%B5.html",
+            "updateTime": "2024-06-05 02.45.45"
           }
         ]
       },
