@@ -9,7 +9,8 @@ tag:
   - useState
   - JavaScript
   - Web Development
-author: Lisa
+  - 面试题总结
+author: lisa
 ---
 
 # 面试题总结：React 中的 `setState` 和 `useState`

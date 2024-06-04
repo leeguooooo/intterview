@@ -5,13 +5,13 @@ import { viteBundler } from "@vuepress/bundler-vite";
 
 const config = defineUserConfig({
   "lang": "zh-CN",
-
-  "title": "面试题集锦",
-  "description": "为软件开发者准备的面试题库",
-
+  "title": "前端面试题集锦",
+  "description": "为前端开发者准备的面试题库",
   "theme": defaultTheme({
     "logo": "images/logo.webp",
-
+    "hostname": "https://interview.leeguoo.com",
+    "externalLinkIcon": false,
+    "colorModeSwitcher": true,
     "navbar": [
       {
         "text": "首页",

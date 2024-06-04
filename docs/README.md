@@ -2,19 +2,15 @@
 home: true
 title: 面试题集锦
 heroImage: /images/logo.webp
+heroText: 面试题集锦
+tagline: 帮助开发者更好地准备面试
 actions:
   - text: 开始学习
-    link: /getting-started.html
+    link: /基础篇.html
     type: primary
-
-  - text: 介绍
-    link: introduction.md
-    type: secondary
-
   - text: 文章专栏
     link: /article/
     type: secondary
-
 features:
   - title: 面试题库
     details: 涵盖广泛的技术领域，包括前端、后端、全栈及软件架构等。
@@ -22,76 +18,19 @@ features:
     details: 提供详尽的题目解答与解题思路，助你深入理解每个问题。
   - title: 持续更新
     details: 面试题目及解答持续更新，保证内容的时效性与技术的前沿性。
-
 footer: MIT 许可证 | 版权所有 © 2018-present VuePress Community
 ---
 
-<style>
-.hero {
-  text-align: center;
-  padding: 2rem 0;
-}
+## 特点
 
-.hero img {
-  max-width: 150px;
-  border-radius: 50%;
-}
+### 面试题库
+涵盖广泛的技术领域，包括前端、后端、全栈及软件架构等。
 
-.hero h1 {
-  margin-top: 1rem;
-  font-size: 2.5rem;
-}
+### 实战演练
+提供详尽的题目解答与解题思路，助你深入理解每个问题。
 
-.hero .actions {
-  margin-top: 1.5rem;
-}
-
-.features {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 3rem;
-}
-
-.features .feature {
-  flex: 1;
-  padding: 1rem;
-  text-align: center;
-}
-
-.features .feature h2 {
-  margin-bottom: 1rem;
-}
-
-.features .feature p {
-  color: #555;
-}
-
-.footer {
-  text-align: center;
-  margin-top: 4rem;
-  padding: 1rem;
-  background: #f0f0f0;
-}
-</style>
-
-<div class="features">
-  <div class="feature">
-    <h2>面试题库</h2>
-    <p>涵盖广泛的技术领域，包括前端、后端、全栈及软件架构等。</p>
-  </div>
-  <div class="feature">
-    <h2>实战演练</h2>
-    <p>提供详尽的题目解答与解题思路，助你深入理解每个问题。</p>
-  </div>
-  <div class="feature">
-    <h2>持续更新</h2>
-    <p>面试题目及解答持续更新，保证内容的时效性与技术的前沿性。</p>
-  </div>
-</div>
-
----
-
-欢迎来到面试题集锦网站。这里记录了各种编程和技术面试题，帮助开发者更好地准备面试。
+### 持续更新
+面试题目及解答持续更新，保证内容的时效性与技术的前沿性。
 
 ## 目录
 
