@@ -1,0 +1,12 @@
+body {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.navbar {
+  padding-top: env(safe-area-inset-top);
+}
+
+.footer {
+  padding-bottom: env(safe-area-inset-bottom);
+}

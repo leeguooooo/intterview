@@ -10,7 +10,15 @@ const config = defineUserConfig({
   "title": "前端面试题集锦",
   "description": "为前端开发者准备的面试题库",
   "head": [
+    ["link", { "rel": "stylesheet", "href": "/safe-area.css" }],
     ["link", { "rel": "manifest", "href": "/manifest.json" }],
+    [
+      "meta",
+      {
+        "name": "viewport",
+        "content": "width=device-width, initial-scale=1.0, viewport-fit=cover"
+      }
+    ],
     ["meta", { "name": "theme-color", "content": "#3eaf7c" }],
     ["meta", { "name": "apple-mobile-web-app-capable", "content": "yes" }],
     [
