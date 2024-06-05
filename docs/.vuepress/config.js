@@ -425,6 +425,13 @@ const config = defineUserConfig({
         "originUrl":
           "https://interview.poetries.top/principle-docs/react/06-Redux%E4%B9%8B%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90.html",
         "updateTime": "2024-06-06 01.33.01"
+      },
+      {
+        "text": "React-Redux之异步Action及操作",
+        "link": "React-Redux之异步Action及操作.html",
+        "originUrl":
+          "https://interview.poetries.top/principle-docs/react/07-Redux%E4%B9%8B%E5%BC%82%E6%AD%A5Action%E5%8F%8A%E6%93%8D%E4%BD%9C.html",
+        "updateTime": "2024-06-06 01.39.25"
       }
     ]
   }),
