@@ -6,8 +6,10 @@ from bs4 import BeautifulSoup
 from config_utils import (
     update_config_file,
     load_history,
-    generate_markdown_filename
+    generate_markdown_filename,
+    update_navbar_items  # 导入新的批量更新功能
 )
+import sys
 
 ERROR_IMAGE_PATH = '/images/error.webp'
 
@@ -142,6 +144,19 @@ def html_to_markdown_from_url_or_file(input_source, markdown_file, title, is_url
 
 if __name__ == "__main__":
     history_dict = load_history()
+		# 获取输入参数，如果有参数 -a, 则执行批量更新导航栏的操作
+    if len(sys.argv) > 1 and sys.argv[1] == '-a':
+        history_dict = load_history()
+        print("Updating navbar items for all documents...")
+        print(history_dict)
+        for key, value in history_dict.items():
+                # update_navbar_items(history_dict, key)
+                print(f"Updating navbar items for {key}...")
+                markdown_file = value
+                title = value['title']
+                html_to_markdown_from_url_or_file(key, markdown_file, title, True)
+        # update_navbar_items(history_dict)
+        sys.exit(0)
 
     input_source = input("Enter the URL or file path: ").strip()
     markdown_file = ""

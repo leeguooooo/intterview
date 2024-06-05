@@ -1,3 +1,4 @@
+原文链接: [https://interview.poetries.top/principle-docs/react/01-React%20router%E5%8E%9F%E7%90%86.html](https://interview.poetries.top/principle-docs/react/01-React%20router%E5%8E%9F%E7%90%86.html)
 
 ## 一、React Router基础之history
 
@@ -62,7 +63,7 @@
   * `createMemoryHistory`: 在内存中进行历史记录的存储
 ```js
     // 伪代码
-
+    
     // createBrowserHistory(HTML5)中的前进实现
     function finishTransition(location) {
       ...
@@ -106,7 +107,7 @@
   * `createMemoryHistory`:因为是在内存中操作，跟浏览器没有关系，不涉及`UI`层面的事情，所以可以直接进行历史信息的回退
 ```js
     // 伪代码
-
+    
     // createBrowserHistory(HTML5)中的后退检测
     function startPopStateListener({ transitionTo }) {
       function popStateListener(event) {
@@ -116,7 +117,7 @@
       addEventListener(window, 'popstate', popStateListener);
       ...
     }
-
+     
     // createHashHistory的后退检测
     function startPopStateListener({ transitionTo }) {
       function hashChangeListener(event) {
@@ -154,7 +155,7 @@
     }
     // createMemoryHistory仅仅在内存中，所以操作比较简单
     const storage = createStateStorage(entries); // storage = {entry.key: entry.state}
-
+     
     function saveState(key, state) {
       storage[key] = state
     }
@@ -186,7 +187,7 @@
 
   * 与`React`融为一体,专为`react`量身打造，编码风格与`react`保持一致，例如路由的配置可以通过`component`来实现
   * 不需要手工维护路由`state`，使代码变得简单
-  * 强大的路由管理机制，体现在如下方面
+  * 强大的路由管理机制，体现在如下方面 
     * 路由配置: 可以通过组件、配置对象来进行路由的配置
     * 路由切换: 可以通过`<Link>` `Redirect`进行路由的切换
     * 路由加载: 可以同步记载，也可以异步加载，这样就可以实现按需加载
@@ -200,6 +201,8 @@
 
 > 在`react-router`中最主要的`component`是`Router RouterContext
 > Link`，`history`库起到了中间桥梁的作用
+
+![](/images/s_poetries_work_uploads_2022_12_9df13e6c236538bd.png)
 
 > 以`browserHistory`(一种`history`类型:一个 `history` 知道如何去监听浏览器地址栏的变化， 并解析这个 `URL`
 > 转化为 `location` 对象)为例 :
@@ -236,7 +239,7 @@
           case '/inbox': Child = Inbox; break;
           default:      Child = Home;
         }
-
+    
         return (
           <div>
             <h1>App</h1>
@@ -249,7 +252,7 @@
         )
       }
     })
-
+    
     React.render(<App />, document.body)
 ```
 
@@ -257,7 +260,11 @@
 
 > 为了简单说明，只描述使用`browserHistory`的实现，`hashHistory`的实现过程是类似的，就不在说明
 
+![](/images/s_poetries_work_uploads_2022_12_50910ca45a7ce35a.png)
+
 ### 2.3 用户点击了Link组件后路由系统中到底发生了哪些变化
+
+![img](/images/s_poetries_work_gitee_2019_10_429.png)
 
 > `Link` 组件最终会渲染为 `HTML` 标签 `<a>`，它的 `to`、`query`、`hash`属性会被组合在一起并渲染为 `href`
 > 属性。虽然 `Link` 被渲染为超链接，但在内部实现上使用脚本拦截了浏览器的默认行为，然后调用了`history.pushState` 方法
@@ -278,6 +285,8 @@
 > 方法执行成功后执行`listener(nextState)`，`nextState`对象每个属性的具体含义已经在上述代码中注释，接下来执行`this.setState(nextState)`
 > 就可以实现重新渲染 `Router`组件。举个简单的例子，当 URL（准确的说应该是 `location.pathname`） 为
 > `/archives/posts` 时，应用的匹配结果如下图所示
+
+![img](/images/s_poetries_work_gitee_2019_10_430.png)
 
 > 到这里，系统已经完成了当用户点击一个由 `Link` 组件渲染出的超链接到页面刷新的全过程
 

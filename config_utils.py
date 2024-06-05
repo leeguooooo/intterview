@@ -47,7 +47,6 @@ def extract_json_from_config(config_content):
     config_str = match.group(1)
     config_str = re.sub(r'"plugins":\s*\[.*?viteBundler\(\)', '', config_str, flags=re.DOTALL)
     config_str = re.sub(r'\}\),', '', config_str, flags=re.DOTALL)
-    print(config_str)
     config_json = json.loads(config_str)
     return config_json
 
@@ -57,9 +56,7 @@ def replace_json_in_config(config_content, config_json):
     match = navbar_pattern.search(config_content)
     if not match:
         raise ValueError("Could not find the navbar configuration in config file.")
-    print(match.group(0))
     config_content = navbar_pattern.sub(f'"navbar": {json_str}\\n}})', config_content)
-    print(config_content)
     return config_content
 
 def load_config():
@@ -80,6 +77,13 @@ def load_history():
                 'markdown_file': item['link'],
                 'title': item['text']
             }
+        if 'children' in item:
+            for child in item['children']:
+                if 'originUrl' in child and 'text' in child and 'link' in child:
+                    history_dict[child['originUrl']] = {
+                            'markdown_file': child['link'],
+                            'title': child['text']
+                    }
     return history_dict
 
 def generate_markdown_filename(url, title):
@@ -94,3 +98,27 @@ def generate_markdown_filename(url, title):
     else:
         filename = f"{filename}.md"
     return filename
+
+def batch_update_navbar(nav_items, update_function):
+    for item in nav_items:
+        if 'originUrl' in item:
+            update_function(item)
+        if 'children' in item:
+            batch_update_navbar(item['children'], update_function)
+
+def update_navbar_items():
+    with open(CONFIG_FILE, 'r', encoding='utf-8') as file:
+        config_content = file.read()
+
+    config_json = extract_json_from_config(config_content)
+
+    def update_function(item):
+        item['updateTime'] = datetime.now().strftime("%Y-%m-%d %H.%M.%S")
+
+    batch_update_navbar(config_json['navbar'], update_function)
+
+    new_config_content = replace_json_in_config(config_content, config_json)
+
+    with open(CONFIG_FILE, 'w', encoding='utf-8') as file:
+        file.write(new_config_content)
+    print(f"All navbar items with 'originUrl' have been updated successfully.")

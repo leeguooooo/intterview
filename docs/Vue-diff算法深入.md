@@ -360,6 +360,8 @@ vue2.x 的 diff 位于 patch.js 文件中，该算法来源于 snabbdom，复杂
 vue 中也使用 diff 算法，有必要了解一下 Vue 是如何工作的。通过这个问题，我们可以很好的掌握，diff
 算法在整个编译过程中，哪个环节，做了哪些操作，然后使用 diff 算法后输出什么？
 
+![img](/images/pic4_zhimg_com_80_v2_4a8793499b4d1a5395f2b5f7d0584a4b_1440w.jpg)
+
 解释：
 
 ### **1、mount 函数**
