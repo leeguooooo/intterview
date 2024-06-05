@@ -2,6 +2,8 @@
 
 ## 源码结构
 
+![image-20210313232042704](/images/s_poetries_work_images_image_20210313232042704.png)
+
 > 源码位置是在`packages`文件件内，实际上源码主要分为两部分，编译器和运行时环境
 
 **1\. 编译器**
@@ -77,17 +79,25 @@
     <div>doubleCount: {{doubleCount}}</div>
 ```
 
+![](/images/s_poetries_work_images_20210314095454.png)
+
 ### **3\. 事件处理**
 ```javascript
     <div @click="add">count: {{ state.count }}</div>
 ```
 
+![](/images/s_poetries_work_images_20210314095527.png)
+
 ### **4\. 侦听器**
+
+![](/images/s_poetries_work_images_20210314095633.png)
 
 ### 5\. 引用对象:单个原始值响应化
 ```javascript
     <div>counter: {{ counter }}</div>
 ```
+
+![](/images/s_poetries_work_images_20210314095720.png)
 
 ### **6\. 体验逻辑组合**
 ```js
@@ -259,6 +269,8 @@
 
 添加对象类型递归
 
+![](/images/s_poetries_work_images_20210314101206.png)
+
 **2\. 避免重复代理**
 
 重复代理，比如
@@ -290,13 +302,19 @@
 
 建立响应数据key和更新函数之间的对应关系。
 
+![](/images/s_poetries_work_images_20210314101447.png)
+
 **设计**
 
   * 实现三个函数: effect:将回调函数保存起来备用，立即执行一次回调函数触发它里面一些响应数据的getter
   * track:getter中调用track，把前面存储的回调函数和当前target,key之间建立映射关系
   * trigger:setter中调用trigger，把target,key对应的响应函数都执行一遍
 
+![](/images/s_poetries_work_images_20210314101611.png)
+
 target,key和响应函数映射关系
+
+![](/images/s_poetries_work_images_20210314101631.png)
 
 **实现**
 

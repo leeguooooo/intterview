@@ -140,6 +140,8 @@ TIP
 
 我们根据 `VNode` 的 `flags` 属性值能够区分一个 `VNode` 对象的类型，不同类型的 `VNode` 采用不同的挂载函数：
 
+![](/images/s_poetries_work_uploads_2024_02_1e74bad4264c445b.png)
+
 我们首先来讨论一下 `mountElement` 函数，它用于挂载普通标签元素。我们在"组件的本质"一章中曾经编写过如下这段代码：
 ```js
     function mountElement(vnode, container) {
@@ -236,6 +238,8 @@ TIP
 中不仅仅包含内联样式的描述(即 `style`)，还可能包含其他描述如 `class`、事件等等，所以我们使用 `switch...case` 语句对不同的
 `key` 值做区分处理，以 `style` 为例，我们只需要将 `data.style` 中的样式规则应用到真实DOM即可。使用渲染器渲染
 `elementVNode` 的效果如下：
+
+![](/images/s_poetries_work_uploads_2024_02_b246f283925e3893.png)
 
 对于 `class`
 或事件或其他DOM属性都是类似的处理方式，为了不偏题我们放到后面统一讲解，接下来我们来看第三个问题：**没有继续挂载子节点，即`children`**，我们知道
@@ -360,6 +364,8 @@ TIP
 
 如上代码可知，我们为 `elementVnode` 添加了一个子节点，该子节点是一个边长为 `50px` 的绿色正方形，使用渲染器渲染修改后的
 `elementVnode` 的效果如下：
+
+![](/images/s_poetries_work_uploads_2024_02_cdd5ce233259e7d2.png)
 
 接着我们来看最后一个问题：**不能严谨地处理`SVG` 标签**，在之前的 `mountElement` 函数中我们使用
 `document.createElement` 函数创建DOM元素，但是对于 `SVG` 标签，更加严谨的方式是使用
@@ -545,6 +551,8 @@ TIP
 如上高亮代码所示，我们给 `switch` 添加了一个 `case` 语句块，用来匹配 `VNodeData` 中的 `class` 数据，由于我们将
 `data.class` 设计成了可直接使用的类名列表字符串，所以只需要直接将 `data.class` 赋值给 `el.className`
 即可，如下是渲染 `elementVNode` 的效果：
+
+![](/images/s_poetries_work_uploads_2024_02_c307e84482200af6.png)
 
 效果已经达到了，但是我们需要额外思考一些东西。在上面的讲解中我们直接把 `data.class`
 的数据结构设计成可直接使用的类名列表字符串，但这是很底层的设计，换句话说这是框架层面的设计，我们还需要考虑应用层的设计，什么意思呢？来看如下这段模板：
@@ -757,6 +765,8 @@ true`。好在这样的属性不多，我们可以列举出来：`value`、`chec
 
 如下是渲染上面 `input` 标签的效果图：
 
+![](/images/s_poetries_work_uploads_2024_02_bf5c631339510653.png)
+
 TIP
 
 完整代码&在线体验地址：<https://codesandbox.io/s/821421zvp8>[ (opens new
@@ -899,6 +909,8 @@ window)](https://codesandbox.io/s/821421zvp8)
 
 其效果如下，当点击红色方块时会触发点击事件执行回调函数：
 
+![](/images/s_poetries_work_uploads_2024_02_8a6c8bc46e52701b.png)
+
 TIP
 
 完整代码&在线体验地址：<https://codesandbox.io/s/jzvjwp7p75>[ (opens new
@@ -995,6 +1007,8 @@ window)](https://codesandbox.io/s/jzvjwp7p75)
     
 
 使用渲染器渲染如上 `elementVnode` 的结果如下图所示：
+
+![](/images/s_poetries_work_uploads_2024_02_10301451530c73bc.png)
 
 TIP
 
@@ -1202,6 +1216,8 @@ window)](https://codesandbox.io/s/72zq40y0q6)
 
 最终的渲染效果如下图所示：
 
+![](/images/s_poetries_work_uploads_2024_02_a5574e9cd8a098c5.png)
+
 另外对于 `Fragment` 类型的 `VNode` 来说，当它被渲染为真实DOM之后，其 `el`
 属性的引用是谁呢？这需要根据片段中节点的数量来决定，如果只有一个节点，那么 `el` 属性就指向该节点；如果有多个节点，则 `el`
 属性值是第一个节点的引用；如果片段中没有节点，即空片段，则 `el` 属性引用的是占位的空文本节点元素，所以我们需要为 `mountFragment`
@@ -1392,6 +1408,8 @@ window)](https://codesandbox.io/s/109r8nlwk4)
 
 使用渲染器渲染该 `elementVNode` 的效果图如下：
 
+![](/images/s_poetries_work_uploads_2024_02_a36595be236a4c42.png)
+
 可以发现 `Portal` 的挂载点是 `#portal-box`，而非 `#app`。
 
 TIP
@@ -1528,6 +1546,8 @@ window)](https://codesandbox.io/s/nr16wzln8m)
 
 该组件的 `render` 函数返回了它要渲染的内容，如下是使用渲染器渲染后的效果：
 
+![](/images/s_poetries_work_uploads_2024_02_f49b158a31644537.png)
+
 TIP
 
 完整代码&在线体验地址：<https://codesandbox.io/s/2on8xyk01y>[ (opens new
@@ -1582,6 +1602,8 @@ window)](https://codesandbox.io/s/2on8xyk01y)
 ```
 
 最终的渲染效果如下：
+
+![](/images/s_poetries_work_uploads_2024_02_c7eade36dfee3450.png)
 
 TIP
 

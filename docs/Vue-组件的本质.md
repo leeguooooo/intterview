@@ -55,7 +55,11 @@ window)](https://codesandbox.io/s/m7nqlj8m9j)
 
 组件的本质虽然没变，但组件的产出却改变了。在模板引擎的年代，组件的产出是 `html` 字符串：
 
+![](/images/s_poetries_work_uploads_2024_02_117dd7e71ca1d898.png)
+
 而如今的 `Vue` 或 `React`，它们的组件所产出的内容并不是 `html` 字符串，而是大家所熟知的 `Virtual DOM`。
+
+![](/images/s_poetries_work_uploads_2024_02_8e83afb3ac1f0a1b.png)
 
 拿 `Vue` 来说，一个组件最核心的东西是 `render` 函数，剩余的其他内容，如 `data`、`compouted`、`props` 等都是为
 `render` 函数提供数据来源服务的。`render` 函数本可以直接产出 `html` 字符串，但却产出了 `Virtual DOM`，借助

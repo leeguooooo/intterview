@@ -227,6 +227,8 @@ Vue 的自定义事件
   * 打印 Vue 实例观察
   * 整体结构
 
+![](/images/s_poetries_work_images_20210328214931.png)
+
   * `Vue`: 把 `data` 中的成员注入到 `Vue` 实例，并且把 `data` 中的成员转成 `getter/setter`
   * `Observer`：能够对数据对象的所有属性进行监听，如有变动可拿到最新值并通知 `Dep`
   * `Compiler`：解析每个元素中的指令/插值表达式，并替换成相应的数据
@@ -241,6 +243,8 @@ Vue 的自定义事件
     * 负责调用 `observer` 监听 `data` 中所有属性的变化
     * 负责调用 `compiler` 解析指令/插值表达式
   * 结构
+
+![](/images/s_poetries_work_images_20210328215207.png)
 ```js
     class Vue {
       constructor (options) {
@@ -282,6 +286,8 @@ Vue 的自定义事件
     * `data` 中的某个属性也是对象，把该属性转换成响应式数据
     * 数据变化发送通知
   * 结构
+
+![](/images/s_poetries_work_images_20210328215538.png)
 ```js
     // 负责数据劫持
     // 把 $data 中的成员转换成 getter/setter
@@ -331,6 +337,8 @@ Vue 的自定义事件
     * 负责页面的首次渲染
     * 当数据变化后重新渲染视图
   * 结构
+
+![](/images/s_poetries_work_images_20210328215943.png)
 
 **1\. compile()**
 ```js
@@ -440,10 +448,14 @@ Vue 的自定义事件
 
 ### Dep(Dependency)
 
+![](/images/s_poetries_work_images_20210328220733.png)
+
   * 功能 
     * 收集依赖，添加观察者(`watcher`)
     * 通知所有观察者
   * 结构
+
+![](/images/s_poetries_work_images_20210328220757.png)
 ```js
     class Dep {
       constructor () {
@@ -480,9 +492,13 @@ Vue 的自定义事件
 
 ### Watcher
 
+![](/images/s_poetries_work_images_20210328221004.png)
+
   * 功能 
     * 当数据变化触发依赖， `dep` 通知所有的 `Watcher` 实例更新视图
     * 自身实例化的时候往 `dep` 对象中添加自己 -结构
+
+![](/images/s_poetries_work_images_20210328221037.png)
 ```js
     class Watcher {
       constructor (vm, key, cb) {
@@ -542,6 +558,8 @@ Vue 的自定义事件
 ### 总结
 
 通过下图回顾整体流程
+
+![](/images/s_poetries_work_images_20210328221437.png)
 
   * Vue 
     * 记录传入的选项，设置 `$data/$el`

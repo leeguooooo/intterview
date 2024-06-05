@@ -113,6 +113,8 @@ render`)是由组件的更新开始的，因为在框架的使用层面开发者
 语句，其核心原则是：**如果类型不同，则直接调用`replaceVNode` 函数使用新的 `VNode` 替换旧的
 `VNode`，否则根据不同的类型调用与之相符的比对函数**，如下图所示：
 
+![](/images/s_poetries_work_uploads_2024_02_0fb891a8c939750a.png)
+
 ## 替换 VNode
 
 我们首先来研究一下如何替换 `VNode`，即 `replaceVNode` 函数应该做什么，我们先来复现需要替换 `VNode` 的场景，如下代码所示：
@@ -1004,8 +1006,12 @@ window)](https://codesandbox.io/s/lpm17161m)
 
 以上我们讲解并实现了当旧的 `children` 类型为单个子节点时，所有情况下的更新操作，可以用一张图来总结，如下：
 
+![](/images/s_poetries_work_uploads_2024_02_9d80fe7de09592dc.png)
+
 类似的，当旧的 `children` 类型为 `ChildrenFlags.NO_CHILDREN`，即没有子节点时，新的 `children`
 依然可能有三种情况，我们也可以用一张图来表示：
+
+![](/images/s_poetries_work_uploads_2024_02_1ce999b58fbe87ce.png)
 
 我们来解释一下上图的操作：
 

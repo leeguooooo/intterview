@@ -10,6 +10,8 @@ from config_utils import (
     update_navbar_items  # 导入新的批量更新功能
 )
 import sys
+from datetime import datetime
+
 
 ERROR_IMAGE_PATH = '/images/error.webp'
 
@@ -151,9 +153,19 @@ if __name__ == "__main__":
         print(history_dict)
         for key, value in history_dict.items():
                 # update_navbar_items(history_dict, key)
-                print(f"Updating navbar items for {key}...")
-                markdown_file = value
+                print(value)
+                updateTime = value['updateTime']
                 title = value['title']
+                title = title.replace('.html', '.md')
+                print(f"Updating navbar items for {title}...")
+                # 2024-06-06 02.12.37, 如果不是今天的更新，就不更新
+                print(updateTime[:10])
+                print(datetime.now().strftime("%Y-%m-%d"))
+                if updateTime[:10] == datetime.now().strftime("%Y-%m-%d"):
+                    print(f"Skip {title} because it was not updated today.")
+                    continue
+                markdown_file = value['markdown_file']
+
                 html_to_markdown_from_url_or_file(key, markdown_file, title, True)
         # update_navbar_items(history_dict)
         sys.exit(0)

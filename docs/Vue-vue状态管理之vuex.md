@@ -2,6 +2,8 @@
 
 > 了解vuex核心概念请移步 https://vuex.vuejs.org/zh/
 
+![img](/images/vuex_vuejs_org_vuex.png)
+
 ## 一、初始vuex
 
 ### 1.1 vuex是什么

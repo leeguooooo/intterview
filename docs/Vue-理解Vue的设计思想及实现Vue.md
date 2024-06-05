@@ -2,6 +2,8 @@
 
 ## 理解Vue的设计思想
 
+![](/images/s_poetries_work_images_20210313152225.png)
+
   * MVVM框架的三要素:数据响应式、模板引擎及其渲染
 
   * 数据响应式:监听数据变化并在视图中更新
@@ -19,6 +21,8 @@
 ## 数据响应式原理
 
 > 数据变更能够响应在视图中，就是数据响应式。vue2中利用 `Object.defineProperty()` 实现变更检 测。
+
+![](/images/s_poetries_work_images_20210313152449.png)
 
 简单实现
 ```js
@@ -135,6 +139,8 @@
   * 由于`data`的某个`key`在一个视图中可能出现多次，所以每个`key`都需要一个管家`Dep`来管理多个`Watcher`
   * 将来`data`中数据一旦发生变化，会首先找到对应的`Dep`，通知所有`Watcher`执行更新函数
 
+![](/images/s_poetries_work_images_20210313153616.png)
+
 ### 涉及类型介绍
 
   * `KVue`:框架构造函数
@@ -206,6 +212,8 @@
 ### 编译 Compile
 
 编译模板中vue模板特殊语法，初始化视图、更新视图
+
+![](/images/s_poetries_work_images_20210313154136.png)
 
 **1\. 初始化视图**
 
@@ -296,12 +304,16 @@ Watcher来维护它们，此过程称为依赖收集。
     });
 ```
 
+![](/images/s_poetries_work_images_20210313154749.png)
+
 **实现思路**
 
   1. defineReactive时为每一个key创建一个Dep实例
   2. 初始化视图时读取某个key，例如name1，创建一个watcher1
   3. 由于触发name1的getter方法，便将watcher1添加到name1对应的Dep中
   4. 当name1更新，setter触发时，便可通过对应Dep通知其管理所有Watcher更新
+
+![](/images/s_poetries_work_images_20210313162351.png)
 
 创建Watcher，kvue.js
 ```js
