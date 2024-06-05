@@ -28,6 +28,10 @@
     "workbox-webpack-plugin": "^7.1.0"
   },
   "dependencies": {
+    "@capacitor/android": "^6.0.0",
+    "@capacitor/cli": "^6.0.0",
+    "@capacitor/core": "^6.0.0",
+    "@capacitor/ios": "^6.0.0",
     "@vuepress/client": "2.0.0-rc.2",
     "eslint-define-config": "^2.1.0"
   }
