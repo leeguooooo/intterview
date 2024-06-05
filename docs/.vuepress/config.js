@@ -7,6 +7,30 @@ const config = defineUserConfig({
   "lang": "zh-CN",
   "title": "前端面试题集锦",
   "description": "为前端开发者准备的面试题库",
+  "configureWebpack": (config, isServer) => {
+    if (!isServer) {
+      config.plugins.push(
+        new GenerateSW({
+          "clientsClaim": true,
+          "skipWaiting": true,
+          "runtimeCaching": [
+            {
+              "urlPattern":
+                /\.(?:html|css|js|json|png|jpg|jpeg|svg|gif|woff2)$/,
+              "handler": "StaleWhileRevalidate",
+              "options": {
+                "cacheName": "vuepress-assets",
+                "expiration": {
+                  "maxEntries": 100,
+                  "maxAgeSeconds": 30 * 24 * 60 * 60 // 30 days
+                }
+              }
+            }
+          ]
+        })
+      );
+    }
+  },
   "theme": defaultTheme({
     "logo": "images/logo.webp",
     "hostname": "https://interview.leeguoo.com",
