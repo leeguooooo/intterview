@@ -2,35 +2,13 @@ import { blogPlugin } from "@vuepress/plugin-blog";
 import { defaultTheme } from "@vuepress/theme-default";
 import { defineUserConfig } from "vuepress";
 import { viteBundler } from "@vuepress/bundler-vite";
+import { pwaPlugin } from "@vuepress/plugin-pwa";
 
 const config = defineUserConfig({
+  "shouldPrefetch": false,
   "lang": "zh-CN",
   "title": "前端面试题集锦",
   "description": "为前端开发者准备的面试题库",
-  "configureWebpack": (config, isServer) => {
-    if (!isServer) {
-      config.plugins.push(
-        new GenerateSW({
-          "clientsClaim": true,
-          "skipWaiting": true,
-          "runtimeCaching": [
-            {
-              "urlPattern":
-                /\.(?:html|css|js|json|png|jpg|jpeg|svg|gif|woff2)$/,
-              "handler": "StaleWhileRevalidate",
-              "options": {
-                "cacheName": "vuepress-assets",
-                "expiration": {
-                  "maxEntries": 100,
-                  "maxAgeSeconds": 30 * 24 * 60 * 60 // 30 days
-                }
-              }
-            }
-          ]
-        })
-      );
-    }
-  },
   "theme": defaultTheme({
     "logo": "images/logo.webp",
     "hostname": "https://interview.leeguoo.com",
@@ -373,22 +351,31 @@ const config = defineUserConfig({
   }),
 
   "plugins": [
+    pwaPlugin({
+      "serviceWorker": true,
+      "updatePopup": true,
+      "showInstall": true,
+      "cacheHTML": true,
+      "maxSize": 1024 * 1024 * 9,
+      "maxImageSize": 1024 * 1024 * 80,
+      "favicon": "images/Favicons/favicon-32.png"
+    }),
     blogPlugin({
       "filter": ({ filePathRelative }) =>
         filePathRelative ? filePathRelative.startsWith("posts/") : false,
-
       "getInfo": ({ frontmatter, title }) => ({
         title,
         "author": frontmatter.author || "未知",
         "date": frontmatter.date || new Date(),
         "category": frontmatter.category || [],
         "tag": frontmatter.tag || [],
-        "excerpt": frontmatter.excerpt || ""
+        "excerpt": frontmatter.excerpt || "",
+        "apple": {
+          "icon": "images/Favicons/favicon-152-precomposed.png"
+        }
       }),
-
       "excerptFilter": ({ frontmatter }) =>
         !frontmatter.home && frontmatter.excerpt !== false,
-
       "category": [
         {
           "key": "category",
@@ -419,7 +406,6 @@ const config = defineUserConfig({
           })
         }
       ],
-
       "type": [
         {
           "key": "article",
@@ -457,7 +443,6 @@ const config = defineUserConfig({
       "hotReload": true
     })
   ],
-
   "bundler": viteBundler()
 });
 

@@ -1,8 +1,8 @@
-import { defineClientConfig } from 'vuepress/client'
-import Article from './layouts/Article.vue'
-import Category from './layouts/Category.vue'
-import Tag from './layouts/Tag.vue'
-import Timeline from './layouts/Timeline.vue'
+import { defineClientConfig } from "vuepress/client";
+import Article from "./layouts/Article.vue";
+import Category from "./layouts/Category.vue";
+import Tag from "./layouts/Tag.vue";
+import Timeline from "./layouts/Timeline.vue";
 
 export default defineClientConfig({
   // we provide some blog layouts
@@ -10,6 +10,6 @@ export default defineClientConfig({
     Article,
     Category,
     Tag,
-    Timeline,
-  },
-})
+    Timeline
+  }
+});

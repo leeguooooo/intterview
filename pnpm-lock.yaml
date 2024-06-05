@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@vuepress/client':
+        specifier: 2.0.0-rc.2
+        version: 2.0.0-rc.2
       eslint-define-config:
         specifier: ^2.1.0
         version: 2.1.0
@@ -21,6 +24,9 @@ importers:
       '@vuepress/plugin-blog':
         specifier: ^2.0.0-rc.11
         version: 2.0.0-rc.33(vuepress@2.0.0-rc.13(@vuepress/bundler-vite@2.0.0-rc.7(@types/node@20.13.0)(sass@1.77.4)(terser@5.31.0))(vue@3.4.27))
+      '@vuepress/plugin-pwa':
+        specifier: 2.0.0-rc.34
+        version: 2.0.0-rc.34(vuepress@2.0.0-rc.13(@vuepress/bundler-vite@2.0.0-rc.7(@types/node@20.13.0)(sass@1.77.4)(terser@5.31.0))(vue@3.4.27))
       '@vuepress/theme-default':
         specifier: ^2.0.0-rc.11
         version: 2.0.0-rc.33(vuepress@2.0.0-rc.13(@vuepress/bundler-vite@2.0.0-rc.7(@types/node@20.13.0)(sass@1.77.4)(terser@5.31.0))(vue@3.4.27))
@@ -1279,10 +1285,13 @@ packages:
     hasBin: true
 
   '@vuepress/client@2.0.0-rc.13':
-    resolution: {integrity: sha512-kFHVyroAFZ+/ZVaItjIXOZA6r+ympWN+C+0yZYVkMpzyDVFdZrl9WazqhwHBIUj0/sA+NLq2o2EvoqvAPa1lFg==}
+    resolution: {integrity: sha512-kFHVyroAFZ+/ZVaItjIXOZA6r+ympWN+C+0yZYVkMpzyDVFdZrl9WazqhwHBIUj0/sA+NLq2o2EvoqvAPa1lFg==, tarball: https://registry.npmjs.org/@vuepress/client/-/client-2.0.0-rc.13.tgz}
+
+  '@vuepress/client@2.0.0-rc.2':
+    resolution: {integrity: sha512-gQ4CfBhzWYOCW4OcAUd6S8Jr9m/8UkZZuN/70t12GltbX/cdm6zrGnf89GiVjgvoK8+OYoc7luoBuWbyc/X5sg==, tarball: https://registry.npmjs.org/@vuepress/client/-/client-2.0.0-rc.2.tgz}
 
   '@vuepress/client@2.0.0-rc.7':
-    resolution: {integrity: sha512-T8jf9h8dfP1ln/7uOIiTAJrdyKRTyq1x+RHXuc7GoRxTfOw+bIYgGvh63Z7m1e3K/yh1nO9aM1WcXbDN1Swp4w==}
+    resolution: {integrity: sha512-T8jf9h8dfP1ln/7uOIiTAJrdyKRTyq1x+RHXuc7GoRxTfOw+bIYgGvh63Z7m1e3K/yh1nO9aM1WcXbDN1Swp4w==, tarball: https://registry.npmjs.org/@vuepress/client/-/client-2.0.0-rc.7.tgz}
 
   '@vuepress/core@2.0.0-rc.13':
     resolution: {integrity: sha512-IK+5h2QAtl52g/3M0nGV2r0L+2cy0yhQ1Ez65ij4xs1FoiCEStJIVJSYGl1VMQDkB+MUGJAXZw86lNA2PIjgsg==}
@@ -1294,6 +1303,11 @@ packages:
     resolution: {integrity: sha512-buL7+SgZ+Yz/nD2sA9mi+o5kXAjE+aSOmM77Tx4d2cPeMFy3pFEQ/eYWQmh4SuANBKBpgGEh48kC7dNwtJgUTw==}
     peerDependencies:
       vuepress: 2.0.0-rc.12
+
+  '@vuepress/helper@2.0.0-rc.34':
+    resolution: {integrity: sha512-xgsDya8wzzMJU12MTx7Osf38OcV91cgcS5E9wm2PFVsjC2Jlo/vkPAa2GQZEnK/CQpUpgrsBSf9tbj4aqxF18g==, tarball: https://registry.npmjs.org/@vuepress/helper/-/helper-2.0.0-rc.34.tgz}
+    peerDependencies:
+      vuepress: 2.0.0-rc.13
 
   '@vuepress/markdown@2.0.0-rc.13':
     resolution: {integrity: sha512-p26OjCj0nMXFBRMPkMgt8VRfFLNF7V6YRqWdDtxipHl6S1y5s965uYgYfxTyr9TLGwnXRsZvE60wItKHftFe5w==}
@@ -1356,6 +1370,11 @@ packages:
     peerDependencies:
       vuepress: 2.0.0-rc.12
 
+  '@vuepress/plugin-pwa@2.0.0-rc.34':
+    resolution: {integrity: sha512-wayumMR2StQv2v+C3DKOK/ELmTHK38z2r4CskDy/WHB+J1ounCg+fLOj0JSz6ANuBRRQr2ANOaAdOHKVe4fwWQ==, tarball: https://registry.npmjs.org/@vuepress/plugin-pwa/-/plugin-pwa-2.0.0-rc.34.tgz}
+    peerDependencies:
+      vuepress: 2.0.0-rc.13
+
   '@vuepress/plugin-seo@2.0.0-rc.33':
     resolution: {integrity: sha512-xwq8iEmZ0afQJaBIEjs6QU+oHktKdhxj9OjLJ6F0Zuna7bxhzERfxz6DI1m5vm8psg+kZhdGXFtUsHyhdejYUw==}
     peerDependencies:
@@ -1373,6 +1392,9 @@ packages:
 
   '@vuepress/shared@2.0.0-rc.13':
     resolution: {integrity: sha512-xtruKVH9QqTLIQxbPbU3iZWthLC8uR5yYUzVA6eL+knjHkpCXOlzqMYnlp4xT0tzQNw+gBHWLKo8zVEccSkqug==}
+
+  '@vuepress/shared@2.0.0-rc.2':
+    resolution: {integrity: sha512-2kmm0rw+WalRWrSC5pW0TXRz8Wyuh57XmOZEUOhPOflw4o8Dno+PcaWbdOZ/TLkTgTt3X1n7r1/c1ALtaLta8g==, tarball: https://registry.npmjs.org/@vuepress/shared/-/shared-2.0.0-rc.2.tgz}
 
   '@vuepress/shared@2.0.0-rc.7':
     resolution: {integrity: sha512-zNsYzAW5tuENb4vML0pK/61W3EscyOcn5JVPC+c6AwvsYWyAigZaMSu9ycGAptjDwzdYSi3gd33N9Q9T7pG77Q==}
@@ -2413,6 +2435,9 @@ packages:
     resolution: {integrity: sha512-lKwV/1brpG6mBUFHtb7NUmtABCb2WZZmm2wNiOA5hAb8VdCS4B3dtMWyvcoViccwAW/COERjXLt0zP1zXUN26g==, tarball: https://registry.npmjs.org/minimatch/-/minimatch-5.1.6.tgz}
     engines: {node: '>=10'}
 
+  mitt@3.0.1:
+    resolution: {integrity: sha512-vKivATfr97l2/QBCYAkXYDbrIWPM2IIKEl7YPhjCvKlG3kE2gm+uBo6nEXK3M5/Ffh/FLpKExzOQ3JJoJGFKBw==, tarball: https://registry.npmjs.org/mitt/-/mitt-3.0.1.tgz}
+
   ms@2.1.2:
     resolution: {integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==}
 
@@ -2612,6 +2637,9 @@ packages:
   regexpu-core@5.3.2:
     resolution: {integrity: sha512-RAM5FlZz+Lhmo7db9L298p2vHP5ZywrVXmVXpmAD9GuL5MPH6t9ROw1iA/wfHkQ76Qe7AaPF0nGuim96/IrQMQ==, tarball: https://registry.npmjs.org/regexpu-core/-/regexpu-core-5.3.2.tgz}
     engines: {node: '>=4'}
+
+  register-service-worker@1.7.2:
+    resolution: {integrity: sha512-CiD3ZSanZqcMPRhtfct5K9f7i3OLCcBBWsJjLh1gW9RO/nS94sVzY59iS+fgYBOBqaBpf4EzfqUF3j9IG+xo8A==, tarball: https://registry.npmjs.org/register-service-worker/-/register-service-worker-1.7.2.tgz}
 
   regjsparser@0.9.1:
     resolution: {integrity: sha512-dQUtn90WanSNl+7mQKcXAgZxvUe7Z0SqXlgzv0za4LwiUhyzBC58yQO3liFoUgu8GiJVInAhJjkj1N0EtQ5nkQ==, tarball: https://registry.npmjs.org/regjsparser/-/regjsparser-0.9.1.tgz}
@@ -3079,6 +3107,10 @@ packages:
 
   workbox-build@7.1.0:
     resolution: {integrity: sha512-F6R94XAxjB2j4ETMkP1EXKfjECOtDmyvt0vz3BzgWJMI68TNSXIVNkgatwUKBlPGOfy9n2F/4voYRNAhEvPJNg==, tarball: https://registry.npmjs.org/workbox-build/-/workbox-build-7.1.0.tgz}
+    engines: {node: '>=16.0.0'}
+
+  workbox-build@7.1.1:
+    resolution: {integrity: sha512-WdkVdC70VMpf5NBCtNbiwdSZeKVuhTEd5PV3mAwpTQCGAB5XbOny1P9egEgNdetv4srAMmMKjvBk4RD58LpooA==, tarball: https://registry.npmjs.org/workbox-build/-/workbox-build-7.1.1.tgz}
     engines: {node: '>=16.0.0'}
 
   workbox-cacheable-response@7.1.0:
@@ -4417,6 +4449,17 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
+  '@vuepress/client@2.0.0-rc.2':
+    dependencies:
+      '@vue/devtools-api': 6.6.2
+      '@vuepress/shared': 2.0.0-rc.2
+      '@vueuse/core': 10.10.0(vue@3.4.27)
+      vue: 3.4.27
+      vue-router: 4.3.2(vue@3.4.27)
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - typescript
+
   '@vuepress/client@2.0.0-rc.7':
     dependencies:
       '@vue/devtools-api': 6.6.2
@@ -4452,6 +4495,17 @@ snapshots:
       - typescript
 
   '@vuepress/helper@2.0.0-rc.33(vuepress@2.0.0-rc.13(@vuepress/bundler-vite@2.0.0-rc.7(@types/node@20.13.0)(sass@1.77.4)(terser@5.31.0))(vue@3.4.27))':
+    dependencies:
+      '@vue/shared': 3.4.27
+      cheerio: 1.0.0-rc.12
+      fflate: 0.8.2
+      gray-matter: 4.0.3
+      vue: 3.4.27
+      vuepress: 2.0.0-rc.13(@vuepress/bundler-vite@2.0.0-rc.7(@types/node@20.13.0)(sass@1.77.4)(terser@5.31.0))(vue@3.4.27)
+    transitivePeerDependencies:
+      - typescript
+
+  '@vuepress/helper@2.0.0-rc.34(vuepress@2.0.0-rc.13(@vuepress/bundler-vite@2.0.0-rc.7(@types/node@20.13.0)(sass@1.77.4)(terser@5.31.0))(vue@3.4.27))':
     dependencies:
       '@vue/shared': 3.4.27
       cheerio: 1.0.0-rc.12
@@ -4586,6 +4640,21 @@ snapshots:
       prismjs: 1.29.0
       vuepress: 2.0.0-rc.13(@vuepress/bundler-vite@2.0.0-rc.7(@types/node@20.13.0)(sass@1.77.4)(terser@5.31.0))(vue@3.4.27)
 
+  '@vuepress/plugin-pwa@2.0.0-rc.34(vuepress@2.0.0-rc.13(@vuepress/bundler-vite@2.0.0-rc.7(@types/node@20.13.0)(sass@1.77.4)(terser@5.31.0))(vue@3.4.27))':
+    dependencies:
+      '@vuepress/helper': 2.0.0-rc.34(vuepress@2.0.0-rc.13(@vuepress/bundler-vite@2.0.0-rc.7(@types/node@20.13.0)(sass@1.77.4)(terser@5.31.0))(vue@3.4.27))
+      '@vueuse/core': 10.10.0(vue@3.4.27)
+      mitt: 3.0.1
+      register-service-worker: 1.7.2
+      vue: 3.4.27
+      vuepress: 2.0.0-rc.13(@vuepress/bundler-vite@2.0.0-rc.7(@types/node@20.13.0)(sass@1.77.4)(terser@5.31.0))(vue@3.4.27)
+      workbox-build: 7.1.1
+    transitivePeerDependencies:
+      - '@types/babel__core'
+      - '@vue/composition-api'
+      - supports-color
+      - typescript
+
   '@vuepress/plugin-seo@2.0.0-rc.33(vuepress@2.0.0-rc.13(@vuepress/bundler-vite@2.0.0-rc.7(@types/node@20.13.0)(sass@1.77.4)(terser@5.31.0))(vue@3.4.27))':
     dependencies:
       '@vuepress/helper': 2.0.0-rc.33(vuepress@2.0.0-rc.13(@vuepress/bundler-vite@2.0.0-rc.7(@types/node@20.13.0)(sass@1.77.4)(terser@5.31.0))(vue@3.4.27))
@@ -4610,6 +4679,10 @@ snapshots:
       - typescript
 
   '@vuepress/shared@2.0.0-rc.13':
+    dependencies:
+      '@mdit-vue/types': 2.1.0
+
+  '@vuepress/shared@2.0.0-rc.2':
     dependencies:
       '@mdit-vue/types': 2.1.0
 
@@ -5824,6 +5897,8 @@ snapshots:
     dependencies:
       brace-expansion: 2.0.1
 
+  mitt@3.0.1: {}
+
   ms@2.1.2: {}
 
   nanoid@3.3.7: {}
@@ -5999,6 +6074,8 @@ snapshots:
       regjsparser: 0.9.1
       unicode-match-property-ecmascript: 2.0.0
       unicode-match-property-value-ecmascript: 2.1.0
+
+  register-service-worker@1.7.2: {}
 
   regjsparser@0.9.1:
     dependencies:
@@ -6502,6 +6579,49 @@ snapshots:
       workbox-core: 7.1.0
 
   workbox-build@7.1.0:
+    dependencies:
+      '@apideck/better-ajv-errors': 0.3.6(ajv@8.16.0)
+      '@babel/core': 7.24.6
+      '@babel/preset-env': 7.24.6(@babel/core@7.24.6)
+      '@babel/runtime': 7.24.6
+      '@rollup/plugin-babel': 5.3.1(@babel/core@7.24.6)(rollup@2.79.1)
+      '@rollup/plugin-node-resolve': 15.2.3(rollup@2.79.1)
+      '@rollup/plugin-replace': 2.4.2(rollup@2.79.1)
+      '@rollup/plugin-terser': 0.4.4(rollup@2.79.1)
+      '@surma/rollup-plugin-off-main-thread': 2.2.3
+      ajv: 8.16.0
+      common-tags: 1.8.2
+      fast-json-stable-stringify: 2.1.0
+      fs-extra: 9.1.0
+      glob: 7.2.3
+      lodash: 4.17.21
+      pretty-bytes: 5.6.0
+      rollup: 2.79.1
+      source-map: 0.8.0-beta.0
+      stringify-object: 3.3.0
+      strip-comments: 2.0.1
+      tempy: 0.6.0
+      upath: 1.2.0
+      workbox-background-sync: 7.1.0
+      workbox-broadcast-update: 7.1.0
+      workbox-cacheable-response: 7.1.0
+      workbox-core: 7.1.0
+      workbox-expiration: 7.1.0
+      workbox-google-analytics: 7.1.0
+      workbox-navigation-preload: 7.1.0
+      workbox-precaching: 7.1.0
+      workbox-range-requests: 7.1.0
+      workbox-recipes: 7.1.0
+      workbox-routing: 7.1.0
+      workbox-strategies: 7.1.0
+      workbox-streams: 7.1.0
+      workbox-sw: 7.1.0
+      workbox-window: 7.1.0
+    transitivePeerDependencies:
+      - '@types/babel__core'
+      - supports-color
+
+  workbox-build@7.1.1:
     dependencies:
       '@apideck/better-ajv-errors': 0.3.6(ajv@8.16.0)
       '@babel/core': 7.24.6
