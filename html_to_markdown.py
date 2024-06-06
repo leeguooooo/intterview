@@ -148,6 +148,8 @@ if __name__ == "__main__":
     history_dict = load_history()
 		# 获取输入参数，如果有参数 -a, 则执行批量更新导航栏的操作
     if len(sys.argv) > 1 and sys.argv[1] == '-a':
+        # 获取后面的参数，匹配的时间
+        timeStr = sys.argv[2]
         history_dict = load_history()
         print("Updating navbar items for all documents...")
         print(history_dict)
@@ -161,27 +163,58 @@ if __name__ == "__main__":
                 # 2024-06-06 02.12.37, 如果不是今天的更新，就不更新
                 print(updateTime[:10])
                 print(datetime.now().strftime("%Y-%m-%d"))
-                if updateTime[:10] == datetime.now().strftime("%Y-%m-%d"):
-                    print(f"Skip {title} because it was not updated today.")
-                    continue
+                updateTimeStr = ''
+                updateTimeStrLen = 0
                 markdown_file = value['markdown_file']
 
+                if timeStr == None or timeStr == '':
+                    updateTimeStr = datetime.now().strftime("%Y-%m-%d")
+                    updateTimeStrLen = len(updateTimeStr)
+                else:
+                    updateTimeStr = timeStr
+                    updateTimeStrLen = len(updateTimeStr)
+
+                print(f"更新时间目标: {updateTimeStr}")
+                if timeStr != None and timeStr != '':
+                    if updateTime[:updateTimeStrLen] == updateTimeStr:
+                        print(f'更新 {updateTime[:updateTimeStrLen]} === {updateTimeStr}')
+                        html_to_markdown_from_url_or_file(key, markdown_file, title, True)
+                        continue
+                    else:
+                        print(f"跳过 {title} ,{updateTime[:updateTimeStrLen]} !== {updateTimeStr}")
+                        continue
+                if updateTime[:updateTimeStrLen] == updateTimeStr:
+                    print(f"Skip {title} because it was not updated today.")
+                    continue
+                print(f'全部 {updateTime[:updateTimeStrLen]} === {updateTimeStr}')
+                sys.exit(0)
                 html_to_markdown_from_url_or_file(key, markdown_file, title, True)
         # update_navbar_items(history_dict)
         sys.exit(0)
 
-    input_source = input("Enter the URL or file path: ").strip()
+    input_source_list = []
     markdown_file = ""
     title = ""
+    # 先输入分类
+    category = input("Enter the category for the document: ").strip()
+    while True:
+        input_source = input("Enter the URL or file path (or 'q' to quit): ").strip()
+        if input_source == None or input_source == '' or input_source == 'q':
+            break
+        input_source_list.append(input_source)
 
-    if input_source in history_dict:
-        markdown_file = history_dict[input_source]['markdown_file']
-        title = history_dict[input_source]['title']
-    else:
-        title = input("Enter the title for the document (in Chinese): ").strip()
-        markdown_file = generate_markdown_filename(input_source, title)
-        history_dict[input_source] = {'markdown_file': markdown_file, 'title': title}
+    for input_source in input_source_list:
+        if input_source in history_dict:
+            markdown_file = history_dict[input_source]['markdown_file']
+            title = history_dict[input_source]['title']
+        else:
+            # title = input("Enter the title for the document (in Chinese): ").strip()
+            markdown_file = generate_markdown_filename(input_source, None)
+            markdown_file = f"{category}-{markdown_file}.html"
+            title = markdown_file.replace('.html', '')
+            history_dict[input_source] = {'markdown_file': markdown_file, 'title': title}
 
-    is_url = input("Is the input source a URL? (yes/no) [yes]: ").lower() in ['yes', 'y', '']
+        # is_url = input("Is the input source a URL? (yes/no) [yes]: ").lower() in ['yes', 'y', '']
+        is_url = True
 
-    html_to_markdown_from_url_or_file(input_source, markdown_file, title, is_url)
+        html_to_markdown_from_url_or_file(input_source, markdown_file, title, is_url)

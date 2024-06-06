@@ -26,12 +26,32 @@ def update_config_file(title, origin_url, new_link):
     found = update_or_add_item(config_json['navbar'], title, new_link, origin_url)
 
     if not found:
-        config_json['navbar'].append({
-            'text': title,
-            'link': new_link,
-            'originUrl': origin_url,
-            'updateTime': datetime.now().strftime("%Y-%m-%d %H.%M.%S")
-        })
+        # 先安装 - 切割，获取前缀
+        title_parts = title.split('-')
+        category = title_parts[0]
+
+        # 先判断分类是否存在
+        for item in config_json['navbar']:
+            if 'text' in item and item['text'] == category and 'children' in item:
+                item['children'].append({
+                    'text': title,
+                    'link': new_link,
+                    'originUrl': origin_url,
+                    'updateTime': datetime.now().strftime("%Y-%m-%d %H.%M.%S")
+                })
+                break
+        else:
+            # 创建一个新的分类
+            config_json['navbar'].append({
+                'text': category,
+                'children': [{
+                    'text': title,
+                    'link': new_link,
+                    'originUrl': origin_url,
+                    'updateTime': datetime.now().strftime("%Y-%m-%d %H.%M.%S")
+
+                }]
+            })
 
     new_config_content = replace_json_in_config(config_content, config_json)
 
@@ -97,9 +117,9 @@ def generate_markdown_filename(url, title):
     filename = re.sub(r'[^a-zA-Z0-9\u4e00-\u9fa5]', '-', filename)
     filename = re.sub(r'-+', '-', filename)
     if title:
-        filename = f"{title}.md"
+        filename = f"{title}"
     else:
-        filename = f"{filename}.md"
+        filename = f"{filename}"
     return filename
 
 def batch_update_navbar(nav_items, update_function):
