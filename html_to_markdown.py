@@ -1,3 +1,5 @@
+
+# -*- coding: utf-8 -*-
 import html2text
 import requests
 import re
@@ -7,10 +9,11 @@ from config_utils import (
     update_config_file,
     load_history,
     generate_markdown_filename,
-    update_navbar_items  # 导入新的批量更新功能
+    update_navbar_items
 )
 import sys
 from datetime import datetime
+import urllib.parse
 
 
 ERROR_IMAGE_PATH = '/images/error.webp'
@@ -18,7 +21,6 @@ ERROR_IMAGE_PATH = '/images/error.webp'
 def set_login_cookie(session, cookie_name, time):
     from http.cookiejar import Cookie
     import time as time_module
-
     exp_time = int(time_module.time()) + time * 24 * 60 * 60
     cookie = Cookie(
         version=0, name=cookie_name, value='true', port=None, port_specified=False,
@@ -31,6 +33,9 @@ def set_login_cookie(session, cookie_name, time):
 def extract_container_content(html_content):
     soup = BeautifulSoup(html_content, 'html.parser')
     container = soup.find(id='container')
+    # 如果获取不到 尝试获取 main
+    if container == None:
+        container = soup.find('main')
     return str(container) if container else ''
 
 def remove_sidebar(html_content):
@@ -56,6 +61,8 @@ def preprocess_html(html_content):
 
     html_content = re.sub(header_pattern, replace_header, html_content)
 
+
+    # code 模版 1
     code_block_pattern = re.compile(r'<div class="language-(\w*) extra-class">\s*<pre.*?>\s*<code>(.*?)</code>\s*</pre>\s*</div>', re.DOTALL)
 
     def replace_code_block(match):
@@ -64,6 +71,16 @@ def preprocess_html(html_content):
         return f'<br>```{language}<pre>{code}</pre>```'
 
     processed_html = re.sub(code_block_pattern, replace_code_block, html_content)
+
+    # code 模版 2
+    code_block_pattern = re.compile(r'<pre class="shiki github-(\w*)"(.*?)><code class="language-(\w*)">(.*?)</code></pre>', re.DOTALL)
+
+    def replace_code_block2(match):
+        language = match.group(3) if match.group(3) else 'javascript'
+        code = match.group(4)
+        return f'<br>```{language}<pre>{code}</pre>```'
+
+    processed_html = re.sub(code_block_pattern, replace_code_block2, processed_html)
     return processed_html
 
 def format_markdown_content(markdown_content):
@@ -73,6 +90,17 @@ def format_markdown_content(markdown_content):
 
     return formatted_content
 
+def extract_image_extension(img_url):
+    # 提取文件扩展名
+    parsed_url = urllib.parse.urlparse(img_url)
+    query_params = urllib.parse.parse_qs(parsed_url.query)
+    image_path = query_params.get('url', [None])[0]
+    if image_path:
+        image_path = urllib.parse.unquote(image_path)
+        file_path, file_extension = os.path.splitext(image_path)
+        return file_extension if file_extension else '.png'
+    return '.png'
+
 def download_and_replace_images(session, html_content, markdown_file):
     image_dir = os.path.join('docs/.vuepress/public/images')
     os.makedirs(image_dir, exist_ok=True)
@@ -81,10 +109,17 @@ def download_and_replace_images(session, html_content, markdown_file):
     for img in soup.find_all('img'):
         img_url = img.get('data-src') or img.get('src')
         if img_url:
+            # 去掉协议部分
             url_without_protocol = re.sub(r'^https?://', '', img_url)
+            # 提取文件路径和扩展名
             file_path, file_extension = os.path.splitext(url_without_protocol)
-            if not file_extension:
-                file_extension = '.png'
+            # 如果扩展名为空或包含参数，使用 extract_image_extension 函数
+            if not file_extension or '?' or '&' in file_extension:
+                file_extension = extract_image_extension(img_url)
+            else:
+                # 去掉扩展名中的参数部分
+                file_extension = re.sub(r'\?.*$', '', file_extension)
+            # 创建文件名
             img_name = re.sub(r'[^a-zA-Z0-9]', '_', file_path) + file_extension
             img_path = os.path.join(image_dir, img_name)
             local_img_path = f'/images/{img_name}'
@@ -95,6 +130,7 @@ def download_and_replace_images(session, html_content, markdown_file):
                     img_response.raise_for_status()
                     with open(img_path, 'wb') as f:
                         f.write(img_response.content)
+                    img['src'] = local_img_path
                 except Exception as e:
                     print(f"Error downloading image {img_url}: {e}")
                     img['src'] = ERROR_IMAGE_PATH
@@ -157,6 +193,10 @@ if __name__ == "__main__":
                 # update_navbar_items(history_dict, key)
                 print(value)
                 updateTime = value['updateTime']
+                canUpdate = value['canUpdate']
+                if canUpdate == 'never':
+                    print(f"Skip {value['title']} 不允许更新")
+                    continue
                 title = value['title']
                 title = title.replace('.html', '.md')
                 print(f"Updating navbar items for {title}...")

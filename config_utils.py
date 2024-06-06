@@ -96,7 +96,8 @@ def load_history():
             history_dict[item['originUrl']] = {
                 'markdown_file': item['link'],
                 'title': item['text'],
-                'updateTime': item['updateTime']
+                'updateTime': item['updateTime'],
+                'canUpdate': item['canUpdate']
             }
         if 'children' in item:
             for child in item['children']:
@@ -104,7 +105,8 @@ def load_history():
                     history_dict[child['originUrl']] = {
                             'markdown_file': child['link'],
                             'title': child['text'],
-                            'updateTime': child['updateTime']
+                            'updateTime': child['updateTime'],
+                            'canUpdate': child['canUpdate']
 
                     }
     return history_dict

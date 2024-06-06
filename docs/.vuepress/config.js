@@ -3,6 +3,22 @@ import { defaultTheme } from "@vuepress/theme-default";
 import { defineUserConfig } from "vuepress";
 import { viteBundler } from "@vuepress/bundler-vite";
 import { pwaPlugin } from "@vuepress/plugin-pwa";
+// {
+//   "text": "文章",
+//   "link": "/article/"
+// },
+// {
+//   "text": "分类",
+//   "link": "/category/"
+// },
+// {
+//   "text": "标签",
+//   "link": "/tag/"
+// },
+// {
+//   "text": "时间线",
+//   "link": "/timeline/"
+// },
 
 const config = defineUserConfig({
   "shouldPrefetch": false,
@@ -368,22 +384,6 @@ const config = defineUserConfig({
           }
         ]
       },
-      // {
-      //   "text": "文章",
-      //   "link": "/article/"
-      // },
-      // {
-      //   "text": "分类",
-      //   "link": "/category/"
-      // },
-      // {
-      //   "text": "标签",
-      //   "link": "/tag/"
-      // },
-      // {
-      //   "text": "时间线",
-      //   "link": "/timeline/"
-      // },
       {
         "text": "React",
         "children": [
@@ -1128,6 +1128,18 @@ const config = defineUserConfig({
             "link": "学习路线-backend.html",
             "originUrl": "https://interview.poetries.top/roadmap/backend.html",
             "updateTime": "2024-06-06 13.58.40"
+          }
+        ]
+      },
+      {
+        "text": "好文",
+        "children": [
+          {
+            "text": "好文-i-tried-react-compiler",
+            "link": "好文-i-tried-react-compiler.html",
+            "originUrl": "https://sorrycc.com/i-tried-react-compiler/",
+            "updateTime": "2024-06-06 22.25.16",
+            "canUpdate": "never"
           }
         ]
       }
