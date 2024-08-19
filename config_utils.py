@@ -97,7 +97,7 @@ def load_history():
                 'markdown_file': item['link'],
                 'title': item['text'],
                 'updateTime': item['updateTime'],
-                'canUpdate': item['canUpdate']
+                'canUpdate': item.get('canUpdate', 'always')
             }
         if 'children' in item:
             for child in item['children']:
@@ -106,8 +106,7 @@ def load_history():
                             'markdown_file': child['link'],
                             'title': child['text'],
                             'updateTime': child['updateTime'],
-                            'canUpdate': child['canUpdate']
-
+                            'canUpdate': child.get('canUpdate', 'always')
                     }
     return history_dict
 
