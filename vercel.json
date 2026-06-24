@@ -1,0 +1,94 @@
+{
+  "redirects": [
+    {
+      "source": "/基础篇.html",
+      "destination": "/基础篇/",
+      "permanent": true
+    },
+    {
+      "source": "/进阶篇.html",
+      "destination": "/进阶篇/",
+      "permanent": true
+    },
+    {
+      "source": "/Vue.html",
+      "destination": "/Vue/",
+      "permanent": true
+    },
+    {
+      "source": "/每日一题-每日一题.html",
+      "destination": "/每日一题-每日一题/",
+      "permanent": true
+    },
+    {
+      "source": "/高频篇.html",
+      "destination": "/高频篇/",
+      "permanent": true
+    },
+    {
+      "source": "/设计模式 2.html",
+      "destination": "/设计模式 2/",
+      "permanent": true
+    },
+    {
+      "source": "/Uniapp.html",
+      "destination": "/Uniapp/",
+      "permanent": true
+    },
+    {
+      "source": "/面经-前端面经汇总.html",
+      "destination": "/面经-前端面经汇总/",
+      "permanent": true
+    },
+    {
+      "source": "/高频考点.html",
+      "destination": "/高频考点/",
+      "permanent": true
+    },
+    {
+      "source": "/手写篇.html",
+      "destination": "/手写篇/",
+      "permanent": true
+    },
+    {
+      "source": "/进阶性能优化.html",
+      "destination": "/进阶性能优化/",
+      "permanent": true
+    },
+    {
+      "source": "/React.html",
+      "destination": "/React/",
+      "permanent": true
+    },
+    {
+      "source": "/面试指南.html",
+      "destination": "/面试指南/",
+      "permanent": true
+    },
+    {
+      "source": "/JavaScript.html",
+      "destination": "/JavaScript/",
+      "permanent": true
+    },
+    {
+      "source": "/CSS.html",
+      "destination": "/CSS/",
+      "permanent": true
+    },
+    {
+      "source": "/常用设计模式.html",
+      "destination": "/常用设计模式/",
+      "permanent": true
+    },
+    {
+      "source": "/Vue-渲染器的核心 Diff 算法.html",
+      "destination": "/Vue-渲染器的核心 Diff 算法/",
+      "permanent": true
+    },
+    {
+      "source": "/前端工程化.html",
+      "destination": "/前端工程化/",
+      "permanent": true
+    }
+  ]
+}
