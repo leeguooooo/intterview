@@ -1216,6 +1216,10 @@ const config = defineUserConfig({
             "updateTime": "2024-08-20 01.56.55"
           }
         ]
+      },
+      {
+        "text": "隐私政策",
+        "link": "/privacy.html"
       }
     ]
   }),
