@@ -98,6 +98,27 @@ const config = defineUserConfig({
   ],
   "theme": defaultTheme({
     "logo": "images/logo.webp",
+    // 长文性能：拆小页后给 /基础篇/ 配 path-scoped 侧栏导航（样板，验证后推广其余大文件）。
+    "sidebar": {
+      "/基础篇/": [
+        { "text": "简版速记与目录", "link": "/基础篇/" },
+        { "text": "一、HTML、HTTP、WEB综合问题", "link": "/基础篇/01-HTML-HTTP-WEB综合问题.html" },
+        { "text": "二、CSS相关（1/2）", "link": "/基础篇/02-CSS相关-1.html" },
+        { "text": "二、CSS相关（2/2）", "link": "/基础篇/02-CSS相关-2.html" },
+        { "text": "三、JavaScript相关（1/4）", "link": "/基础篇/03-JavaScript相关-1.html" },
+        { "text": "三、JavaScript相关（2/4）", "link": "/基础篇/03-JavaScript相关-2.html" },
+        { "text": "三、JavaScript相关（3/4）", "link": "/基础篇/03-JavaScript相关-3.html" },
+        { "text": "三、JavaScript相关（4/4）", "link": "/基础篇/03-JavaScript相关-4.html" },
+        { "text": "四、jQuery相关", "link": "/基础篇/04-jQuery相关.html" },
+        { "text": "五、Bootstrap相关", "link": "/基础篇/05-Bootstrap相关.html" },
+        { "text": "六、微信小程序相关", "link": "/基础篇/06-微信小程序相关.html" },
+        { "text": "七、webpack相关", "link": "/基础篇/07-webpack相关.html" },
+        { "text": "八、框架相关", "link": "/基础篇/08-框架相关.html" },
+        { "text": "九、编程题相关", "link": "/基础篇/09-编程题相关.html" },
+        { "text": "十、前端综合问题", "link": "/基础篇/10-前端综合问题.html" },
+        { "text": "十一、HR面相关", "link": "/基础篇/11-HR面相关.html" },
+      ]
+    },
     // Canonical home is the apex (leeguoo.com/*.html reverse-proxies this content).
     // Pointing og:url/sitemap at leeguoo.com consolidates SEO weight to the apex
     // instead of splitting it between interview.* and leeguoo.com (duplicate content).
@@ -115,7 +136,7 @@ const config = defineUserConfig({
         "children": [
           {
             "text": "基础篇",
-            "link": "/基础篇.html",
+            "link": "/基础篇/",
             "originUrl":
               "https://interview.poetries.top/docs/base.html#%E4%B8%80%E3%80%81html%E3%80%81http%E3%80%81web%E7%BB%BC%E5%90%88%E9%97%AE%E9%A2%98",
             "updateTime": "2024-06-06 02.23.49"

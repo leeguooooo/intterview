@@ -1,6 +1,13 @@
 {
   "hosting": {
     "public": "./docs/.vuepress/dist",
-    "ignore": []
+    "ignore": [],
+    "redirects": [
+      {
+        "source": "/基础篇.html",
+        "destination": "/基础篇/",
+        "type": 301
+      }
+    ]
   }
 }
