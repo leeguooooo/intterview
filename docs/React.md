@@ -1,5 +1,22 @@
 原文链接: [https://interview.poetries.top/docs/excellent-docs/6-React.html](https://interview.poetries.top/docs/excellent-docs/6-React.html)
 
+## 简版速记
+
+> 面试前 5 分钟扫一遍的高频要点，详细展开见对应小节。
+
+- **不可变性**：state/props 视为只读，更新要生成新引用（展开运算符 / `Immer`）。配合浅比较（`PureComponent`、`React.memo`、`useMemo`）减少重渲染。
+- **JSX 本质**：`<div/>` 编译为 `React.createElement(type, props, ...children)`，返回 vnode。React 17+ 支持新 JSX transform，可不显式 `import React`。
+- **合成事件**：React 自有事件系统。React 16 委托到 `document`，**React 17 起委托到根容器（root container）**，便于多版本共存。事件对象是合成对象（SyntheticEvent）。
+- **setState**：在 React 合成事件/生命周期中异步合并（batch）；**React 18 起默认全场景自动批处理**（含 `setTimeout`、Promise、原生事件）。需要连续读取最新值时用函数式更新 `setX(prev => ...)`。
+- **Diff**：同层比较 + `key` 标识 + 组件类型决定复用。`key` 不要用 index（列表增删/排序会错位）。
+- **生命周期（class）**：挂载 `constructor → render → componentDidMount`；更新 `render → componentDidUpdate`；卸载 `componentWillUnmount`。`will*` 系列已废弃，改用 `getDerivedStateFromProps` / `getSnapshotBeforeUpdate`。
+- **受控 vs 非受控**：受控由 state 驱动（`value + onChange`）；非受控用 `ref` 读 DOM（如文件上传）。
+- **Hooks 规则**：只在函数组件顶层调用，不能放进条件/循环/嵌套函数（依赖固定调用顺序）。`useEffect` 依赖数组要诚实声明，返回值用于清理。
+- **复用手段**：自定义 Hook（首选）> Render Props > HOC。
+- **性能优化**：`React.memo` + `useMemo` / `useCallback`，列表稳定 `key`，路由/大组件 `React.lazy + Suspense` 懒加载。
+- **React 18**：`createRoot` 取代 `ReactDOM.render`，自动批处理，并发特性 `startTransition` / `useTransition` / `useDeferredValue`，新增 `useId` / `useSyncExternalStore` / `useInsertionEffect`。
+- **`$$typeof`**：React Element 上的 Symbol 标记，防止 JSON 注入伪造元素的 XSS。
+
 ## 0 如何理解React State不可变性的原则
 
 在 React 中，不可变性是指数据一旦被创建，就不能被修改。React
@@ -277,6 +294,8 @@
 
 ### batchUpdate机制
 
+![setState 批处理：合成事件/生命周期中多次 setState 入队合并，命中 batchUpdate 后一次性更新](/images/diagrams/react-setstate-batch.webp)
+
 ![](/images/s_poetries_work_uploads_2023_02_7bb96642c305b9d6.png)
 ![](/images/s_poetries_work_uploads_2023_02_e0e5828f54c4d6a1.png)
 ```js
@@ -508,9 +527,9 @@
       setState({ age: state.age + 1 }, onePriority);
       console.log(state.age); // 0
       setTimeout(() => {
-        setState({ age: state.age + 1 }, towPriority);
+        setState({ age: state.age + 1 }, twoPriority);
         console.log(state.age); // 1
-        setState({ age: state.age + 1 }, towPriority);
+        setState({ age: state.age + 1 }, twoPriority);
         console.log(state.age); // 1
       });
     }
@@ -647,6 +666,8 @@
 
 ### diff算法
 
+![React diff：同层比较 + key 标识 + 组件类型决定复用，将 O(n^3) 降为 O(n)](/images/diagrams/react-diff.webp)
+
 > 我们知道`React`会维护两个虚拟`DOM`，那么是如何来比较，如何来判断，做出最优的解呢？这就用到了`diff`算法
 
 ![](/images/s_poetries_work_images_20210307225249.png)
@@ -765,6 +786,8 @@
   * 在开发过程中，我们需要保证某个元素的 `key` 在其同级元素中具有唯一性。在 `React diff` 算法中，`React` 会借助元素的 `Key` 值来判断该元素是新近创建的还是被移动而来的元素，从而减少不必要的元素重新渲染
 
 ### 关于Fiber
+
+![Fiber 两阶段：render(reconciliation) 可中断地 diff 生成 Fiber 树，commit 阶段一次性提交到 DOM](/images/diagrams/react-fiber-phases.webp)
 
 > `React Fiber` 用类似 `requestIdleCallback` 的机制来做异步 `diff`。但是之前数据结构不支持这样的实现异步
 > `diff`，于是 `React` 实现了一个类似链表的数据结构，将原来的 `递归diff`（不可被中断） 变成了现在的
@@ -1434,6 +1457,8 @@ lifecycle-methods-diagram/)
 **react router如何配置懒加载**
 
 ![](/images/s_poetries_work_uploads_2023_02_bd495d045b61d7bc.png)
+
+> 补充（现代做法）：函数组件下更推荐 `const ContextDemo = lazy(() => import('./ContextDemo'))` 配合 `<Suspense fallback={...}>` 直接使用（无需 `React.` 前缀）。React 18 起 `Suspense` 不再只用于代码分割，还能配合支持 Suspense 的数据请求方案（如 React Query、SWR、RSC、`use()`）做「数据级」加载态。SSR 场景下 React 18 的 `renderToPipeableStream` + `<Suspense>` 支持选择性注水（selective hydration）与流式渲染。
 
 ## 11 性能优化
 
@@ -2112,6 +2137,8 @@ lifecycle-methods-diagram/)
   * 只有 函数定义组件 和 `hooks` 可以调用 `hooks`，避免在 类组件 或者 普通函数 中调用；
   * 不能在`useEffect`中使用`useState`，`React` 会报错提示；
   * 类组件不会被替换或废弃，不需要强制改造类组件，两种方式能并存；
+
+> 补充（现代做法）：上面「不能在 `useEffect` 中使用 `useState`」的表述并不准确。在 effect 回调里**调用 state 的更新函数**（如 `setCount(...)`）是完全合法且常见的；React 真正禁止的是把 `useState`/`useEffect` 这类 **Hook 本身**写在条件、循环、嵌套函数或 effect 回调内部——这会破坏「每次渲染 Hook 调用顺序一致」的规则。如果在 effect 内 `setState` 形成了无限循环，那是依赖数组写错（未把依赖列全或在无依赖 effect 里无条件 setState），而非语法不允许。
 
 **重要钩子**
 
@@ -3851,9 +3878,9 @@ concurrent renderer`（并发模式的渲染），它允许你进入`concurrent 
       setState({ age: state.age + 1 }, onePriority);
       console.log(state.age); // 0
       setTimeout(() => {
-        setState({ age: state.age + 1 }, towPriority);
+        setState({ age: state.age + 1 }, twoPriority);
         console.log(state.age); // 1
-        setState({ age: state.age + 1 }, towPriority);
+        setState({ age: state.age + 1 }, twoPriority);
         console.log(state.age); // 1
       });
     }
@@ -3884,8 +3911,7 @@ concurrent renderer`（并发模式的渲染），它允许你进入`concurrent 
             });
           }}
         >
-          <div>count1： {count1}</div>
-          <div>count2： {count2}</div>
+          <div>count： {count}</div>
         </div>
       );
     };
@@ -4152,6 +4178,16 @@ api useTransition`
 **源码**
 
 ![](/images/s_poetries_work_uploads_2023_02_4160e3dd6e3450ac.png)
+
+> 补充（现代做法）：本文止于 React 18，面试中常被追问 **React 19**（2024 年底稳定）。要点速记：
+>
+> - **Actions**：用 `useActionState`、`useFormStatus` 和 `<form action={fn}>` 统一处理表单提交的 pending / error / 乐观更新。
+> - **`useOptimistic`**：在异步请求未完成前先渲染乐观结果。
+> - **`use()`**：可在渲染中读取 Promise 或 Context（可配合 Suspense），且允许条件调用，是 Hook 规则的一个例外。
+> - **`ref` 作为 prop**：函数组件可直接接收 `ref` 作为普通 prop，`forwardRef` 不再必需。
+> - **元数据 / 资源**：组件内直接写 `<title>`、`<meta>`、`<link>` 会被提升到 `<head>`；样式表与脚本支持优先级与去重。
+> - **Server Components / Server Actions** 进入稳定，配合 RSC 框架（如 Next.js App Router）使用。
+> - **`ReactDOM.render`、`unmountComponentAtNode`、字符串 `ref`、legacy Context 等已彻底移除**，必须使用 `createRoot` / `hydrateRoot`。
 
 阅读全文
 

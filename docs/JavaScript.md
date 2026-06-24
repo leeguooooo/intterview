@@ -1,5 +1,21 @@
 原文链接: [https://interview.poetries.top/docs/excellent-docs/3-JS%E6%A8%A1%E5%9D%97.html](https://interview.poetries.top/docs/excellent-docs/3-JS%E6%A8%A1%E5%9D%97.html)
 
+## 简版速记
+
+> 面试前 5 分钟扫一遍的高频结论，细节看正文对应小节。
+
+- **数据类型**：7 种原始类型 `undefined / null / boolean / number / string / symbol / bigint` + 引用类型 `Object`。`typeof null === 'object'` 是历史 Bug；`NaN !== NaN`。
+- **类型检测**：`typeof` 判原始类型（除 null）+ 函数；`instanceof` 查原型链，判不了原始类型；最全用 `Object.prototype.toString.call(x)` 返回 `[object Xxx]`；判数组优先 `Array.isArray`。
+- **0.1 + 0.2 ≠ 0.3**：IEEE 754 双精度二进制表示精度丢失；判等用 `Math.abs(a-b) < Number.EPSILON`。
+- **类型转换**：`==` 会隐式转换，`===` 不会；对象转原始走 `Symbol.toPrimitive → valueOf → toString`；`[] == ![]` 为 `true`。
+- **闭包**：函数 + 其引用的外部作用域；本质是「当前环境存在指向父级作用域的引用」。`for` 循环输出问题用 `let` / IIFE / `setTimeout` 第三参解决。
+- **原型链**：`实例.__proto__ === 构造函数.prototype`；`构造函数.prototype.constructor === 构造函数`；沿 `__proto__` 向上直到 `null`。
+- **继承**：最推荐寄生组合继承 `Child.prototype = Object.create(Parent.prototype)` + 修正 `constructor`；ES6 用 `class … extends`。
+- **this**：优先级 `new` > `bind/call/apply` > `obj.foo()` > 普通调用；箭头函数无自身 this，取定义时外层第一个普通函数的 this，且不可被 bind 改变。
+- **内存**：原始类型存栈，对象存堆，赋值时原始拷值、对象拷引用地址；闭包变量存在堆中。
+- **Event Loop**：一个宏任务 → 清空所有微任务 →（必要时渲染）。微任务 `Promise.then / MutationObserver / queueMicrotask`，宏任务 `setTimeout / setInterval / I/O`。Node 把宏任务分 6 阶段、微任务额外有 `process.nextTick`（优先级最高，node 11 后每个宏任务后清空微任务）。
+- **深浅拷贝**：浅拷贝 `Object.assign` / 展开运算符只复制一层；深拷贝可用 `structuredClone`（现代）或递归 / `JSON.parse(JSON.stringify())`（有局限）。
+
 ## 1 数据类型基础
 
 ### 1.1 JS内置类型
@@ -211,6 +227,8 @@ caniuse的结果:
 ![](/images/s_poetries_work_images_20210309092826.png)
 
 其实现在的兼容性并不怎么好，只有chrome67、firefox、Opera这些主流实现，要正式成为规范，其实还有很长的路要走
+
+> 补充(现代做法)：`BigInt` 早已是 `ES2020` 正式标准，截至 2020 年起所有现代浏览器（Chrome / Firefox / Safari / Edge）与 Node 10.4+ 均已支持，上文「兼容性不好」的说法已过时。判空可直接用 `typeof x === 'bigint'`；与 `Number` 仍不能混合运算，需先显式转换。
 
 ### 1.7 JS 整数是怎么表示的
 
@@ -434,7 +452,7 @@ caniuse的结果:
     * 数字 + `boolean/null` -> 数字
     * 数字 + `undefined` -> `NaN`
   * `[1].toString() === '1'`
-  * `{}.toString() === '[object object]'`
+  * `{}.toString() === '[object Object]'`
   * `NaN !== NaN` 、+`undefined` 为 `NaN`
 
 > 首先我们要知道，在 `JS` 中类型转换只有三种情况，分别是：
@@ -553,7 +571,7 @@ caniuse的结果:
   * 两边的类型是否相同，相同的话就比较值的大小，例如`1==2`，返回`false`
   * 判断的是否是`null`和`undefined`，是的话就返回true
   * 判断的类型是否是`String`和`Number`，是的话，把`String`类型转换成`Number`，再进行比较
-  * 判断其中一方是否是`Boolean`，是的话就把`Boolean`转换成`N`umber`，再进行比较
+  * 判断其中一方是否是`Boolean`，是的话就把`Boolean`转换成`Number`，再进行比较
   * 如果其中一方为`Object`，且另一方为`String`、`Number`或者`Symbol`，会将`Object`转换成字符串，再进行比较
 
 ## 4 闭包
@@ -939,6 +957,8 @@ caniuse的结果:
 ![](/images/s_poetries_work_images_20210309102015.png)
 
 ### 5.3 能不能描述一下原型链
+
+![原型链：实例通过 __proto__ 逐级向上查找，实例→构造函数.prototype→……→Object.prototype→null](/images/diagrams/prototype-chain.webp)
 
 > JavaScript对象通过`__proto__` 指向父类对象，直到指向`Object`对象为止，这样就形成了一个原型指向的链条, 即原型链
 
@@ -1450,7 +1470,7 @@ caniuse的结果:
     b() // call b second
     
     function b() {
-    	console.log('call b fist')
+    	console.log('call b first')
     }
     function b() {
     	console.log('call b second')
@@ -1531,7 +1551,7 @@ caniuse的结果:
     b() // call b second
     
     function b() {
-        console.log('call b fist')
+        console.log('call b first')
     }
     function b() {
         console.log('call b second')
@@ -1556,14 +1576,16 @@ caniuse的结果:
 **require与import的区别**
 
   * `require`支持 动态导入，`import`不支持，正在提案 (`babel` 下可支持)
-  * `require`是 同步 导入，`impor`t属于 异步 导入
+  * `require`是 同步 导入，`import`属于 异步 导入
   * `require`是 值拷贝，导出值变化不会影响导入值；`import`指向 内存地址，导入值会随导出值而变化
 
 ## 12 异步编程
 
-> 这部分着重要理解 `Promise`、`async awiat`、`event loop` 等
+> 这部分着重要理解 `Promise`、`async await`、`event loop` 等
 
 ### 12.1 浏览器中的Event loop
+
+![事件循环：执行一个宏任务→清空所有微任务→（必要时渲染）→再取下一个宏任务，循环往复](/images/diagrams/event-loop.webp)
 
 简版总结
 
@@ -1687,7 +1709,7 @@ window)](https://www.bilibili.com/video/BV1oV411k7XY/?spm_id_from=333.788.recomm
 **解释一下这五种宏任务：**
 
   * `Timers Callback`： 涉及到时间，肯定越早执行越准确，所以这个优先级最高很容易理解。
-  * `Pending Callback`：处理网络、`IO` 等异常时的回调，有的 `*niux` 系统会等待发生错误的上报，所以得处理下。
+  * `Pending Callback`：处理网络、`IO` 等异常时的回调，有的 `*nix` 系统会等待发生错误的上报，所以得处理下。
   * `Poll Callback`：处理 `IO` 的 `data`，网络的 `connection`，服务器主要处理的就是这个。
   * `Check Callback`：执行 `setImmediate` 的回调，特点是刚执行完 `IO` 之后就能回调这个。
   * `Close Callback`：关闭资源的回调，晚点执行影响也不到，优先级最低。
@@ -1916,7 +1938,7 @@ window)](https://www.bilibili.com/video/BV1oV411k7XY/?spm_id_from=333.788.recomm
     read file sync success
 ```
 
-**Process.nextick() 和 Vue 的 nextick**
+**process.nextTick() 和 Vue 的 nextTick**
 
 ![](/images/s_poetries_work_images_20210414213602.png)
 
@@ -2841,6 +2863,8 @@ window)](https://www.bilibili.com/video/BV1oV411k7XY/?spm_id_from=333.788.recomm
 
 ## 15 深浅拷贝
 
+> 补充(现代做法)：深拷贝现在可直接用浏览器与 Node 17+ 内置的 `structuredClone(obj)`，它支持 `Date`、`Map`、`Set`、`ArrayBuffer`、循环引用等，比 `JSON.parse(JSON.stringify())` 更安全（后者会丢失 `undefined` / 函数 / `Symbol`，且无法处理循环引用与特殊对象）。浅拷贝优先用对象展开 `{...obj}` / 数组展开 `[...arr]`，比 `Object.assign` 更直观。
+
 ![](/images/s_poetries_work_images_20210414142630.png)
 
 **1\. 浅拷贝的原理和实现**
@@ -3486,6 +3510,8 @@ object.assign 的示例代码如下：
 
   * `Ajax`的原理简单来说是在用户和服务器之间加了—个中间层(`AJAX`引擎)，通过`XmlHttpRequest`对象来向服务器发异步请求，从服务器获得数据，然后用`javascript`来操作DOM而更新页面。使用户操作与服务器响应异步化。这其中最关键的一步就是从服务器获得请求数据
   * `Ajax`的过程只涉及`JavaScript`、`XMLHttpRequest`和`DOM`。`XMLHttpRequest`是`ajax`的核心机制
+
+> 补充(现代做法)：实际开发已基本用 `fetch` API 取代手写 `XMLHttpRequest`，它基于 Promise，配合 `async/await` 写法更简洁；需要请求超时 / 取消时用 `AbortController`。示例：`const res = await fetch(url); const data = await res.json();`。注意 `fetch` 默认不带 cookie（需 `credentials: 'include'`），且仅在网络错误时 reject，HTTP 4xx/5xx 不会 reject，要自行判断 `res.ok`。
 
 ### 19.1 Ajax 有那些优缺点
 
