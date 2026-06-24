@@ -3,6 +3,7 @@ import { defaultTheme } from "@vuepress/theme-default";
 import { defineUserConfig } from "vuepress";
 import { viteBundler } from "@vuepress/bundler-vite";
 import { pwaPlugin } from "@vuepress/plugin-pwa";
+import { sidebar } from "./sidebar.js";
 // {
 //   "text": "文章",
 //   "link": "/article/"
@@ -98,27 +99,7 @@ const config = defineUserConfig({
   ],
   "theme": defaultTheme({
     "logo": "images/logo.webp",
-    // 长文性能：拆小页后给 /基础篇/ 配 path-scoped 侧栏导航（样板，验证后推广其余大文件）。
-    "sidebar": {
-      "/基础篇/": [
-        { "text": "简版速记与目录", "link": "/基础篇/" },
-        { "text": "一、HTML、HTTP、WEB综合问题", "link": "/基础篇/01-HTML-HTTP-WEB综合问题.html" },
-        { "text": "二、CSS相关（1/2）", "link": "/基础篇/02-CSS相关-1.html" },
-        { "text": "二、CSS相关（2/2）", "link": "/基础篇/02-CSS相关-2.html" },
-        { "text": "三、JavaScript相关（1/4）", "link": "/基础篇/03-JavaScript相关-1.html" },
-        { "text": "三、JavaScript相关（2/4）", "link": "/基础篇/03-JavaScript相关-2.html" },
-        { "text": "三、JavaScript相关（3/4）", "link": "/基础篇/03-JavaScript相关-3.html" },
-        { "text": "三、JavaScript相关（4/4）", "link": "/基础篇/03-JavaScript相关-4.html" },
-        { "text": "四、jQuery相关", "link": "/基础篇/04-jQuery相关.html" },
-        { "text": "五、Bootstrap相关", "link": "/基础篇/05-Bootstrap相关.html" },
-        { "text": "六、微信小程序相关", "link": "/基础篇/06-微信小程序相关.html" },
-        { "text": "七、webpack相关", "link": "/基础篇/07-webpack相关.html" },
-        { "text": "八、框架相关", "link": "/基础篇/08-框架相关.html" },
-        { "text": "九、编程题相关", "link": "/基础篇/09-编程题相关.html" },
-        { "text": "十、前端综合问题", "link": "/基础篇/10-前端综合问题.html" },
-        { "text": "十一、HR面相关", "link": "/基础篇/11-HR面相关.html" },
-      ]
-    },
+    "sidebar": sidebar,
     // Canonical home is the apex (leeguoo.com/*.html reverse-proxies this content).
     // Pointing og:url/sitemap at leeguoo.com consolidates SEO weight to the apex
     // instead of splitting it between interview.* and leeguoo.com (duplicate content).
@@ -143,14 +124,14 @@ const config = defineUserConfig({
           },
           {
             "text": "进阶篇",
-            "link": "/进阶篇.html",
+            "link": "/进阶篇/",
             "originUrl":
               "https://interview.poetries.top/docs/base/improve.html",
             "updateTime": "2024-06-06 02.23.01"
           },
           {
             "text": "高频篇",
-            "link": "/高频篇.html",
+            "link": "/高频篇/",
             "originUrl":
               "https://interview.poetries.top/docs/base/high-frequency.html",
             "updateTime": "2024-06-06 02.13.00"
@@ -164,14 +145,14 @@ const config = defineUserConfig({
           },
           {
             "text": "CSS",
-            "link": "/CSS.html",
+            "link": "/CSS/",
             "originUrl":
               "https://interview.poetries.top/docs/excellent-docs/2-CSS%E6%A8%A1%E5%9D%97.html",
             "updateTime": "2024-06-06 02.13.14"
           },
           {
             "text": "JavaScript",
-            "link": "/JavaScript.html",
+            "link": "/JavaScript/",
             "originUrl":
               "https://interview.poetries.top/docs/excellent-docs/3-JS%E6%A8%A1%E5%9D%97.html",
             "updateTime": "2024-06-06 02.13.18"
@@ -192,14 +173,14 @@ const config = defineUserConfig({
           },
           {
             "text": "React",
-            "link": "/React.html",
+            "link": "/React/",
             "originUrl":
               "https://interview.poetries.top/docs/excellent-docs/6-React.html",
             "updateTime": "2024-06-06 02.13.26"
           },
           {
             "text": "Vue",
-            "link": "/Vue.html",
+            "link": "/Vue/",
             "originUrl":
               "https://interview.poetries.top/docs/excellent-docs/7-Vue.html",
             "updateTime": "2024-06-06 02.13.31"
@@ -213,7 +194,7 @@ const config = defineUserConfig({
           },
           {
             "text": "前端工程化",
-            "link": "/前端工程化.html",
+            "link": "/前端工程化/",
             "originUrl":
               "https://interview.poetries.top/docs/excellent-docs/9-%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E6%A8%A1%E5%9D%97.html",
             "updateTime": "2024-06-06 02.13.48"
@@ -234,7 +215,7 @@ const config = defineUserConfig({
           },
           {
             "text": "Uniapp",
-            "link": "/Uniapp.html",
+            "link": "/Uniapp/",
             "originUrl":
               "https://interview.poetries.top/docs/excellent-docs/12-Uniapp%E6%A8%A1%E5%9D%97.html",
             "updateTime": "2024-06-06 02.13.55"
@@ -262,14 +243,14 @@ const config = defineUserConfig({
           },
           {
             "text": "常用设计模式",
-            "link": "/常用设计模式.html",
+            "link": "/常用设计模式/",
             "originUrl":
               "https://interview.poetries.top/docs/excellent-docs/16-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F.html",
             "updateTime": "2024-06-06 02.14.07"
           },
           {
             "text": "设计模式 2",
-            "link": "/设计模式 2.html",
+            "link": "/设计模式 2/",
             "originUrl":
               "https://interview.poetries.top/docs/base/design-pattern.html",
             "updateTime": "2024-06-06 02.14.11"
@@ -351,7 +332,7 @@ const config = defineUserConfig({
           },
           {
             "text": "Vue-渲染器的核心 Diff 算法",
-            "link": "/Vue-渲染器的核心 Diff 算法.html",
+            "link": "/Vue-渲染器的核心 Diff 算法/",
             "originUrl":
               "https://interview.poetries.top/principle-docs/vue/08-%E6%B8%B2%E6%9F%93%E5%99%A8%E7%9A%84%E6%A0%B8%E5%BF%83%20Diff%20%E7%AE%97%E6%B3%95.html",
             "updateTime": "2024-06-06 02.24.26"

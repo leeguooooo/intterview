@@ -7,6 +7,91 @@
         "source": "/基础篇.html",
         "destination": "/基础篇/",
         "type": 301
+      },
+      {
+        "source": "/进阶篇.html",
+        "destination": "/进阶篇/",
+        "type": 301
+      },
+      {
+        "source": "/Vue.html",
+        "destination": "/Vue/",
+        "type": 301
+      },
+      {
+        "source": "/每日一题-每日一题.html",
+        "destination": "/每日一题-每日一题/",
+        "type": 301
+      },
+      {
+        "source": "/高频篇.html",
+        "destination": "/高频篇/",
+        "type": 301
+      },
+      {
+        "source": "/设计模式 2.html",
+        "destination": "/设计模式 2/",
+        "type": 301
+      },
+      {
+        "source": "/Uniapp.html",
+        "destination": "/Uniapp/",
+        "type": 301
+      },
+      {
+        "source": "/面经-前端面经汇总.html",
+        "destination": "/面经-前端面经汇总/",
+        "type": 301
+      },
+      {
+        "source": "/高频考点.html",
+        "destination": "/高频考点/",
+        "type": 301
+      },
+      {
+        "source": "/手写篇.html",
+        "destination": "/手写篇/",
+        "type": 301
+      },
+      {
+        "source": "/进阶性能优化.html",
+        "destination": "/进阶性能优化/",
+        "type": 301
+      },
+      {
+        "source": "/React.html",
+        "destination": "/React/",
+        "type": 301
+      },
+      {
+        "source": "/面试指南.html",
+        "destination": "/面试指南/",
+        "type": 301
+      },
+      {
+        "source": "/JavaScript.html",
+        "destination": "/JavaScript/",
+        "type": 301
+      },
+      {
+        "source": "/CSS.html",
+        "destination": "/CSS/",
+        "type": 301
+      },
+      {
+        "source": "/常用设计模式.html",
+        "destination": "/常用设计模式/",
+        "type": 301
+      },
+      {
+        "source": "/Vue-渲染器的核心 Diff 算法.html",
+        "destination": "/Vue-渲染器的核心 Diff 算法/",
+        "type": 301
+      },
+      {
+        "source": "/前端工程化.html",
+        "destination": "/前端工程化/",
+        "type": 301
       }
     ]
   }
