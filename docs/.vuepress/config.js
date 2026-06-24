@@ -27,6 +27,7 @@ const config = defineUserConfig({
   "description": "为前端开发者准备的面试题库",
   "head": [
     ["link", { "rel": "stylesheet", "href": "/safe-area.css" }],
+    ["link", { "rel": "stylesheet", "href": "/perf.css" }],
     ["link", { "rel": "manifest", "href": "/manifest.json" }],
     [
       "meta",
@@ -79,6 +80,20 @@ const config = defineUserConfig({
       "script",
       {},
       "(function(){var M={\"leeguoo.com\":\"G-RCV0Z432Y8\",\"www.leeguoo.com\":\"G-RCV0Z432Y8\",\"blog.leeguoo.com\":\"G-1PPMNQSBQ5\",\"interview.leeguoo.com\":\"G-3J49P435VZ\"};var id=M[location.hostname];if(!id)return;if(document.querySelector('script[data-ga4]'))return;var g=document.createElement('script');g.async=true;g.src='https://www.googletagmanager.com/gtag/js?id='+id;g.setAttribute('data-ga4',id);document.head.appendChild(g);window.dataLayer=window.dataLayer||[];function gtag(){window.dataLayer.push(arguments);}window.gtag=gtag;gtag('js',new Date());gtag('config',id);})();"
+    ],
+    // 额外的全站 GA4 属性(G-RK0BJ04WPX)：无条件加载，与上面按域名分流的 GA4 并存，
+    // 不替代——用于跨多个域名统一汇总统计。
+    [
+      "script",
+      {
+        "async": true,
+        "src": "https://www.googletagmanager.com/gtag/js?id=G-RK0BJ04WPX"
+      }
+    ],
+    [
+      "script",
+      {},
+      "window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-RK0BJ04WPX');"
     ]
   ],
   "theme": defaultTheme({

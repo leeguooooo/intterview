@@ -1,0 +1,16 @@
+/* 长文性能优化：跳过视口外重型内容块的布局与绘制。
+ *
+ * 长文的 DOM 体积主要来自 Shiki 高亮——每个 token 一个带 inline style 的
+ * <span>，一篇 500+ 代码块的页面会产出十万级节点。content-visibility:auto
+ * 让浏览器只渲染视口附近的块，离屏的跳过 layout/paint，滚动与首屏渲染大幅
+ * 减负，且不改任何内容。
+ *
+ * contain-intrinsic-size 的 `auto <length>`：首次渲染后浏览器记住块的真实
+ * 高度，再次离屏时用记住的值占位，所以滚动条稳定、TOC 锚点跳转能落到正确
+ * 位置；<length> 只是首次渲染前的占位估值。 */
+.theme-default-content div[class*="language-"],
+.theme-default-content pre,
+.theme-default-content table {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 320px;
+}
