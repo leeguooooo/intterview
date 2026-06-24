@@ -60,11 +60,33 @@ const config = defineUserConfig({
         "content": "/images/icons/icon-144x144.png"
       }
     ],
-    ["meta", { "name": "msapplication-TileColor", "content": "#000000" }]
+    ["meta", { "name": "msapplication-TileColor", "content": "#000000" }],
+    // AdSense (immediate loader so Google's site-verification crawler detects it
+    // without needing JS interaction) + account meta. pub id shared with leeguoo.com.
+    ["meta", { "name": "google-adsense-account", "content": "ca-pub-4085449715128420" }],
+    [
+      "script",
+      {
+        "async": true,
+        "src": "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4085449715128420",
+        "crossorigin": "anonymous"
+      }
+    ],
+    // Host-aware GA4: same map as the blog so the proxied copy at leeguoo.com/*.html
+    // picks the leeguoo.com stream, while direct interview.leeguoo.com visits use
+    // their own stream. data-ga4 guard avoids a double-load.
+    [
+      "script",
+      {},
+      "(function(){var M={\"leeguoo.com\":\"G-RCV0Z432Y8\",\"www.leeguoo.com\":\"G-RCV0Z432Y8\",\"blog.leeguoo.com\":\"G-1PPMNQSBQ5\",\"interview.leeguoo.com\":\"G-3J49P435VZ\"};var id=M[location.hostname];if(!id)return;if(document.querySelector('script[data-ga4]'))return;var g=document.createElement('script');g.async=true;g.src='https://www.googletagmanager.com/gtag/js?id='+id;g.setAttribute('data-ga4',id);document.head.appendChild(g);window.dataLayer=window.dataLayer||[];function gtag(){window.dataLayer.push(arguments);}window.gtag=gtag;gtag('js',new Date());gtag('config',id);})();"
+    ]
   ],
   "theme": defaultTheme({
     "logo": "images/logo.webp",
-    "hostname": "https://interview.leeguoo.com",
+    // Canonical home is the apex (leeguoo.com/*.html reverse-proxies this content).
+    // Pointing og:url/sitemap at leeguoo.com consolidates SEO weight to the apex
+    // instead of splitting it between interview.* and leeguoo.com (duplicate content).
+    "hostname": "https://leeguoo.com",
     "externalLinkIcon": false,
     "colorModeSwitcher": true,
     "navbar": [
