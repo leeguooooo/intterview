@@ -100,10 +100,12 @@ const config = defineUserConfig({
   "theme": defaultTheme({
     "logo": "images/logo.webp",
     "sidebar": sidebar,
-    // Canonical home is the apex (leeguoo.com/*.html reverse-proxies this content).
-    // Pointing og:url/sitemap at leeguoo.com consolidates SEO weight to the apex
-    // instead of splitting it between interview.* and leeguoo.com (duplicate content).
-    "hostname": "https://leeguoo.com",
+    // Canonical is the interview subdomain, which serves the full styled site
+    // (Vercel). leeguoo.com only reverse-proxies *.html, so static assets break
+    // there — we therefore 301 leeguoo.com/<interview paths> to this subdomain at
+    // the Cloudflare layer, and point canonical/og:url/sitemap here so Google
+    // indexes the working pages and the 301 carries old SEO weight over.
+    "hostname": "https://interview.leeguoo.com",
     "externalLinkIcon": false,
     "colorModeSwitcher": true,
     "navbar": [
