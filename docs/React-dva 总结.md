@@ -1,5 +1,16 @@
 原文链接: [https://interview.poetries.top/principle-docs/react/02-Dva%E6%80%BB%E7%BB%93.html](https://interview.poetries.top/principle-docs/react/02-Dva%E6%80%BB%E7%BB%93.html)
 
+## 简版速记
+
+- **dva 本质**：`dva = React-Router + Redux + Redux-saga` 的封装，用 `model` 统一管理 state、reducer、effect、subscription。
+- **5 个核心 API**：`dva(opts)` → `app.use()` → `app.model()` → `app.router()` → `app.start()`。
+- **model 5 要素**：`namespace`（命名空间）、`state`（初始数据）、`reducers`（同步，唯一能改 state）、`effects`（异步，Generator 函数，用 `call/put/select`）、`subscriptions`（副作用订阅，如路由监听）。
+- **dispatch 格式**：`dispatch({ type: 'namespace/actionName', payload: data })`，跨 model 必须带 namespace；同 model 内 `put` 可省略 namespace。
+- **effect 三件套**：`call(fn, ...args)` 调异步函数；`put({ type, payload })` 触发 action；`select(state => state.xxx)` 读其他 model 数据。
+- **subscription 返回值**：必须返回取消订阅函数，否则 `app.unmodel()` 会警告。
+- **connect 用法**：`export default connect(mapStateToProps)(Component)`，将 model 数据注入组件 props。
+- **dva vs redux**：dva 把 action/reducer/saga 合并进单个 model 文件，样板代码更少；redux 三者分离，更灵活。
+
 ## 一、环境搭建
 ```javascript
     $ npm install dva-cli -g
@@ -57,6 +68,8 @@
     dva = React-Router + Redux + Redux-saga
 ```
 
+> 补充(现代做法)：dva 自 2019 年后基本停止维护（npm 周下载量持续下滑）。新项目推荐使用 **Redux Toolkit（RTK）+ RTK Query** 替代（官方推荐、TypeScript 友好、内置 Immer）；轻量场景可选 **Zustand** 或 **Jotai**。dva 仍在 Ant Design Pro 的旧版本中大量使用，读懂存量代码仍有必要。
+
   * 仅有 5 个`API`，仅有5个主要的`api`
   * 支持 `HMR`，支持模块的热更新
   * 支持 `SSR (ServerSideRender)`，支持服务器端渲染
@@ -70,7 +83,7 @@
 
 #### 2.2.1 app = dva(Opts)
 
-> `app = dva(Opts)`：创建应用，返回 `dva` 实例。(注：dva 支持多实例)**
+> `app = dva(Opts)`：创建应用，返回 `dva` 实例。(注：dva 支持多实例)
 
 在`opts`可以配置所有的`hooks`
 ```javascript
@@ -1111,7 +1124,7 @@ window)](http://www.cnblogs.com/wonyun/p/5930333.html)**
     // querySuccess这个action的作用在于，修改了model的数据
     export default {
       namespace: 'users',
-      state： {}，
+      state: {},
       subscriptions: {},
       effects: {},
       reducers: {
@@ -1252,7 +1265,7 @@ window)](http://www.cnblogs.com/wonyun/p/5930333.html)**
 ```javascript
     export default {
       namespace: 'users',
-      state： {}，
+      state: {},
       subscriptions: {},
       effects: {
         // 添加effects函数

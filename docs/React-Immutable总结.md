@@ -1,5 +1,22 @@
 原文链接: [https://interview.poetries.top/principle-docs/react/10-Immutable%E6%80%BB%E7%BB%93.html](https://interview.poetries.top/principle-docs/react/10-Immutable%E6%80%BB%E7%BB%93.html)
 
+## 简版速记
+
+- **Immutable Data**：一旦创建不可更改，任何修改都返回新对象，原对象不变。
+- **核心原理**：Persistent Data Structure（持久化数据结构）+ Structural Sharing（结构共享），只复制变更节点及其父节点，其余节点共享，O(log n) 性能。
+- **解决的问题**：`setState` 即使值未变也触发 re-render；`PureRenderMixin`/`React.PureComponent` 只做浅比较，对嵌套对象无效；Immutable 对象引用必变（有变化）或不变（无变化），让浅比较直接判断深层数据。
+- **最常用类型**：`Map`（对应 Object）、`List`（对应 Array）；其余如 `Set`、`OrderedMap`、`Record` 按需使用。
+- **最常用 API**：
+  - 转换：`fromJS()` JS→Immutable，`toJS()` Immutable→JS（性能开销大，慎用）
+  - 比较：`Immutable.is(a, b)` 值比较（等价于深比较）
+  - 读：`get(key)`、`getIn([k1, k2])`
+  - 写：`set(key, val)`、`setIn(path, val)`、`update(key, fn)`、`merge()`、`mergeDeep()`
+  - 删：`delete(key)`、`clear()`
+  - 遍历：`map()`、`filter()`、`forEach()`、`reduce()`
+- **与 Redux 配合**：store 中存 Immutable 对象；`shouldComponentUpdate` 用 `Immutable.is()` 比较，避免深比较性能损耗。
+- **缺点**：包体积较大（~60 KB）、API 与原生不兼容、容易与普通对象混淆。
+- **面试高频**：为何用 Immutable？→ 解决 PureComponent 浅比较的局限；结构共享避免 deepClone 性能损耗；天然支持撤销/重做（时间旅行）。
+
 ## 一、前言
 
 > 从问题说起：熟悉 `React` 组件生命周期的话都知道：调用 `setState` 方法总是会触发 `render` 方法从而进行 `vdom re-
@@ -190,7 +207,7 @@
     // 不常用
     const t2 = Immutable.fromJS({a: {b: [10, 20, 30]}, c: 40}, function(key, value) {
         // 定制转换方式，下这种就是将Array转换为List，Object转换为Map
-        const isIndexed = Immutable.Iterable.isIndexed(value);
+        const isIndexed = Immutable.Iterable.isIndexed(value); // v4 已改为 Immutable.isIndexed(value)
         return isIndexed ? value.toList() : value.toOrderedMap();
         // true, "b", {b: [10, 20, 30]}
         // false, "a", {a: {b: [10, 20, 30]}, c: 40}
@@ -205,7 +222,7 @@
 > `immutable`数据应该被当作值而不是对象，值是表示该事件在特定时刻的状态。这个原则对理解不可变数据的适当使用是最重要的。为了将`Immutable.js`数据视为值，就必须使用`Immutable.is()`函数或`.equals()`方法来确定值相等，而不是确定对象引用标识的
 > `===` 操作符
 
-  * 所以`toJS()`就是用来对两个`immutable`对象进行值比较的。使用方式类似于 `Object.is(obj1, obj2)`，接收两个参数
+  * 注意：上面引用块描述的是 `Immutable.is()` 的用途，而非 `toJS()`。`toJS()` 的实际作用是将 Immutable 对象深层转换为普通 JS 对象（性能开销较大，不建议频繁调用）。值比较应使用 `Immutable.is(a, b)` 或 `.equals()`，使用方式类似于 `Object.is(obj1, obj2)`，接收两个参数
 ```javascript
     const map1 = Immutable.Map({a:1, b:1, c:1});
     const map2 = Immutable.Map({a:1, b:1, c:1});
@@ -342,7 +359,7 @@
 **count()**
 ```javascript
     // map
-    console.log(Immutable.fromJS({key: "value2", key1: "value1"}).count());// 4
+    console.log(Immutable.fromJS({key: "value2", key1: "value1"}).count());// 2
     // 可以定制条件，来确定大小
     console.log(Immutable.fromJS({key: 1, key1: 34}).count((value, key, obj) => {
         return value > 3;
@@ -466,7 +483,7 @@
 
 > 和 `setIn`使用方式一致
 
-**3、清空元素 lear()**
+**3、清空元素 clear()**
 ```javascript
     // List
     console.log(Immutable.fromJS([1, 2, 3]).clear().toJS());// []
@@ -616,7 +633,7 @@
 
 > `keyOf()`、`lastKeyOf()` 根据 `value` 返回`key`。
 ```javascript
-    / List
+    // List
     console.log(Immutable.fromJS([1, 2, 3, {a: {b: 111}}]).keyOf(Immutable.fromJS({a: {b: 111}}))); // 3
     console.log(Immutable.fromJS([1, 2, 3, {a: {b: 111}}]).keyOf(2)); // 1
     
@@ -756,7 +773,7 @@
 
 **2、rest() butLast()**
 ```javascript
-    / List
+    // List
     // rest() 返回删除第一个元素后的 List
     console.log(Immutable.fromJS([1, {a: 1}, 3, 4, 5, 6]).rest().rest().toJS()); // [{a: 1}, 3, 4, 5, 6]
     // butLast() 返回删除最后一个元素后的 List
@@ -1005,7 +1022,7 @@
     }, $test1).toJS(), $test1.toJS());
 ```
 
-### jonin() 转换为字符串
+### join() 转换为字符串
 
 > 使用方式和原生`Array`的`join()`一样
 ```javascript
@@ -1037,6 +1054,8 @@
 ### includes() 是否包含某些元素
 
 > `includes()`、`contains()`这俩等效
+
+> 补充(现代做法): Immutable.js **v4** 已移除 `contains()` 别名，请统一使用 `includes()`。
 ```javascript
     // List
     // 对象是否包含某个元素，对Immutable元素使用Immutable.is 进行比较
@@ -1248,6 +1267,8 @@
 
 > 利用 `immutable.js` 不可变的特性，可以极大的优化`React render`的冗余执行。`React`
 > 官方提供的`PureRenderMixin`是浅比较
+
+> 补充(现代做法): `PureRenderMixin` 已废弃。现代 React 中使用 `React.PureComponent`（类组件）或 `React.memo`（函数组件）实现浅比较优化；结合 Immutable.js 时，在 `shouldComponentUpdate` 中用 `Immutable.is()` 做值比较，或直接使用 [react-immutable-pure-component](https://github.com/Monar/react-immutable-pure-component)。若追求更小包体积和原生 JS 语法，可考虑用 [immer](https://immerjs.github.io/immer/)（produce + useImmer hook）替代 immutable.js。
 
 **1、immutable-pure-render-decorator**
 

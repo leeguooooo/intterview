@@ -1,5 +1,16 @@
 原文链接: [https://interview.poetries.top/principle-docs/comprehensive/01-%E8%99%9A%E6%8B%9FDOM%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90.html#%E4%BB%80%E4%B9%88%E6%98%AF-virtual-dom](https://interview.poetries.top/principle-docs/comprehensive/01-%E8%99%9A%E6%8B%9FDOM%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90.html#%E4%BB%80%E4%B9%88%E6%98%AF-virtual-dom)
 
+## 简版速记
+
+- **Virtual DOM 是什么**：用普通 JS 对象描述 DOM 结构，核心字段：`sel`、`data`、`children`、`text`、`elm`、`key`。
+- **为什么用**：手动操作 DOM 繁琐且易出错；MVVM 框架需要高效同步视图与状态；模板引擎无法追踪状态变化。
+- **核心优势**：状态变化时先在内存中构建新 VNode 树，再通过 diff 算法找最小差异，最后批量更新真实 DOM，减少重排重绘。
+- **额外能力**：跨平台——同一套 VNode 描述可渲染为 DOM（浏览器）、字符串（SSR）、原生组件（React Native / Weex）、小程序节点。
+- **Snabbdom 三件套**：`h()` 创建 VNode；`init(modules)` 注册模块并返回 `patch()`；`patch(oldVnode, newVnode)` 执行 diff 并更新 DOM。
+- **diff 关键规则**：只做**同层比较**（O(n)）；先做四端对比（旧头/新头、旧尾/新尾、旧头/新尾、旧尾/新头）；命中则复用 DOM 节点并移位，未命中再按 `key` 查表；剩余节点批量增删。
+- **key 的作用**：给 diff 提供稳定标识，让"移动"代替"删除+创建"，是列表渲染性能的关键。
+- **面试一句话**：Virtual DOM 不是为了比直接操作 DOM 更快，而是在**保持代码可维护性的同时**，把 DOM 操作降到合理最小值。
+
 ## 什么是 Virtual DOM
 
   1. `Virtual DOM`(虚拟 DOM)，是由普通的 `JS` 对象来描述 `DOM` 对象，因为不是真实的 `DOM` 对象，所以叫 `Virtual DOM`
@@ -51,6 +62,8 @@
     * 源码使用 `TypeScript` 开发
     * 最快的 `Virtual DOM` 之一
   * [virtual-dom (opens new window)](https://github.com/Matt-Esch/virtual-dom)
+
+> 补充(现代做法): `Vue 3` 不再沿用 Snabbdom，而是从零重写了 VDOM 运行时（`@vue/runtime-core`），引入**编译时静态提升**（`hoistStatic`）、**Block Tree**（只追踪动态节点）和 `PatchFlags` 位标记，使 diff 代价与动态节点数量成正比而非整棵树。`React 18` 同样引入 **Concurrent Mode**，通过 Fiber 架构把 VDOM reconcile 拆分为可中断的工作单元，配合 `startTransition` 实现低优先级更新。面试提到这些要点可与 Vue 2/Snabbdom 做对比。
 
 ## Snabbdom 基本使用
 
@@ -128,7 +141,7 @@
     let app = document.querySelector('#app')
     // 第一个参数：可以是DOM元素，内部会把DOM元素转换成VNode
     // 第二个参数：VNode
-    // 返回值：VNde
+    // 返回值：VNode
     let oldVnode = patch(app, vnode)
     
     // 假设的时刻
@@ -615,7 +628,7 @@ src 目录结构
     * 解析选择器，设置标签的 `id` 和 `class` 属性
     * 执行模块的 `create` 钩子函数
     * 如果 `vnode` 有 `children`，创建子 `vnode` 对应的 `DOM`，追加到 `DOM` 树
-    * 如果 `vnode` 的 `text` 值是 `string/number`，创建文本节点并追击到 `DOM` 树
+    * 如果 `vnode` 的 `text` 值是 `string/number`，创建文本节点并追加到 `DOM` 树
     * 执行用户设置的 `create` 钩子函数
     * 如果有用户设置的 `insert` 钩子函数，把 `vnode` 添加到队列中
 ```js
@@ -765,7 +778,7 @@ src 目录结构
   * 功能: 
     * `diff` 算法的核心，对比新旧节点的 `children`，更新 `DOM`
   * 执行过程:
-  * 要对比两棵树的差异，我们可以取第一棵树的每一个节点依次和第二课树的每一个节点比 较，但是这样的时间复杂度为 `O(n^3)`
+  * 要对比两棵树的差异，我们可以取第一棵树的每一个节点依次和第二棵树的每一个节点比 较，但是这样的时间复杂度为 `O(n^3)`
   * 在 `DOM` 操作的时候我们很少很少会把一个父节点移动/更新到某一个子节点
   * 因此只需要找同级别的子节点依次比较，然后再找下一级别的节点比较，这样算法的时间复 杂度为 `O(n)`
 

@@ -1,5 +1,16 @@
 原文链接: [https://interview.poetries.top/principle-docs/comprehensive/11-%E5%AF%B9%E6%AF%94%20Koa%20%E5%92%8C%20Redux-%E5%88%86%E6%9E%90%E5%89%8D%E7%AB%AF%E4%B8%AD%E7%9A%84%E4%B8%AD%E9%97%B4%E4%BB%B6%E7%90%86%E5%BF%B5.html](https://interview.poetries.top/principle-docs/comprehensive/11-%E5%AF%B9%E6%AF%94%20Koa%20%E5%92%8C%20Redux-%E5%88%86%E6%9E%90%E5%89%8D%E7%AB%AF%E4%B8%AD%E7%9A%84%E4%B8%AD%E9%97%B4%E4%BB%B6%E7%90%86%E5%BF%B5.html)
 
+## 简版速记
+
+- **中间件本质**：对核心流程的可组合拦截与增强，将横切关注点（日志、鉴权、错误处理等）从业务代码中剥离。
+- **Koa 洋葱模型**：`app.use` 注册中间件 → `koa-compose` 将数组转为嵌套 Promise 调用链；`await next()` 前是"进"，`await next()` 后是"出"；外层中间件可感知内层的请求与响应两个阶段。
+- **koa-compose 核心**：递归 `dispatch(i)` + `dispatch.bind(null, i+1)` 作为 `next`；防重复调用：`if (i <= index) reject`；最终中间件调用 `next` 返回 `Promise.resolve()`，不报错。
+- **Koa v1 vs v2**：v1 用 `Generator + co`，v2 改为 `async/await`，思想相同，写法更简洁。
+- **Express 对比 Koa**：Express 是线形回调模型（`next()` 推进游标），无法在同一个中间件里同时包裹请求前后逻辑；Koa 洋葱模型可以，更易做统一的错误处理和计时。
+- **Redux 中间件**：签名为 `({getState, dispatch}) => next => action => {}`；`applyMiddleware` 用 `compose` 将所有中间件包裹成一个增强 `dispatch`；执行顺序：同步时与 Koa 类似；异步时（如 `redux-thunk`）会提前返回上层，异步完成后再继续向下。
+- **fetch-wrap / umi-request**：同一思想应用到 HTTP 客户端，每个中间件接收 `(url, options, innerFetch)` 或 `(params, next)`，通过递归/compose 串联。
+- **面试考点**：手写 `koa-compose`；解释洋葱模型；Redux 中间件三层柯里化结构；Koa 与 Express 中间件模型区别。
+
 ## 以 Koa 为代表的 Node.js 中间件化设计
 
 说到中间件，很多开发者都会想到 Koa.js，其中间件设计无疑是前端中间件思想的典型代表之一。我们先来剖析 Koa.js 的设计和实现。
@@ -267,6 +278,8 @@ Koa 里，一般只需要一个中间件就能全部搞定。
     }
 ```
 
+> 补充(现代做法)：Redux Toolkit（RTK）已成为官方推荐方案。`configureStore` 内部自动调用 `applyMiddleware`，默认集成 `redux-thunk`，并通过 `getDefaultMiddleware()` 提供 serializability check 等开发期中间件。手写 `applyMiddleware` 的场景已较少，但理解其三层柯里化结构仍是面试重点。
+
 **如上代码，我们将 Redux 中间件特点总结为：**
 
   * Redux 中间件接收`getState`和`dispatch`两个方法组成的对象作为参数；
@@ -280,7 +293,7 @@ Koa 里，一般只需要一个中间件就能全部搞定。
 看上去也像是一个洋葱圈模型，但是对于同步调用和异步调用稍有不同，以三个中间件为例。
 
   * 三个中间件均是正常同步调用`next(action)`，则执行顺序为：`中间件 1 before next` → `中间件 2 before next` → `中间件 3 before next` → `dispatch 方法调用` → `中间件 3 after next` → `中间件 2 after next` → `中间件 1 after next`。
-  * 第二个中间件没有调用`next(action)`，则执行顺序为：`中间件 1 befoe next` → `中间件 2 逻辑` → `中间件 1 after next`，注意此时中间件 3 没有被执行。
+  * 第二个中间件没有调用`next(action)`，则执行顺序为：`中间件 1 before next` → `中间件 2 逻辑` → `中间件 1 after next`，注意此时中间件 3 没有被执行。
   * 第二个中间件异步调用`next(action)`，其他中间件均是正常同步调用`next(action)`，则执行顺序为：`中间件 1 before next` → `中间件 2 同步代码部分` → `中间件 1 after next` → `中间件 2 异步代码部分 before next` → `中间件 3 before next` → `dispatch 方法调用` → `中间件 3 after next` → `中间件 2 异步代码部分 after next`。
 
 ## 利用中间件思想，实现一个中间件化的 Fetch 库
@@ -354,7 +367,7 @@ Koa 里，一般只需要一个中间件就能全部搞定。
     	
     	return function extendedFetch(url, options) {
     		try {
-    		  // 每一个 Fetch 中间件通过 Promsie 来串联
+    		  // 每一个 Fetch 中间件通过 Promise 来串联
     		  return Promise.resolve(next(url, options || {}, innerFetch));
     		} catch (err) {
     		  return Promise.reject(err);
@@ -394,6 +407,8 @@ Koa 里，一般只需要一个中间件就能全部搞定。
       };
     }
 ```
+
+> 补充(现代做法)：`umi-request` 已停止维护（2023 年归档）。UmiJS 4.x 生态推荐使用 `@umijs/max` 内置的请求方案或直接使用 `ahooks` 的 `useRequest`（底层基于 `axios`）。中间件化封装思路本身仍适用于任何 HTTP 客户端库。
 
 > 我们可以看到，上述源码更像 Koa 的实现了，但其实道理和上面的 fetch-wrap
 > 大同小异。至此，相信你已经了解了中间件的思想，也能够体会洋葱模型的精妙设计

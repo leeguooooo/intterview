@@ -1,5 +1,15 @@
 原文链接: [https://interview.poetries.top/principle-docs/react/11-React16%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E6%9B%B4%E6%94%B9%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E4%B8%8A.html](https://interview.poetries.top/principle-docs/react/11-React16%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E6%9B%B4%E6%94%B9%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E4%B8%8A.html)
 
+## 简版速记
+
+- **React 15 三大阶段**：Mounting（挂载）→ Updating（更新）→ Unmounting（卸载）
+- **挂载顺序**：`constructor` → `componentWillMount` → `render` → `componentDidMount`
+- **更新顺序（父组件触发）**：`componentWillReceiveProps` → `shouldComponentUpdate` → `componentWillUpdate` → `render` → `componentDidUpdate`
+- **更新顺序（自身 setState）**：跳过 `componentWillReceiveProps`，从 `shouldComponentUpdate` 开始
+- **高频易错点**：`componentWillReceiveProps` **不是**由 props 内容变化触发的，而是由**父组件 re-render** 触发的；即使传入的 props 值没变，只要父组件重新渲染就会调用它
+- **性能优化**：`shouldComponentUpdate` 默认返回 `true`（无条件重渲染），可手动判断或使用 `PureComponent`（浅比较）来跳过不必要的 render
+- **卸载**：只有 `componentWillUnmount` 一个钩子；常见触发原因：父组件将其从 JSX 中移除，或 `key` 值变化
+
 ## 拆解 React 生命周期：从 React 15 说起
 
 > 在 React 15 中，大家需要关注以下几个生命周期方法：
@@ -119,6 +129,8 @@
     }
     ReactDOM.render(<LifeCycleContainer />, document.getElementById("root"));
 ```
+
+> 补充（现代做法）：`ReactDOM.render` 在 React 18 中已废弃，应改用 `createRoot`：`ReactDOM.createRoot(document.getElementById('root')).render(<LifeCycleContainer />)`。
 
 该入口文件对应的 index.html 中预置了 id 为 root 的真实 DOM 节点作为根节点，body 标签内容如下：
 ```html
@@ -261,7 +273,7 @@ state 的方法（this.changeOwnText），并用一个新的 button 按钮来承
 ![](/images/s_poetries_work_images_20210428193914.webp)
 
 可以看到，this.state.ownText
-这个状态和子组件完全无关。但是当我点击“修改父组件自有文本内容”这个按钮的时候，`componentReceiveProps`
+这个状态和子组件完全无关。但是当我点击”修改父组件自有文本内容”这个按钮的时候，`componentWillReceiveProps`
 仍然被触发了，效果如下图所示：
 
 ![](/images/s_poetries_work_images_20210428193937.webp)
@@ -270,7 +282,7 @@ state 的方法（this.changeOwnText），并用一个新的 button 按钮来承
 
 ![](/images/s_poetries_work_images_20210428194003.webp)
 
-> `componentReceiveProps 并不是由 props 的变化触发的，而是由父组件的更新触发的`，这个结论，请你谨记。
+> `componentWillReceiveProps 并不是由 props 的变化触发的，而是由父组件的更新触发的`，这个结论，请你谨记。
 
 **组件自身 setState 触发的更新**
 
@@ -302,9 +314,11 @@ state 的方法（this.changeOwnText），并用一个新的 button 按钮来承
 这个钩子。
 
 React 组件会根据 `shouldComponentUpdate` 的返回值，来决定是否执行该方法之后的生命周期，进而决定是否对组件进行`re-
-render（重渲染`）。`shouldComponentUpdate` 的默认值为 `true`，也就是说“无条件 re-
+render（重渲染`）。`shouldComponentUpdate` 的默认值为 `true`，也就是说”无条件 re-
 render”。在实际的开发中，我们往往通过手动往 `shouldComponentUpdate` 中填充判定逻辑，或者直接在项目中引入
-`PureComponent` 等最佳实践，来实现“有条件的 re-render”。
+`PureComponent` 等最佳实践，来实现”有条件的 re-render”。
+
+> 补充（现代做法）：React 16.3 起，`componentWillMount`、`componentWillReceiveProps`、`componentWillUpdate` 均被标记为不安全，需加 `UNSAFE_` 前缀（如 `UNSAFE_componentWillMount`），并在 React 18 中正式移除无前缀版本。现代替代方案：用 `getDerivedStateFromProps`（静态方法）替代 `componentWillReceiveProps`；用 `getSnapshotBeforeUpdate` 替代 `componentWillUpdate` 中的 DOM 快照逻辑。函数式组件配合 Hooks（`useEffect`、`useState`）已成为主流写法，`shouldComponentUpdate` 对应 `React.memo` + `useMemo`/`useCallback`。
 
 ## Unmounting 阶段：组件的卸载
 

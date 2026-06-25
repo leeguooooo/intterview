@@ -1,5 +1,35 @@
 原文链接: [https://interview.poetries.top/principle-docs/react/18-%E5%A6%82%E4%BD%95%E7%90%86%E8%A7%A3%20Fiber%20%E6%9E%B6%E6%9E%84%E7%9A%84%E8%BF%AD%E4%BB%A3%E5%8A%A8%E6%9C%BA%E4%B8%8E%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3.html](https://interview.poetries.top/principle-docs/react/18-%E5%A6%82%E4%BD%95%E7%90%86%E8%A7%A3%20Fiber%20%E6%9E%B6%E6%9E%84%E7%9A%84%E8%BF%AD%E4%BB%A3%E5%8A%A8%E6%9C%BA%E4%B8%8E%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3.html)
 
+## 简版速记
+
+**核心问题（为什么需要 Fiber）**
+- Stack Reconciler（React 15）是**同步递归**的树深度优先遍历，一旦开始不可中断
+- JS 线程与渲染线程互斥，长时间占用主线程 → 页面卡顿、事件无响应
+
+**Fiber 三重含义**
+1. **架构层面**：对调和算法（Reconciler）的彻底重写
+2. **数据结构层面**：链表结构的节点单元，是 React 16 新架构下的"虚拟 DOM"
+3. **工作单元层面**：保存组件状态和副作用，对应一个可调度的最小工作片段
+
+**React 16 三层架构**
+| 层 | 职责 |
+|---|---|
+| Scheduler（调度器） | 按优先级调度更新任务，决定谁先执行 |
+| Reconciler（协调器） | 可中断的 Diff，在内存中构建 effectList |
+| Renderer（渲染器） | commit 阶段同步提交变更到视图，不可中断 |
+
+**核心机制**
+- **增量渲染**：渲染任务拆分为多个工作单元，分散到多帧
+- **可中断**：高优先级任务可打断低优先级任务的 Reconciler 阶段
+- **可恢复**：被中断的任务重新入队，从断点继续执行
+- render 阶段（Reconciler）可重复执行，对用户不可见；commit 阶段严格同步一次性完成
+
+**对生命周期的影响（高频考点）**
+- render 阶段可能被中断/重启，导致以下生命周期**多次调用**：
+  `componentWillMount` / `componentWillUpdate` / `componentWillReceiveProps`
+- 这三个生命周期是副作用"重灾区"，React 16.3+ 标记为 `UNSAFE_`，React 18 删除非 `UNSAFE_` 版本
+- `shouldComponentUpdate` 虽也在 render 阶段，但通常无副作用，风险较小
+
 在 16.x 版本中将其最为核心的 Diff 算法整个重写，使其以“Fiber Reconciler”的全新面貌示人。
 
 那么 Stack Reconciler 到底有着怎样根深蒂固的局限性，使得 React 不得不从架构层面做出改变？而 Fiber
@@ -119,7 +149,9 @@ React 16 的生命周期分为这样三个阶段，如下图所示：
 > 其中 `shouldComponentUpdate` 的作用是通过返回 `true` 或者
 > `false`，来帮助我们判断更新的必要性，一般在这个函数中不会进行副作用操作，因此风险不大
 
-而 `componentWill` 开头的三个生命周期，则常年被开发者以各种各样的姿势滥用，是副作用的“重灾区”
+而 `componentWill` 开头的三个生命周期，则常年被开发者以各种各样的姿势滥用，是副作用的”重灾区”
+
+> 补充（现代做法）：React 16.3 将 `componentWillMount`、`componentWillUpdate`、`componentWillReceiveProps` 重命名为带 `UNSAFE_` 前缀的版本（`UNSAFE_componentWillMount` 等），并在 React 18 中彻底删除不带 `UNSAFE_` 前缀的写法。迁移建议：`componentWillMount` → `componentDidMount`；`componentWillReceiveProps` → `static getDerivedStateFromProps` 或 `componentDidUpdate`；`componentWillUpdate` → `getSnapshotBeforeUpdate` + `componentDidUpdate`。新代码应直接使用函数组件 + Hooks，彻底规避这些问题。
 
 ## 总结
 
@@ -137,6 +169,8 @@ Reconciler 的一个起点。`Fiber Reconciler`
 所有这些问题的答案，我们都需要从 Fiber 架构下的 React 源码中去寻找。
 
 下一讲我们就将以 `ReactDOM.render` 串联起的渲染链路作为引子，切入对 Fiber 相关源码的探讨。
+
+> 补充（现代做法）：`ReactDOM.render` 在 React 18 中已被废弃，现代写法是使用 `ReactDOM.createRoot(container).render(<App />)`。`createRoot` 默认启用并发模式（Concurrent Mode），即 Fiber 架构"可中断调度"能力正式对外开放；而旧版 `ReactDOM.render` 在 React 18 中以 Legacy 模式运行，并发特性不可用。
 
 `ReactDOM.render` 之后到底发生了什么？`this.setState`
 之后又发生了什么？我想，当你对这两个问题形成概念之后，上面罗列出的所有小问题都将迎刃而解。

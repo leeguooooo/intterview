@@ -1,5 +1,18 @@
 原文链接: [https://interview.poetries.top/principle-docs/node/03-koa%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95.html](https://interview.poetries.top/principle-docs/node/03-koa%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95.html)
 
+## 简版速记
+
+- **Koa 核心**: 基于 Node.js 的轻量 Web 框架，无内置路由/中间件，一切皆插件。
+- **三行启动**: `require('koa')` → `new Koa()` → `app.listen(port)`。
+- **Context (ctx)**: 每次请求的上下文对象，封装 `ctx.request` / `ctx.response`；`ctx.body` 是 `ctx.response.body` 的别名。
+- **中间件洋葱模型**: `app.use(async (ctx, next) => { /* before */ await next(); /* after */ })`，执行顺序为先进后出。
+- **路由**: 原生用 `ctx.request.path` 判断；推荐使用 `@koa/router`（`koa-route` 已基本停止维护）。
+- **静态文件**: `koa-static` 模块，`app.use(serve(path.join(__dirname, 'public')))`。
+- **错误处理**: `ctx.throw(status, msg)` 抛出 HTTP 错误；在最外层中间件用 `try/catch await next()` 统一捕获；`app.on('error', fn)` 监听未捕获错误。
+- **异步中间件**: 必须用 `async/await`，且 `next()` 前加 `await`，否则后续中间件不会等待完成。
+- **表单/文件解析**: `@koa/bodyparser`（仅表单/JSON）或 `koa-body`（支持文件上传，需 `multipart: true`）。
+- **Cookie**: `ctx.cookies.get(name)` / `ctx.cookies.set(name, value)`，底层使用 `cookies` 库，支持签名。
+
 > Koa 就是一种简单好用的 Web 框架。它的特点是优雅、简洁、表达力强、自由度高
 
 ## 一、基本用法
@@ -97,6 +110,8 @@
 ### 2.1 koa-route 模块
 
 > 原生路由用起来不太方便，我们可以使用封装好的`koa-route`模块
+
+> 补充(现代做法): `koa-route` 长期缺乏维护，实际项目中推荐使用 `@koa/router`（原 `koa-router`），功能更完整，支持前缀、嵌套路由、HTTP verb 方法等：`const Router = require('@koa/router'); const router = new Router(); router.get('/', ctx => { ctx.body = 'hello'; }); app.use(router.routes()).use(router.allowedMethods());`
 ```javascript
     const Koa = require("koa");
     const app = new Koa();
@@ -238,6 +253,8 @@
 
 > 上面代码中，`fs.readFile`是一个异步操作，必须写成`await fs.readFile()`，然后中间件必须写成 `async`函数。
 
+> 补充(现代做法): `fs.promised` 是第三方 promisify 包，已基本停止维护。Node.js 10+ 内置了 `fs.promises`，无需安装额外依赖：`const { readFile } = require('fs').promises; ctx.response.body = await readFile('./demos/template.html', 'utf8');`
+
 ### 3.5 中间件的合成
 
 > `koa-compose`模块可以将多个中间件合成为一个
@@ -370,6 +387,8 @@
 
 > `Web`应用离不开处理表单。本质上，表单就是`POST` 方法发送到服务器的键值对。`koa-body`模块可以用来从 `POST`
 > 请求的数据体里面提取键值对
+
+> 补充(现代做法): `koa-body` v6+ 已将 API 改为具名导入 `const { koaBody } = require('koa-body')`，旧写法 `require('koa-body')` 在新版本中会报错。若只需 JSON/表单解析（无文件上传），可改用官方维护的 `@koa/bodyparser`：`const bodyParser = require('@koa/bodyparser'); app.use(bodyParser());`
 ```javascript
     const Koa = require('koa');
     const koaBody = require('koa-body');

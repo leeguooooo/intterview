@@ -1,5 +1,16 @@
 原文链接: [https://interview.poetries.top/principle-docs/vue/02-%E7%BB%84%E4%BB%B6%E7%9A%84%E6%9C%AC%E8%B4%A8.html](https://interview.poetries.top/principle-docs/vue/02-%E7%BB%84%E4%BB%B6%E7%9A%84%E6%9C%AC%E8%B4%A8.html)
 
+## 简版速记
+
+- **组件本质**：一个函数（或类），接收数据，返回描述 UI 的结构——"给什么数据，渲染什么内容"。
+- **产出演变**：模板引擎时代产出 **HTML 字符串**；现代 Vue/React 产出 **Virtual DOM（VNode）**。
+- **为何用 VNode**：VNode 带来**分层设计**——渲染过程被抽象，框架因此能跨平台（SSR、Native、WebGL 等）。
+- **VNode 表示组件**：HTML 标签 VNode 用字符串 `tag: 'div'`；组件 VNode 用 `tag: MyComponent`（直接指向组件本身），渲染器通过 `typeof tag` 区分两者。
+- **patch 机制**：数据变更 → 产出新 VNode → `patch(oldVnode, newVnode)` 精细更新真实 DOM，而非全量替换 HTML。
+- **两种组件类型**：
+  - **函数式组件**：纯函数，无自身状态，单纯调用即得 VNode。
+  - **有状态组件**：类（Vue 2）或 `defineComponent`（Vue 3），可持有状态，需实例化后调用 `render()` 产出 VNode。
+
 > 当我们使用 `Vue` 或 `React` 时，往往会将页面拆分为各种组件，通过拼装组件来形成页面和应用，就像搭积木一样。
 
 那么，大家有没有思考过：**"组件的产出是什么？"**
@@ -61,7 +72,7 @@ window)](https://codesandbox.io/s/m7nqlj8m9j)
 
 ![](/images/s_poetries_work_uploads_2024_02_8e83afb3ac1f0a1b.webp)
 
-拿 `Vue` 来说，一个组件最核心的东西是 `render` 函数，剩余的其他内容，如 `data`、`compouted`、`props` 等都是为
+拿 `Vue` 来说，一个组件最核心的东西是 `render` 函数，剩余的其他内容，如 `data`、`computed`、`props` 等都是为
 `render` 函数提供数据来源服务的。`render` 函数本可以直接产出 `html` 字符串，但却产出了 `Virtual DOM`，借助
 `snabbdom` 的 API 我们可以很容易地用代码描述这个公式：
 ```js
@@ -246,6 +257,8 @@ window)](https://codesandbox.io/s/8817m3zz5j)
     * 产出 `VNode` 的方式：需要实例化，然后调用其 `render` 函数
 
 在后续渲染器的相关章节中，会再次讲述 **有状态组件** 与 **函数式组件** 的原理和异同，那时你的理解会更加深刻。
+
+> **补充（现代做法）：** Vue 3 已移除对类组件（`class MyComponent`）的官方支持（需借助第三方库 `vue-class-component`）。现代 Vue 3 中有状态组件统一使用 `defineComponent()` 配合 Options API，或更推荐的 `<script setup>` + Composition API。函数式组件仍受支持，但由于 Vue 3 中有状态组件本身的创建开销已大幅降低，函数式组件的性能优势不再显著，实际使用频率明显下降。
 
 阅读全文
 

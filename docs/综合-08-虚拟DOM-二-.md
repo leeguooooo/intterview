@@ -1,5 +1,17 @@
 原文链接: [https://interview.poetries.top/principle-docs/comprehensive/08-%E8%99%9A%E6%8B%9FDOM%EF%BC%88%E4%BA%8C%EF%BC%89.html](https://interview.poetries.top/principle-docs/comprehensive/08-%E8%99%9A%E6%8B%9FDOM%EF%BC%88%E4%BA%8C%EF%BC%89.html)
 
+## 简版速记
+
+- **虚拟 DOM 本质**：用普通 JS 对象描述 DOM 结构，变更先在内存中累积，再一次性 patch 到真实 DOM，减少多余的重排/重绘。
+- **浏览器渲染流程**（5 步）：构建 DOM 树 → 生成 Style Rules → 合并成 Render 树 → Layout（布局）→ Painting（绘制）。每次直接操作 DOM 都可能触发完整流程，代价高昂。
+- **虚拟 DOM 实现三要素**：① `Element(tagName, props, children)` 构造 vnode；② `render()` 将 vnode 映射为真实 DOM；③ `diff(oldTree, newTree)` + `patch(node, patches)` 计算并应用最小变更。
+- **Diff 算法核心约定**（React/传统 vdom 通用）：
+  - 只做**同层比较**，时间复杂度从 O(n³) 降到 O(n)。
+  - 4 种 patch 类型：`REPLACE`（节点类型变了）、`PROPS`（属性变了）、`TEXT`（文本变了）、`REORDER`（子节点增删移）。
+  - 列表子节点必须加 `key`，否则退化为逐个卸载/重建，性能差。
+- **key 的作用**：让 Diff 在 REORDER 时通过 key 直接定位节点，避免无效的卸载与重建。
+- **最小编辑距离**（REORDER）：用 Levenshtein Distance，时间复杂度 O(M×N)；实践中可降级到 O(max(M, N)) 以换取速度。
+
 ## 一、为什么需要虚拟DOM
 
 > 先介绍浏览器加载一个`HTML`文件需要做哪些事，帮助我们理解为什么我们需要虚拟`DOM`。`webkit`引擎的处理流程
@@ -15,7 +27,7 @@ target="_blank">https://s.poetries.work/gitee/2019/10/605.png</a></p>
   * 第二步：用`CSS`分析器，分析`CSS`文件和元素上的`inline`样式，生成页面的样式表。
   * 第三步：将上面的`DOM`树和样式表，关联起来，构建一颗`Render`树。这一过程又称为`Attachment`。每个`DOM`节点都有`attach`方法，接受样式信息，返回一个`render`对象（又名`renderer`）。这些`render`对象最终会被构建成一颗`Render`树。
   * 第四步：有了`Render`树后，浏览器开始布局，会为每个`Render`树上的节点确定一个在显示屏上出现的精确坐标值。
-  * 第五步：`Render`数有了，节点显示的位置坐标也有了，最后就是调用每个节点的`paint`方法，让它们显示出来。
+  * 第五步：`Render`树有了，节点显示的位置坐标也有了，最后就是调用每个节点的`paint`方法，让它们显示出来。
 
 >
 > 当你用传统的源生`api`或`jQuery`去操作`DOM`时，浏览器会从构建`DOM`树开始从头到尾执行一遍流程。比如当你在一次操作时，需要更新`10`个`DOM`节点，理想状态是一次性构建完`DOM`树，再执行后续操作。但浏览器没这么智能，收到第一个更新`DOM`请求后，并不知道后续还有9次更新操作，因此会马上执行流程，最终执行10次流程。显然例如计算`DOM`节点的坐标值等都是白白浪费性能，可能这次计算完，紧接着的下一个`DOM`更新请求，这个节点的坐标值就变了，前面的一次计算是无用功。
@@ -132,6 +144,8 @@ target="_blank">https://s.poetries.work/gitee/2019/10/605.png</a></p>
 
 >
 > 第一种是最简单的，节点类型变了，例如下图中的`P`变成了`h3`。我们将这个过程称之为`REPLACE`。直接将旧节点卸载（`componentWillUnmount`）并装载新节点（`componentWillMount`）就行了
+
+> 补充（现代做法）：React 16.3 起 `componentWillMount` 已更名为 `UNSAFE_componentWillMount` 并被标记为不安全；React 18 Concurrent Mode 下推荐用 `useEffect`/`useLayoutEffect` 替代挂载/卸载副作用，类组件仍可使用 `componentDidMount` + `componentWillUnmount`。
 
 ![img](/images/s_poetries_work_gitee_2019_10_608.webp)
 
@@ -264,7 +278,7 @@ target="_blank">https://s.poetries.work/gitee/2019/10/605.png</a></p>
     }
 ```
 
-> 虚拟`DOM`的目的是将所有操作累加起来，统计计算出所有的变化后，统一更新一次`DOM
+> 虚拟`DOM`的目的是将所有操作累加起来，统计计算出所有的变化后，统一更新一次`DOM`
 
 阅读全文
 

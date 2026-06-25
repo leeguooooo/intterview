@@ -1,5 +1,19 @@
 原文链接: [https://interview.poetries.top/principle-docs/vue/14-vue%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E4%B9%8Bvuex.html](https://interview.poetries.top/principle-docs/vue/14-vue%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E4%B9%8Bvuex.html)
 
+## 简版速记
+
+| 概念 | 作用 | 同步/异步 | 触发方式 |
+|------|------|-----------|----------|
+| `state` | 全局共享状态（变量） | — | `$store.state.xxx` |
+| `getters` | 派生状态，类似 computed，有缓存 | — | `$store.getters.xxx` |
+| `mutations` | **唯一**修改 state 的方式 | **同步** | `store.commit('TYPE', payload)` |
+| `actions` | 可含异步逻辑，再提交 mutation | 同步/异步均可 | `store.dispatch('action', payload)` |
+| `modules` | 按业务拆分 store，避免单文件臃肿 | — | `$store.state.模块名.xxx` |
+
+**核心数据流**：组件 → `dispatch action` → `commit mutation` → 更新 `state` → 组件响应式更新
+
+**辅助函数**：`mapState`、`mapGetters` 挂到 `computed`；`mapMutations`、`mapActions` 挂到 `methods`
+
 > 了解vuex核心概念请移步 https://vuex.vuejs.org/zh/
 
 ![img](/images/vuex_vuejs_org_vuex.webp)
@@ -36,7 +50,7 @@
         }
         mutations: {
             SET_AGE(state, age) {
-                commit(age, age);
+                state.age = age;
             }
         },
         actions: {
@@ -52,7 +66,7 @@
     }
 ```
 
-> 个就是最基本也是完整的`vuex`代码；`vuex` 包含有五个基本的对象
+> 这个就是最基本也是完整的`vuex`代码；`vuex` 包含有五个基本的对象
 
   * `state`：存储状态。也就是变量；
   * `getters`：派生状态。也就是`set`、`get`中的`get`，有两个可选参数：`state`、`getters`分别可以获取`state`中的变量和其他的`getters`。外部调用方式：`store.getters.personInfo()`。就和`vue`的`computed`差不多；
@@ -69,8 +83,8 @@
     ├── components
     └── store
         ├── index.js          # 我们组装模块并导出 store 的地方
-        ├── state.js          # 跟级别的 state
-        ├── getters.js        # 跟级别的 getter
+        ├── state.js          # 根级别的 state
+        ├── getters.js        # 根级别的 getter
         ├── mutation-types.js # 根级别的mutations名称（官方推荐mutions方法名使用大写）
         ├── mutations.js      # 根级别的 mutation
         ├── actions.js        # 根级别的 action
@@ -463,6 +477,8 @@
 
 > `mapGetters`、`mapActions` 和 `mapState` 类似 , `mapGetters` 一般也写在 `computed` 中
 > , `mapActions` 一般写在 `methods` 中
+
+> 补充(现代做法)：Vue 3 官方已将 **Pinia** 列为推荐状态管理方案（Vuex 5 即 Pinia）。Pinia 去掉了 mutations，只保留 `state`、`getters`、`actions`（actions 直接支持异步），并天然支持 TypeScript 与 Composition API。新项目建议使用 Pinia；Vuex 4 可与 Vue 3 共存，适合从 Vue 2 迁移的存量项目。
 
 阅读全文
 

@@ -1,5 +1,20 @@
 原文链接: [https://interview.poetries.top/principle-docs/react/25-%E8%B7%9F%20React%20%E5%AD%A6%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F.html](https://interview.poetries.top/principle-docs/react/25-%E8%B7%9F%20React%20%E5%AD%A6%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F.html)
 
+## 简版速记
+
+| 模式 | 本质 | 核心优点 | 主要缺点 |
+|---|---|---|---|
+| **HOC**（高阶组件） | 函数包裹组件，返回新组件 | 逻辑一处修改全部生效；侵入性低 | Props 命名冲突；嵌套地狱；数据流不透明 |
+| **Render Props** | 组件包裹函数（子组件以函数形式传入） | 子组件可选择性接收数据，符合开放封闭原则 | 同样有嵌套地狱；写法较冗余 |
+| **有状态/无状态组件** | 容器组件管数据，展示组件管 UI（单一职责） | 逻辑与渲染解耦，变更范围可控 | — |
+| **自定义 Hook**（现代首选） | 函数级逻辑复用，无组件嵌套 | 无嵌套地狱；允许属性重命名；可在任意函数组件中引入 | 只能用于函数组件 |
+
+**面试关键词**：
+- HOC = 函数包组件；Render Props = 组件包函数
+- 两者都为解决**类组件**逻辑复用而生，但存在嵌套地狱 + props 命名冲突问题
+- 现代 React 优先用**自定义 Hook** 取代 HOC / Render Props
+- "单一职责" → 容器/展示组件分离；"开放封闭" → Render Props 比 HOC 更灵活
+
 ## 高阶组件（HOC）：最经典的组件逻辑复用方式
 
 ### 什么是高阶组件
@@ -35,7 +50,7 @@
 我们可以像下面代码这样在高阶组件中定义这层通用的逻辑：
 ```js
     // 假设 checkUserAccess 已经在 utils 文件中被封装为了一段独立的逻辑
-    import checkUserAccess from './utils
+    import checkUserAccess from './utils'
     // 用高阶组件包裹目标组件
     const withCheckAccess = (WrappedComponent) => {
         // 这部分是通用的逻辑：判断用户身份是否合法
@@ -118,7 +133,7 @@ render props 是 React
 这段逻辑`，我们可以这样做，请看下面代码：
 ```js
     // 假设 checkUserAccess 已经在 utils 文件中被封装为了一段独立的逻辑
-    import checkUserAccess from './utils
+    import checkUserAccess from './utils'
     // 定义 render props 组件
     const CheckAccess = (props) => {
         // 这部分是通用的逻辑：判断用户身份是否合法
@@ -149,7 +164,7 @@ render props 是 React
 组件只需要改写一下它接收函数的形式即可，见下面代码：
 ```js
     // 假设 checkUserAccess 已经在 utils 文件中被封装为了一段独立的逻辑
-    import checkUserAccess from './utils
+    import checkUserAccess from './utils'
     // 定义 render props 组件
     const CheckAccess = (props) => {
         // 这部分是通用的逻辑：判断用户身份是否合法
@@ -188,7 +203,7 @@ render props 是 React
 props.isValidated。带着这个需求，我们先来看看高阶组件怎么解决问题。原有的高阶组件逻辑是下面这样的：
 ```js
     // 假设 checkUserAccess 已经在 utils 文件中被封装为了一段独立的逻辑
-    import checkUserAccess from './utils
+    import checkUserAccess from './utils'
     // 用高阶组件包裹目标组件
     const withCheckAccess = (WrappedComponent) => {
         // 这部分是通用的逻辑：判断用户身份是否合法
@@ -290,8 +305,10 @@ props，两者的出现都是为了弥补类组件在“逻辑复用”这个层
 > props+类组件”这种研发模式，还是不够到位。当设计模式解决不了问题时，我们本能地需要从编程模式上寻找答案。于是便有了如今大家在 React
 > 中所看到的 “函数式编程”对“面向对象”的补充（并且大有替代之势），有了今天我们所看到的“一切皆可 Hooks”的大趋势。
 
-现在，当我们想要去复用一段逻辑时，第一反应肯定不是“高阶函数”或者“render props”，而应该是“自定义 Hook”。Hooks
-能够很好地规避掉旧时类组件中各种设计模式带来的弊端，比如说它不存在嵌套地狱，允许属性重命名、允许我们在任何需要它的地方引入并访问目标状态等。由此可以看出，一个好的编程模式可以帮我们节约掉大量“打补丁”式地学习各种组件设计模式的时间。框架设计越合理，开发者的工作就越轻松。
+现在，当我们想要去复用一段逻辑时，第一反应肯定不是”高阶函数”或者”render props”，而应该是”自定义 Hook”。Hooks
+能够很好地规避掉旧时类组件中各种设计模式带来的弊端，比如说它不存在嵌套地狱，允许属性重命名、允许我们在任何需要它的地方引入并访问目标状态等。由此可以看出，一个好的编程模式可以帮我们节约掉大量”打补丁”式地学习各种组件设计模式的时间。框架设计越合理，开发者的工作就越轻松。
+
+> 补充（现代做法）：React 18+ 与 React Server Components（RSC）时代，逻辑复用的主流方案已完全转向**自定义 Hook**（客户端状态/副作用复用）和**Server Component 组合**（服务端数据获取复用）。HOC 和 Render Props 仍然合法，但在新项目中几乎只在需要兼容旧类组件库时才会用到。面试中如被问到”你会如何替换这段 HOC”，标准答案是：将 HOC 内部逻辑提取为自定义 Hook，在函数组件中直接调用，彻底消除包装层。
 
 阅读全文
 

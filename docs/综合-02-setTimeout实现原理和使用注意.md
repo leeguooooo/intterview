@@ -1,5 +1,17 @@
 原文链接: [https://interview.poetries.top/principle-docs/comprehensive/02-setTimeout%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86%E5%92%8C%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F.html](https://interview.poetries.top/principle-docs/comprehensive/02-setTimeout%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86%E5%92%8C%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F.html)
 
+## 简版速记
+
+- **原理**：`setTimeout` 回调不进普通消息队列，而是进**延迟队列**；每次主线程跑完一个任务后才调用 `ProcessDelayTask` 扫描到期任务并执行——所以**定时器不保证准时**。
+- **5 大坑**：
+  1. 主线程长任务会阻塞定时器触发（0ms 延迟也不例外）。
+  2. 回调中的 `this` 丢失（脱离对象调用变成 `window`）；用箭头函数或 `.bind()` 解决。
+  3. 嵌套超 5 层后，Chrome 强制最小间隔 **4 ms**，不适合高精度计时。
+  4. 标签页后台时最小间隔提升至 **1000 ms**。
+  5. 延迟值超过 `2147483647 ms`（~24.8 天）会发生 32-bit 溢出，回调被立即执行。
+- **动画不要用 setTimeout**：应用 `requestAnimationFrame`，它与屏幕刷新率同步且后台自动暂停。
+- **取消**：`clearTimeout(timeoutID)`。
+
 > `setTimeout`，它就是一个定时器，用来指定某个函数在多少毫秒之后执行
 
 ### setTimeout用法
@@ -128,7 +140,13 @@
 ```
 
 >
-> 这样看，在`setTimeout`里面，当执行到的时候，实际上就是在`window`下`执行`fn`，此时的`this`，就指向了`window`,而不是原来的函数。
+> 这样看，在`setTimeout`里面，当执行到的时候，实际上就是在`window`下执行`fn`，此时的`this`，就指向了`window`,而不是原来的函数。
+
+> 补充(现代做法)：用**箭头函数**包裹或 `.bind()` 绑定可避免 `this` 丢失：
+> ```js
+> setTimeout(() => MyObj.showName(), 1000);   // 箭头函数，this 来自 MyObj
+> setTimeout(MyObj.showName.bind(MyObj), 1000); // bind 绑定
+> ```
 
   3. setTimeout 存在嵌套调用问题
 
@@ -140,7 +158,7 @@
     function cb() { 
       const endTime = Date.now()
       console.log('cost time',endTime - startTime)
-      startTime = startTime
+      startTime = endTime
       setTimeout(cb, 0); 
     }
     setTimeout(cb, 0);
@@ -167,6 +185,8 @@
 
 > 所以，一些实时性较高的需求就不太适合使用 `setTimeout` 了，比如你用 `setTimeout` 来实现
 > `JavaScript`动画就不一定是一个很好的主意。
+
+> 补充(现代做法)：动画应使用 **`requestAnimationFrame`**（rAF）。rAF 与屏幕刷新率同步（通常 60 fps），页面不可见时自动暂停，CPU 占用远低于嵌套 `setTimeout`。
 
   4. 未激活的页面，setTimeout 执行最小间隔是 1000 毫秒
 

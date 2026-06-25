@@ -1,6 +1,15 @@
 原文链接: [https://interview.poetries.top/principle-docs/react/15-%E7%9C%9F%E6%AD%A3%E7%90%86%E8%A7%A3%E8%99%9A%E6%8B%9FDOM.html](https://interview.poetries.top/principle-docs/react/15-%E7%9C%9F%E6%AD%A3%E7%90%86%E8%A7%A3%E8%99%9A%E6%8B%9FDOM.html)
 
-## 快速搞定虚拟 DOM 的两个“大问题”
+## 简版速记
+
+- **本质**：虚拟 DOM = JS 对象，是 JS 与真实 DOM 之间的映射缓存层
+- **工作流**：挂载阶段构建 vDOM 树 → `ReactDOM.render` 映射到真实 DOM；更新阶段先 diff 再 patch，实现差量更新
+- **价值核心（高频考点）**：不是性能，而是 ①研发体验——函数式/声明式 UI 编程；②跨平台抽象——同一套 vDOM 可对接 Web/Native/小程序
+- **性能结论**：少量数据变化时虚拟 DOM 胜出；数据全量变化时与模板渲染相当甚至不如——性能非其卖点
+- **批量更新**：`batch` 函数将多次补丁集合并，避免重复触发高耗能 DOM 操作
+- **面试陷阱**：10 人中 9 人答”虚拟 DOM 快”是错的——正确答法是”研发效率 + 跨平台，性能是附带收益”
+
+## 快速搞定虚拟 DOM 的两个”大问题”
 
 > 虚拟 DOM（Virtual DOM）`本质上是JS 和 DOM 之间的一个映射缓存`，它在形态上表现为一个能够描述 DOM 结构及其属性信息的 JS
 > 对象
@@ -15,6 +24,8 @@
 我们看看 React 中的虚拟 DOM 大致是如何工作的
 
   * **挂载阶段** ，React 将结合 JSX 的描述，构建出虚拟 DOM 树，然后通过 `ReactDOM.render` 实现虚拟 DOM 到真实 DOM 的映射（触发渲染流水线）；
+
+> 补充（现代做法）：React 18 起官方推荐用 `createRoot(container).render(<App />)` 替代 `ReactDOM.render`，后者已被标记为废弃（legacy mode）。迁移示例：`import { createRoot } from 'react-dom/client'; createRoot(document.getElementById('root')).render(<App />);`
   * **更新阶段** ，页面的变化在作用于真实 DOM 之前，会先作用于虚拟 `DOM`，虚拟 `DOM` 将在 JS 层借助算法先对比出具体有哪些真实 DOM 需要被改变，然后再将这些改变作用于真实 DOM。
 
 ## 虚拟 DOM 是如何解决问题的

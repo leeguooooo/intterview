@@ -1,5 +1,14 @@
 原文链接: [https://interview.poetries.top/principle-docs/react/08-%E6%B5%85%E6%9E%90%E4%B8%AD%E9%97%B4%E4%BB%B6.html](https://interview.poetries.top/principle-docs/react/08-%E6%B5%85%E6%9E%90%E4%B8%AD%E9%97%B4%E4%BB%B6.html)
 
+## 简版速记
+
+- **中间件定义**：`action` 发起之后、`reducer` 接收之前的扩展层，签名为 `({ getState, dispatch }) => next => action`
+- **核心作用**：改变 `store.dispatch`，使其能处理函数、Promise 等非普通对象类型的 action
+- **`applyMiddleware` 原理**：收集所有中间件 → 用 `compose` 从右到左串联 → 生成增强版 `dispatch` → 覆盖原 `store.dispatch`
+- **`redux-thunk`**：判断 `action` 是否为函数；是则执行 `action(dispatch, getState)`，否则直接 `next(action)` 透传
+- **自定义中间件要点**：必须调用 `next(action)`，否则 action 链断裂；同步场景直接透传即可
+- **执行顺序**：`applyMiddleware(A, B, C)` 中 A 最先处理 action（`compose` 内部右到左，但对外表现为 A → B → C）
+
 ## 一、前言
 
   * 在`redux`里，`middleware`是发送`action`和`action`到达`reducer`之间的第三方扩展，也就是中间层。也可以这样说，`middleware`是架在`action`和`store`之间的一座桥梁
@@ -37,7 +46,7 @@
     }
 ```
 
-> 未应用中间价之前，创建 `store` 的方式如下
+> 未应用中间件之前，创建 `store` 的方式如下
 ```javascript
     import {createStore} from 'redux';
     import reducers from './reducers/index';
@@ -45,14 +54,22 @@
     export let store = createStore(reducers);
 ```
 
-> 应用中间价之后，创建 `store`的方式如下
+> 应用中间件之后，创建 `store`的方式如下
 ```javascript
-    import {createStore，applyMiddleware} from 'redux';
+    import {createStore, applyMiddleware} from 'redux';
     import reducers from './reducers/index';
     
     let createStoreWithMiddleware = applyMiddleware(...middleware)(createStore);
     export let store = createStoreWithMiddleware(reducers);
 ```
+
+> 补充(现代做法): Redux Toolkit（RTK）的 `configureStore` 已内置 `redux-thunk`，无需手动调用 `applyMiddleware`。推荐写法：
+> ```javascript
+> import { configureStore } from '@reduxjs/toolkit';
+> const store = configureStore({ reducer: rootReducer });
+> // 追加中间件：middleware: (getDefault) => getDefault().concat(myMiddleware)
+> ```
+> 新项目建议直接使用 RTK，避免手写 `applyMiddleware` 样板代码。
 
 ## 二、为什么要引入middleware
 

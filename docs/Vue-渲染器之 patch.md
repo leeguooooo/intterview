@@ -1,5 +1,39 @@
 原文链接: [https://interview.poetries.top/principle-docs/vue/09-%E6%B8%B2%E6%9F%93%E5%99%A8%E4%B9%8Bpatch.html](https://interview.poetries.top/principle-docs/vue/09-%E6%B8%B2%E6%9F%93%E5%99%A8%E4%B9%8Bpatch.html)
 
+## 简版速记
+
+**patch 核心原则**
+- 类型（flags）不同 → 直接 `replaceVNode`（移除旧 DOM，mount 新 VNode）
+- 类型相同 → 按类型分发：`patchElement` / `patchComponent` / `patchText` / `patchFragment` / `patchPortal`
+
+**patchElement 三步**
+1. tag 不同 → `replaceVNode`
+2. 更新 VNodeData：遍历新 data 调 `patchData`；再遍历旧 data 对已消失的 key 传 `null` 给 `patchData` 移除
+3. 递归 `patchChildren`
+
+**patchChildren 九种情况（3 × 3）**
+
+| 旧 \ 新 | 单节点 | 无节点 | 多节点 |
+|---|---|---|---|
+| 单节点 | `patch` 递归 | removeChild | remove + mount 多个 |
+| 无节点 | mount 新 | 无操作 | mount 多个 |
+| 多节点 | remove 全部 + mount | remove 全部 | **核心 diff**（本章暂用暴力替换） |
+
+> 只有「多→多」才需要核心 diff 算法以复用节点，其余情况暴力增删即可。
+
+**patchText**：对比 `children` 文本内容，不同则 `el.nodeValue = nextVNode.children`
+
+**patchFragment**：直接委托 `patchChildren`，再按子节点类型更新 `nextVNode.el` 引用
+
+**patchPortal**：先在旧容器里 `patchChildren`；若挂载目标（`tag`）变了，再用 `appendChild` 把已更新的子节点搬运到新容器
+
+**有状态组件更新**
+- 主动更新：`_update()` 用 `_mounted` 标志区分初次挂载（`mount`）和后续更新（`patch`）
+- 被动更新：父组件 `patchComponent` 先更新子组件 `$props`，再调 `_update()`
+- 组件替换（不同 `tag`）：`replaceVNode` + 触发旧组件 `unmounted` 钩子
+
+**函数式组件更新**：在 `VNode` 上挂 `handle` 对象（`prev/next/container/update`），`patchComponent` 更新 `handle.prev/next` 后调 `handle.update()`；`update` 内部用 `handle.prev` 是否为 `null` 区分初次 / 更新
+
 > 在上一章中我们讲解并实现了渲染器的挂载逻辑，本质上就是将各种类型的 `VNode` 渲染成真实DOM的过程。渲染器除了将全新的 `VNode`
 > 挂载成真实DOM之外，它的另外一个职责是负责对新旧 `VNode` 进行比对，并以合适的方式更新DOM，也就是我们常说的
 > `patch`。本章内容除了让你了解基本的比对逻辑之外，还讲述了在新旧 `VNode` 比对的过程中应该遵守怎样的原则，让我们开始吧！
@@ -286,8 +320,8 @@ window)](https://codesandbox.io/s/jlxjk18vm5)
 
 以样式(`style`)的更新为例，如上代码所展示的更新过程是：
 
-  * 1 ：遍历新的样式数据(`prevValue`)，将新的样式数据全部应用到元素上
-  * 2 ：遍历旧的样式数据(`nextValue`)，将那些已经不存在于新的样式数据中的样式从元素上移除，最终我们完成了元素样式的更新。
+  * 1 ：遍历新的样式数据(`nextValue`)，将新的样式数据全部应用到元素上
+  * 2 ：遍历旧的样式数据(`prevValue`)，将那些已经不存在于新的样式数据中的样式从元素上移除，最终我们完成了元素样式的更新。
 
 这个过程实际上就是更新标签元素的基本规则。
 
@@ -1265,6 +1299,8 @@ TIP
 window)](https://codesandbox.io/s/ym6k442lmj)
 
 ## 更新文本节点
+
+> 补充（现代做法）：Vue 3 正式版中，组件更新由基于 `Proxy` 的响应式系统自动调度（`ReactiveEffect` + 调度队列），开发者无需也不应手动调用 `_update()`。文中使用手动调用的方式仅是为了在未引入响应系统的前提下演示 patch 流程，原理完全一致。
 
 我们花了很大的篇幅讲解了标签元素的更新，实际上标签元素的确是 DOM 更新中的主要操作，接下来我们讲解一下文本节点的更新。如果新旧两个 `VNode`
 的类型都是纯文本类型，那么在 `patch` 内部会调用 `patchText` 函数更新旧的文本节点。文本节点的更新非常简单，如果一个 DOM

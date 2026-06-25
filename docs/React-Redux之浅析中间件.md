@@ -1,5 +1,15 @@
 原文链接: [https://interview.poetries.top/principle-docs/react/05-Redux%E4%B9%8B%E6%B5%85%E6%9E%90%E4%B8%AD%E9%97%B4%E4%BB%B6.html#%E4%B8%80%E3%80%81%E5%89%8D%E8%A8%80](https://interview.poetries.top/principle-docs/react/05-Redux%E4%B9%8B%E6%B5%85%E6%9E%90%E4%B8%AD%E9%97%B4%E4%BB%B6.html#%E4%B8%80%E3%80%81%E5%89%8D%E8%A8%80)
 
+## 简版速记
+
+- **中间件定义**: 位于 `action` 发起之后、`reducer` 接收之前的扩展层，本质是对 `store.dispatch` 的增强
+- **统一签名**: `({ getState, dispatch }) => next => action`，三层柯里化
+- **applyMiddleware 原理**: 收集所有中间件 → `compose` 串联 → 用新 `dispatch` 覆盖原始 `dispatch`；每个中间件必须调用 `next(action)`，否则调用链断裂
+- **引入原因**: 原始 `dispatch` 只接受普通对象 action；中间件让 action 可以是函数（thunk）、Promise 等，从而支持异步操作
+- **redux-thunk 逻辑**: `typeof action === 'function' ? action(dispatch, getState) : next(action)`
+- **自定义模板**: `const myMiddleware = ({ dispatch, getState }) => next => action => { /* 处理 */ return next(action); }`
+- **注册方式**: `applyMiddleware(thunk, logger)(createStore)` 或作为 `createStore` 第三参数传入
+
 ## 一、前言
 
   * 在`redux`里，`middleware`是发送`action`和`action`到达`reducer`之间的第三方扩展，也就是中间层。也可以这样说，`middleware`是架在`action`和`store`之间的一座桥梁
@@ -37,7 +47,7 @@
     }
 ```
 
-> 未应用中间价之前，创建 `store` 的方式如下
+> 未应用中间件之前，创建 `store` 的方式如下
 ```javascript
     import {createStore} from 'redux';
     import reducers from './reducers/index';
@@ -45,9 +55,9 @@
     export let store = createStore(reducers);
 ```
 
-> 应用中间价之后，创建 `store`的方式如下
+> 应用中间件之后，创建 `store`的方式如下
 ```javascript
-    import {createStore，applyMiddleware} from 'redux';
+    import {createStore, applyMiddleware} from 'redux';
     import reducers from './reducers/index';
     
     let createStoreWithMiddleware = applyMiddleware(...middleware)(createStore);
@@ -127,14 +137,7 @@
 
 ## 三、中间件是如何工作的
 
->  
-> ```javascript
->  
->  
->     Middleware`的中间件有很多，不过我的这个案例只引用了其中的一个，那就是`redux-thunk
->  
->
-> ```
+> `Middleware` 的中间件有很多，不过这个案例只引用了其中一个，那就是 `redux-thunk`
 
   * `redux-thunk`源码如下
 ```javascript
@@ -178,6 +181,8 @@
 ```
 
 > `redux`的`middleware`是对`action`进行扩展处理，这样丰富了应用需求
+
+> 补充(现代做法): Redux Toolkit（RTK，官方推荐）已内置 `redux-thunk`，无需手动注册。创建 store 使用 `configureStore`，它默认调用 `applyMiddleware(thunk)`，并可通过 `getDefaultMiddleware()` 追加自定义中间件。异步逻辑推荐使用 `createAsyncThunk`，它自动 dispatch `pending/fulfilled/rejected` 三个 action，不再需要手写 thunk 函数。
 
 阅读全文
 

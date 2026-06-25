@@ -1,5 +1,17 @@
 原文链接: [https://interview.poetries.top/fe-base-docs/http-protocol/advance/23-TLS1.3%E7%89%B9%E6%80%A7%E8%A7%A3%E6%9E%90.html](https://interview.poetries.top/fe-base-docs/http-protocol/advance/23-TLS1.3%E7%89%B9%E6%80%A7%E8%A7%A3%E6%9E%90.html)
 
+## 简版速记
+
+| 维度 | 要点 |
+|------|------|
+| 兼容性 | 记录头版本号保持 `0x303`（伪装成 TLS1.2）；真实版本通过 `supported_versions` 扩展区分 |
+| 安全性 | 废除 RSA/DH 密钥交换、RC4/DES/CBC/MD5/SHA1 等弱算法；仅保留 ECDHE、AES/ChaCha20、GCM/Poly1305、SHA-256/384 |
+| 前向安全 | ECDHE 每次握手生成临时密钥对，"一次一密"；私钥泄露不影响历史会话 |
+| 握手性能 | TLS1.2 需 2-RTT；TLS1.3 在 Client Hello 中预发 `key_share`，降至 **1-RTT** |
+| 0-RTT | 利用 `pre_shared_key` + `early_data` 实现零往返，但存在**重放攻击风险**，需应用层幂等保护 |
+| 密码套件 | 从数百种精简至仅 **5** 种（如 `TLS_AES_128_GCM_SHA256`），消除协商歧义 |
+| Certificate Verify | 新增消息：服务器用私钥对全部握手数据签名，强化身份认证和防篡改 |
+
 不过 TLS1.2 已经是 10 年前（2008 年）的“老”协议了，虽然历经考验，但毕竟“岁月不饶人”，在安全、性能等方面已经跟不上如今的互联网了。
 
 于是经过四年、近 30 个草案的反复打磨，TLS1.3 终于在去年（2018 年）“粉墨登场”，再次确立了信息安全领域的新标准。
@@ -96,13 +108,17 @@ P-256、x25519，用“key_share”带上曲线对应的客户端公钥参数，
 
 ![](/images/s_poetries_work_gitee_2019_12_54.webp)
 
-除了标准的“1-RTT”握手，TLS1.3 还引入了“0-RTT”握手，用“pre_shared_key”和“early_data”扩展，在 TCP
+除了标准的”1-RTT”握手，TLS1.3 还引入了”0-RTT”握手，用”pre_shared_key”和”early_data”扩展，在 TCP
 连接后立即就建立安全连接发送加密消息，不过这需要有一些前提条件，今天暂且不说。
+
+> 补充（现代做法）：0-RTT 握手存在**重放攻击**风险——攻击者可重复发送 early data，导致服务器执行同一请求多次。因此仅应对幂等操作（如 GET）开启 0-RTT，对写操作（POST/支付等）必须在应用层添加防重放令牌或禁用 0-RTT。Nginx 可通过 `ssl_early_data on` 开启，同时需检查 `$ssl_early_data` 变量并拒绝非幂等请求。
 
 ## 握手分析
 
 目前 Nginx 等 Web 服务器都能够很好地支持 TLS1.3，但要求底层的 OpenSSL 必须是 1.1.1，而我们实验环境里用的 OpenSSL
 是 1.1.0，所以暂时无法直接测试 TLS1.3。
+
+> 补充（现代做法）：OpenSSL 1.1.0 已于 2019 年停止维护。主流发行版（Ubuntu 20.04+、CentOS 8+、Debian 10+）默认提供 OpenSSL 1.1.1 或更高版本，TLS1.3 现已开箱即用。配置 Nginx 时只需确保 `ssl_protocols TLSv1.2 TLSv1.3;` 即可，无需额外编译。
 
 不过我在 Linux 上用 OpenSSL1.1.1 编译了一个支持 TLS1.3 的 Nginx，用 Wireshark 抓包存到了 GitHub
 上，用它就可以分析 TLS1.3 的握手过程。
@@ -169,7 +185,7 @@ Params，两边就可以各自用 ECDHE 算出“Pre-Master”，再用 HKDF 生
 提早进入加密通信，后面的证书等就都是加密的了，减少了握手时的明文信息泄露。
 
 这里 TLS1.3 还有一个安全强化措施，多了个“Certificate
-Verify”消息，用服务器的私钥把前面的曲线、套件、参数等握手数据加了签名，作用和“Finished”消息差不多。但由于是私钥签名，所以强化了身份认证和和防窜改。
+Verify”消息，用服务器的私钥把前面的曲线、套件、参数等握手数据加了签名，作用和“Finished”消息差不多。但由于是私钥签名，所以强化了身份认证和防篡改。
 
 这两个“Hello”消息之后，客户端验证服务器证书，再发“Finished”消息，就正式完成了握手，开始收发 HTTP 报文。
 

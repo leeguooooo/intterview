@@ -1,5 +1,31 @@
 原文链接: [https://interview.poetries.top/principle-docs/vue/15-%E7%90%86%E8%A7%A3Vue%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3%E5%8F%8A%E5%AE%9E%E7%8E%B0Vue.html](https://interview.poetries.top/principle-docs/vue/15-%E7%90%86%E8%A7%A3Vue%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3%E5%8F%8A%E5%AE%9E%E7%8E%B0Vue.html)
 
+## 简版速记
+
+**MVVM 三要素**
+- 数据响应式：`Object.defineProperty`(Vue 2) / `Proxy`(Vue 3)，监听数据变化驱动视图更新
+- 模板引擎：插值 `{{}}` + 指令（`v-bind`、`v-on`、`v-model`、`v-for`、`v-if`）
+- 渲染流程：`模板 → vdom → dom`
+
+**Vue 2 响应式核心类职责**
+
+| 类 | 职责 |
+|---|---|
+| `Observer` | 递归遍历 data，调用 `defineReactive` 为每个 key 拦截 get/set |
+| `Dep` | 每个 key 对应一个实例，管理订阅该 key 的所有 Watcher |
+| `Watcher` | 代表一处视图绑定；构造时触发 getter 完成依赖收集；数据变更时执行更新函数 |
+| `Compile` | 遍历 DOM 模板，解析插值和指令，为每个绑定创建更新函数 + Watcher |
+
+**依赖收集关键路径**
+1. `defineReactive` 为 key 创建 `Dep`
+2. `new Watcher` → 将自身挂到 `Dep.target` → 读取 `vm[key]` 触发 getter → `dep.addDep(Dep.target)` → 清空 `Dep.target`
+3. key 发生赋值 → setter 触发 `dep.notify()` → 所有 `Watcher.update()`
+
+**常见面试追问**
+- **新增属性不响应**：`Object.defineProperty` 只能拦截已有属性，新增属性需调用 `Vue.set(obj, key, val)` 手动触发响应式
+- **数组变更方法**：Vue 2 重写了 `push/pop/shift/unshift/splice/sort/reverse` 七个方法，调用后额外执行 `dep.notify()`
+- **Vue 3 改用 Proxy**：天然支持新增属性与数组索引，无需额外处理；`Reflect` 配合保证 this 指向正确
+
 ## 理解Vue的设计思想
 
 ![](/images/s_poetries_work_images_20210313152225.webp)
@@ -91,6 +117,8 @@
 
 > `defineProperty()` 不支持数组
 
+> 补充(现代做法): Vue 3 将响应式核心替换为 `Proxy`，写法如 `new Proxy(obj, { get(target, key) { track(target, key); return Reflect.get(target, key) }, set(target, key, val) { Reflect.set(target, key, val); trigger(target, key) } })`。`Proxy` 天然拦截新增属性、数组索引赋值和 `length` 变更，不再需要 `Vue.set` 或重写数组方法。相关实现位于 `@vue/reactivity` 包的 `reactive/ref/effect`。
+
 **解决数组数据的响应化**
 
 ## Vue中的数据响应化
@@ -177,10 +205,11 @@
     }
     class Observer {
       constructor(value) {
-        this.value = value this.walk(value);
+        this.value = value
+        this.walk(value);
       }
       walk(obj) {
-        Object.keys(obj).forEach(key = >{
+        Object.keys(obj).forEach(key => {
           defineReactive(obj, key, obj[key])
         })
       }
@@ -196,7 +225,7 @@
       }
     }
     function proxy(vm) {
-      Object.keys(vm.$data).forEach(key = >{
+      Object.keys(vm.$data).forEach(key => {
         Object.defineProperty(vm, key, {
           get() {
             return vm.$data[key];
@@ -269,7 +298,7 @@
     }
     compileElement(node) {
       let nodeAttrs = node.attributes;
-      Array.from(nodeAttrs).forEach(attr = >{
+      Array.from(nodeAttrs).forEach(attr => {
         let attrName = attr.name;
         let exp = attr.value;
         if (this.isDirective(attrName)) {
@@ -402,7 +431,7 @@ Watcher来维护它们，此过程称为依赖收集。
 ### 完整代码
 ```js
     // 任务：
-    // 1. 数据响应式：是data选项中的对象编程响应式的
+    // 1. 数据响应式：是data选项中的对象变成响应式的
     // 2.
     
     // 数据响应式：

@@ -1,5 +1,22 @@
 原文链接: [https://interview.poetries.top/principle-docs/vue/09-%E6%B8%B2%E6%9F%93%E5%99%A8%E4%B9%8Bpatch.html](https://interview.poetries.top/principle-docs/vue/09-%E6%B8%B2%E6%9F%93%E5%99%A8%E4%B9%8Bpatch.html)
 
+## 简版速记
+
+> **patch 核心流程一览（面试速答）**
+
+| 场景 | 策略 |
+|---|---|
+| 新旧 VNode **类型不同** | `replaceVNode`：移除旧 DOM，挂载新 VNode |
+| 同类型**标签元素** | `patchElement`：tag 不同则替换；tag 相同则依次 patchData + patchChildren |
+| **VNodeData 更新** | `patchData`：遍历新数据全量应用；再遍历旧数据移除多余项（style / class / 事件 / DOM Prop / Attr） |
+| **子节点更新** | `patchChildren`：3×3 = 9 种情况；只有**新旧均为多子节点**时才需核心 diff（本章暂简化为全删全加） |
+| **文本节点** | `patchText`：比较 `children` 文本，不同则设 `el.nodeValue` |
+| **Fragment** | `patchFragment`：直接调 `patchChildren` + 按子节点类型更新 `el` 引用 |
+| **Portal** | `patchPortal`：先在旧容器中更新子节点，再用 `appendChild` 将子节点搬运到新容器（移动已存在的 DOM 节点） |
+| **有状态组件—主动更新** | `instance._update()`：`_mounted` 为真时走 `patch(旧VNode, 新VNode)`；否则走初次 `mount` |
+| **有状态组件—被动更新** | `patchComponent`：组件类不同则 `replaceVNode`（触发 `unmounted`）；相同则更新 `$props` 再调 `_update()` |
+| **函数式组件更新** | 通过 `vnode.handle`（prev / next / container / update）协调新旧 VNode；`patchComponent` 更新 handle 后调 `handle.update()` |
+
 > 在上一章中我们讲解并实现了渲染器的挂载逻辑，本质上就是将各种类型的 `VNode` 渲染成真实DOM的过程。渲染器除了将全新的 `VNode`
 > 挂载成真实DOM之外，它的另外一个职责是负责对新旧 `VNode` 进行比对，并以合适的方式更新DOM，也就是我们常说的
 > `patch`。本章内容除了让你了解基本的比对逻辑之外，还讲述了在新旧 `VNode` 比对的过程中应该遵守怎样的原则，让我们开始吧！
@@ -284,8 +301,8 @@ window)](https://codesandbox.io/s/jlxjk18vm5)
 
 以样式(`style`)的更新为例，如上代码所展示的更新过程是：
 
-  * 1 ：遍历新的样式数据(`prevValue`)，将新的样式数据全部应用到元素上
-  * 2 ：遍历旧的样式数据(`nextValue`)，将那些已经不存在于新的样式数据中的样式从元素上移除，最终我们完成了元素样式的更新。
+  * 1 ：遍历新的样式数据(`nextValue`)，将新的样式数据全部应用到元素上
+  * 2 ：遍历旧的样式数据(`prevValue`)，将那些已经不存在于新的样式数据中的样式从元素上移除，最终我们完成了元素样式的更新。
 
 这个过程实际上就是更新标签元素的基本规则。
 
@@ -1417,6 +1434,8 @@ window)](https://codesandbox.io/s/1r9k5y1ozq)
 
 ## 更新 Portal
 
+> 补充(现代做法): Vue 3 正式版已将 `Portal` 重命名为 **`Teleport`**，组件写法为 `<Teleport to="#target">`。底层 patch 逻辑（先在旧容器中更新子节点再搬运到新容器）保持不变，但 API 层面请使用 `Teleport`。
+
 如果两个 `VNode` 的类型都是 `Portal`，那么 `patch` 函数内部会调用 `patchPortal`
 函数进行更新。我们在“渲染器之挂载”一章中曾做出一个不严谨但很直观的比喻：可以把 `Portal` 当作可以到处挂载的 `Fragment`。实际上
 `Portal` 的更新与 `Fragment` 类似，我们需要更新其子节点，但由于 `Portal` 可以被到处挂载，所以新旧 `Portal`
@@ -2099,7 +2118,7 @@ window)](https://codesandbox.io/s/2z7335kn5y)
 `ParentComponent` 组件。在这种情况下就会出现因父组件自身状态的变化而导致其渲染不同的组件，在初次挂载时 `ParentComponent`
 组件所产出的 `VNode` 为：
 ```js
-    const pervCompVNode = h(ChildComponent1)
+    const prevCompVNode = h(ChildComponent1)
 ```
 
 更新之后 `ParentComponent` 组件所产出的 `VNode` 为：
@@ -2107,8 +2126,8 @@ window)](https://codesandbox.io/s/2z7335kn5y)
     const nextCompVNode = h(ChildComponent2)
 ```
 
-虽然 `pervCompVNode` 和 `nextCompVNode`
-的类型都是组件，但它们是不同的组件。拿上面的例子来说，`pervCompVNode` 描述的是组件
+虽然 `prevCompVNode` 和 `nextCompVNode`
+的类型都是组件，但它们是不同的组件。拿上面的例子来说，`prevCompVNode` 描述的是组件
 `ChildComponent1`，`nextCompVNode` 描述的是组件 `ChildComponent2`，也就是说新旧 `VNode`
 所描述的不是同一个组件，这就引申出我们更新组件的一个原则：**我们认为不同的组件渲染不同的内容**
 ，所以对于不同的组件，我们采用的方案是使用新组件的内容替换旧组件渲染的内容。根据这个思想，我们修改 `patchComponent` 函数的代码，如下：
@@ -2186,6 +2205,8 @@ window)](https://codesandbox.io/s/ll92yq0o2l)。
 ### 我们需要 shouldUpdateComponent
 
 【占位】
+
+> 补充(现代做法): Vue 3 源码中 `shouldUpdateComponent(prevVNode, nextVNode, optimized)` 会对比新旧 props/slots/directives，若均未变化则跳过子组件重渲染（返回 `false`），从而避免无意义的 `_update()` 调用。该优化在使用 `shallowReactive` props 或 `v-memo` 时尤为关键。面试常问：**父组件重渲染时子组件一定会更新吗？** 答：不一定——Vue 3 的调度器会先调用 `shouldUpdateComponent` 做 props 浅比较，相等则跳过。
 
 ## 函数式组件的更新
 

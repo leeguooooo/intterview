@@ -1,5 +1,15 @@
 原文链接: [https://interview.poetries.top/principle-docs/react/27-Taro%E5%8E%9F%E7%90%86.html](https://interview.poetries.top/principle-docs/react/27-Taro%E5%8E%9F%E7%90%86.html)
 
+## 简版速记
+
+- **核心思路**：编译原理 — 将 JSX 源码解析为 AST，遍历/替换节点，生成目标平台代码（WXML/H5/RN）。
+- **抹平多端差异**三件套：标准运行时框架（`@tarojs/taro`）、标准基础组件库（`@tarojs/components`）、标准端能力 API。
+- **编译时**（Taro 1/2）：使用 Babel（babylon → AST → babel-traverse → babel-types → generate）把 JSX 编译成 `.wxml` 模板 + `_createData()` 数据方法。
+- **运行时适配**：`createComponent` 把 Taro 组件类转成小程序 `Component({})`；`setState` → `nextTick` 批量合并 → `_createData` 求最新 data → `setData`。
+- **JSX 限制（编译模式）**：不能在 `render` 外定义 JSX；map 里不用 `if`；不支持匿名函数/对象展开/props 传 JSX/无状态组件。
+- **H5 运行时**：用 Nerv（类 React）+ 自实现 `<View>`/`<Button>` 等组件 + 模拟小程序 API（localStorage 对应 wx.setStorage 等）+ 轻量 history 路由。
+- **taro-cli**：monorepo（Lerna），核心包 `taro-transformer-wx`；`taro build` 调用对应 `weapp.js/h5.js/rn.js` 完成多端编译。
+
 ## 一、Taro 的安装与使用
 
 ### 1.1 安装
@@ -129,7 +139,7 @@ H5 编译预览及打包：
     
     class App extends Component {
       renderHeader = (showHeader) => {
-        return showHeader& & <Header />
+        return showHeader && <Header />
       }
     }...
 ```
@@ -485,6 +495,8 @@ Taro 提供了 `componentWillPreload` 钩子，它接收页面跳转的参数作
 ## 三、Taro 设计思想及架构
 
 > 在 Taro 中采用的是编译原理的思想，所谓编译原理，就是一个对输入的源代码进行语法分析，语法树构建，随后对语法树进行转换操作再解析生成目标代码的过程。
+
+> 补充（现代做法）：本文描述的是 **Taro 1.x / 2.x 的编译时方案**，即在构建阶段将 JSX 静态编译成小程序模板（WXML）。Taro 3.x（2020 年发布）彻底重构为**重运行时方案**：在小程序层注入一个轻量虚拟 DOM 实现（taro-runtime），React / Vue 等框架直接运行在小程序 JS 沙箱中并操作这套 vDOM，再由运行时将 vDOM diff 的结果通过 `setData` 批量同步给小程序渲染层。这消除了 Taro 1/2 编译时的诸多 JSX 写法限制，也支持了完整的 React Hooks 和 Vue 3 Composition API，代价是初始化包体和首屏 `setData` 数据量略有增大。面试被问到"Taro 原理"时应主动区分两代方案。
 
 ![](/images/s_poetries_work_gitee_2020_09_243.webp)
 
@@ -1014,7 +1026,7 @@ class 所指向的样式通过 css-to-react-native 进行转译，所得 StyleSh
       }
     
       render () {
-        const oddNumbers = this.state.numbers.filter(number => number & 2)
+        const oddNumbers = this.state.numbers.filter(number => number % 2)
         return (
           <ScrollView className='home' scrollTop={false}>
             奇数：
@@ -1205,7 +1217,7 @@ JSX 转换成小程序 `.wxml`
 ```javascript
     {
       state = {
-        list = [1, 2, 3]
+        list: [1, 2, 3]
       }
       render () {
         return (

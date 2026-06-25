@@ -1,6 +1,15 @@
 原文链接: [https://interview.poetries.top/principle-docs/react/15-%E7%9C%9F%E6%AD%A3%E7%90%86%E8%A7%A3%E8%99%9A%E6%8B%9FDOM.html](https://interview.poetries.top/principle-docs/react/15-%E7%9C%9F%E6%AD%A3%E7%90%86%E8%A7%A3%E8%99%9A%E6%8B%9FDOM.html)
 
-## 快速搞定虚拟 DOM 的两个“大问题”
+## 简版速记
+
+- **本质**：虚拟 DOM = JS 对象，是 JS 层与真实 DOM 之间的映射缓存。
+- **工作流**：挂载时 JSX → 虚拟 DOM 树 → 真实 DOM；更新时先 diff 两棵虚拟 DOM 树，生成”补丁集”，再 patch 真实 DOM（差量更新）。
+- **核心价值不是性能**：主要价值是 ①研发效率（函数式/声明式 UI 编程）；②跨平台能力（同一套虚拟 DOM 可对接 Web、iOS、Android、小程序）。
+- **性能结论要有条件**：小量数据更新时虚拟 DOM 有优势；大面积全量变更时优势不明显；DOM 操作能耗远高于 JS 计算，差量更新通常仍划算。
+- **批量更新**：`batch` 函数将多次补丁合并，避免频繁触发重渲染。
+- **面试陷阱**：不要一上来就说”虚拟 DOM 性能更好”——正确答法是强调研发体验和跨平台，性能只是副产品且有前提条件。
+
+## 快速搞定虚拟 DOM 的两个”大问题”
 
 > 虚拟 DOM（Virtual DOM）`本质上是JS 和 DOM 之间的一个映射缓存`，它在形态上表现为一个能够描述 DOM 结构及其属性信息的 JS
 > 对象
@@ -15,6 +24,8 @@
 我们看看 React 中的虚拟 DOM 大致是如何工作的
 
   * **挂载阶段** ，React 将结合 JSX 的描述，构建出虚拟 DOM 树，然后通过 `ReactDOM.render` 实现虚拟 DOM 到真实 DOM 的映射（触发渲染流水线）；
+
+> 补充(现代做法)：React 18 已弃用 `ReactDOM.render`，改用 `ReactDOM.createRoot(container).render(<App />)`，以支持并发特性（Concurrent Mode）。旧写法在 React 18 中仍可运行但会打印警告。
   * **更新阶段** ，页面的变化在作用于真实 DOM 之前，会先作用于虚拟 `DOM`，虚拟 `DOM` 将在 JS 层借助算法先对比出具体有哪些真实 DOM 需要被改变，然后再将这些改变作用于真实 DOM。
 
 ## 虚拟 DOM 是如何解决问题的
@@ -94,6 +105,8 @@ JS 行为这个层面，模板渲染胜出
 
 这时就需要请 `batch` 来帮忙了，`batch`
 的作用是缓冲每次生成的补丁集，它会把收集到的多个补丁集暂存到队列中，再将最终的结果交给渲染函数，最终实现集中化的 `DOM` 批量更新
+
+> 补充(现代做法)：React 18 引入了**自动批处理（Automatic Batching）**，原生事件、Promise、setTimeout、原生事件处理器中的多次 `setState` 均会自动合批，不再需要手动调用 `batch`（即 `unstable_batchedUpdates`）。若需强制同步刷新，可使用 `ReactDOM.flushSync()`。
 
 阅读全文
 

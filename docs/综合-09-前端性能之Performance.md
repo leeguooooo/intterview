@@ -1,5 +1,20 @@
 原文链接: [https://interview.poetries.top/principle-docs/comprehensive/09-%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%B9%8BPerformance.html](https://interview.poetries.top/principle-docs/comprehensive/09-%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%B9%8BPerformance.html)
 
+## 简版速记
+
+- `window.performance` 是前端性能监控的核心 API，建议在 `window.onload` 后读取，避免数据不完整。
+- **`performance.timing`**（已废弃）：提供页面各阶段的时间戳；常用计算：
+  - 白屏时间：`responseStart - navigationStart`
+  - DNS 解析：`domainLookupEnd - domainLookupStart`
+  - TCP 连接：`connectEnd - connectStart`
+  - TTFB（首字节）：`responseStart - requestStart`
+  - 整体加载：`loadEventEnd - navigationStart`
+- **`performance.getEntries()`**：返回所有资源（JS/CSS/图片）加载耗时数组，可按 `initiatorType` 过滤，`duration = responseEnd - startTime`。
+- **`performance.memory`**（Chrome 非标准）：`usedJSHeapSize > totalJSHeapSize` 时可能内存泄漏。
+- **FPS 测量**：生产中首选 `requestAnimationFrame` 计数法（每秒计帧数）；Frame Timing API 仍处实验阶段、无浏览器正式支持。
+- **流畅动画标准**：目标 60 FPS，每帧预算 ≈ 16.67ms；CSS 动画走合成线程，不占主线程帧预算，比 JS 动画更流畅。
+- **现代替代**：`performance.timing` 已废弃，推荐用 `performance.getEntriesByType('navigation')[0]`（Navigation Timing L2）获取同等指标。
+
 >
 > `Performance`是一个做前端性能监控离不开的`API`，最好在页面完全加载完成之后再使用，因为很多值必须在页面完全加载之后才能得到。最简单的办法是在`window.onload`事件中读取各种数据。
 
@@ -67,7 +82,7 @@
   * `domContentLoadedEventEnd`：文档的`DOMContentLoaded`事件结束的时间；
   * `domComplete`：浏览器把`document.readyState`设置为`“complete”`的时间点；
   * `loadEventStart`：文档触发`load`事件的时间；
-  * `loadEventEnd`：文档出发`load`事件结束后的时间
+  * `loadEventEnd`：文档触发`load`事件结束后的时间
 
 > 再来一张图，表示各阶段的开始与结束对应的时间
 
@@ -82,10 +97,12 @@
   * `TCP`连接时间：`connectEnd - connectStart`
   * `request`时间：`responseEnd - requestStart`这个计算是代表请求响应加起来的时间
   * 请求完毕到`DOM`树加载：`domInteractive -responseEnd`
-  * 构建与解析`DOM`树，加载资源时间：`domCompleter -domInteractive`
+  * 构建与解析`DOM`树，加载资源时间：`domComplete -domInteractive`
   * `load`时间：`loadEventEnd - loadEventStart`
   * 整个页面加载时间：`loadEventEnd -navigationStart`
   * 白屏时间：`responseStart-navigationStart`
+
+> 补充(现代做法)：`performance.timing` 已在规范中标记为废弃（Deprecated）。现代浏览器推荐用 Navigation Timing Level 2：`const nav = performance.getEntriesByType('navigation')[0];`，同等字段均可在 `nav` 对象上取到，且支持更高精度（`DOMHighResTimeStamp`）。
 
 ### 2.2 performance.getEntries()
 
@@ -106,10 +123,12 @@
 
   * `jsHeapSizeLimit`：内存大小限制
   * `totalJSHeapSize`：可使用的内容
-  * `userdJSHeapSize`：已使用的内容
+  * `usedJSHeapSize`：已使用的内容
 
 >
-> `userdJSHeapSize`表示所有被使用的JS堆栈内存，`totalJSHeapSize`可使用的JS堆栈内存，如果`userdJSHeapSize`的值大于`totalJSHeapSize`，就可能出现内存泄漏
+> `usedJSHeapSize`表示所有被使用的JS堆栈内存，`totalJSHeapSize`可使用的JS堆栈内存，如果`usedJSHeapSize`的值大于`totalJSHeapSize`，就可能出现内存泄漏
+
+> 补充(现代做法)：`performance.memory` 是 Chrome 私有非标准 API，Firefox/Safari 不支持。现代标准做法是使用 `performance.measureUserAgentSpecificMemory()`（需 COOP/COEP 跨域隔离头），或通过 Chrome DevTools Memory 面板进行内存分析。
 
 ![](/images/s_poetries_work_images_20210503170616.webp)
 
@@ -212,7 +231,7 @@
 
 或者是：
 ```javascript
-    ar observer = new PerformanceObserver(function(list) {
+    var observer = new PerformanceObserver(function(list) {
         var perfEntries = list.getEntries();
         for (var i = 0; i < perfEntries.length; i++) {
             console.log("frame: ", perfEntries[i]);

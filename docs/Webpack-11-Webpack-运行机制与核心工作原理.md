@@ -1,5 +1,33 @@
 原文链接: [https://interview.poetries.top/principle-docs/webpack/11-Webpack%20%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6%E4%B8%8E%E6%A0%B8%E5%BF%83%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86.html](https://interview.poetries.top/principle-docs/webpack/11-Webpack%20%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6%E4%B8%8E%E6%A0%B8%E5%BF%83%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86.html)
 
+## 简版速记
+
+**Webpack 核心工作流程（6 步）：**
+
+1. **CLI 解析参数** — webpack-cli 用 yargs 合并命令行参数与配置文件，得到完整 options
+2. **创建 Compiler** — `lib/webpack.js` 根据 options 创建 Compiler（或 MultiCompiler），注册所有 Plugin
+3. **run / watch** — 调用 `compiler.run()` 或 `compiler.watch()` 启动构建
+4. **创建 Compilation** — compile 方法内创建 Compilation 上下文对象，触发 `make` 钩子
+5. **make 阶段** — EntryPlugin 监听 make 钩子，调用 `addEntry → buildModule`，Loader 处理各类模块，acorn 解析 AST，递归构建依赖树
+6. **seal / emit** — 所有模块构建完成，合并生成 bundle.js 写入 dist
+
+**关键对象：**
+
+| 对象 | 作用 |
+|---|---|
+| `Compiler` | 全局唯一，管理整个构建生命周期的钩子与配置 |
+| `Compilation` | 单次构建上下文，持有模块、chunk、资源等信息 |
+| `Tapable` | 插件系统基础库，`.tap()` 注册钩子，`.call()` 触发钩子 |
+
+**Loader vs Plugin 一句话区别：**
+- **Loader**：转换单个文件内容（函数，输入源码，输出转换结果）
+- **Plugin**：监听构建生命周期钩子，实现自动化任务（压缩、拷贝、注入等）
+
+**高频考点：**
+- Webpack 如何处理图片/字体：Loader 将其拷贝到输出目录并暴露访问路径
+- 为何先注册 Plugin 再启动构建：确保所有钩子在生命周期开始前已挂载
+- make 阶段如何触发：事件驱动，通过 `compilation.hooks.make.call()` 触发
+
 ## 工作过程简介
 
 其实 Webpack 官网首屏的英雄区就已经很清楚地描述了它的工作原理，如下图所示：
@@ -69,6 +97,8 @@ window)](https://github.com/webpack/webpack-cli/tree/v3.3.11)。
 
 > P.S. 目前 webpack-cli 官方仓库默认分支下的代码不是 3.x 版本的。
 
+> 补充（现代做法）：webpack-cli 当前主流版本为 v5.x，架构已重写：入口从 `bin/cli.js` 改为 `bin/cli.js` 调用 `WebpackCLI` 类（`lib/webpack-cli.js`），`convert-argv.js` 已不存在，参数解析逻辑被整合进 `WebpackCLI.run()` 方法。阅读新版源码时以 `webpack-cli/lib/webpack-cli.js` 为起点。
+
 Webpack CLI 的作用就是将 CLI 参数和 Webpack 配置文件中的配置整合，得到一个完整的配置对象。
 
 这部分操作在 webpack-cli 的入口文件 bin/cli.js
@@ -101,6 +131,8 @@ Webpack CLI 的作用就是将 CLI 参数和 Webpack 配置文件中的配置整
 随着 Webpack CLI 载入 Webpack 核心模块，整个执行过程就到了 Webpack 模块中，所以这一部分的代码需要回到 Webpack
 模块中，我这里分析的是 v4.43.0 版本的 Webpack，可参考这个版本的[源代码的固定链接 (opens new
 window)](https://github.com/webpack/webpack/tree/v4.43.0)。
+
+> 补充（现代做法）：Webpack 5（当前主流版本）的入口同样是 `lib/webpack.js`，整体流程与 v4 相似，但有若干重要变化：(1) 新增持久化缓存（`cache: { type: 'filesystem' }`），可大幅提速二次构建；(2) 内置模块联邦（Module Federation），支持跨应用共享模块；(3) 移除 Node.js polyfill 的自动注入，需手动配置 `resolve.fallback`。学习源码时可参考 [v5 固定链接](https://github.com/webpack/webpack/tree/v5.0.0)。
 
 同样，这里我们需要找到这个模块的入口文件，也就是 lib/webpack.js 文件。这个文件导出的是一个用于创建 Compiler 的函数，具体如下：
 
@@ -174,6 +206,8 @@ window)](https://github.com/webpack/tapable)
 ![](/images/s_poetries_work_images_20210503221001.webp)
 
 因为我们默认使用的就是单一入口打包的方式，所以这里最终会执行其中的 SingleEntryPlugin。
+
+> 补充（现代做法）：Webpack 5 中 `SingleEntryPlugin` 已被重命名为 `EntryPlugin`（位于 `lib/EntryPlugin.js`），同时 `_addModuleChain` 内部逻辑也被重构，入口解析改由 `handleModuleCreation` 驱动。查阅 Webpack 5 源码时，以 `EntryPlugin` 和 `handleModuleCreation` 为关键词进行搜索。
 
 ![](/images/s_poetries_work_images_20210503221009.webp)
 

@@ -1,5 +1,24 @@
 原文链接: [https://interview.poetries.top/principle-docs/vue/12-%E5%89%96%E6%9E%90%20Vue%20%E5%86%85%E9%83%A8%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6.html](https://interview.poetries.top/principle-docs/vue/12-%E5%89%96%E6%9E%90%20Vue%20%E5%86%85%E9%83%A8%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6.html)
 
+## 简版速记
+
+**整体流程**：`new Vue()` → `_init`（初始化 lifecycle/events/props/data/computed/watch）→ `$mount` → 编译（parse → optimize → generate）→ render function → VNode → `patch` → 真实 DOM
+
+**响应式核心（Vue 2）**：`Object.defineProperty` 为每个属性设置 getter/setter；getter 触发**依赖收集**（将当前 `Dep.target` 即 Watcher 存入属性闭包中的 `Dep.subs`）；setter 触发 `dep.notify()` 通知所有 Watcher 调用 `update`。
+
+**编译三阶段**：
+- `parse`：正则解析 template 字符串 → AST
+- `optimize`：标记静态节点（`static` / `staticRoot`），patch 时跳过静态节点比对，提升性能
+- `generate`：AST → render function 字符串（`_c` createElement / `_l` renderList / `_v` createTextVNode / `_s` toString）
+
+**Virtual DOM**：纯 JS 对象（VNode）组成的树，不依赖平台，故跨平台；通过 `patch(oldVNode, newVNode)` + diff 只更新差异 DOM。
+
+**diff 算法**：仅做同层比较，时间复杂度 O(n)；`updateChildren` 使用双端四指针（头头、尾尾、头尾、尾头）快速匹配，均不命中时通过 `key` 建立 map 索引复用节点；`key` 对性能至关重要。
+
+**批量异步更新**：setter 触发后 Watcher 入队（`queueWatcher`，按 id 去重）；`nextTick` 将 `flushSchedulerQueue` 延迟到下一个微任务/任务中执行，避免同一事件循环内重复 patch。`nextTick` 降级策略：Promise.then > MutationObserver > setImmediate > setTimeout。
+
+**Vuex 核心**：`Vue.use(Vuex)` → `Vue.mixin({ beforeCreate: vuexInit })` 将 `$store` 注入每个组件实例；`state` 通过 `new Vue({ data: { $$state } })` 响应式化，借助 Vue 自身响应式系统驱动视图更新；`commit` 同步触发 mutation，`dispatch` 异步触发 action（返回 Promise）。
+
 ## 一、Vue.js 运行机制全局概览
 
 ### 全局概览
@@ -119,6 +138,8 @@ compile编译可以分成 `parse`、`optimize` 与 `generate` 三个阶段，最
 > 」，也有助于在遇见一些琢磨不透的问题时可以深入其原理来解决它。
 
 ### `Object.defineProperty`
+
+> 补充（现代做法）：Vue 3 将响应式系统重写为基于 `Proxy`，可拦截属性新增/删除和数组索引操作，彻底解决了 Vue 2 中 `Object.defineProperty` 无法侦测属性新增（需用 `Vue.set`）和数组下标赋值的局限。
 
 首先我们来介绍一下 [`Object.defineProperty` (opens new
 window)](https://developer.mozilla.org/en-
@@ -878,7 +899,7 @@ template 被解析完毕。
     
         if (pos >= 0) {
             stack.length = pos;
-            currentParent = stack[pos]; 
+            currentParent = stack[pos - 1]; 
         }   
     }
 ```
@@ -935,7 +956,7 @@ template 被解析完毕。
 ```
 
 > 我们使用一个 `tokens` 数组来存放解析结果，通过 `defaultTagRE` 来循环匹配该文本，如果是普通文本直接 `push` 到
-> `tokens` 数组中去，如果是表达式（`{item}`），则转化成“`\_s(${exp})`”的形式。
+> `tokens` 数组中去，如果是表达式（`{{item}}`），则转化成”`\_s(${exp})`”的形式。
 
 举个例子，如果我们有这样一个文本。
 ```javascript
@@ -1909,6 +1930,8 @@ window)](https://github.com/answershuto/VueDemo/blob/master/%E3%80%8A%E6%95%B0%E
 > Vue.js 实现了一个 `nextTick` 函数，传入一个 `cb` ，这个 `cb` 会被存储到一个队列中，在下一个 tick 时触发队列中的所有
 > `cb` 事件。
 
+> 补充（现代做法）：Vue 3 的 `nextTick` 统一使用 `Promise.then` 微任务实现，移除了 Vue 2 中的多策略降级逻辑（MutationObserver / setImmediate / setTimeout），行为更一致、优先级更高（microtask 早于 macrotask）。
+
   * 因为目前浏览器平台并没有实现 `nextTick` 方法，所以 Vue.js 源码中分别用 `Promise`、`setTimeout`、`setImmediate` 等方式在 microtask（或是task）中创建一个事件，目的是在当前调用栈执行完毕以后（不一定立即）才会去执行这个事件。
   * 笔者用 `setTimeout` 来模拟这个方法，当然，真实的源码中会更加复杂，笔者在小册中只讲原理，有兴趣了解源码中 `nextTick` 的具体实现的同学可以参考[next-tick (opens new window)](https://github.com/vuejs/vue/blob/dev/src/core/util/next-tick.js#L90)。
   * 首先定义一个 `callbacks` 数组用来存储 `nextTick`，在下一个 `tick` 处理这些回调函数之前，所有的 `cb` 都会被存在这个 `callbacks` 数组中。`pending` 是一个标记位，代表一个等待的状态。
@@ -2050,6 +2073,8 @@ window)](https://github.com/answershuto/VueDemo/blob/master/%E3%80%8A%E6%89%B9%E
 
 ## 八、Vuex 状态管理的工作原理
 
+> 补充（现代做法）：Vue 3 生态中官方推荐使用 **Pinia** 替代 Vuex。Pinia 去掉了 mutation，只保留 state/getters/actions，同时对 TypeScript 和 Composition API 支持更友好，且 DevTools 集成更完善。Vuex 4 虽兼容 Vue 3，但 Vuex 5（即 Pinia）已成为官方状态管理标准。
+
 ### 为什么要使用 Vuex
 
 > 当我们使用 Vue.js 来开发一个单页应用时，经常会遇到一些组件间共享的数据或状态，或是需要通过 props
@@ -2079,7 +2104,7 @@ window)](https://github.com/answershuto/learnVue/blob/master/docs/Vuex%E6%BA%90%
 ```js
     let Vue;
     
-    export default install (_Vue) {
+    export default function install (_Vue) {
         Vue.mixin({ beforeCreate: vuexInit });
         Vue = _Vue;
     }

@@ -1,5 +1,18 @@
 原文链接: [https://interview.poetries.top/principle-docs/vue/01-%E4%BB%8E%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BBVue%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.html](https://interview.poetries.top/principle-docs/vue/01-%E4%BB%8E%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BBVue%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.html)
 
+## 简版速记
+
+- **八大钩子顺序**：`beforeCreate` → `created` → `beforeMount` → `mounted` → `beforeUpdate` → `updated` → `beforeDestroy` → `destroyed`
+- **beforeCreate vs created**：`callHook('beforeCreate')` 在 `initState()` 之前调用，此时 data/props/methods 均未初始化；`created` 在 `initState()` 之后，可访问响应式数据但尚无真实 DOM。
+- **mounted 才能访问 DOM**：`vm._render()` 生成 VNode → `vm._update()` patch 到真实 DOM → 再调用 `callHook('mounted')`。
+- **不能用箭头函数**：`invokeWithErrorHandling` 用 `apply/call` 绑定 `this`，箭头函数的 `this` 无法被改变，会指向父级作用域报错。
+- **updated 里不要改 data**：会触发新一轮更新，导致无限循环。
+- **销毁顺序先子后父**：`$destroy` 执行 `vm.__patch__(vm._vnode, null)` 递归销毁子组件，与 `mounted` 顺序相同（先子后父）。
+- **beforeDestroy 做善后**：清除定时器、取消订阅、移除自定义事件监听等清理操作应在此钩子完成。
+- **keep-alive 专属**：`activated`（组件激活）/ `deactivated`（组件停用），SSR 期间不调用。
+- **errorCaptured**：捕获子孙组件错误，返回 `false` 可阻止错误继续向上冒泡。
+- **SSR 限制**：只有 `beforeCreate` 和 `created` 在服务端渲染期间被调用，其余钩子仅在客户端执行。
+
 ## 基础知识
 
 ### 钩子函数
@@ -18,8 +31,8 @@
   * `mounted` 挂载完成
   * `beforeUpdate` 更新前
   * `updated` 更新完成
-  * `beforeDestory` 销毁前
-  * `destoryed` 销毁完成
+  * `beforeDestroy` 销毁前
+  * `destroyed` 销毁完成
 
 ### beforeCreate
 
@@ -207,7 +220,7 @@
 
 > 通过上面的代码，我们可以看出在执行`vm._render()`函数渲染`VNode`之前，执行了 `beforeMount`钩子函数，在执行完
 > `vm._update()` 把`VNode patch`到真实Dom后，执行
-> `mouted`钩子。也就明白了为什么直到`mounted`阶段才名正言顺的拿到了Dom
+> `mounted`钩子。也就明白了为什么直到`mounted`阶段才名正言顺的拿到了Dom
 
 ### beforeUpdate和updated
 ```js
@@ -316,6 +329,8 @@
   * 除了这八种钩子外，我们在官网也可以查阅到另外几种不常用的钩子，这里列举出来
 
 ## 几种不常用的钩子
+
+> 补充(现代做法): Vue 3 Composition API 中生命周期钩子通过 `import { onMounted, onBeforeUnmount, ... } from 'vue'` 引入并在 `setup()` 内调用。`beforeDestroy` 改名为 `onBeforeUnmount`，`destroyed` 改名为 `onUnmounted`；`beforeCreate`/`created` 在 Composition API 中被 `setup()` 本身替代，无对应钩子函数。
 
 ### activated
 

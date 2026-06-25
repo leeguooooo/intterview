@@ -1,5 +1,15 @@
 原文链接: [https://interview.poetries.top/principle-docs/vue/06-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B8%B2%E6%9F%93%E5%99%A8%E5%92%8C%E5%BC%82%E6%AD%A5%E6%B8%B2%E6%9F%93.html](https://interview.poetries.top/principle-docs/vue/06-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B8%B2%E6%9F%93%E5%99%A8%E5%92%8C%E5%BC%82%E6%AD%A5%E6%B8%B2%E6%9F%93.html)
 
+## 简版速记
+
+- **核心思路**：将渲染器中所有平台相关的 DOM 操作抽象为可注入的接口，使渲染器与具体平台解耦。
+- **`createRenderer(options)`**：接收 `nodeOps`（元素增删查方法集）和 `patchData`（属性/事件更新函数）两类选项，返回平台无关的 `render` 函数。
+- **`nodeOps` 必须实现的接口**：`createElement`、`createText`、`setText`、`appendChild`、`insertBefore`、`removeChild`、`parentNode`、`nextSibling`、`querySelector`。
+- **`@vue/runtime-test`**：官方测试用自定义渲染器；用普通 JS 对象模拟 DOM 节点，可在 Node.js（无浏览器 DOM）中运行组件渲染断言。
+- **自定义元素结构最小集**：`{ type, tag, parentNode, children, props, eventListeners, text }`。
+- **典型应用场景**：单元测试（`@vue/runtime-test`）、Canvas 渲染器、PDF 渲染、文件系统渲染、跨端（uni-app / Weex）等。
+- **面试要点**：自定义渲染器 ≠ 自定义组件；它工作在框架最底层，决定 VNode 如何被映射到任意宿主环境。
+
 > 在本章之前，我们花费了很大的篇幅全面的讲解了一个普通渲染器的实现原理，它可以将 `Virtual DOM` 渲染为 Web 平台的真实
 > DOM。本章我们将在上一章的基础上讲解更加高级的渲染器：自定义渲染器(`Custom renderer`)以及异步渲染。
 
@@ -426,6 +436,8 @@ window)](https://codesandbox.io/s/mq8v65qyry)
 
 以上我们就完成了对渲染器的抽象，使它成为一个平台无关的工具。并基于此实现了一个 Web 平台的渲染器，专门用于浏览器环境。
 
+> **补充(现代做法)**：Vue 3 已将上述设计落地为正式 API。`@vue/runtime-core` 导出 `createRenderer`，`@vue/runtime-dom` 在其基础上封装了完整的 Web `nodeOps` 与 `patchProp`，是官方的浏览器渲染器。实际项目中无需手写 Web 端 `nodeOps`，直接使用 `vue`（内部即 `@vue/runtime-dom`）即可；只有在跨平台场景（小程序、Canvas、Native）才需要自行实现 `createRenderer` 的两类选项。
+
 ## 自定义渲染器的应用
 
 `Vue3` 提供了一个叫做 `@vue/runtime-test` 的包，其作用是方便开发者在无 DOM
@@ -541,7 +553,7 @@ API**，因此，如上代码所创建的渲染器也将是一个平台无关的
     })
     
 
-文本元素的 `type` 类型值为 `'TEXT'`，`parentNode` 同样被初始化为 `unll`，`text`
+文本元素的 `type` 类型值为 `'TEXT'`，`parentNode` 同样被初始化为 `null`，`text`
 属性存储着文本节点的内容。由于文本元素没有子节点、属性/特性、事件等信息，因此不需要其他描述信息。
 
 文本节点与元素节点的创建都已经实现，接下来我们看看当元素被追加时应该如何处理，即 `nodeOps.appendChild` 函数的实现：
@@ -574,7 +586,7 @@ API**，因此，如上代码所创建的渲染器也将是一个平台无关的
           return customElement
         },
         appendChild(parent, child) {
-          // 简历父子关系
+          // 建立父子关系
           child.parentNode = parent
           parent.children.push(child)
         }
@@ -609,7 +621,7 @@ API**，因此，如上代码所创建的渲染器也将是一个平台无关的
         createElement(tag) {/* 省略... */},
         createText(text) {/* 省略... */},
         appendChild(parent, child) {
-          // 简历父子关系
+          // 建立父子关系
           child.parentNode = parent
           parent.children.push(child)
         },
@@ -759,7 +771,7 @@ API**，因此，如上代码所创建的渲染器也将是一个平台无关的
       nodeOps: {
         createElement(tag) {/* 省略... */},
         appendChild(parent, child) {
-          // 简历父子关系
+          // 建立父子关系
           child.parentNode = parent
           parent.children.push(child)
     

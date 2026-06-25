@@ -1,5 +1,15 @@
 原文链接: [https://interview.poetries.top/principle-docs/webpack/08-%E5%88%A9%E7%94%A8%20Webpack%20CodeSplitting%20%E5%AE%8C%E6%88%90%E5%A4%8D%E6%9D%82%E5%BA%94%E7%94%A8%E6%8B%86%E5%8C%85.html](https://interview.poetries.top/principle-docs/webpack/08-%E5%88%A9%E7%94%A8%20Webpack%20CodeSplitting%20%E5%AE%8C%E6%88%90%E5%A4%8D%E6%9D%82%E5%BA%94%E7%94%A8%E6%8B%86%E5%8C%85.html)
 
+## 简版速记
+
+- **为什么要 Code Splitting**：All in One 打包导致 bundle 体积过大（可达 4～5M），首屏必须加载全部代码；HTTP/1.1 同域并行请求有限制，过碎也不行，合理分包可降低启动成本、提高响应速度。
+- **两种分包方式**：
+  1. **多入口打包**：`entry` 配置为对象（非数组），每个入口产生一个独立 chunk；`HtmlWebpackPlugin` 的 `chunks` 属性指定页面只注入对应 bundle，防止所有 bundle 全部注入。
+  2. **动态导入（更常用）**：`import('./module')` 返回 Promise，Webpack 自动将其拆成独立 bundle，无需额外配置。
+- **提取公共模块**：`optimization.splitChunks.chunks: 'all'` 自动将多入口间的公共依赖提取到独立 bundle，避免重复打包、提升缓存命中率。
+- **魔法注释**：`import(/* webpackChunkName: 'posts' */ './posts')` 给动态 chunk 命名；相同 `chunkName` 的多个模块会合并到同一 bundle，灵活组织分包粒度。
+- **SPA 最佳实践**：Vue Router / React Router 中路由组件使用动态导入实现路由级按需加载（懒加载），是动态导入最典型的应用场景。
+
 ## All in One 的弊端
 
 通过 Webpack
@@ -22,6 +32,8 @@ All in One 的方式就会导致打包的结果过大，甚至超过 4 ～ 5M。
   * 同一个域名下的并行请求是有限制的；
   * 每次请求本身都会有一定的延迟；
   * 每次请求除了传输内容，还有额外的请求头，大量请求的情况下，这些请求头加在一起也会浪费流量和带宽。
+
+> 补充（现代做法）：HTTP/2 通过多路复用解决了同域并行请求数的限制，HTTP/3（QUIC）进一步降低了延迟。但即便在 HTTP/2 环境下，过细的模块颗粒度仍会带来额外的解析与编译开销，合理的分包策略依然必要，而非简单堆砌请求数量。
 
 综上所述，模块打包肯定是必要的，但当应用体积越来越大时，我们也要学会变通。
 
@@ -191,6 +203,8 @@ chunk，具体配置如下：
     }
 ```
 
+> 补充（现代做法）：Webpack 5 的 `splitChunks` 默认已内置 `cacheGroups.defaultVendors`，会自动将 `node_modules` 中的依赖单独提取；同时新增了 **Module Federation** 特性，可跨应用共享已构建的模块，彻底避免公共依赖的重复打包，适用于微前端场景。
+
 我们回到配置文件中，这里在 `optimization` 属性中添加 `splitChunks` 属性，那这个属性的值是一个对象，这个对象需要配置一个
 `chunks` 属性，我们这里将它设置为 `'all'`，表示所有公共模块都可以被提取。
 
@@ -289,6 +303,8 @@ Webpack 中支持使用动态导入的方式实现模块的按需加载，而且
 > Modules 标准中的[Dynamic Imports (opens new
 > window)](https://developer.mozilla.org/en-
 > US/docs/Web/JavaScript/Reference/Statements/import#Dynamic_Imports)。
+
+> 补充（现代做法）：动态导入也可结合 `async/await` 使用，语法更简洁：`const { default: posts } = await import('./posts/posts')`。在现代框架中，该能力已被进一步封装：React 提供 `React.lazy()` + `<Suspense>`，Vue 3 提供 `defineAsyncComponent()`，均以动态导入为底层机制实现组件级懒加载。
 
 这里我们先移除 `import` 这种静态导入，然后在需要使用组件的地方通过 `import` 函数导入指定路径，那这个方法返回的是一个
 `Promise`。在这个 `Promise` 的 `then` 方法中我们能够拿到模块对象。由于我们这里的 posts 和 album

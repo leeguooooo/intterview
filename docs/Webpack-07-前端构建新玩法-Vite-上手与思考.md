@@ -1,5 +1,30 @@
 原文链接: [https://interview.poetries.top/principle-docs/webpack/07-%E5%89%8D%E7%AB%AF%E6%9E%84%E5%BB%BA%E6%96%B0%E7%8E%A9%E6%B3%95%20Vite%20%E4%B8%8A%E6%89%8B%E4%B8%8E%E6%80%9D%E8%80%83.html](https://interview.poetries.top/principle-docs/webpack/07-%E5%89%8D%E7%AB%AF%E6%9E%84%E5%BB%BA%E6%96%B0%E7%8E%A9%E6%B3%95%20Vite%20%E4%B8%8A%E6%89%8B%E4%B8%8E%E6%80%9D%E8%80%83.html)
 
+## 简版速记
+
+**核心定位**：面向现代浏览器、基于原生 ESM 的下一代前端构建工具。开发服务器极快启动，生产构建底层使用 Rollup。
+
+**为什么快**
+
+| 对比维度 | Webpack | Vite |
+|---|---|---|
+| 开发服务器启动 | 先全量 bundle 再启服务（慢） | 直接启 HTTP Server，浏览器按需拉文件（秒开）|
+| HMR 热更新 | 从入口重跑整个 bundle | 只编译被修改的单个文件（毫秒级）|
+| 生产构建内核 | Webpack | Rollup（Vite 内置封装）|
+| 默认兼容性 | 可覆盖旧浏览器 | 默认现代浏览器（ES2015+）|
+
+**实现原理三件套**
+
+1. **静态文件服务器**（Koa）：将项目目录作为根目录直接 serve
+2. **请求拦截**：`import 'vue'` → 重写路径为 `/@modules/vue` → 映射到 `node_modules`；`.vue` 文件请求时用 `@vue/compiler-sfc` 即时编译
+3. **WebSocket 实现 HMR**：文件变动后通知浏览器只替换对应模块
+
+**依赖预构建**：第三方包（CommonJS/UMD）在首次启动时一次性转成 ESM 缓存到 `node_modules/.vite`，后续请求直接命中缓存。
+
+**打包 vs 不打包**：HTTP/2 多路复用解决了大量并发请求的性能问题，理论上开发时无需打包；生产环境仍需打包（tree-shaking、代码分割、资源压缩等）。
+
+**开箱即用**：内置 TypeScript、CSS 预处理器（需单独安装编译器）支持，无需繁琐的 Loader/Plugin 配置。
+
 ## Vite 的定义
 
 Vite 是面向现代浏览器的一个更轻、更快的 Web 应用开发工具，核心基于 ECMAScript 标准原生模块系统（ES Modules）实现。
@@ -40,6 +65,16 @@ Vite 官方目前提供了一个比较简单的脚手架：create-vite-app，可
 > react-app` 就相当于先 `yarn global add create-react-app`，然后自动执行 `create-react-app
 > my-react-app`
 
+> 补充(现代做法)：`create-vite-app` 是 Vite 1.x 时期的脚手架，已废弃。Vite 2+ 统一使用官方脚手架 `create-vite`，支持 Vue、React、Svelte、Lit、Vanilla 等多种模板：
+> ```shell
+> # npm 7+
+> npm create vite@latest my-app -- --template vue
+> # yarn
+> yarn create vite my-app --template react
+> # pnpm
+> pnpm create vite my-app --template svelte
+> ```
+
 ### 对比差异点
 
 打开生成的项目过后，你会发现就是一个很普通的 Vue.js 应用，没有太多特殊的地方。
@@ -70,6 +105,8 @@ Vite 官方目前提供了一个比较简单的脚手架：create-vite-app，可
 再者就是 Vue.js 的版本是 3.0。这里尤其需要注意：**Vite 目前只支持 Vue.js 3.0 版本。**
 
 > 如果你想，在后面介绍完实现原理过后，你也可以改造 Vite 让它支持 Vue.js 2.0。
+
+> 补充(现代做法)：上述限制仅适用于 Vite 1.x。自 **Vite 2.0** 起，架构重构为框架无关的插件体系，官方同等支持 Vue 3、React、Svelte、Lit、Vanilla TS 等；Vue 2 可通过社区插件 `vite-plugin-vue2` 支持。面试时注意区分 Vite 版本。
 
 ### 基础体验
 
@@ -117,6 +154,8 @@ Vite 还提供了一个目前在帮助列表中并没有呈现的一个子命令
 `node_modules/.vite_opt_cache` 目录中。
 
 这样后续请求这个文件时就不需要再即时去加载了。
+
+> 补充(现代做法)：Vite 2+ 将依赖预构建缓存目录从 `.vite_opt_cache` 改为 `node_modules/.vite`，并将该步骤称为 **Pre-Bundling（依赖预构建）**，底层使用 esbuild 执行，比 Rollup 快 10-100 倍。`vite optimize` 子命令在 Vite 3+ 中已移除，预构建在 `vite dev` 首次启动时自动触发。
 
 ### HMR
 

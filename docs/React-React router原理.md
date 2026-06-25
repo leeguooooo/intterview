@@ -1,5 +1,19 @@
 原文链接: [https://interview.poetries.top/principle-docs/react/01-React%20router%E5%8E%9F%E7%90%86.html](https://interview.poetries.top/principle-docs/react/01-React%20router%E5%8E%9F%E7%90%86.html)
 
+## 简版速记
+
+- **前端路由本质**: 监听 URL 变化 → 匹配路由规则 → 渲染对应组件，无须刷新页面
+- **两种模式**:
+  - `hash` 模式 — 监听 `hashchange`，URL 含 `#`，兼容性好，无需服务器额外配置
+  - `history` 模式 — 监听 `popstate`，URL 更美观，但需服务器将所有路径回退到 `index.html`
+- **history 库三类实现**:
+  - `createBrowserHistory` → HTML5 `pushState`/`replaceState` + `popstate` 事件
+  - `createHashHistory` → `location.hash` 赋值 + `hashchange` 事件
+  - `createMemoryHistory` → 纯内存数组（SSR / 测试环境用，无浏览器依赖）
+- **location 对象特有字段**: `key`（`Math.random().toString(36)` 随机串），区别于浏览器原生 `location`
+- **Link 点击完整链路**: 拦截默认跳转 → 调用 `history.pushState` → 触发 `listen` 回调 → `matchRoutes` 匹配 → `setState(nextState)` → Router 重新渲染对应组件
+- **state 持久化**: `createBrowserHistory`/`createHashHistory` 存 `sessionStorage`；`createMemoryHistory` 存内存对象
+
 ## 一、React Router基础之history
 
 ### 1.1 History介绍
@@ -9,7 +23,7 @@
 
   * 老浏览器的`history`: 主要通过`hash`来实现，对应`createHashHistory`
   * 高版本浏览器: 通过`html5`里面的`history`，对应`createBrowserHistory`
-  * `node`环境下: 主要存储在`memeory`里面，对应`createMemoryHistory`
+  * `node`环境下: 主要存储在`memory`里面，对应`createMemoryHistory`
 
 > 上面针对不同的环境提供了三个`API`，但是三个`API`有一些共性的操作，将其抽象了一个公共的文件`createHistory`
 ```js
@@ -54,7 +68,7 @@
 
   * `createBrowserHistory`: 利用`HTML5`里面的`history`
   * `createHashHistory`: 通过`hash`来存储在不同状态下的`history`信息
-  * `createMemoryHistory`: 在内存中进行历史记录的存储`
+  * `createMemoryHistory`: 在内存中进行历史记录的存储
 
 #### 1.2.1 执行URL前进
 
@@ -69,7 +83,7 @@
       ...
       const historyState = { key };
       ...
-      if (location.action === 'PUSH') ) {
+      if (location.action === 'PUSH') {
         window.history.pushState(historyState, null, path);
       } else {
         window.history.replaceState(historyState, null, path)
@@ -78,7 +92,7 @@
     // createHashHistory的内部实现
     function finishTransition(location) {
       ...
-      if (location.action === 'PUSH') ) {
+      if (location.action === 'PUSH') {
         window.location.hash = path;
       } else {
         window.location.replace(
@@ -286,9 +300,13 @@
 > 就可以实现重新渲染 `Router`组件。举个简单的例子，当 URL（准确的说应该是 `location.pathname`） 为
 > `/archives/posts` 时，应用的匹配结果如下图所示
 
+> 补充(现代做法): `componentWillMount` 已在 React 16.3 标记为不安全（`UNSAFE_componentWillMount`），React 18 严格模式下会双调用。React Router v6 内部改用 `useEffect`/`useSyncExternalStore` 订阅 history，不再依赖该生命周期。
+
 ![img](/images/s_poetries_work_gitee_2019_10_430.webp)
 
 > 到这里，系统已经完成了当用户点击一个由 `Link` 组件渲染出的超链接到页面刷新的全过程
+
+> 补充(现代做法): 上述流程描述的是 React Router v4/v5（基于 `<Route>` 组件树 + `history` 第三方库）的实现。React Router v6.4+ 引入了 **Data Router**（`createBrowserRouter`/`createHashRouter`），将数据加载（loader）、提交（action）与路由解耦，路由配置由 JSX 组件树改为纯对象数组，并通过 `RouterProvider` 挂载。核心监听机制仍是 HTML5 History API，但匹配与渲染由内部的 `router.subscribe` 驱动而非组件 `setState`。
 
 阅读全文
 

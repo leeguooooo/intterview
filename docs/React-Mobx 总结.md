@@ -1,5 +1,22 @@
 原文链接: [https://interview.poetries.top/principle-docs/react/03-MobX%E6%80%BB%E7%BB%93.html](https://interview.poetries.top/principle-docs/react/03-MobX%E6%80%BB%E7%BB%93.html)
 
+## 简版速记
+
+- **核心三元素**：`observable`（可观察状态）→ `computed`（派生值，带缓存）→ `reaction/autorun`（副作用响应）
+- **observer**：`mobx-react` 提供的 HOC，用 `autorun` 包裹 `render`，使组件自动追踪并响应 observable 变化
+- **@action**：唯一合法的状态修改入口；开启 `enforceActions: 'always'` 可强制约束；装饰器模式下用 `@action.bound` 绑定 `this`
+- **autorun vs computed**：想要"值" → `computed`；想要"副作用"（打日志、发请求）→ `autorun`
+- **flow**：用 `function*` + `yield` 写异步 action，yield 后的代码自动包裹在 action 中，无需手动 `runInAction`
+- **MobX vs Redux 速查**：
+
+  | 维度 | MobX | Redux |
+  |---|---|---|
+  | store 数量 | 多个（按业务拆分）| 单一 |
+  | 状态可变性 | Mutable（直接赋值）| Immutable（返回新对象）|
+  | 依赖追踪 | 运行时自动最小追踪 | 手动（reselect / shouldComponentUpdate）|
+  | 编程范式 | OOP | FP（纯函数 reducer）|
+  | 异步 | `flow` / `runInAction` | redux-saga / redux-thunk |
+
 ## 一、认识MobX
 
 > 打印`mobx`，看看`mobx`中有什么
@@ -97,7 +114,7 @@
 
 >   * 只有在 `actions` 中，才可以修改 `Mobx` 中 `state` 的值
 >   * 注意：当你使用装饰器模式时，`@action` 中的 `this` 没有绑定在当前这个实例上，要用过
-> [`@action.bound](mailto:`@action.bound)`来绑定 使得`this` 绑定在实例对象上
+> `@action.bound` 来绑定 使得 `this` 绑定在实例对象上
 >
 
   * 通过引入 `mobx` 定义的严格模式，强制使用 `action` 来修改状态
@@ -112,6 +129,17 @@
         this.num --
     }
 ```
+
+> 补充（现代做法）：MobX 6 默认不再使用 legacy decorator 语法，推荐用 `makeObservable` 或 `makeAutoObservable` 替代 `@observable`/`@action` 等注解；`enforceActions` 的值从布尔型改为字符串 `'always'` | `'observed'` | `'never'`。迁移示例：
+> ```js
+> import { makeAutoObservable } from 'mobx';
+> class Counter {
+>   number = 0;
+>   constructor() { makeAutoObservable(this); }
+>   increment() { this.number++; }
+>   decrement() { this.number--; }
+> }
+> ```
 
 ### 2.5 autorun
 
@@ -172,7 +200,7 @@
       @action increment(){
         this.number ++
       }
-      @action decrement: () => {
+      @action decrement = () => {
         this.number --
       }
     }

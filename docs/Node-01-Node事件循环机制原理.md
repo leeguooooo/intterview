@@ -1,5 +1,16 @@
 原文链接: [https://interview.poetries.top/principle-docs/node/01-Node%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF%E6%9C%BA%E5%88%B6%E5%8E%9F%E7%90%86.html](https://interview.poetries.top/principle-docs/node/01-Node%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF%E6%9C%BA%E5%88%B6%E5%8E%9F%E7%90%86.html)
 
+## 简版速记
+
+- **事件循环 6 阶段（顺序）**：`timers` → `pending callbacks` → `idle/prepare` → `poll` → `check` → `close callbacks`
+- **微任务优先级高于宏任务**；`process.nextTick` 优先级高于 `Promise`
+- **微任务**：`process.nextTick`、`Promise`（`.then`/`.catch`）
+- **宏任务**：`setTimeout`、`setInterval`、`setImmediate`、I/O 回调
+- **`setImmediate` vs `setTimeout(fn,0)`**：在主模块中执行顺序不确定（受系统计时精度影响）；在 I/O 回调内部，`setImmediate` 总是先于 `setTimeout` 执行
+- **`poll` 阶段**是核心，处理绝大多数 I/O 回调；若 `poll` 队列为空且有 `setImmediate`，则直接进入 `check` 阶段
+- **Node.js 是单主线程**，但底层 libuv 线程池（默认 4 个）处理文件 I/O、DNS 等异步操作
+- **执行顺序口诀**：同步 → nextTick → Promise → 宏任务（按阶段）→ 每个宏任务结束后再清空微任务队列（v11+ 行为）
+
 ## Node.js 事件循环
 
 事件循环通俗来说就是一个无限的 while 循环。现在假设你对这个 while 循环什么都不了解，你一定会有以下疑问。
@@ -55,7 +66,7 @@
 
 > 在这一代码中有一个非常奇特的地方，就是 `setImmediate 会在 setTimeout 之后输出`。有以下几点原因：
 
-  * `setTimeout` 如果不设置时间或者设置时间为 0，则会默认为 `1ms；``
+  * `setTimeout` 如果不设置时间或者设置时间为 0，则会默认为 `1ms`；
   * 主流程执行完成后，超过 `1ms` 时，会将 `setTimeout` 回调函数逻辑插入到待执行回调函数 `poll` 队列中；
   * 由于当前 poll 队列中存在可执行回调函数，因此需要先执行完，待完全执行完成后，才会执行check：setImmediate。
 
@@ -191,6 +202,8 @@ timer 的回调函数是运行起点吗？”
 
 > 最后我们再来回答第 5 个问题，当所有的微任务和宏任务都清空的时候，虽然当前没有任务可执行了，但是也并不能代表循环结束了。因为可能存在当前还未回调的异步
 > I/O，所以这个循环是没有终点的，只要进程在，并且有新的任务存在，就会去执行。
+
+> 补充（现代做法）：Node.js **v11 起**，微任务队列（`process.nextTick` + `Promise`）的清空时机与浏览器对齐——每执行完**一个宏任务回调**后立即清空微任务，而不是等当前事件循环阶段内所有宏任务全部执行完再统一清空。这一变化会影响 `setTimeout` / `setImmediate` 与 `Promise` 混用时的输出顺序，面试时需说明 Node.js 版本。
 
 ## 单线程/多线程
 

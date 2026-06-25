@@ -1,5 +1,16 @@
 原文链接: [https://interview.poetries.top/principle-docs/vue/10-%E5%9B%BE%E8%A7%A3%20Vue%20%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86.html](https://interview.poetries.top/principle-docs/vue/10-%E5%9B%BE%E8%A7%A3%20Vue%20%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86.html)
 
+## 简版速记
+
+> 面试快速回答 Vue 2 响应式原理的要点：
+
+- **数据劫持**：`new Vue` 时递归遍历 `data`，通过 `Object.defineProperty` 为每个属性绑定 `get`/`set`（`defineReactive`），同时为每个属性创建一个 `Dep` 实例。
+- **依赖收集（get）**：编译模板时创建 `Watcher`，执行渲染函数会触发属性 `get`；此时 `Dep.target` 指向当前 `Watcher`，`Dep.depend()` 把该 Watcher 收集进 `subs` 列表。
+- **派发更新（set）**：数据变化触发 `set`，调用 `Dep.notify()` 遍历 `subs`，逐个调用 `Watcher.update()`，通过 `queueWatcher` 异步批量去重后执行 `_render → _update → patch`，最终更新真实 DOM。
+- **Watcher 创建时机**：在生命周期 `beforeMount` 阶段，`mountComponent` 创建渲染 Watcher，`updateComponent = () => vm._update(vm._render())` 作为其 `getter`。
+- **组件渲染**：遇到子组件时 `createComponent` 通过 `Vue.extend` 让子组件继承 Vue，再次走 `_init` 初始化流程，每个组件拥有独立的 Dep/Watcher 体系。
+- **核心三角**：`Data`（数据源）—— `Dep`（发布订阅桥梁）—— `Watcher`（订阅者/渲染执行者）。
+
 ## Vue 初始化
 
 先从最简单的一段 Vue 代码开始：
@@ -60,12 +71,14 @@
     }
 ```
 
+> 补充（现代做法）：Vue 3 将 `Object.defineProperty` 替换为 ES6 `Proxy`，可直接拦截整个对象而非单个属性，天然支持数组索引修改和属性新增/删除，无需 `Vue.set`/`Vue.delete`，性能也更好。核心依然是「依赖收集 + 派发更新」，只是实现层从 `Dep/Watcher` 升级为 `track/trigger`（`@vue/reactivity` 包）。
+
 数据描述符绑定完成后，我们就能得到以下的流程图：
 
 ![](/images/s_poetries_work_gitee_2020_08_vue_48.webp)
 
   * 图中我们可以看到，Vue 初始化时，进行了数据的 get、set 绑定，并创建了一个 Dep 对象。
-  * 对于数据的 get、set 绑定我们并不陌生，但是 Dep 对象什么呢？
+  * 对于数据的 get、set 绑定我们并不陌生，但是 Dep 对象是什么呢？
   * Dep 对象用于依赖收集，它实现了一个发布订阅模式，完成了数据 Data 和渲染视图 Watcher 的订阅，我们一起来剖析一下。
 ```js
     class Dep {

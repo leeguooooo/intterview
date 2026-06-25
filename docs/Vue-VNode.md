@@ -1,5 +1,19 @@
 原文链接: [https://interview.poetries.top/principle-docs/vue/04-%E8%AE%BE%E8%AE%A1%20VNode.html](https://interview.poetries.top/principle-docs/vue/04-%E8%AE%BE%E8%AE%A1%20VNode.html)
 
+## 简版速记
+
+| 考点 | 要点 |
+|---|---|
+| VNode 是什么 | 用 JS 普通对象描述真实 DOM/组件/文本/抽象节点的虚拟节点；渲染器的渲染目标 |
+| VNode 五大类 | html/svg 元素、有状态组件、函数式组件、纯文本、Fragment、Portal |
+| `tag` 的含义 | 字符串 → html 标签；函数/类引用 → 组件；`null` → 文本节点 |
+| `flags` 的作用 | 创建 VNode 时就标明类型，patch/mount 阶段直接位运算判断，避免逐步试探，提升性能 |
+| `VNodeFlags` 设计 | 基本值用 `1 << n`；`ELEMENT`、`COMPONENT_STATEFUL`、`COMPONENT` 由按位或 `\|` 派生 |
+| `ChildrenFlags` | 标明子节点类型（无/单/有 key 多/无 key 多），为 diff 优化提供信息；`MULTIPLE_VNODES = KEYED \| NONE_KEYED` |
+| `VNodeData` | 存储 class、style、事件、props 等描述信息，格式可自由扩展 |
+| `_isVNode` / `el` | `_isVNode: true` 用于鉴别 VNode 对象；`el` 指向渲染后对应的真实 DOM |
+| Vue3 进化 | VNode 额外含 `key`、`ref`、`slots`、`parentVNode`、`contextVNode` 等字段；Portal 改名为 `Teleport` |
+
 上一章讲述了组件的本质，知道了一个组件的产出是 `VNode`，渲染器(`Renderer`)的渲染目标也是 `VNode`。可见 `VNode`
 在框架设计的整个环节中都非常重要，甚至**设计`VNode` 本身就是在设计框架**，`VNode` 的设计还会对后续算法的性能产生影响。本章我们就着手对
 `VNode` 进行一定的设计，尝试用 `VNode` 描述各类渲染内容。
@@ -251,6 +265,8 @@ TIP
 对象添加一个 `flags` 属性，用来代表该 `VNode` 的类型，这在本章的后面会详细说明。
 
 再来看看 `Portal`，什么是 `Portal` 呢？
+
+> 补充(现代做法): Vue 3 正式版已将 `Portal` 更名为内置组件 `<Teleport>`，用法为 `<Teleport to="#app-root">...</Teleport>`，无需手动维护 `Symbol` 标识，渲染器原生支持。
 
 一句话：它允许你把内容渲染到任何地方。其应用场景是，假设你要实现一个蒙层组件 `<Overlay/>`，要求是该组件的 `z-index`
 的层级最高，这样无论在哪里使用都希望它能够遮住全部内容，你可能会将其用在任何你需要蒙层的地方。

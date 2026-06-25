@@ -1,5 +1,26 @@
 原文链接: [https://interview.poetries.top/principle-docs/react/12-React16%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E6%9B%B4%E6%94%B9%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E4%B8%8B.html](https://interview.poetries.top/principle-docs/react/12-React16%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E6%9B%B4%E6%94%B9%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E4%B8%8B.html)
 
+## 简版速记
+
+> 面试高频考点，快速回顾
+
+**废弃了哪些生命周期？为什么？**
+- `componentWillMount`、`componentWillUpdate`、`componentWillReceiveProps`（React 16.3 起加 `UNSAFE_` 前缀警告）
+- 根本原因：Fiber 的**异步渲染**让 render 阶段可被打断并重启，这三个方法都在 render 阶段，重复执行会导致重复发请求、重复操作 DOM 等严重 Bug
+
+**新增了哪些生命周期？**
+
+| 生命周期 | 阶段 | 关键特征 |
+|---|---|---|
+| `getDerivedStateFromProps(props, state)` | render | **static 方法**，无 `this`；只用于 props → state 映射；返回对象或 `null`；16.3 仅父组件更新触发，**16.4 起任意更新（含 setState/forceUpdate）都触发** |
+| `getSnapshotBeforeUpdate(prevProps, prevState)` | pre-commit | render 之后、真实 DOM 更新之前执行；返回值作为 `componentDidUpdate` 的**第三个参数** snapshot；典型用途：保存滚动位置 |
+
+**Fiber 两阶段模型（必背）**
+- **render 阶段**：纯净，无副作用，可被暂停/终止/重启 → `getDerivedStateFromProps`、`shouldComponentUpdate`、`render` 在此
+- **commit 阶段**（含 pre-commit）：同步执行，不可打断 → `getSnapshotBeforeUpdate`、`componentDidMount`、`componentDidUpdate`、`componentWillUnmount` 在此
+
+**一句话总结**：React 16 改造生命周期，本质是为 Fiber 异步渲染铺路，同时强制推行更安全的编程模式。
+
 ## 进化的生命周期方法：React 16 生命周期工作流详解
 
 > 来源于：<https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram>[ (opens
@@ -36,7 +57,7 @@
         console.log("componentDidMount方法执行");
       }
       // 组件更新时调用
-      shouldComponentUpdate(prevProps, nextState) {
+      shouldComponentUpdate(nextProps, nextState) {
         console.log("shouldComponentUpdate方法执行");
         return true;
       }
@@ -225,9 +246,11 @@ componentWillReceiveProps？**
   * 至于它为何不能完全和 `componentWillReceiveProps` 画等号，则是因为它过于“专注”了。这一点，单单从`getDerivedStateFromProps` 这个 API 名字上也能够略窥一二。原则上来说，它能做且只能做这一件事
 
 > `getDerivedStateFromProps` 生命周期替代 `componentWillReceiveProps` 的背后，是 React 16
-> 在强制推行“只用 `getDerivedStateFromProps` 来完成 `props 到 state`
+> 在强制推行”只用 `getDerivedStateFromProps` 来完成 `props 到 state`
 > 的映射”这一最佳实践。确保生命周期函数的行为更加可控可预测，从根源上帮开发者避免不合理的编程方式，避免生命周期的滥用；同时，也是在为新的 Fiber
 > 架构铺路
+
+> 补充（现代做法）：在函数组件时代，`getDerivedStateFromProps` 的使用场景已极为罕见。React 官方文档建议优先用 `useMemo` 或直接在渲染时计算派生值，而非将其存入 state；确实需要”props 变化时重置 state”时，可通过给子组件传递不同的 `key` 来实现，比 `getDerivedStateFromProps` 更简洁直观。
 
 **2\. 消失的 componentWillUpdate 与新增的 getSnapshotBeforeUpdate**
 
@@ -348,6 +371,8 @@ componentWillReceiveProps？**
 
 可惜你忘了，异步请求再怎么快也快不过（`React 15` 下）同步的生命周期。`componentWillMount` 结束后，`render`
 会迅速地被触发，所以说首次渲染依然会在数据返回之前执行。这样做不仅没有达到你预想的目的，还会导致服务端渲染场景下的冗余请求等额外问题，得不偿失。
+
+> 补充（现代做法）：React 18+ 推荐在 `useEffect`（函数组件）或 `componentDidMount`（类组件）中发起数据请求。若使用 React Query、SWR 等数据层库，或 React 19 的 `use()` + Suspense，可获得更好的加载状态管理与 SSR 支持，彻底规避在 render 阶段发请求的问题。
 
   2. 在 Fiber 带来的异步渲染机制下，可能会导致非常严重的 Bug。
 

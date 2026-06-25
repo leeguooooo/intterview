@@ -1,5 +1,25 @@
 原文链接: [https://interview.poetries.top/principle-docs/vue/17-vue%20router%20vuex%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90.html#vue-router](https://interview.poetries.top/principle-docs/vue/17-vue%20router%20vuex%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90.html#vue-router)
 
+## 简版速记
+
+**vue-router 核心原理**
+- 本质是一个 Vue 插件，通过 `Vue.use(Router)` 注册，`install` 方法用 `Vue.mixin` 将 `$router` 挂载到所有组件实例。
+- 用 `Vue.util.defineReactive` 将 `current`（当前路径）定义为响应式，监听 `hashchange` / `load` 事件更新它；`router-view` 读取 `current` 找到对应组件并 `render`。
+- `router-link` 本质是渲染一个 `<a href="#/path">` 标签。
+- Hash 模式：监听 `hashchange`；History 模式：监听 `popstate` + `pushState`。
+
+**Vuex 核心原理**
+- 同样是插件，`install` 用 `Vue.mixin` 将 `$store` 挂到根实例并向下继承。
+- `state` 响应式：借助 `new Vue({ data: { $$state } })` 实现，外部只读（getter/setter 拦截）。
+- `commit(type, payload)` → 同步执行 `mutations[type]`；`dispatch(type, payload)` → 执行 `actions[type]`，action 可以是异步的。
+- `getters` 是对 `state` 的派生，类似 `computed`。
+- 单向数据流：state → view，view 触发 action/mutation → state 更新。
+
+**高频考点**
+- 为什么 mutation 必须同步？→ 方便 devtools 追踪状态快照；异步逻辑放 action。
+- `$router` vs `$route`：`$router` 是路由实例（全局），`$route` 是当前路由信息对象（响应式）。
+- 导航守卫执行顺序：组件内 `beforeRouteLeave` → 全局 `beforeEach` → 路由独享 `beforeEnter` → 组件内 `beforeRouteEnter` → 全局 `afterEach`。
+
 ## vue-router
 
 > Vue Router 是 Vue.js 官方的路由管理器。它和 Vue.js 的核心深度集成，让构建单⻚面应用变得易如反 掌。
@@ -37,6 +57,8 @@
      <router-link to="/about">About</router-link>
 ```
 
+> 补充(现代做法): Vue 3 中使用 **vue-router 4.x**，API 改为 `createRouter({ history: createWebHashHistory(), routes })` + `createWebHistory()`，不再 `new Router()`；`Vue.use(router)` 改为 `app.use(router)`。History 模式首选 `createWebHistory`，需服务端配合 fallback 到 `index.html`。
+
 ### vue-router源码实现
 
   * 作为一个插件存在:实现`VueRouter`类和`install`方法
@@ -47,7 +69,7 @@
 创建kvue-router.js
 ```js
     // 我们的插件：
-    // 1.实现一个Router类并挂载期实例
+    // 1.实现一个Router类并挂载其实例
     // 2.实现两个全局组件router-link和router-view
     let Vue;
     
@@ -140,6 +162,8 @@
 
 > Vuex 集中式存储管理应用的所有组件的状态，并以相应的规则保证状态以可预测的方式发生变化
 
+> 补充(现代做法): Vue 3 官方已将 **Pinia** 列为推荐状态管理方案（Vuex 5 开发已停止）。Pinia 无需 mutations，直接在 action 中同步/异步修改 state，支持 Composition API 风格，DevTools 支持更好。迁移成本低，新项目优先选 Pinia。
+
 ### 整合**vuex**
 ```js
     vue add vuex
@@ -196,7 +220,7 @@ mutations用于修改状态，store.js
           add({
             commit
           }) {
-            setTimeout(() = >{}
+            setTimeout(() => {}
           }
         })
 ```

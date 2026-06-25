@@ -1,5 +1,16 @@
 原文链接: [https://interview.poetries.top/principle-docs/js/02-%E5%8D%95%E7%BA%BF%E7%A8%8B%E7%9A%84%20JavaScript%20%E5%A6%82%E4%BD%95%E7%AE%A1%E7%90%86%E4%BB%BB%E5%8A%A1.html](https://interview.poetries.top/principle-docs/js/02-%E5%8D%95%E7%BA%BF%E7%A8%8B%E7%9A%84%20JavaScript%20%E5%A6%82%E4%BD%95%E7%AE%A1%E7%90%86%E4%BB%BB%E5%8A%A1.html)
 
+## 简版速记
+
+- **单线程原因**：多线程并发操作 DOM 会引发竞态，JavaScript 被设计为单线程以回避复杂性
+- **调用栈（Call Stack）**：FILO；管理同步执行上下文；栈底永远是全局上下文，栈顶是当前帧；溢出报 `Maximum call stack size exceeded`
+- **回调队列（Callback Queue）**：FIFO；异步任务完成后其回调进入此队列，主线程空闲时取用
+- **Event Loop 一轮流程**：执行全部同步代码 → 清空微任务队列（全部）→ 浏览器渲染 → 取一个宏任务执行 → 再清空微任务 → 循环
+- **宏任务（MacroTask）**：`setTimeout`、`setInterval`、`setImmediate`（Node.js）、`requestAnimationFrame`（浏览器）、I/O、UI 渲染
+- **微任务（MicroTask）**：`Promise.then/catch/finally`、`queueMicrotask()`、`MutationObserver`、`process.nextTick`（Node.js，优先级最高）
+- **Node.js vs 浏览器**：Node.js ≥11 起每个宏任务执行后立即清微任务，行为与浏览器一致；<11 版本是一个阶段内全部宏任务跑完再清微任务
+- **面试口诀**：同步 → 微任务（清空）→ 渲染 → 宏任务（取一个）→ 微任务（清空）→ …
+
 要怎么理解 JavaScript 是单线程这个概念呢？大概需要从浏览器来说起。
 
 JavaScript 最初被设计为浏览器脚本语言，主要用途包括对页面的操作、与浏览器的交互、与用户的交互、页面逻辑处理等。如果将 JavaScript
@@ -172,6 +183,8 @@ Event Loop
   * 宏任务：包括 script 全部代码、setTimeout、setInterval、setImmediate（Node.js）、requestAnimationFrame（浏览器）、I/O 操作、UI 渲染（浏览器），这些代码执行便是宏任务。
   * 微任务：包括`process.nextTick`（Node.js）、`Promise`、`MutationObserver`，这些代码执行便是微任务
 
+> 补充（现代做法）：`queueMicrotask(callback)` 是显式向微任务队列插入任务的标准 API，自 Chrome 71 / Firefox 69 / Node.js 11 起可用，可替代 `Promise.resolve().then(callback)` 的写法，语义更清晰，无需创建 Promise 对象。
+
 >
 > 为什么要将异步任务分为宏任务和微任务呢？这是为了避免回调队列中等待执行的异步任务（宏任务）过多，导致某些异步任务（微任务）的等待时间过长。在每个宏任务执行完成之后，会先将微任务队列中的任务执行完毕，再执行下一个宏任务
 
@@ -184,7 +197,8 @@ Event Loop
 我们能看到，在浏览器中每个宏任务执行完成后，会执行微任务队列中的任务。而在 Node.js 中，事件循环分为 6
 个阶段，微任务会在事件循环的各个阶段之间执行。也就是说，每当一个阶段执行完毕，就会去执行微任务队列的任务
 
-``js console.log("script start");
+```js
+console.log("script start");
 
 setTimeout(() => {
 
@@ -227,10 +241,10 @@ return Promise.resolve("errorFunc success");
 errorFunc().then((res) => console.log("errorFunc then res"));
 
 console.log("script end");
-```javascript
-    > - 在 Node.js 中，事件循环分为 6 个阶段，微任务会在事件循环的各个阶段之间执行。也就是说，每当一个阶段执行完毕，就会去执行微任务队列的任务。 可以以文中的例子来试试看，在浏览器和 Node.js 环境中的执行结果有什么不一样（当然，Node.js 11 版本之后，两个结果已经一致了）
-    > - 在 node 11 之后的版本，的确是浏览器保持一致了~ 以 timers 阶段为例，在 node 11 版本之前，只有全部执行了 timers 阶段队列的全部任务才执行微任务队列；在 node 11 版本开始，timer 阶段的 setTimeout、setInterval 被修改为，执行一个任务就立刻执行微任务队列，与浏览器趋同了~
 ```
+
+> - 在 Node.js 中，事件循环分为 6 个阶段，微任务会在事件循环的各个阶段之间执行。也就是说，每当一个阶段执行完毕，就会去执行微任务队列的任务。 可以以文中的例子来试试看，在浏览器和 Node.js 环境中的执行结果有什么不一样（当然，Node.js 11 版本之后，两个结果已经一致了）
+> - 在 node 11 之后的版本，的确是浏览器保持一致了~ 以 timers 阶段为例，在 node 11 版本之前，只有全部执行了 timers 阶段队列的全部任务才执行微任务队列；在 node 11 版本开始，timer 阶段的 setTimeout、setInterval 被修改为，执行一个任务就立刻执行微任务队列，与浏览器趋同了~
 
 阅读全文
 

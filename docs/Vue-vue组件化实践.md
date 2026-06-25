@@ -1,5 +1,24 @@
 原文链接: [https://interview.poetries.top/principle-docs/vue/20-vue%E7%BB%84%E4%BB%B6%E5%8C%96%E5%AE%9E%E8%B7%B5.html](https://interview.poetries.top/principle-docs/vue/20-vue%E7%BB%84%E4%BB%B6%E5%8C%96%E5%AE%9E%E8%B7%B5.html)
 
+## 简版速记
+
+- **组件化价值**：复用、解耦、可维护、便于协作；任意 UI 均可抽象为组件树。
+- **9 种通信方式速查**：
+  | 方式 | 方向 | 关键词 |
+  |---|---|---|
+  | props | 父→子 | 单向数据流 |
+  | $emit 自定义事件 | 子→父 | 事件驱动 |
+  | 事件总线 / mitt | 任意 | 发布-订阅 |
+  | Vuex / Pinia | 全局 | 单一 Store |
+  | $parent / $root | 兄弟→共祖 | 耦合度高，慎用 |
+  | $children | 父→子（批量） | Vue 3 已移除 |
+  | $attrs / $listeners | 透传 | Vue 3 合并为 $attrs |
+  | $refs | 父→子（直接引用） | 命令式，避免滥用 |
+  | provide / inject | 祖先→后代 | 跨层级依赖注入 |
+- **插槽三种类型**：匿名插槽（默认内容占位）、具名插槽（`v-slot:name` 分发到指定区域）、作用域插槽（子组件向父组件回传数据 `v-slot="slotProps"`）。
+- **动态创建组件**：Vue 2 用 `new Vue({ render }).$mount()`，Vue 3 改用 `createApp(Component, props).mount(el)`。
+- **通用表单关键链路**：KInput `$emit('input')` → KFormItem `$on('validate')` → `async-validator` 校验 → KForm `Promise.all` 汇总。
+
 # vue组件化实践
 
 ## 组件化
@@ -51,6 +70,8 @@
 
 > 实践中通常用Vue代替Bus，因为Vue已经实现了相应接口
 
+> 补充(现代做法): Vue 3 移除了实例上的 `$on/$off/$once`，无法直接用 Vue 实例充当事件总线。推荐使用轻量库 [mitt](https://github.com/developit/mitt) 替代：`import mitt from 'mitt'; export const bus = mitt()`，然后 `bus.on('foo', handler)` / `bus.emit('foo', data)`。
+
 ### **4\. vuex**
 
 > 创建唯一的全局数据管理者store，通过它管理数据并通知组件状态变更。
@@ -73,6 +94,8 @@
      this.$children[0].xx = 'xxx'
 ```
 
+> 补充(现代做法): Vue 3 已移除 `$children`。推荐改用 `$refs` 访问具体子组件，或通过 `provide/inject` 进行依赖注入，避免依赖子组件的顺序索引。
+
 ### 7\. **$attrs/$listeners**
 
 > 包含了父作用域中不作为 **prop** 被识别 (且获取) 的特性绑定 ( class 和 style 除外)。当一个组件没有 声明任何 prop
@@ -84,6 +107,8 @@
     // parent
     <HelloWorld foo="foo"/>
 ```
+
+> 补充(现代做法): Vue 3 中 `$listeners` 已被移除并合并入 `$attrs`（事件监听器以 `onXxx` 形式包含在 `$attrs` 中）。透传时只需 `v-bind="$attrs"` 即可同时透传属性和事件，无需再写 `v-on="$listeners"`。
 
 ### 8\. **refs**
 
@@ -409,7 +434,7 @@
     </style>
 ```
 
-**1. **KInput
+**1. KInput**
 ```js
     // 创建components/form/KInput.vue
     <template>
@@ -753,6 +778,19 @@ create函数
 ```
 
 > 另一种创建组件实例的方式: `Vue.extend(Component)`
+
+> 补充(现代做法): Vue 3 中 `new Vue()` 和 `Vue.extend()` 均已移除。动态创建弹窗组件改用 `createApp`：
+> ```js
+> import { createApp } from 'vue'
+> function create(Component, props) {
+>   const div = document.createElement('div')
+>   document.body.appendChild(div)
+>   const app = createApp(Component, props)
+>   const vm = app.mount(div)
+>   vm.remove = () => { app.unmount(); document.body.removeChild(div) }
+>   return vm
+> }
+> ```
 
 ### 通知组件
 

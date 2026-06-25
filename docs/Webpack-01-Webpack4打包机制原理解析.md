@@ -1,5 +1,32 @@
 原文链接: [https://interview.poetries.top/principle-docs/webpack/01-Webpack4%E6%89%93%E5%8C%85%E6%9C%BA%E5%88%B6%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90.html](https://interview.poetries.top/principle-docs/webpack/01-Webpack4%E6%89%93%E5%8C%85%E6%9C%BA%E5%88%B6%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90.html)
 
+## 简版速记
+
+**核心定义**：webpack 一切文件皆模块；Loader 负责文件转换，Plugin 通过 Tapable 钩子介入构建流程，最终输出 bundle。
+
+**手写打包器四步**
+
+1. **解析单文件依赖**：`@babel/parser` 将源码转 AST → `@babel/traverse` 遍历 `ImportDeclaration` 节点收集依赖路径 → `@babel/core` 将 AST 转为 ES5 代码；返回 `{ filename, dependencies, code }`
+2. **构建依赖图谱**：从入口广度优先递归，将所有模块信息汇总为 `graph`（键：文件路径，值：`{ dependencies, code }`）
+3. **生成 IIFE**：输出一个立即执行函数，内部自定义 `require`：创建局部 `exports` 对象，用 `eval(code)` 执行字符串化的模块代码，返回 `exports`（形成闭包保活）；`localRequire` 将相对路径通过 graph 映射为绝对路径再递归调用
+4. **写入文件**：将 IIFE 字符串写入 `bundle.js`
+
+**webpack 打包 7 步**（可简化为：初始化 → 编译 → 输出）
+
+| 步骤 | 说明 |
+|------|------|
+| 初始化参数 | 合并 shell 参数与配置文件参数 |
+| 开始编译 | 初始化 Compiler，加载所有 Plugin |
+| 确定入口 | 从 entry 找出所有入口文件 |
+| 编译模块 | 调用 Loader 转换，递归处理依赖 |
+| 完成编译 | 得到每个模块编译后的内容与依赖关系 |
+| 输出资源 | 组装 Chunk，可修改输出的最后时机 |
+| 输出完成 | 按配置写入文件系统 |
+
+**关键结论**：`import/export` 经 Babel 转为 `require/exports`；bundle 本质是一个携带 JSON 依赖图谱的 IIFE，内部用 `eval` 逐模块执行；Plugin 通过事件广播（Tapable）改变运行结果。
+
+---
+
 > `webpack`是一个打包模块化 `JavaScript` 的工具，在 `webpack`里一切文件皆模块，通过 `Loader` 转换文件，通过
 > `Plugin` 注入钩子，最后输出由多个模块组合成的文件。`webpack`专注于构建模块化项目。
 
@@ -158,7 +185,7 @@
       function require(module) {
           //localRequire的本质是拿到依赖包的exports变量
           function localRequire(relativePath) {
-              returnrequire(graph[module].dependencies[relativePath]);
+              return require(graph[module].dependencies[relativePath]);
           }
           var exports = {};
           (function(require, exports, code) {
@@ -174,7 +201,7 @@
 
 > `webpack`的运行流程是一个串行的过程，从启动到结束会依次执行以下流程：
 
-  * **初始化参**
+  * **初始化参数**
   * **开始编译** 用上一步得到的参数初始Compiler对象，加载所有配置的插件，通 过执行对象的run方法开始执行编译
   * **确定入口** 根据配置中的 Entry 找出所有入口文件
   * **编译模块** 从入口文件出发，调用所有配置的 Loader 对模块进行编译，再找出该模块依赖的模块，再递归本步骤直到所有入口依赖的文件都经过了本步骤的处理
@@ -185,6 +212,8 @@
 > 在以上过程中， `Webpack` 会在特定的时间点广播特定的事件，插件在监听到感兴趣的事件后会执行特定的逻辑，井且插件可以调用 `Webpack`
 > 提供的 `API` 改变 `Webpack`
 > 的运行结果。其实以上7个步骤，可以简单归纳为初始化、编译、输出，三个过程，而这个过程其实就是前面说的基本模型的扩展。
+
+> 补充(现代做法)：Webpack 4 已进入维护期，Webpack 5（2020 年发布）引入了**持久化缓存**（`cache: { type: 'filesystem' }`）、**模块联邦**（Module Federation）和更好的 Tree Shaking。对构建性能要求较高的项目可考虑 **Rspack**（Rust 实现，兼容 webpack 配置，冷启动速度提升 5–10 倍）或 **Vite**（开发环境用 ESM + esbuild，生产打包用 Rollup）。原理层面的 Loader/Plugin/依赖图谱模型在这些工具中均有对应概念，面试理解原理仍以 webpack 为基准。
 
 阅读全文
 

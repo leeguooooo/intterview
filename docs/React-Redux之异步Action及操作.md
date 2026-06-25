@@ -1,5 +1,15 @@
 原文链接: [https://interview.poetries.top/principle-docs/react/07-Redux%E4%B9%8B%E5%BC%82%E6%AD%A5Action%E5%8F%8A%E6%93%8D%E4%BD%9C.html](https://interview.poetries.top/principle-docs/react/07-Redux%E4%B9%8B%E5%BC%82%E6%AD%A5Action%E5%8F%8A%E6%93%8D%E4%BD%9C.html)
 
+## 简版速记
+
+- **Redux 只能处理同步 Action**，异步操作必须借助中间件拦截 action creator 的返回值。
+- **FSA 规范**：action 只允许含 `type`/`payload`/`error`/`meta` 四个字段，`type` 必填，报错时 `error: true` 必填。
+- **redux-thunk**：action creator 返回一个 `(dispatch, getState) => {}` 函数，中间件检测到是函数就调用它而非传给 reducer；缺点是样板代码多（需手写 PENDING / SUCCESS / FAILED 三种 action type）。
+- **redux-promise**：action 的 `payload` 为 Promise 时自动处理 resolve/reject，代码极简，但**无法处理乐观更新**（初始 action 被过滤）。
+- **redux-promise-middleware**：折中方案，保留 `_PENDING` / `_FULFILLED` / `_REJECTED` 三态，支持乐观更新。
+- **异步流程核心**：`dispatch(异步action)` → 中间件拦截 → 发请求 → 请求结果触发同步 action → reducer 更新 state。
+- **现代项目首选** Redux Toolkit 的 `createAsyncThunk`，自动生成三态 action type，消除样板代码。
+
 ## 一、创建同步Action
 
 > `Action`是数据从应用传递到 `store`/`state` 的载体，也是开启一次完成数据流的开始
@@ -29,14 +39,14 @@
 **bindActionCreators合并**
 ```javascript
     function a(name,id){
-    	reurn {
+    	return {
     		type:'a',
     		name,
     		id
     	}
     }
     function b(name,id){
-    	reurn {
+    	return {
     		type:'b',
     		name,
     		id
@@ -56,7 +66,7 @@
 
   * 是一个纯文本对象
   * 只具备 `type` 、`payload`、`error` 和 `meta`中的一个或者多个属性。`type` 字段不可缺省，其它字段可缺省
-  * 若 `Action` 报错，`error` 字段不可缺省，切必须为 `true`
+  * 若 `Action` 报错，`error` 字段不可缺省，且必须为 `true`
 
 > `payload` 是一个对象，用作Action携带数据的载体
 
@@ -102,7 +112,7 @@
 > `redux-thunk`中间处理解析
 ```javascript
     function thunkAction(data) {
-        reutrn (dispatch)=>{
+        return (dispatch)=>{
             setTimeout(function(){
                 dispatch({
                     type:'ADD_TODO',
@@ -346,6 +356,29 @@
         }
     }
 ```
+
+> 补充(现代做法): 上述三种方案的样板代码问题在 **Redux Toolkit (RTK)** 中已被 `createAsyncThunk` 彻底解决。它自动生成 `pending` / `fulfilled` / `rejected` 三个 action type，配合 `createSlice` 的 `extraReducers` 即可消除手写 action type 字符串和多余 dispatch 调用。2020 年后新项目推荐直接使用 RTK，无需单独安装 redux-thunk（RTK 已内置）。
+>
+> ```javascript
+> // RTK 现代写法示例
+> import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+>
+> export const fetchData = createAsyncThunk('data/fetch', async (id) => {
+>   const response = await api.getData(id);
+>   return response.data;
+> });
+>
+> const dataSlice = createSlice({
+>   name: 'data',
+>   initialState: { items: [], status: 'idle' },
+>   extraReducers: (builder) => {
+>     builder
+>       .addCase(fetchData.pending,   (state) => { state.status = 'loading'; })
+>       .addCase(fetchData.fulfilled, (state, action) => { state.items = action.payload; state.status = 'succeeded'; })
+>       .addCase(fetchData.rejected,  (state) => { state.status = 'failed'; });
+>   }
+> });
+> ```
 
 ## 五、redux异步操作代码演示
 

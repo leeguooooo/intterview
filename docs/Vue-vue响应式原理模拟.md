@@ -1,5 +1,16 @@
 原文链接: [https://interview.poetries.top/principle-docs/vue/13-vue%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86%E6%A8%A1%E6%8B%9F.html](https://interview.poetries.top/principle-docs/vue/13-vue%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86%E6%A8%A1%E6%8B%9F.html)
 
+## 简版速记
+
+- **Vue 2 响应式核心**：`Object.defineProperty` 对每个属性递归定义 getter/setter；无法检测属性新增/删除，数组需特殊处理。
+- **Vue 3 响应式核心**：`Proxy` 代理整个对象，天然支持新增属性和数组索引变更，IE 不支持。
+- **Observer**：递归遍历 `$data`，将每个属性转为 getter/setter，并在 setter 中调用 `dep.notify()`。
+- **Dep**（依赖收集器）：每个响应式属性对应一个 `Dep` 实例，维护 `subs` 数组存放 Watcher；数据变更时 `notify()` 遍历通知。
+- **Watcher**：实例化时将自身赋给 `Dep.target`，主动触发一次 getter 完成依赖收集，之后清空 `Dep.target`；数据变化时执行回调更新视图。
+- **Compiler**：遍历 DOM，解析插值表达式 `{{ }}` 与 `v-text`/`v-model` 指令，首次渲染并为每个表达式/指令创建对应的 Watcher。
+- **发布/订阅 vs 观察者**：发布/订阅有独立的信号中心（如 `EventEmitter`），发布者与订阅者互不依赖；观察者模式 Dep 直接持有并调用 Watcher，两者存在直接依赖。
+- **数据流**：`data 变更 → setter → dep.notify() → watcher.update() → cb(newValue) → DOM 更新`。
+
 ## 数据驱动
 
   * 数据响应式、双向绑定、数据驱动
@@ -89,6 +100,8 @@
     console.log(vm.msg)
 ```
 
+> 补充(现代做法): Vue 3 实际实现中在 Proxy 之上封装了 `reactive()`/`ref()`/`effect()` 等高层 API，并引入 `track`（依赖收集）和 `trigger`（触发更新）替代了 Dep/Watcher 类。面试时理解上述手写模拟的原理即可，生产代码直接使用 `@vue/reactivity` 包提供的组合式 API。
+
 ## 发布订阅模式和观察者模式
 
 ### 发布/订阅模式
@@ -132,6 +145,8 @@ Vue 的自定义事件
       eventHub.$on('add-todo', this.addTodo)
     }
 ```
+
+> 补充(现代做法): Vue 3 移除了实例级 `$on`/`$off`/`$emit` 事件总线。兄弟组件通信推荐使用轻量库 [mitt](https://github.com/developit/mitt) 或 Pinia 状态共享；`$emit` 仅保留用于父子组件间的自定义事件。
 
 > 模拟 Vue 自定义事件的实现
 ```js
@@ -547,7 +562,7 @@ Vue 的自定义事件
       // 每一个指令中创建一个 watcher，观察数据的变化
       new Watcher(this.vm, key, value => {
         node.value = value
-      }
+      })
       // 监听视图的变化
       node.addEventListener('input', () => {
         this.vm[key] = node.value

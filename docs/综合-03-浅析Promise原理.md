@@ -1,5 +1,18 @@
 原文链接: [https://interview.poetries.top/principle-docs/comprehensive/03-%E6%B5%85%E6%9E%90Promise%E5%8E%9F%E7%90%86.html](https://interview.poetries.top/principle-docs/comprehensive/03-%E6%B5%85%E6%9E%90Promise%E5%8E%9F%E7%90%86.html)
 
+## 简版速记
+
+> **面试速记 — Promise 核心考点**
+>
+> 1. **三种状态**：`pending` → `fulfilled` / `rejected`，单向不可逆，只能从 pending 转变一次。
+> 2. **then 返回新 Promise**：链式调用的基础；`.catch(fn)` 等价于 `.then(null, fn)`。
+> 3. **错误冒泡**：reject 或抛出异常沿链传递，直到被 `.catch()` 捕获；链中间若无 onRejected 则自动透传。
+> 4. **实现核心 — 观察者模式**：`then` 把回调注册进队列，`resolve` 遍历队列触发执行；为满足 A+ 规范"回调必须异步执行"，用 `setTimeout(fn, 0)` 推迟（真实 JS 引擎用微任务队列，见下方补充）。
+> 5. **状态机**：pending 时新回调入队等待；已 fulfilled/rejected 时新注册的 then 回调立即（异步）执行。
+> 6. **链式 Promise 衔接**：`then` 返回新 Promise；`resolve` 检测返回值若为 thenable，则递归等待其完成再继续。
+> 7. **async/await**：是 Generator + 自动执行器的语法糖，`async` 函数始终返回 Promise，`await` 暂停当前微任务。
+> 8. **常用静态方法速查**：`all`（全成功才成功，任一 reject 即 reject）、`race`（最快的一个决定结果）、`allSettled`（全部落定，不论成败）、`any`（任一成功即成功）。
+
 ## 一、Promise基础用法
 
 ### 1.1 基本用法
@@ -15,7 +28,7 @@
 >   * 其实`Promise`函数的使命，就是构建出它的实例，并且负责帮我们管理这些实例。而这些实例有以下三种状态：
 >
 
-  * `pending`: 初始状态，位履行或拒绝
+  * `pending`: 初始状态，未履行或拒绝
   * `fulfilled`: 意味着操作成功完成
   * `rejected`: 意味着操作失败
 
@@ -81,6 +94,8 @@
 >
 > 上面代码中，`p1`和`p2`都是`Promise`的实例，但是`p2`的`resolve`方法将`p1`作为参数，这时`p1`的状态就会传递给`p2`。如果调用的时候，`p1`的状态是`pending`，那么`p2`的回调函数就会等待`p1`的状态改变；如果`p1`的状态已经是`fulfilled`或者`rejected`，那么`p2`的回调函数将会立刻执行
 
+> 补充(现代做法): `resolve(anotherPromise)` 会触发 Promise Resolution Procedure（规范 2.3），内部递归等待 `anotherPromise` 落定后再推进状态，这正是 2.6 节链式实现的核心。
+
 ### 1.2 promise捕获错误
 
 > `Promise.prototype.catch`方法是`Promise.prototype.then(null,
@@ -120,6 +135,8 @@
 
   * 只有`p1`、`p2`、`p3`的状态都变成`fulfilled`，`p`的状态才会变成`fulfilled`，此时`p1`、`p2`、`p3`的返回值组成一个数组，传递给`p`的回调函数
   * 只要`p1`、`p2`、`p3`之中有一个被`rejected`，`p`的状态就变成`rejected`，此时第一个被`reject`的实例的返回值，会传递给p的回调函数
+
+> 补充(现代做法): ES2020 新增 `Promise.allSettled([p1,p2,p3])`，等待所有 Promise 落定（无论成败），结果数组每项为 `{status:'fulfilled',value}` 或 `{status:'rejected',reason}`，适合"全部请求结束后统一处理"场景，不会因单个 reject 而提前终止。
 ```javascript
     // 生成一个Promise对象的数组
     var promises = [2, 3, 5, 7, 11, 13].map(function(id){
@@ -140,6 +157,8 @@
 ```
 
 > 上面代码中，只要`p1`、`p2`、`p3`之中有一个实例率先改变状态，p的状态就跟着改变。那个率先改变的Promise实例的返回值，就传递给p的返回值
+
+> 补充(现代做法): ES2021 新增 `Promise.any([p1,p2,p3])`，与 `race` 的区别在于：`any` 忽略 reject，只要有一个 fulfill 即成功；全部 reject 时才抛出 `AggregateError`。适合"有一个成功就够了"的竞争请求场景。
 
   * 如果`Promise.all`方法和`Promise.race`方法的参数，不是`Promise`实例，就会先调用下面讲到的`Promise.resolve`方法，将参数转为`Promise`实例，再进一步处理
 
@@ -199,6 +218,8 @@
 > 实际上，`async/await` 可以看做是使用 `Generator` 函数处理异步的语法糖，我们来看看如何使用 `Generator`
 > 函数处理异步
 
+> 补充(现代做法): `async/await` 中的错误处理推荐用 `try/catch` 包裹 `await` 语句，而非在每个 `.then()` 后面挂 `.catch()`。多个并发请求应配合 `await Promise.all([...])` 而非顺序 `await`，否则请求会串行执行，耗时是各请求之和。
+
 ### 1.5 Generator
 
 首先异步函数依然是：
@@ -224,7 +245,7 @@
         var res2 = yield getDataAsync(`/page/2?param=${res1.data}`)
         console.log(res2)
         var res3 = yield getDataAsync(`/page/2?param=${res2.data}`)
-        console.log(res3))
+        console.log(res3)
     }
 ```
 
@@ -420,6 +441,8 @@ window)](http://www.ituring.com.cn/article/66566)
 >
 > 上述代码的思路也很简单，就是通过`setTimeout`机制，将`resolve`中执行回调的逻辑放置到`JS`任务队列末尾，以保证在`resolve`执行时，`then`方法的回调函数已经注册完成
 
+> 补充(现代做法): 原生 Promise 的回调实际放入**微任务队列（microtask queue）**，而非 `setTimeout` 所代表的宏任务队列（macrotask）。微任务优先级高于宏任务，在当前同步代码执行完毕后、下一个宏任务开始前就会被清空。手写实现可用 `queueMicrotask(fn)` 或 `Promise.resolve().then(fn)` 代替 `setTimeout(fn, 0)` 以更贴近规范行为。
+
   * 但是，这样好像还存在一个问题，可以细想一下：如果`Promise`异步操作已经成功，这时，在异步操作成功之前注册的回调都会执行，但是在`Promise`异步操作成功这之后调用的`then`注册的回调就再也不会执行了，这显然不是我们想要的
 
 ### 2.5 加入状态
@@ -427,7 +450,7 @@ window)](http://www.ituring.com.cn/article/66566)
 我们必须加入状态机制，也就是大家熟知的`pending`、`fulfilled`、`rejected`
 
 > `Promises/A+`规范中的`2.1 Promise
-> States`中明确规定了，`pending`可以转化为`fulfilled`或`rejected`并且只能转化一次，也就是说如果`pending`转化到`fulfilled`状态，那么就不能再转化到r`ejected`。并且`fulfilled`和`rejected`状态只能由`pending`转化而来，两者之间不能互相转换
+> States`中明确规定了，`pending`可以转化为`fulfilled`或`rejected`并且只能转化一次，也就是说如果`pending`转化到`fulfilled`状态，那么就不能再转化到`rejected`。并且`fulfilled`和`rejected`状态只能由`pending`转化而来，两者之间不能互相转换
 
 ![img](/images/mengera88_github_io_images_promiseState.webp)
 ```javascript
@@ -548,10 +571,10 @@ window)](http://www.ituring.com.cn/article/66566)
     }
 ```
 
-  * `then`方法中，创建并返回了新的`Promise`实例，这是串行`Promis`e的基础，并且支持链式调用
+  * `then`方法中，创建并返回了新的`Promise`实例，这是串行`Promise`的基础，并且支持链式调用
   * `handle`方法是`promise`内部的方法。`then`方法传入的形参`onFulfilled`以及创建新`Promise`实例时传入的`resolve`均被`push`到当前`promise`的`callbacks`队列中，这是衔接当前`promise`和后邻`promise`的关键所在
   * `getUserId`生成的`promise`（简称`getUserId promise`）异步操作成功，执行其内部方法`resolve`，传入的参数正是异步操作的结果`id`
-  * 调用`handle`方法处理`callbacks`队列中的回调：`getUserJobById`方法，生成新的`promise`（g`etUserJobById promise`）
+  * 调用`handle`方法处理`callbacks`队列中的回调：`getUserJobById`方法，生成新的`promise`（`getUserJobById promise`）
   * 执行之前由`getUserId promise`的`then`方法生成的新`promise`(称为`bridge promise`)的`resolve`方法，传入参数为`getUserJobById promise`。这种情况下，会将该`resolve`方法传入`getUserJobById promise`的`then`方法中，并直接返回
   * 在`getUserJobById promise`异步操作成功时，执行其`callbacks`中的回调：`getUserId bridge promise`中的`resolve`方法
   * 最后执行`getUserId bridge promise`的后邻`promise`的`callbacks`中的回调
@@ -738,7 +761,7 @@ promise`(`then`函数返回的`promise`，后同)设为`rejected`状态，如此
       // 如果类型不是函数需要忽略，同时也实现了透传
       // Promise.resolve(4).then().then((value) => console.log(value))
       onResolved = typeof onResolved === 'function' ? onResolved : v => v;
-      onRejected = typeof onRejected === 'function' ? onRejected : r => throw r;
+      onRejected = typeof onRejected === 'function' ? onRejected : r => { throw r };
     
       if (self.currentState === RESOLVED) {
         return (promise2 = new MyPromise(function (resolve, reject) {

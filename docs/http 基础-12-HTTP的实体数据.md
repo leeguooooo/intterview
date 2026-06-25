@@ -1,5 +1,27 @@
 原文链接: [https://interview.poetries.top/fe-base-docs/http-protocol/base/12-HTTP%E7%9A%84%E5%AE%9E%E4%BD%93%E6%95%B0%E6%8D%AE.html](https://interview.poetries.top/fe-base-docs/http-protocol/base/12-HTTP%E7%9A%84%E5%AE%9E%E4%BD%93%E6%95%B0%E6%8D%AE.html)
 
+## 简版速记
+
+**HTTP 实体数据 = 内容协商四维度**
+
+| 维度 | 请求头（客户端声明能力） | 响应头（服务器告知实际值） |
+|------|----------------------|------------------------|
+| 数据类型（MIME type） | `Accept` | `Content-Type` |
+| 压缩编码 | `Accept-Encoding` | `Content-Encoding` |
+| 自然语言 | `Accept-Language` | `Content-Language` |
+| 字符集 | `Accept-Charset` | `Content-Type; charset=xxx` |
+
+**关键细节（面试高频考点）**
+
+- `Accept` / `Accept-Encoding` / `Accept-Language` 缺失时，服务器可自行决定，不报错。
+- 字符集**没有** `Content-Charset`，直接附在 `Content-Type` 后：`text/html; charset=utf-8`。
+- 权重 `q` 参数：默认 1，范围 0.01–1，`q=0` 表示拒绝；`","` 优先级高于 `";"`（与大多数语言相反）。
+  ```
+  Accept: text/html,application/xml;q=0.9,*/*;q=0.8
+  ```
+- `Vary` 响应头：记录服务器内容协商时参考了哪些请求头字段，供缓存代理区分版本。
+- 常用压缩格式：`gzip`（最流行）> `deflate` > `br`（Brotli）；现代浏览器均支持 `br`，压缩率最优。
+
 ## 数据类型与编码
 
   * text：即文本格式的可读数据，我们最熟悉的应该就是 `text/html` 了，表示超文本文档，此外还有纯文本 `text/plain`、样式表 `text/css` 等。
@@ -16,6 +38,8 @@
   * `gzip`：`GNU zip` 压缩格式，也是互联网上最流行的压缩格式；
   * `deflate`：`zlib`（`deflate`）压缩格式，流行程度仅次于 `gzip`；
   * `br`：一种专门为 `HTTP` 优化的新压缩算法（`Brotli`）
+
+> 补充(现代做法): Brotli（`br`）已于 2015 年正式推出，目前所有主流浏览器（Chrome/Firefox/Edge/Safari）均已支持，压缩率比 `gzip` 高约 15–25%，在静态资源压缩上是首选。此外，RFC 8878（2021）新增了 `zstd`（Zstandard）编码类型，Chrome 118+（2023）已支持，压缩速度更快；服务器端 Nginx 1.25.3+ 和 Caddy 均已跟进，新项目可考虑优先启用 `br` 并将 `zstd` 列入备选。
 
 ## 数据类型使用的头字段
 

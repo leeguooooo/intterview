@@ -1,5 +1,22 @@
 原文链接: [https://interview.poetries.top/principle-docs/react/21-React%20%E4%BA%8B%E4%BB%B6%E4%B8%8E%20DOM%20%E4%BA%8B%E4%BB%B6%E6%9C%89%E4%BD%95%E4%B8%8D%E5%90%8C.html](https://interview.poetries.top/principle-docs/react/21-React%20%E4%BA%8B%E4%BB%B6%E4%B8%8E%20DOM%20%E4%BA%8B%E4%BB%B6%E6%9C%89%E4%BD%95%E4%B8%8D%E5%90%8C.html)
 
+## 简版速记
+
+| 维度 | DOM 原生事件 | React 合成事件（SyntheticEvent）|
+|---|---|---|
+| 绑定位置 | 具体 DOM 节点 | React 16：统一绑定到 `document`；React 17+：统一绑定到根节点 `root` |
+| 事件对象 | 原生 `Event` | 合成事件对象，`e.nativeEvent` 可取原生事件 |
+| 浏览器兼容 | 各浏览器差异自理 | React 底层抹平，符合 W3C 规范 |
+| 事件委托 | 手动实现 | React 自动利用冒泡，在顶层统一分发 |
+| 事件流模拟 | 浏览器原生 | `traverseTwoPhase`：先倒序（捕获）再正序（冒泡）收集回调，顺序执行 |
+
+**核心要点**：
+
+1. React 事件系统基于**事件委托**，所有事件统一冒泡到顶层（document / root）后再分发到具体组件。
+2. 合成事件通过 `traverseTwoPhase` 收集捕获/冒泡两阶段的回调存入 `_dispatchListeners`，按序执行，完整模拟"捕获→目标→冒泡"三阶段。
+3. `e.nativeEvent` 访问原生 DOM 事件；同一事件类型在顶层节点只注册**一次**监听。
+4. React 17 起，事件绑定从 `document` 迁移到**应用根节点**，利于微前端场景隔离。
+
 > 注：本文逻辑提取自 `React 16.13.x`。随着 React
 > 版本的更迭，事件系统的实现细节难免有调整，但其设计思想总是一脉相承的，你只要把握住核心逻辑即可。
 
@@ -299,7 +316,7 @@ Fiber 节点类型。此处限制 `tag===HostComponent`，也就是说只收集 
 
 **3\. 模拟事件在冒泡阶段的传播顺序，收集冒泡阶段相关的节点实例与回调函数**
 
-捕获阶段的工作完成后，`traverseTwoPhase` 会从后往前遍历 path 数组，模拟事件的冒泡顺序，收集事件在捕获阶段对应的回调与实例。
+捕获阶段的工作完成后，`traverseTwoPhase` 会从前往后遍历 path 数组，模拟事件的冒泡顺序，收集事件在冒泡阶段对应的回调与实例。
 
 这个过程和步骤 2 基本是一样的，唯一的区别是对 path
 数组的倒序遍历变成了正序遍历。既然倒序遍历模拟的是捕获阶段的事件传播顺序，那么正序遍历自然模拟的就是冒泡阶段的事件传播顺序。在正序遍历的过程中，同样会对每个节点的回调情况进行检查，若该节点上对应当前事件的冒泡回调不为空，那么节点实例和事件回调同样会分别被收集到

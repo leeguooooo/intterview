@@ -1,5 +1,21 @@
 原文链接: [https://interview.poetries.top/principle-docs/vue/18-Vue3%E5%88%9D%E6%8E%A2%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86..html](https://interview.poetries.top/principle-docs/vue/18-Vue3%E5%88%9D%E6%8E%A2%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86..html)
 
+## 简版速记
+
+> 面试高频考点速记
+
+| 考点 | 核心要点 |
+|---|---|
+| **Vue2 响应式** | `Object.defineProperty` 逐 key 递归劫持；数组需覆盖原型方法才能监听变更 |
+| **Vue2 弊端** | 新增/删除属性不触发更新；`Map/Set` 不可响应；初始化递归遍历性能开销大 |
+| **Vue3 改用 Proxy** | 整对象拦截，天然支持属性新增、删除、数组索引操作；嵌套对象访问时才懒代理 |
+| **避免重复代理** | `WeakMap` 缓存双向映射：`toProxy(obj→proxy)` + `toRaw(proxy→obj)` |
+| **依赖收集三件套** | `effect`（注册副作用函数）→ `track`（getter 中建立映射）→ `trigger`（setter 中触发） |
+| **依赖映射结构** | `WeakMap<target, Map<key, Set<effectFn>>>` 三层嵌套，精确到 key 级别 |
+| **`reactive` vs `ref`** | `reactive` 代理对象返回 Proxy；`ref` 包装原始值（`.value` 访问），内部对象仍走 `reactive` |
+| **Composition API 优势** | 逻辑按功能聚合为 composable，避免 Options API 碎片化；来源清晰，无命名冲突 |
+| **`toRefs` 作用** | 将 reactive 对象每个属性转为 ref，解构后仍保持与原响应式对象的链接 |
+
 ## 源码结构
 
 ![image-20210313232042704](/images/s_poetries_work_images_image_20210313232042704.webp)
@@ -50,6 +66,8 @@
     </body>
     </html>
 ```
+
+> 补充(现代做法): Vue 3 中组件的 `data` 选项必须是函数形式 `data() { return { ... } }`，不可直接传对象；根应用（`createApp`）虽允许对象形式，但统一写成函数是最佳实践，与组件保持一致。
 
 ## Composition API
 
@@ -147,6 +165,8 @@
     createApp().mount(MyComp, '#app')
 ```
 
+> 补充(现代做法): 上方 `createApp().mount(MyComp, '#app')` 写法有误。Vue 3 正确 API 为 `createApp(MyComp).mount('#app')`：根组件作为第一个参数传入 `createApp`，`mount` 只接收挂载点选择器。
+
 **对比mixins，好处显而易见:**
 
   * `x,y,time`来源清晰
@@ -217,7 +237,7 @@
 > vue3使用ES6的Proxy特性来解决这些问题。
 ```js
     function reactive(obj) {
-      if (typeof obj !== 'object' && obj != null) {
+      if (typeof obj !== 'object' || obj == null) {
           return obj 
     }
     
@@ -264,7 +284,7 @@
 > 测试:嵌套对象不能响应
 ```js
     // 4.设置嵌套对象属性
-    react.bar.a = 10 // no ok
+    state.bar.a = 10 // no ok
 ```
 
 添加对象类型递归

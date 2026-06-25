@@ -1,5 +1,15 @@
 原文链接: [https://interview.poetries.top/fe-base-docs/http-protocol/base/06-HTTP%E6%8A%A5%E6%96%87%E6%98%AF%E4%BB%80%E4%B9%88%E6%A0%B7%E5%AD%90%E7%9A%84.html](https://interview.poetries.top/fe-base-docs/http-protocol/base/06-HTTP%E6%8A%A5%E6%96%87%E6%98%AF%E4%BB%80%E4%B9%88%E6%A0%B7%E5%AD%90%E7%9A%84.html)
 
+## 简版速记
+
+- **报文三段式**：起始行 + 头部字段 + 消息正文；header 与 body 之间必须有一个空行（CRLF，十六进制 `0D0A`）
+- **请求行**：`方法 URI 版本号`，如 `GET / HTTP/1.1`；三部分用空格分隔，末尾 CRLF
+- **状态行**：`版本号 状态码 原因短语`，如 `HTTP/1.1 200 OK`
+- **头部字段**：`key: value` 形式；字段名不区分大小写、不可含空格和下划线，顺序任意
+- **唯一强制头**：HTTP/1.1 中 `Host` 是请求里唯一必须提供的头字段
+- **body 可选**：GET 请求通常只有 header；POST/PUT 等请求的 body 携带实际数据
+- **纯文本 vs 二进制**：HTTP/1.1 报文是 ASCII 明文，可肉眼阅读；HTTP/2 改为二进制帧，效率更高但不可直读
+
 ## 报文结构
 
   * 你也许对 TCP/UDP 的报文格式有所了解，拿 TCP 报文来举例，它在实际要传输的数据之前附加了一个 20 字节的头部数据，存储 TCP 协议必须的额外信息，例如发送方的端口号、接收方的端口号、包序号、标志位等等
@@ -8,7 +18,9 @@
 ![](/images/s_poetries_work_gitee_2019_12_5.webp)
 
 > HTTP 协议也是与 TCP/UDP 类似，同样也需要在实际传输的数据前附加一些头数据，不过与 TCP/UDP
-> 不同的是，它是一个“纯文本”的协议，所以头数据都是 ASCII 码的文本，可以很容易地用肉眼阅读，不用借助程序解析也能够看懂
+> 不同的是，它是一个”纯文本”的协议，所以头数据都是 ASCII 码的文本，可以很容易地用肉眼阅读，不用借助程序解析也能够看懂
+
+> 补充（现代做法）：上述”纯文本”特性仅适用于 **HTTP/1.1**。**HTTP/2** 引入了二进制分帧层（Binary Framing Layer），将报文拆分为帧（Frame）在 TCP 连接上传输，不再是人可直读的 ASCII 文本，但逻辑上的 header/body 概念保持不变；**HTTP/3** 则进一步基于 QUIC（UDP）传输，同样使用二进制帧。
 
 **HTTP 协议的请求报文和响应报文的结构基本相同，由三大部分组成**
 

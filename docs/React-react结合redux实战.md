@@ -1,5 +1,24 @@
 原文链接: [https://interview.poetries.top/principle-docs/react/09-react%E7%BB%93%E5%90%88redux%E5%AE%9E%E6%88%98.html](https://interview.poetries.top/principle-docs/react/09-react%E7%BB%93%E5%90%88redux%E5%AE%9E%E6%88%98.html)
 
+## 简版速记
+
+> React + Redux TODO 实战核心流程（5步）
+
+| 步骤 | 文件 | 作用 |
+|------|------|------|
+| 1. constants | `constant/index.js` | 集中定义 action type 字符串常量，避免拼写错误 |
+| 2. actionCreators | `actions/index.js` | 返回 `{ type, payload }` 对象的纯函数 |
+| 3. reducers | `reducers/*.js` | 纯函数 `(state, action) => newState`；用 `combineReducers` 合并 |
+| 4. store | `store/index.js` | `createStore(rootReducer, applyMiddleware(...))` |
+| 5. react-redux | container 组件 | `connect(mapStateToProps, mapDispatchToProps)(UI组件)` |
+
+**关键记忆点**
+- `mapStateToProps(state, ownProps)` — 从 store 读数据，映射为 UI 组件的 props
+- `mapDispatchToProps` 传函数时接收 `dispatch`，传对象时 Redux 自动绑定 `dispatch`
+- `combineReducers` 的键名即 `state` 的键名，容器组件通过 `state.xxx` 取值
+- 根组件须用 `<Provider store={store}>` 包裹（文章代码示例中省略）
+- reducer 必须是纯函数：不能直接修改 `state`，需返回新对象
+
 > 以`TODO`为例分析，实际开发中并不是那么简单，下面的原型只是开发中的一个原型，这个简单的例子，有助于掌握数据处理传递的原则。
 
 ## 一、定义constants
@@ -129,6 +148,15 @@
     )
 ```
 
+> 补充（现代做法）：`createStore` 在 Redux v4.2+ 已标记为 deprecated，官方推荐改用 **Redux Toolkit** 的 `configureStore`，内置 `redux-thunk`、Immer、DevTools，无需手动 `applyMiddleware`：
+> ```js
+> import { configureStore } from '@reduxjs/toolkit';
+> export const store = configureStore({
+>   reducer,
+>   middleware: (getDefault) => getDefault().concat(logger),
+> });
+> ```
+
 ## 五、结合react-redux
 
 > 这里忽略展示组件，完成源码看文章结尾
@@ -203,7 +231,7 @@
       }
     }
     
-    // 把状态转化为展示组件的属性转递过去
+    // 把状态转化为展示组件的属性传递过去
     /**
      *
      * @param {*} state 也就是
@@ -237,7 +265,7 @@
 > react-todos/src/container/addTodos.js
 ```javascript
     /**
-     * Addtodo的处逻辑
+     * Addtodo的处理逻辑
      */
     import React, { Component } from 'react';
     import {addTodo} from '../actions/index';
@@ -257,6 +285,8 @@
       mapDispatchToProps
     )(AddTask);
 ```
+
+> 补充（现代做法）：`connect()` HOC 仍可用，但 React-Redux v7.1+ 推荐直接在函数组件中使用 **Hooks**：`useSelector(state => state.todos)` 替代 `mapStateToProps`，`useDispatch()` 替代 `mapDispatchToProps`，可省去 container 层，代码更简洁。
 
 > 到此分析完毕，展示组件就不分析了，展示组件本身是没有数据的，需要container处理传递
 

@@ -1,5 +1,16 @@
 原文链接: [https://interview.poetries.top/principle-docs/js/01-JavaScript%20%E5%BC%95%E6%93%8E%E5%A6%82%E4%BD%95%E6%89%A7%E8%A1%8C%20JavaScript%20%E4%BB%A3%E7%A0%81.html](https://interview.poetries.top/principle-docs/js/01-JavaScript%20%E5%BC%95%E6%93%8E%E5%A6%82%E4%BD%95%E6%89%A7%E8%A1%8C%20JavaScript%20%E4%BB%A3%E7%A0%81.html)
 
+## 简版速记
+
+- **V8 执行三阶段**：语法分析（查 SyntaxError）→ 编译（创建执行上下文）→ 执行（压栈/出栈调用栈，LIFO）
+- **执行上下文创建做三件事**：① 建立作用域链 ② 创建变量对象 VO ③ 确定 this 指向
+- **变量提升**：`var` 声明提升并初始化为 `undefined`；函数声明整体提升且优先于变量提升；`let/const` 有 TDZ，不提升初始化值
+- **VO → AO**：编译期变量值为 `undefined`（VO，不可访问）；执行期赋值激活为 AO（可访问）；关系式：`AO = VO + 形参 + arguments`
+- **词法环境 vs 变量环境**：变量环境记录 `var/function`，词法环境记录 `let/const/class`，两套环境使块级作用域与传统提升共存
+- **作用域链**：由「环境记录 + 外部词法环境引用」构成，变量查找沿链向外直到 `null`；作用域在**定义期**（静态/词法）就已确定
+- **闭包**：函数执行上下文销毁后，被内层函数引用的变量对象仍保留在内存中；需及时解除引用避免内存泄漏
+- **this 指向**：由调用方式决定——普通调用 → 全局/`undefined`(严格模式)；方法调用 → 所在对象；`new` → 新对象；`call/apply/bind` → 指定对象；箭头函数 → 词法 this（定义时外层 this）
+
 > 在 V8 引擎中 JavaScript 代码的运行过程主要分成三个阶段
 
   * **语法分析阶段** 。 该阶段会对代码进行语法分析，检查是否有语法错误（SyntaxError），如果发现语法错误，会在控制台抛出异常并终止执行
@@ -193,7 +204,7 @@ JavaScript 代码的，因此并不存在“整个 JavaScript
     
     foo();
     
-    console.log(a); // undefined
+    console.log(a); // ReferenceError: a is not defined
 ```
 
 我们在全局环境下无法访问函数foo中的变量a，这是因为全局函数的作用域链里，不含有函数foo内的作用域。
@@ -245,6 +256,8 @@ JavaScript 代码的，因此并不存在“整个 JavaScript
 > 可以看到，this在不同的情况下会有不同的指向，在 ES6 箭头函数还没出现之前，为了能正确获取某个运行环境下this对象，我们常常会使用var
 > that = this;、var self =
 > this;这样的代码将变量分配给this，便于使用。这种方式降低了代码可读性，因此如今这种做法不再被提倡，通过正确使用箭头函数，我们可以更好地管理作用域
+
+> 补充（现代做法）：ES2020 引入了 `globalThis`，可在浏览器（`window`）、Node.js（`global`）、Web Worker（`self`）等任意环境中统一获取全局对象，无需再做环境判断。此外，`class` 中的方法默认以严格模式运行，未绑定时 `this` 为 `undefined`，推荐用箭头函数类字段（`onClick = () => {}`）或在构造函数中 `bind` 来固定 `this`。
 
 阅读全文
 

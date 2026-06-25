@@ -1,5 +1,23 @@
 原文链接: [https://interview.poetries.top/principle-docs/react/04-%E6%B5%85%E6%9E%90redux%20saga%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%8F%8A%E7%94%A8%E6%B3%95.html](https://interview.poetries.top/principle-docs/react/04-%E6%B5%85%E6%9E%90redux%20saga%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%8F%8A%E7%94%A8%E6%B3%95.html)
 
+## 简版速记
+
+- **为什么需要中间件**：Redux 默认只处理纯对象 action；副作用（异步请求等）需在 action → reducer 之间由中间件处理。
+- **redux-thunk**：让 action 可以是函数，简单但 action 形式不统一、副作用分散、难以维护。
+- **redux-saga 核心思路**：action 始终是普通对象；异步逻辑集中写在 Generator 函数（saga）里；通过声明式 `Effect` 描述对象驱动执行，天然易于测试。
+- **常用 Effect API**：
+  - `take(type)` — 监听 action，阻塞直到收到
+  - `put(action)` — 相当于 `dispatch`，触发后续 action
+  - `call(fn, ...args)` — 调用函数/Promise（**阻塞**当前 saga）
+  - `fork(fn, ...args)` — 非阻塞调用，适合并发/可取消任务
+  - `select(selector)` — 读取 state（相当于 `getState`）
+  - `takeEvery(type, saga)` — 每次 action 触发都执行一次 worker
+  - `takeLatest(type, saga)` — 只保留最新触发，自动取消上一次
+- **watcher / worker 模式**：watcher saga 用 `takeEvery`/`takeLatest` 监听 action，worker saga 执行具体异步逻辑。
+- **call vs fork**：call 阻塞等待结果；fork 立即返回，不阻塞后续 yield，适合需要"边执行边监听"的场景。
+- **与 thunk 对比**：thunk action 是函数（形式不统一）；saga action 是普通对象，副作用全在 saga 层，可测试、可取消、可组合。
+- **现代替代**：Redux Toolkit（RTK）内置 `createAsyncThunk` 和 RTK Query，大多数新项目已无需 saga；saga 在复杂竞态/取消/长轮询等流程控制场景仍有优势。
+
 ## 一、redux-thunk
 
 ### 1.1 redux的副作用处理
@@ -55,15 +73,7 @@
 
 ### 1.3 redux-thunk的缺点
 
->  
-> ```javascript
->  
->  
->
-> thunk`的缺点也是很明显的，`thunk`仅仅做了执行这个函数，并不在乎函数主体内是什么，也就是说`thunk`使得`redux`可以接受函数作为`action`，但是函数的内部可以多种多样。比如下面是一个获取商品列表的异步操作所对应的`action
->  
->
-> ```
+> `thunk`的缺点也是很明显的，`thunk`仅仅做了执行这个函数，并不在乎函数主体内是什么，也就是说`thunk`使得`redux`可以接受函数作为`action`，但是函数的内部可以多种多样。比如下面是一个获取商品列表的异步操作所对应的`action`：
 ```javascript
     export default ()=>(dispatch)=>{
         fetch('/api/goodList',{ //fecth返回的是一个promise
@@ -151,15 +161,7 @@
 
 **redux-thunk的大体过程**
 
->  
-> ```javascript
->  
->  
->     action1(side function)`—>`redux-thunk`监听—>执行相应的有副作用的方法—>`action2(plain
-> object)
->  
->
-> ```
+> `action1(side function)` —> `redux-thunk` 监听 —> 执行相应的有副作用的方法 —> `action2(plain object)`
 
 ![img](/images/s_poetries_work_gitee_2019_10_486.webp)
 
@@ -339,7 +341,7 @@
             password:action1.password
         })
         if(res){
-          put({type:'to_login_in'});
+          yield put({type:'to_login_in'});
         }
     });
 ```
@@ -375,6 +377,8 @@
 
 > 为了演示请求过程，我们在本地`mock`，通过`redux-
 > saga`的工具函数`delay`，`delay`的功能相当于延迟xx秒，因为真实的请求存在延迟，因此可以用delay在本地模拟真实场景下的请求延迟
+
+> 补充（现代做法）：`delay` 已在 redux-saga v1.x 从顶层包移至 `redux-saga/effects`，应写 `import { delay } from 'redux-saga/effects'`。顶层 `import {delay} from 'redux-saga'` 在新版本会报错。
 
 **登出功能**
 ```javascript
@@ -455,14 +459,7 @@
 
 ### 6.1 配置saga信息
 
->  
-> ```javascript
->  
->  
->     src/store/configureStore.js
->  
->
-> ```
+> `src/store/configureStore.js`
 ```javascript
     import { createStore, applyMiddleware, compose } from 'redux'
     // import {createLogger } from 'redux-logger'
@@ -506,6 +503,8 @@
     
     export default configureStore
 ```
+
+> 补充（现代做法）：`react-router-redux` 已停止维护。现代项目可使用 `connected-react-router`（兼容 Redux 4.x），或直接升级到 React Router v6——v6 不再推荐将路由状态同步进 Redux store，可省去 `routerMiddleware`。
 
 ### 6.2 配置reduce
 ```javascript

@@ -1,5 +1,17 @@
 原文链接: [https://interview.poetries.top/principle-docs/react/24-%E5%A6%82%E4%BD%95%E6%89%93%E9%80%A0%E9%AB%98%E6%80%A7%E8%83%BD%E7%9A%84%20React%20%E5%BA%94%E7%94%A8.html](https://interview.poetries.top/principle-docs/react/24-%E5%A6%82%E4%BD%95%E6%89%93%E9%80%A0%E9%AB%98%E6%80%A7%E8%83%BD%E7%9A%84%20React%20%E5%BA%94%E7%94%A8.html)
 
+## 简版速记
+
+| 场景 | 方案 | 核心机制 |
+|---|---|---|
+| 类组件 — 自定义比较 | `shouldComponentUpdate` | 手动返回 `false` 中断 re-render |
+| 类组件 — 自动浅比较 | `PureComponent` | 内置 shallow compare props & state |
+| 引用类型数据精确变更检测 | `PureComponent + Immutable.js` | 内容变 → 引用必变，浅比才准确 |
+| 函数组件 — 组件级缓存 | `React.memo` | HOC 包裹，props 浅比；可传第二参数 `areEqual` 自定义 |
+| 函数组件 — 逻辑级缓存 | `useMemo` | 依赖项不变时跳过高开销计算，返回缓存值 |
+
+**关键区别**：`React.memo` 控制整个组件是否重渲染；`useMemo` 控制组件内某段计算是否重执行。`areEqual` 返回值语义与 `shouldComponentUpdate` **相反**——返回 `true` 表示 props 相同、不需要更新。
+
   * 使用 `shouldComponentUpdate` 规避冗余的更新逻辑
   * `PureComponent + Immutable.js`
   * `React.memo` 与 `useMemo`
@@ -225,11 +237,13 @@ Immutable 直译过来是“不可变的”，顾名思义，Immutable.js 是对
     console.log('baseMap === changedMap', baseMap === changedMap)
 ```
 
-由此可见，`PureComonent 和 Immutable.js` 真是一对好基友！在实际的开发中，我们也确实经常左手 PureComonent，右手
+由此可见，`PureComponent 和 Immutable.js` 真是一对好基友！在实际的开发中，我们也确实经常左手 PureComponent，右手
 Immutable.js，研发质量大大地提升呀！
 
 > 值得注意的是，由于 `Immutable.js` 存在一定的学习成本，并不是所有场景下都可以作为最优解被团队采纳。因此，一些团队也会基于
-> `PureComonent` 和 `Immutable.js` 去打造将两者结合的公共类，通过改写 setState 来提升研发体验，这也是不错的思路。
+> `PureComponent` 和 `Immutable.js` 去打造将两者结合的公共类，通过改写 setState 来提升研发体验，这也是不错的思路。
+
+> 补充（现代做法）：`Immutable.js` 包体积较大且 API 学习曲线陡。现代项目更常选用 **Immer**（`use-immer` / Redux Toolkit 内置），它允许用"可变写法"生成全新的不可变对象，与 `PureComponent` / `React.memo` 配合同样有效，且无需学习全套 Immutable API。
 
 ## 函数组件的性能优化：React.memo 和 useMemo
 

@@ -1,5 +1,15 @@
 原文链接: [https://interview.poetries.top/principle-docs/vue/03-%E6%9C%89%E7%8A%B6%E6%80%81%E7%BB%84%E4%BB%B6%E7%9A%84%E8%AE%BE%E8%AE%A1.html](https://interview.poetries.top/principle-docs/vue/03-%E6%9C%89%E7%8A%B6%E6%80%81%E7%BB%84%E4%BB%B6%E7%9A%84%E8%AE%BE%E8%AE%A1.html)
 
+## 简版速记
+
+- **插槽存储位置**：子节点放在 `VNode.slots`（而非 `children`），在组件实例化之后、`render` 执行之前注入到 `instance.$slots`，使 render 函数可访问插槽内容。
+- **普通插槽 vs 作用域插槽**：本质相同，区别仅在于 `$slots.default` 是否为接受参数的函数。Vue 2.6+ 已统一：所有插槽均为返回 VNode 的函数，普通插槽是作用域插槽的无参子集。
+- **key**：VNode 唯一标识，供 diff 算法复用节点。
+- **ref**：设计为回调函数；挂载普通元素时传入真实 DOM，挂载组件时传入组件实例。
+- **parentVNode**：描述组件标签的 VNode（即使用侧的 `<MyComponent />`）；组件实例通过 `$parentVNode` 引用它，`$emit` 从中读取事件监听器。
+- **contextVNode**：子组件标签描述 VNode 上存储的父组件标签 VNode，用于建立 `$parent` / `$children` / `$root` 父子链；函数式组件无实例，沿链向上跳过。
+- **VNode.el**：挂载后存储对应真实 DOM 的引用；组件 el 指向其产出 VNode 的根元素，Fragment el 指向第一个子元素，Portal/空 Fragment el 指向占位空文本节点。
+
 假设我们有如下模板：
 ```html
     <MyComponent>
@@ -111,7 +121,7 @@
       render() {
         return {
           flags: VNodeFlags.ELEMENT,
-          tag: 'h1'
+          tag: 'h1',
           children: this.$slots.default
         }
       }
@@ -137,7 +147,7 @@
       render() {
         return {
           flags: VNodeFlags.ELEMENT,
-          tag: 'h1'
+          tag: 'h1',
           // 插槽变成了函数，可以传递参数
           children: this.$slots.default(1)
         }
@@ -454,6 +464,8 @@ TIP
       }
     }
 ```
+
+> 补充(现代做法): Vue 3 正式废弃了 Class 组件写法（`vue-class-component` 不再官方维护），推荐使用 Composition API。`$emit` 在 `<script setup>` 中通过 `const emit = defineEmits(['click'])` 声明后直接调用 `emit('click', 1)`，底层仍是从父组件 VNode 的 props 中查找 `onClick` 处理函数，原理与本文一致。
 
 ## contextVNode
 

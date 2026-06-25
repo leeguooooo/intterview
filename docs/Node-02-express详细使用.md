@@ -1,5 +1,22 @@
 原文链接: [https://interview.poetries.top/principle-docs/node/02-express%E8%AF%A6%E7%BB%86%E4%BD%BF%E7%94%A8.html](https://interview.poetries.top/principle-docs/node/02-express%E8%AF%A6%E7%BB%86%E4%BD%BF%E7%94%A8.html)
 
+## 简版速记
+
+| 考点 | 要点 |
+|---|---|
+| Express 本质 | 对 Node.js 内置 `http` 模块的薄封装，核心是**中间件管道** |
+| 中间件签名 | `(req, res, next)` — 调用 `next()` 传递；`next(err)` 触发错误处理中间件 |
+| `app.use(path, fn)` | 注册中间件；`path` 省略则匹配所有路径；按注册顺序依次执行 |
+| HTTP 动词方法 | `app.get/post/put/delete/all` — 匹配具体 HTTP 方法；`all` 匹配全部 |
+| 路径参数 | `app.get('/hello/:name', ...)` — 通过 `req.params.name` 取值 |
+| `Express.Router` | 4.0+ 独立路由器，可模块化挂载：`app.use('/api', router)` |
+| `router.param` | 对路径参数做统一预处理，必须放在对应 HTTP 方法之前 |
+| `app.route` | 链式定义同一路径的多个方法，等价于 `express.Router()` 直接挂根路径 |
+| 静态文件 | `app.use(express.static('public'))` |
+| 文件上传 | 使用 `multer` 中间件处理 `multipart/form-data` |
+| HTTPS | 将 `https.createServer(options, app)` 替换 `http.createServer(app)` |
+| 模板渲染 | `app.set('view engine', 'ejs'/'hbs'/...)` + `res.render('模板名', data)` |
+
 > Express是目前最流行的基于Node.js的Web开发框架，可以快速地搭建一个完整功能的网站
 
 ## 运行原理
@@ -123,7 +140,7 @@
 
   * 因此，上面的代码可以写成下面的样子
 ```javascript
-    ar express = require("express");
+    var express = require("express");
     var http = require("http");
     
     var app = express();
@@ -275,6 +292,8 @@
     app.get('/', function(req, res) {
        res.sendfile('./views/index.html');
     });
+
+> 补充(现代做法): `res.sendfile()` 在 Express 4.x 中已被废弃，应改用 `res.sendFile()`（注意大写 F），且路径须为绝对路径或配合 `{ root: __dirname }` 选项使用。例：`res.sendFile('index.html', { root: path.join(__dirname, 'views') })`。
      
     app.get('/about', function(req, res) {
        res.sendfile('./views/about.html');
@@ -433,6 +452,8 @@
     app.use(express.bodyParser());
      
     app.get('/', function(req, res) {
+
+> 补充(现代做法): `express.bodyParser()` 在 Express 4.x 中已被移除。现代写法是分别注册内置中间件：`app.use(express.json())` 解析 JSON 请求体，`app.use(express.urlencoded({ extended: true }))` 解析表单数据。无需再安装独立的 `body-parser` 包（Express 4.16+ 已内置）。
        res.render('index',{title:"最近文章", entries:blogEngine.getBlogEntries()});
     });
      

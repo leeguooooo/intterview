@@ -1,5 +1,27 @@
 原文链接: [https://interview.poetries.top/docs/excellent-docs/1-HTML%E6%A8%A1%E5%9D%97.html](https://interview.poetries.top/docs/excellent-docs/1-HTML%E6%A8%A1%E5%9D%97.html)
 
+## 简版速记
+
+| 考点 | 核心结论 |
+|---|---|
+| 语义化 | 用正确标签做正确的事；有利 SEO；无 CSS 仍可读 |
+| H5 新特性 | Canvas / Geolocation / audio / video / localStorage / sessionStorage / Web Worker / WebSocket / history.pushState / 语义标签 |
+| defer vs async | defer：文档解析完后按顺序执行；async：加载完立即执行，乱序 |
+| src vs href | src 嵌入资源、阻塞解析；href 建立引用关系、并行加载 |
+| script 位置 | JS 放底部（src 阻塞解析）；CSS 用 `<link>` 放 `<head>`（并行加载） |
+| prefetch vs preload | prefetch：空闲时预取将来可能访问的资源；preload：当前页即刻需要、优先加载 |
+| 图片格式 | PNG / JPEG / GIF / SVG + **WebP**（体积约为 JPEG 的 60%） |
+| iframe 缺点 | 阻塞主页面 onload、不利 SEO、占用共享连接池 |
+| 跨标签通信 | localStorage + storage 事件；WebSocket；cookie + setInterval |
+| a 伪类顺序 | **LoVe HAte**：link → visited → hover → active |
+| input 点击事件顺序 | mouseenter → mousedown → focus → click |
+| 自定义事件 | `new CustomEvent(name, {detail})` + `dispatchEvent(event)` |
+| 事件流三阶段 | 捕获（window→目标）→ 目标 → 冒泡（目标→window）；第三参 `true` = 捕获 |
+| 不冒泡的事件 | blur / focus / mouseenter / mouseleave |
+| target="_blank" 安全 | 加 `rel="noopener noreferrer"` 防止新窗口通过 `window.opener` 劫持原页面 |
+| offset / client / scroll | offset = 含边框的元素尺寸 + 页面偏移；client = 可视区尺寸；scroll = 已滚动距离 |
+| HTMLCollection vs NodeList | HTMLCollection 只含 Element；NodeList 含 Text / Comment 等全部节点类型 |
+
 ## 1 如何理解HTML语义化
 
   * 用正确的标签做正确的事情！
@@ -50,10 +72,10 @@
 ## 3 说一下 HTML5 drag api
 
   * `dragstart`:事件主体是被拖放元素，在开始拖放被拖放元素时触发，。
-  * `darg`:事件主体是被拖放元素，在正在拖放被拖放元素时触发。
+  * `drag`:事件主体是被拖放元素，在正在拖放被拖放元素时触发。
   * `dragenter`:事件主体是目标元素，在被拖放元素进入某元素时触发。
   * `dragover`:事件主体是目标元素，在被拖放在某元素内移动时触发。
-  * `dragleave`:事件主体是目标元素，在被拖放元素移出目标元素是触发。
+  * `dragleave`:事件主体是目标元素，在被拖放元素移出目标元素时触发。
   * `drop`:事件主体是目标元素，在目标元素完全接受被拖放元素时触发。
   * `dragend`:事件主体是被拖放元素，在整个拖放操作结束时触发
 
@@ -131,6 +153,8 @@
     </script>  
 ```
 
+> 补充（现代做法）：现代浏览器（Chrome 54+、Firefox 38+）原生支持 **BroadcastChannel API**，比 localStorage + storage 事件更简洁：`const bc = new BroadcastChannel('channel'); bc.postMessage(data);`，在其他标签页用 `bc.onmessage = e => console.log(e.data)` 监听即可，无需轮询。
+
 ## 6 简述一下src与href的区别
 
   * `src`用于替换当前元素，`href`用于在当前文档和引用资源之间确立联系。
@@ -161,6 +185,8 @@
 > Ebay等知名网站已经开始测试并使用WebP格式。
 
 在质量相同的情况下，`WebP`格式图像的体积要比JPEG格式图像小`40%`
+
+> 补充（现代做法）：**AVIF**（AV1 Image File Format）是比 WebP 更新一代的格式（Chrome 85+、Firefox 93+、Safari 16+ 支持），同质量下体积比 WebP 再减约 20%，已逐渐成为高性能网站的首选图片格式。
 
 ## 8 script标签中defer和async的区别
 
@@ -306,6 +332,8 @@
     	// 3. cancelable: 是否可以取消默认行为
     )
 ```
+
+> 补充（现代做法）：`document.createEvent` + `initEvent` 已被 **Web 标准废弃**（deprecated），现代代码应优先使用方法一（`new Event`）或方法二（`new CustomEvent`），两者兼容所有现代浏览器。
 
   * `createEvent`：创建一个事件
   * `initEvent`：初始化一个事件
@@ -468,7 +496,7 @@
 
   1. 可以通过给标签设置`draggable`属性来实现元素的拖拽，`img和a标签`默认是可以拖拽的
   2. 拖拽者身上的三个事件：`ondragstart`、`ondrag`、`ondragend`
-  3. 拖拽要放到的元素：`ondragenter`、`ondragover`、`ondragleave`、`ondrap`
+  3. 拖拽要放到的元素：`ondragenter`、`ondragover`、`ondragleave`、`ondrop`
 
 ## 24 offset、scroll、client的区别
 

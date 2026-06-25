@@ -1,5 +1,19 @@
 原文链接: [https://interview.poetries.top/principle-docs/react/06-Redux%E4%B9%8B%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90.html](https://interview.poetries.top/principle-docs/react/06-Redux%E4%B9%8B%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90.html)
 
+## 简版速记
+
+> 面试核心考点速览（基于 Redux 经典源码，对应 Redux 3.x/4.x）
+
+| 模块 | 核心要点 |
+|------|----------|
+| `createStore(reducer, initialState)` | 内部维护 `currentState`、`listeners[]`、`isDispatching`；创建时自动 dispatch `@@redux/INIT` 完成状态初始化；返回 `{ dispatch, subscribe, getState, replaceReducer }` |
+| `dispatch(action)` | 唯一改变 state 的方式：`currentState = currentReducer(currentState, action)` → 顺序通知所有 listeners；`isDispatching` 标志防止 reducer 内部递归 dispatch |
+| `subscribe(listener)` | 向 `listeners` 数组 push 回调；返回 `unsubscribe` 闭包（`splice` 移除自身） |
+| `combineReducers(reducerMap)` | 每次 dispatch 遍历所有子 reducer；用引用对比（`!==`）判断 `hasChanged`，未变则返回旧 state；子 reducer 返回 `undefined` 直接抛出异常 |
+| `bindActionCreators(creators, dispatch)` | 本质：`(...args) => dispatch(actionCreator(...args))`，把 actionCreator 与 dispatch 绑定，省去手动 `store.dispatch(fn())` |
+| `applyMiddleware(...middlewares)` | 柯里化三层：`middleware(middlewareAPI)(next)(action)`；`compose(...chain)(store.dispatch)` 从右到左串联；`middlewareAPI.dispatch` 始终指向最终封装后的 dispatch，防止中间件拿到旧 dispatch |
+| 中间件执行顺序 | `applyMiddleware(A, B, C)` → 执行链 `A → B → C → store.dispatch`，最左中间件最先执行、最后返回 |
+
 ## 一、index.js
 
 > https://github.com/reactjs/redux/blob/master/src/index.js
@@ -26,7 +40,7 @@
 > https://github.com/reactjs/redux/blob/master/src/createStore.js
 
   * `redux.createStore(reducer, initialState)` 传入了`reducer`、`initialState`，并返回一个`store`对象
-  * `store`对象对外暴露了`dispatch`、`getStat`e、`subscribe`方法
+  * `store`对象对外暴露了`dispatch`、`getState`、`subscribe`方法
   * `store`对象通过`getState()` 获取内部状态
   * `initialState`为 `store` 的初始状态，如果不传则为undefined
   * `store`对象通过`reducer`来修改内部状态
@@ -729,6 +743,8 @@
       };
     }
 ```
+
+> 补充(现代做法): Redux 官方自 2019 年起推荐使用 **Redux Toolkit (RTK)**。`configureStore` 内置了 `applyMiddleware`、Immer（可变写法的 reducer）、redux-devtools 集成，不再需要手写 `combineReducers` 或 `applyMiddleware` 样板代码。`createSlice` 同时生成 reducer 与 actionCreators，彻底替代 `bindActionCreators`。原 `applyMiddleware(...middlewares)(createStore)` 的旧调用方式在 RTK 中已封装为 `configureStore({ middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(myMiddleware) })`。
 
 阅读全文
 

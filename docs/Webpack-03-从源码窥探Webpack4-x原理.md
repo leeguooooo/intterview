@@ -1,5 +1,18 @@
 原文链接: [https://interview.poetries.top/principle-docs/webpack/03-%E4%BB%8E%E6%BA%90%E7%A0%81%E7%AA%A5%E6%8E%A2Webpack4.x%E5%8E%9F%E7%90%86.html](https://interview.poetries.top/principle-docs/webpack/03-%E4%BB%8E%E6%BA%90%E7%A0%81%E7%AA%A5%E6%8E%A2Webpack4.x%E5%8E%9F%E7%90%86.html)
 
+## 简版速记
+
+| 考点 | 核心结论 |
+|---|---|
+| Webpack 本质 | 基于事件流（Tapable 钩子）的插件系统，一切皆插件 |
+| Compiler vs Compilation | Compiler 全局唯一，贯穿整个生命周期；Compilation 每次构建重新创建，存储本次编译的模块、chunk、asset |
+| Tapable 钩子分类 | 同步：`SyncHook / SyncBailHook / SyncWaterfallHook / SyncLoopHook`；异步：`AsyncParallelHook / AsyncSeriesHook` 等；插件用 `tap/tapAsync/tapPromise` 注册，用 `call/callAsync/promise` 触发 |
+| 启动流程 | `webpack.js` → 找到 `webpack-cli` → yargs 解析参数 → `WebpackOptionsDefaulter` 合并默认值 → `new Compiler` → `WebpackOptionsApply` 将配置转成内置插件 → `compiler.run()` |
+| make 阶段 | `SingleEntryPlugin` 监听 `make` 钩子 → `addEntry` → `_addModuleChain` → `buildModule` → `loader-runner` 执行 Loader → `acorn` 解析 AST 收集依赖 → 递归处理依赖模块 |
+| seal 阶段 | 所有模块编译完毕后，生成 Chunk、计算 hash、`createModuleAssets`；**tree shaking 在此阶段执行** |
+| emit 阶段 | 调用 `compiler.hooks.emit`，将 `compilation.assets` 写入磁盘 |
+| Chunk 生成算法 | entry module → 新 chunk → 遍历依赖加入 chunk → 动态引入 (`import()`) → 新 chunk；重复直至所有 chunk 确定 |
+
 ### Webpack本质
 
 > Webpack本质上一种基于事件流的编程范例，其实就是一系列的插件运行
@@ -106,6 +119,8 @@ Async | Sync
         "info"                  // 返回与本地环境相关的一些信息
     ];
 ```
+
+> 补充(现代做法): Webpack 5 + webpack-cli v4/v5 中 `webpack-command` 已移除，仅保留 `webpack-cli`。`NON_COMPILATION_ARGS` 机制被重构为独立的子命令体系（`webpack init`、`webpack info` 等），不再通过同一个 `cli.js` 分流。`serve` 命令需单独安装 `webpack-dev-server` 并通过 `webpack serve` 调用，而非旧版的 `webpack-serve` 包。
 
 > `webpack-cli` 使用命令行工具包`yargs`
 ```js
@@ -282,7 +297,7 @@ Async | Sync
         "SingleEntryPlugin",
         (compilation, callback) => {
     	const { entry, name, context } = this;
-    	cosnt dep = SingleEntryPlugin.createDependency(entry, name);
+    	const dep = SingleEntryPlugin.createDependency(entry, name);
     	// make构建阶段开始标志 
     	compilation.addEntry(context, dep, name, callback);
         }
@@ -349,7 +364,8 @@ Async | Sync
 
 **3\. acorn**
 ```js
-    // node_modules/webpack/lib/Parser.jsconst acorn = require("acorn");
+    // node_modules/webpack/lib/Parser.js
+    const acorn = require("acorn");
 ```
 
 > 使用`acorn`解析转换后的内容，输出对应的抽象语法树(`AST`)。

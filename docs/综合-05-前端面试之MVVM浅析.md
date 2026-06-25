@@ -1,5 +1,17 @@
 原文链接: [https://interview.poetries.top/principle-docs/comprehensive/05-%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%AF%95%E4%B9%8BMVVM%E6%B5%85%E6%9E%90.html](https://interview.poetries.top/principle-docs/comprehensive/05-%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%AF%95%E4%B9%8BMVVM%E6%B5%85%E6%9E%90.html)
 
+## 简版速记
+
+- **jQuery vs 框架**：jQuery 直接操作 DOM（命令式）；框架数据驱动视图（声明式），DOM 操作被封装。
+- **MVC**：Model—View—Controller，Controller 负责逻辑，View 与 Model 耦合度较高。
+- **MVVM**：Model—View—ViewModel；ViewModel 双向绑定 View 与 Model，View 变化自动同步 Model，反之亦然。
+- **ViewModel 的价值**：前端场景下真正将数据与视图解耦，开发者只操作数据，不手写 DOM。
+- **MVVM 三大要素**：① 响应式（监听 data 变化）② 模板引擎（解析指令、插值）③ 渲染（模板 → render 函数 → vnode → DOM）。
+- **响应式原理（Vue 2）**：`Object.defineProperty` 劫持每个属性的 getter/setter；getter 收集依赖，setter 触发更新。
+- **为何先监听 get 再监听 set**：只有被 render 函数访问过（触发 get）的属性才需要订阅更新，避免无谓重渲染。
+- **模板编译流程**：template 字符串 → compiler 编译 → render 函数 → 执行得到 vnode → patch 到真实 DOM。
+- **Vue 整体渲染四步**：① 解析模板成 render 函数 → ② 响应式监听 data → ③ 首次渲染并收集依赖 → ④ data 变化触发 rerender（vdom diff + patch）。
+
 ![img](/images/s_poetries_work_gitee_2019_10_89.webp)
 
 ## 一、说一下使用 jquery 和使用框架的区别
@@ -39,7 +51,7 @@
 ### 2.3 关于 ViewModel
 
   * `MVVM` 不算是一种创新
-  * 但其中的 `ViewModel` 确实一种创新
+  * 但其中的 `ViewModel` 确实是一种创新
   * 真正结合前端场景应用的创建
 
 ![img](/images/s_poetries_work_gitee_2019_10_95.webp)
@@ -62,6 +74,8 @@
 
 ### 3.2 Object.defineProperty
 
+> 补充（现代做法）：Vue 3 已将响应式底层从 `Object.defineProperty` 替换为 `Proxy`。`Proxy` 拦截整个对象（而非逐属性劫持），天然支持数组下标变更、新增属性、`delete` 操作，无需 `Vue.set` / `$set`，性能也更好。面试时可主动提及这一演进。
+
 ![img](/images/s_poetries_work_gitee_2019_10_98.webp)
 
 ### 3.3 模拟实现
@@ -83,7 +97,7 @@
 
   * 有逻辑（`v-if` `v-for`），必须用 `JS`才能实现
   * 转换为 `html` 渲染页面，必须用 `JS` 才能实现
-  * 因此，模板最重要转换成一个 `JS` 函数（`render` 函数）
+  * 因此，模板最终必须转换成一个 `JS` 函数（`render` 函数）
 
 ![img](/images/s_poetries_work_gitee_2019_10_101.webp)
 

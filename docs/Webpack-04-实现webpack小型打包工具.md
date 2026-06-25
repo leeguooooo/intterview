@@ -1,5 +1,14 @@
 原文链接: [https://interview.poetries.top/principle-docs/webpack/04-%E5%AE%9E%E7%8E%B0webpack%E5%B0%8F%E5%9E%8B%E6%89%93%E5%8C%85%E5%B7%A5%E5%85%B7.html](https://interview.poetries.top/principle-docs/webpack/04-%E5%AE%9E%E7%8E%B0webpack%E5%B0%8F%E5%9E%8B%E6%89%93%E5%8C%85%E5%B7%A5%E5%85%B7.html)
 
+## 简版速记
+
+- **核心两步**：① `readCode` 用 babylon 解析 AST，递归收集所有 `import` 依赖，同时用 Babel 转 ES5；② `bundle` 把所有文件包进 IIFE，注入自制的 `require` 函数
+- **为什么要自实现 `require`**：Babel 将 `import/export` 转为 CommonJS，但浏览器不支持原生 `require`，打包时必须内联一个简易 `require`
+- **CSS 处理**：跳过 Babel，直接读文件内容生成 `document.createElement('style')` 注入代码
+- **依赖收集技巧**：对同一数组边遍历边 `push` 新依赖，天然支持任意深度的多层嵌套，无需递归函数
+- **整个流程**：`readCode(entry)` → `getDependencies(entry)` → `bundle(deps, entry)` → 写出 `bundle.js`
+- **面试答法**：打包器核心 = 依赖图收集 + CommonJS 运行时注入；真实 webpack 在此基础上加 chunk 拆分、tree-shaking、loader/plugin 体系
+
 > 该工具可以实现以下两个功能
 
   * 将 `ES6` 转换为 `ES5`
@@ -13,6 +22,8 @@
 ```javascript
     yarn add babylon babel-traverse babel-core babel-preset-env  
 ```
+
+> 补充(现代做法)：以上均为 Babel 6 包，已停止维护。Babel 7+ 对应替换为：`babylon` → `@babel/parser`，`babel-traverse` → `@babel/traverse`，`babel-core` → `@babel/core`，`babel-preset-env` → `@babel/preset-env`。引入方式和 API 基本一致，但包名不同。
 
 接下来我们将这些工具引入文件中
 ```js
@@ -160,9 +171,9 @@
   * 首先遍历所有依赖文件，构建出一个函数参数对象
   * 对象的属性就是当前文件的相对路径，属性值是一个函数，函数体是当前文件下的代码，函数接受三个参数 `module`、`exports`、 `require`
     * `module` 参数对应 `CommonJS` 中的 `module`
-    * `exports` 参数对应 `CommonJS` 中的 `module.export`
+    * `exports` 参数对应 `CommonJS` 中的 `module.exports`
     * `require` 参数对应我们自己创建的 `require` 函数
-  * 接下来就是构造一个使用参数的函数了，函数做的事情很简单，就是内部创建一个 `require`函数，然后调用 `require(entry)`，也就是 `require('./entry.js')`，这样就会从函数参数中找到 `./entry.js` 对应的函数并执行，最后将导出的内容通过 `module.export` 的方式让外部获取到
+  * 接下来就是构造一个使用参数的函数了，函数做的事情很简单，就是内部创建一个 `require`函数，然后调用 `require(entry)`，也就是 `require('./entry.js')`，这样就会从函数参数中找到 `./entry.js` 对应的函数并执行，最后将导出的内容通过 `module.exports` 的方式让外部获取到
   * 最后再将打包出来的内容写入到单独的文件中
 
 > 如果你对于上面的实现还有疑惑的话，可以阅读下打包后的部分简化代码

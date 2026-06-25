@@ -1,5 +1,18 @@
 原文链接: [https://interview.poetries.top/principle-docs/webpack/10-%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AE%20Webpack%20SourceMap%20%E7%9A%84%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5.html](https://interview.poetries.top/principle-docs/webpack/10-%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AE%20Webpack%20SourceMap%20%E7%9A%84%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5.html)
 
+## 简版速记
+
+- **Source Map** 是 JSON 格式文件，通过 `mappings`（base64-VLQ 编码）记录转换后代码与源代码的字符映射关系；主要字段：`version`、`sources`、`names`、`mappings`。
+- Webpack 通过 `devtool` 属性配置，命名关键词规律：
+  - **eval**：用 `eval()` 执行模块代码，最快，但只能定位文件路径，无行列信息。
+  - **cheap**：只有行信息，无列信息，速度快。
+  - **module**：反推 Loader 处理**前**的源代码（不带 module 则是 Loader 处理后的代码）。
+  - **inline**：Source Map 以 data URL 形式内嵌在代码中，不生成独立 `.map` 文件。
+  - **hidden**：生成 `.map` 文件但代码中不引用，需手动加载，适合错误追踪工具。
+  - **nosources**：能定位行列位置，但不暴露源码内容，适合保护生产代码。
+- **开发环境**推荐：`cheap-module-eval-source-map`（重新构建快，可定位 Loader 处理前的源码）。
+- **生产环境**推荐：`none`（不暴露源码）；保守方案：`nosources-source-map` 或 `hidden-source-map`。
+
 通过构建或者编译之类的操作，我们将开发阶段编写的源代码转换为能够在生产环境中运行的代码，这种进步同时也意味着我们实际运行的代码和我们真正编写的代码之间存在很大的差异。
 
 在这种情况下，如果需要调试我们的应用，或是应用运行的过程中出现意料之外的错误，那我们将无从下手。因为无论是调试还是报错，都是基于构建后的代码进行的，我们只能看到错误信息在构建后代码中具体的位置，却很难直接定位到源代码中对应的位置。
@@ -97,7 +110,9 @@ source-map | 最慢 | 最慢 | 是 | 完整源代码
 inline-source-map | 最慢 | 最慢 | 否 | 完整源代码  
 hidden-source-map | 最慢 | 最慢 | 是 | 完整源代码  
 nosources-source-map | 最慢 | 最慢 | 是 | 无源码内容，只有行列信息  
-  
+
+> 补充（现代做法）：**Webpack 5** 对 `devtool` 选项的命名规范做了调整，旧名称（如 `cheap-module-eval-source-map`）已被重命名为新格式（如 `eval-cheap-module-source-map`），统一规则为 `[inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map`。在 Webpack 5 中使用旧名称会收到警告，建议以[官方文档](https://webpack.js.org/configuration/devtool/)为准。
+
 上表分别从初次构建速度、监视模式重新构建速度、是否适合生成环境使用，以及 Source Map 的质量，这四个维度去横向对比了不同的 Source Map
 模式之间的差异。
 
@@ -352,6 +367,8 @@ module，意味着 Source Map 反推出来的是 Loader 处理后的代码，有
   * 虽然在这种模式下启动打包会比较慢，但大多数时间内我使用的 webpack-dev-server 都是在监视模式下重新打包，它重新打包的速度非常快。
 
 综上所述，开发环境下我会选择 `cheap-module-eval-source-map`。
+
+> 补充（现代做法）：在 **Webpack 5 + webpack-dev-server v4** 项目中，对应的推荐值已更名为 `eval-cheap-module-source-map`。如果使用 **Vite**，开发模式默认已是 `cheap-module-source-map`，无需手动配置；生产构建默认不生成 Source Map，可通过 `build.sourcemap` 开启。
 
 至于发布前的打包，也就是生产环境的打包，我选择 `none`，它不会生成 Source Map。原因很简单：
 

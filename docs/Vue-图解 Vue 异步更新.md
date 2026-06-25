@@ -1,5 +1,21 @@
 原文链接: [https://interview.poetries.top/principle-docs/vue/11-%E5%9B%BE%E8%A7%A3%20Vue%20%E5%BC%82%E6%AD%A5%E6%9B%B4%E6%96%B0.html](https://interview.poetries.top/principle-docs/vue/11-%E5%9B%BE%E8%A7%A3%20Vue%20%E5%BC%82%E6%AD%A5%E6%9B%B4%E6%96%B0.html)
 
+## 简版速记
+
+**核心流程**：`data 赋值` → `dep.notify()` → `Watcher.update()` → `queueWatcher()` → `nextTick(flushSchedulerQueue)` → 微任务回调中批量执行 `watcher.run()` 更新 DOM。
+
+**关键点速查**：
+
+| 知识点 | 结论 |
+|---|---|
+| 为什么异步更新？ | 批处理：同一 tick 内多次修改 Data 只触发一次 DOM 更新，节省性能 |
+| Watcher 去重 | `has` 标识保证同一 Watcher 在一次 flush 中只入队一次 |
+| 共用一个异步调度 | `waiting` 标识保证所有 Watcher 在同一个 tick 中一起 flush |
+| timerFunc 优先级（Vue 2） | `Promise` > `MutationObserver` > `setImmediate` > `setTimeout` |
+| timerFunc（Vue 3） | 只用 `Promise.resolve()`，彻底抛弃 IE 兼容代码 |
+| `$nextTick` 为何能拿到最新 DOM | `flushSchedulerQueue` 先压入 callbacks，用户 cb 后压入；同一微任务队列按序执行，DOM 已渲染完毕 |
+| 等价替代 | `await this.$nextTick()` 或手写 `Promise.resolve().then(cb)` 效果相同 |
+
 > 本文主要分析 Vue 从 Data 更新，到通知 Watcher 异步更新视图的流程，也就是下图中的橙色部分。
 
 ![](/images/s_poetries_work_gitee_2020_08_vue_59.webp)
@@ -156,7 +172,7 @@
     
     // 异步执行完后，执行所有的回调方法，也就是执行 flushSchedulerQueue
     function flushCallbacks() {
-      for (let i = 0; i < copies.length; i++) {
+      for (let i = 0; i < callbacks.length; i++) {
         callbacks[i]();
       }
     }
@@ -164,6 +180,8 @@
 
 > 可以看到，timerFunc 是根据浏览器兼容性创建的一个异步方法，它执行完成之后，会调用 flushSchedulerQueue 方法进行具体的
 > DOM 更新。
+
+> 补充（现代做法）：Vue 3 完全抛弃了 IE 兼容逻辑，`nextTick` 内部直接使用 `Promise.resolve()` 实现，代码大幅简化。同时 Vue 3 的 `nextTick` 返回一个 Promise，可以直接 `await nextTick()` 使用，无需传入回调函数。`this.$nextTick` 在 Vue 3 的组合式 API 中对应 `import { nextTick } from 'vue'`。
 
 分析到这里，我们就可以得到一张整体的流程图了。
 

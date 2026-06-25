@@ -1,5 +1,18 @@
 原文链接: [https://interview.poetries.top/principle-docs/vue/07-%E6%B8%B2%E6%9F%93%E5%99%A8%E4%B9%8B%E6%8C%82%E8%BD%BD.html](https://interview.poetries.top/principle-docs/vue/07-%E6%B8%B2%E6%9F%93%E5%99%A8%E4%B9%8B%E6%8C%82%E8%BD%BD.html)
 
+## 简版速记
+
+- **渲染器两阶段**：`mount`（首次挂载，无旧 VNode）和 `patch`（更新，新旧 VNode 对比打补丁）。
+- **mount 分派**：根据 `vnode.flags` 位运算区分类型，分别调用 `mountElement` / `mountComponent` / `mountText` / `mountFragment` / `mountPortal`。
+- **mountElement 四步**：① 保存 `vnode.el` 引用；② 应用 `VNodeData`（style / class / attr / event）；③ 递归挂载 `children`（区分单子/多子，调用通用 `mount` 而非 `mountElement`）；④ SVG 用 `createElementNS` 并向下传递 `isSVG` 参数。
+- **class 处理**：底层存字符串；应用层支持数组 + 对象，`h` 函数/编译器负责序列化。
+- **Attr vs DOM Prop**：`value / checked / selected / muted` 及含大写字母的属性用 `el[key] = ...`；其余用 `setAttribute`；`checked` 等布尔属性不能用 `setAttribute('checked', false)` 置 `false`（会被转为字符串 `'false'`，仍然生效）。
+- **事件**：`VNodeData` 中以 `'on'` 开头的 key（如 `onclick`）通过 `el.addEventListener(key.slice(2), handler)` 注册。
+- **Fragment**：`tag` 为 `null`，挂载等同于挂载 `children`；`vnode.el` 指向第一个子节点（空片段用空文本节点占位）。
+- **Portal**：`tag` 为挂载目标选择器或 DOM 元素；子节点挂载到 `target` 而非 `container`；`vnode.el` 指向插入到 `container` 中的空文本占位节点（保持事件冒泡位置正确）。
+- **有状态组件挂载**：`new vnode.tag()` 实例化 → `instance.render()` 得 VNode → `mount` 挂载 → `instance.$el = vnode.el = instance.$vnode.el`。
+- **函数式组件挂载**：直接调用 `vnode.tag()` 得 VNode → `mount` → `vnode.el`，无实例化，性能更好；无 data/computed/watch，只有 props 和 slots。
+
 * * *
 
 ## sidebarDepth: 4
@@ -725,7 +738,7 @@ true`。好在这样的属性不多，我们可以列举出来：`value`、`chec
 
     
     
-    const domPropsRE = /\[A-Z]|^(?:value|checked|selected|muted)$/
+    const domPropsRE = /[A-Z]|^(?:value|checked|selected|muted)$/
     function mountElement(vnode, container, isSVG) {
       // 省略...
     
@@ -1084,7 +1097,7 @@ window)](https://codesandbox.io/s/72zq40y0q6)
         {
           flags: VNodeFlags.ELEMENT_HTML,
           tag: 'p',
-          data: null
+          data: null,
           childFlags: ChildrenFlags.NO_CHILDREN,
           children: null,
           el: null
@@ -1141,7 +1154,7 @@ window)](https://codesandbox.io/s/72zq40y0q6)
         {
           flags: VNodeFlags.ELEMENT_HTML,
           tag: 'p',
-          data: null
+          data: null,
           childFlags: ChildrenFlags.NO_CHILDREN,
           children: null,
           el: null
@@ -1283,6 +1296,8 @@ TIP
 window)](https://codesandbox.io/s/109r8nlwk4)
 
 ### 挂载 Portal
+
+> 补充(现代做法)：Vue 3 正式 API 中 `Portal` 已重命名为 `<Teleport>`，用法为 `<Teleport to="#portal-box">...</Teleport>`。本节所讲的 `mountPortal` 实现原理与之完全对应，理解底层实现后使用 `<Teleport>` 无任何障碍。
 
 实际上 `Portal` 可以不严谨地认为是**可以被到处挂载的`Fragment`**。类型为 `Fragment` 的 `VNode` 其 `tag`
 属性值为 `null`，而类型是 `Portal` 的 `VNode` 其 `tag` 属性值为挂载点(选择器或真实DOM元素)。实现 `Portal`

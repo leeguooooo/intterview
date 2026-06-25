@@ -1,5 +1,25 @@
 原文链接: [https://interview.poetries.top/docs/excellent-docs/8-Node%E6%A8%A1%E5%9D%97.html](https://interview.poetries.top/docs/excellent-docs/8-Node%E6%A8%A1%E5%9D%97.html)
 
+## 简版速记
+
+| # | 考点 | 一句话结论 |
+|---|------|-----------|
+| 1 | 版本号 | `major.minor.patch`；`~` 锁 patch，`^` 锁 minor+patch，`*` 最新版 |
+| 2 | package-lock.json | npm v5+ 自动生成，固定整个依赖树；`cnpm install` 不生成 |
+| 3 | npm 安装流程 | 检查缓存 → 向 registry 查询 → 下载解压到 `node_modules` |
+| 4 | 模块化差异 | AMD/CMD 运行时动态加载；ESM 静态分析（利于 tree-shaking）；CJS 单值导出，`this` 为当前模块 |
+| 5 | Event Loop 6 阶段 | timers → I/O callbacks → idle/prepare → poll → check（setImmediate）→ close callbacks |
+| 6 | Koa 洋葱模型 | `compose` 递归 `dispatch(i+1)`，`next()` 前执行一次，`next()` 返回后再执行一次 |
+| 7 | require 加载 | 路径解析 → 命中缓存直接返回 → 内置模块判断 → 新建 Module → load → 返回 `exports` |
+| 8 | exports vs module.exports | `exports` 是 `module.exports` 的引用；直接 `exports={}` 会断开引用，统一用 `module.exports` |
+| 9 | V8 GC | 新生代：Scavenge（From/To 复制）；老生代：标记清除 + 标记整理；64 位限制约 1.4 GB |
+| 10 | Buffer | 堆外内存，不占 V8 堆；slab 8 KB 分界；`allocUnsafe` 不初始化；`setEncoding('utf8')` 防乱码 |
+| 11 | WebSocket | 一条 TCP 长连接；HTTP Upgrade 握手（101 Switching Protocols）；服务端可主动推送 |
+| 12 | HTTPS/TLS | 非对称加密交换密钥 → 对称加密传输数据；CA 签名防中间人攻击 |
+| 13 | 多进程 | `fork`（JS文件）/ `spawn`（命令流）/ `exec`（有超时+回调）/ `execFile`（可执行文件）；Master-Worker 模式 |
+
+---
+
 >
 > 当面试官问你`node`的时候，更多引导面试官用`node`做前端工程化，去引导到`webpack`、`npm`、打包工具上面去说说自己的想法，不要引导到自己会后端，后台不是会一点`node`语法就能写的
 
@@ -66,6 +86,8 @@
   * `package.json` 文件修改了
   * 挪动了包的位置：将部分包的位置从 `dependencies` 移动到 `devDependencies` 这种操作，虽然包未变，但是也会影响 `package-lock.json`
 
+> 补充（现代做法）：CI 环境应使用 `npm ci`（严格依赖 lock 文件，禁止写入 `node_modules` 之外的变更），而非 `npm install`。`pnpm` 通过全局内容寻址存储 + 硬链接大幅提速，其对应的锁文件为 `pnpm-lock.yaml`；`yarn` 对应 `yarn.lock`（v1）或 `yarn.lock`（Berry）。
+
 ## 3 npm 模块安装机制
 
   * 发出 `npm install` 命令 `1` 查询 `node_modules` 目录之中是否已经存在指定模块
@@ -85,6 +107,8 @@
   * `CommonJs` 是动态语法可以写在判断里，`ES6 Module` 静态语法只能写在顶层
   * `CommonJs` 的 `this` 是当前模块，`ES6 Module`的 `this` 是 `undefined`
 
+> 补充（现代做法）：Node.js v12+ 正式支持原生 ESM，可在 `package.json` 中设置 `"type": "module"` 或使用 `.mjs` 扩展名启用；Node.js v22 起 `require()` 也可以直接加载 `.mjs`（实验性）。ESM 与 CJS 互操作时注意 `__dirname`/`__filename` 在 ESM 中不可用，需用 `import.meta.url` 替代。
+
 ## 5 Node 的 Event Loop: 6个阶段
 
   * `timer` 阶段: 执行到期的`setTimeout / setInterval`队列回调
@@ -98,6 +122,8 @@
   * `check`
     * 执行`setImmediate`
   * `close callbacks`
+
+> 补充（现代做法）：Node.js v11+ 对齐了浏览器行为——每个宏任务（macrotask）执行完毕后会立即清空微任务队列（Promise、`queueMicrotask`、`process.nextTick`），而非等待整个 tick 结束。`process.nextTick` 的优先级高于 Promise 微任务。
 
 ## 6 Koa相关
 
@@ -118,7 +144,7 @@
       next()
       console.log(2)
     })
-    app.use((ctx, next) => {
+    app.use(async (ctx, next) => {
       await next()
       console.log(3)
     })
@@ -301,7 +327,7 @@
     // const vm = require('vm');
     // const hello = 'poetry';
     // const str = 'console.log(hello)';
-    // wm.runInThisContext(str); // 报错
+    // vm.runInThisContext(str); // 报错
     // 所以node执行javascript模块时可以采用vm来实现。就可以保证模块的独立性了
     
     // 分析实现步骤

@@ -1,5 +1,28 @@
 原文链接: [https://interview.poetries.top/docs/excellent-docs/4-ES6%E6%A8%A1%E5%9D%97.html](https://interview.poetries.top/docs/excellent-docs/4-ES6%E6%A8%A1%E5%9D%97.html)
 
+## 简版速记
+
+| 特性 | 核心要点 |
+|---|---|
+| **let / const** | 块级作用域；存在暂时性死区（TDZ）；不挂载到 `window`；`const` 声明后不可重新赋值（引用类型内部可变） |
+| **模板字符串** | 反引号包裹，`${expr}` 插值，保留换行与空格 |
+| **解构赋值** | `let [a,b]=[1,2]`；`let {x,y}=obj`；支持默认值、重命名、嵌套 |
+| **箭头函数** | 无自己的 `this`（继承外层）；无 `arguments`；无 `prototype`；不能 `new` |
+| **默认参数** | `function f(x, y=0){}` —— 惰性求值，每次调用重新计算 |
+| **扩展运算符 `...`** | 展开数组/对象；函数 rest 参数；替代 `arguments` |
+| **Symbol** | 第七种原始类型；独一无二；不被 `for...in` / `JSON.stringify` 枚举；`Symbol.iterator` 布置可迭代接口 |
+| **Set / WeakSet** | Set 值唯一；WeakSet 成员只能是对象，弱引用，不可遍历 |
+| **Map / WeakMap** | Map 键可为任意类型；WeakMap 键只能是对象，弱引用，不可遍历 |
+| **Proxy / Reflect** | Proxy 拦截对象底层操作（get/set/has…）；Reflect 保存原生 API 备份 |
+| **Promise** | 四状态：pending / fulfilled / rejected / settled；链式调用；构造函数内同步执行 |
+| **Iterator / for...of** | 实现 `[Symbol.iterator]` 接口即可迭代；`for...of` 遍历可迭代对象，`for...in` 遍历对象键 |
+| **Generator** | `function*` + `yield`；执行后返回迭代器；`next(val)` 可传值改变行为 |
+| **async / await** | Generator 的语法糖，配合 Promise；`await` 串行，需并行用 `Promise.all` |
+| **Class / extends** | 语法糖；方法不可枚举；不存在提升；子类 `constructor` 必须先 `super()` 才能用 `this` |
+| **模块化 ESM** | `import` 静态编译期加载；导出值是实时绑定（不同于 CommonJS 值拷贝） |
+| **Object 新增** | `Object.is(NaN,NaN)→true`；`Object.assign`（浅拷贝）；`Object.keys/values/entries` |
+| **Promise.all vs allSettled** | `all` 短路（一个 rejected 即失败）；`allSettled` 等所有结束再返回含 status 的结果数组 |
+
 ## 1 ES5、ES6和ES2015有什么区别?
 
 >
@@ -93,7 +116,7 @@
 ```js
     let {apple, orange, ...otherFruits} = {apple: 'red apple', orange: 'yellow orange', grape: 'purple grape', peach: 'sweet peach'}; 
     // otherFruits  {grape: 'purple grape', peach: 'sweet peach'}
-    // 注意: 对象的扩展运算符用在解构赋值时，扩展运算符只能用在最有一个参数(otherFruits后面不能再跟其他参数)
+    // 注意: 对象的扩展运算符用在解构赋值时，扩展运算符只能用在最后一个参数(otherFruits后面不能再跟其他参数)
     let moreFruits = {watermelon: 'nice watermelon'};
     let allFruits = {apple, orange, ...otherFruits, ...moreFruits};
 ```
@@ -151,6 +174,8 @@
     // 等同于
     bar.apply(foo, arguments);
 ```
+
+> 补充(现代做法): 双冒号运算符（`::`）提案长期停滞在 Stage 0，从未进入正式规范，生产代码中不应使用。绑定 `this` 的现代推荐写法仍是 `fn.bind(ctx)`，或改用箭头函数来避免显式绑定。
 
 ## 9 Symbol是什么，有什么作用？
 
@@ -268,7 +293,7 @@
     let map = new Map();
     let obj= {map: 'map'};
     map.set(obj, 'mapValue');
-    map[Symbol.iterator]().next()  {value: Array(2), done: false}
+    map[Symbol.iterator]().next()  // {value: Array(2), done: false}
 ```
 
 ## 16 for...in 和for...of有什么区别？
@@ -785,6 +810,8 @@
 
 >
 > 重要的一点是，他不论接受入参的promise本身的状态，会返回所有promise的结果，但这一点`Promise.all`做不到，如果你需要知道所有入参的异步操作的所有结果，或者需要知道这些异步操作是否全部结束，应该使用`promise.allSettled()`
+
+> 补充(现代做法): ES2021 还新增了 `Promise.any()`——只要有一个 fulfilled 就 resolve，全部 rejected 才 reject（抛 `AggregateError`）；以及 `Promise.race()`——第一个 settled（无论成功失败）就 resolve/reject。四个静态方法对比：`all`（全成才成）、`allSettled`（全结束返状态）、`any`（一成即成）、`race`（一结束即结束）。
 
 ### Promise.all()
 

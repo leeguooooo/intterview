@@ -1,5 +1,16 @@
 原文链接: [https://interview.poetries.top/principle-docs/vue/05-%E8%BE%85%E5%8A%A9%E5%88%9B%E5%BB%BA%20VNode%20%E7%9A%84%20h%20%E5%87%BD%E6%95%B0.html](https://interview.poetries.top/principle-docs/vue/05-%E8%BE%85%E5%8A%A9%E5%88%9B%E5%BB%BA%20VNode%20%E7%9A%84%20h%20%E5%87%BD%E6%95%B0.html)
 
+## 简版速记
+
+- **h 函数签名**：`h(tag, data = null, children = null)`，三参数分别对应标签/组件、VNodeData、子节点。
+- **flags 判断规则**（通过 `tag` 推断）：字符串 → HTML/SVG 元素；`Fragment` Symbol → Fragment；`Portal` Symbol → Portal（`tag` 会被替换为 `data.target`）；其余 → 组件。
+- **组件类型区分**：Vue2 对象式组件检查 `tag.functional`；Vue3 类组件检查 `tag.prototype.render`（有 `render` 则为有状态组件，须继承基础 `Component`）。
+- **childFlags 判断规则**（通过 `children` 推断）：数组长度 0/1/多 → 无子节点/单子节点/KEYED_VNODES；`null` → 无子节点；`_isVNode` 为真 → 单子节点；其他字符串 → 自动用 `createTextVNode` 包装成纯文本 VNode。
+- **normalizeVNodes**：多子节点时自动为缺少 `key` 的子节点添加 `'|' + index` 作为 key，统一走 KEYED_VNODES 路径。
+- **组件 children 应转为 slots**：组件类型 VNode 不处理普通子节点，`children` 最终要转化为 `slots`（细节见插槽章节）。
+
+> 补充(现代做法): Vue 3 正式 API 中 `Portal` 已更名为 **`Teleport`**；`Fragment` 和 `Teleport` 均可直接从 `'vue'` 导入，无需自行定义 Symbol。渲染函数写法：`h(Teleport, { to: '#box' }, defaultSlot)`。有状态组件推荐用 `defineComponent({ setup() { ... } })` 而非继承类，`h` 函数的组件识别逻辑在 Vue 3 运行时内部已相应调整。
+
 > 自从有了 `VNode` ，开发页面的方式就变成了书写 `VNode`，但如果日常开发中需要手写 `VNode`
 > ，那绝对是反人类的，在“组件的本质”一章中我们使用了 `snabbdom` 的 `h` 函数来辅助讲解一些小例子，`h` 函数作为创建 `VNode`
 > 对象的函数封装，在一定程度上改善了这个问题，但却没有解决本质问题，这也是为什么我们需要模板或 `jsx` 的原因。但 `h`
@@ -537,6 +548,8 @@ window)](https://codesandbox.io/s/6x2nvmmxn3)
 ```
 
 如上 `VNode` 对象所示，类型为 `Portal` 的 `VNode` 其 `tag` 属性值等于 `data.target`。
+
+> 补充(现代做法): Vue 3 中 `Portal` 已正式更名为 **`Teleport`**，直接从 `'vue'` 导入即可使用，无需声明 `Portal` Symbol。模板写法 `<Teleport to="#box">...</Teleport>`，渲染函数写法 `h(Teleport, { to: '#box' }, slots)`。
 
 > \---- 我是一条分割线(^o^)/~ ---
 

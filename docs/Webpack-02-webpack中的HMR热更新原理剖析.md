@@ -1,5 +1,16 @@
 原文链接: [https://interview.poetries.top/principle-docs/webpack/02-webpack%E4%B8%AD%E7%9A%84HMR%E7%83%AD%E6%9B%B4%E6%96%B0%E5%8E%9F%E7%90%86%E5%89%96%E6%9E%90.html](https://interview.poetries.top/principle-docs/webpack/02-webpack%E4%B8%AD%E7%9A%84HMR%E7%83%AD%E6%9B%B4%E6%96%B0%E5%8E%9F%E7%90%86%E5%89%96%E6%9E%90.html)
 
+## 简版速记
+
+- **HMR 是什么**：无刷新替换浏览器中已加载的模块，保留应用状态。
+- **整体流程（三步）**：
+  1. `webpack-dev-middleware` 监听文件变化 → 重新编译，产物写入内存（`memory-fs` / Webpack 5 的 `memfs`）。
+  2. 编译完成后通过 **WebSocket**（SockJS）向浏览器推送新的 `hash` 和 `ok` 消息。
+  3. 浏览器收到 `ok` → 先用 **Ajax** 请求 `[hash].hot-update.json`（Manifest，判断是否有更新）→ 再用 **JSONP** 拉取 `[id].[hash].hot-update.js`（补丁模块）→ `HMR runtime` 从模块缓存中删除旧模块、注入新模块，完成热替换；失败则回退整页刷新。
+- **关键组件**：`webpack-dev-server`（WebSocket 服务）、`webpack-dev-middleware`（watch + 内存文件系统）、`HotModuleReplacementPlugin`（注入 HMR runtime + 生成补丁文件）。
+- **`module.hot.accept(dep, cb)`**：业务代码手动声明接受某依赖的更新，回调中执行副作用重建；React 项目现在用 React Fast Refresh 自动处理，无需手写。
+- **面试高频追问**：为什么用 JSONP 拉取更新？—— 利用 `<script>` 标签跨域，且 JSONP 回调可直接执行替换逻辑，无需额外解析。
+
 `Hot Module Replacement`（以下简称 `HMR`）是 `webpack` 发展至今引入的最令人兴奋的特性之一
 ，当你对代码进行修改并保存后，`webpack`
 将对代码重新打包，并将新的模块发送到浏览器端，浏览器通过新的模块替换老的模块，这样在不刷新浏览器的前提下就能够对应用进行更新。
@@ -22,12 +33,15 @@
   * 缺点：更新逻辑得自己写。比如要使页面显示的内容生效，需要在回调中写入`document.append(xxx)`
 
 > `react` 的热加载，使用 `react-hot-loader`
+
+> 补充（现代做法）：`react-hot-loader` 已停止维护。Webpack 5 + React 17+ 推荐使用 **React Fast Refresh**，通过 `@pmmmwh/react-refresh-webpack-plugin` 配合 `react-refresh/babel` 实现，无需在组件里手写 `module.hot.accept`，且状态保留更精准。
+
 ```javascript
-    import { hot } from'react-hot-loader';
+    import { hot } from 'react-hot-loader';
         const Record = ()=>{
             ...
         }
-        exportdefault hot(module)(Record);
+        export default hot(module)(Record);
     或
     
         if (module.hot) {
@@ -68,10 +82,12 @@
 > 如果没有配置的话，会取默认值。值的含义见：https://webpack.js.org/configuration/watch/
 
   2. 当文件发生变化时，重新编译输出 `bundle.js`。`devServer` 下，是没有文件会输出到 `output.path` 目录下的，这时 `webpack` 是把文件输出到了内存中。`webpack` 中使用的操作内存的库是 `memory-fs`，它是 `NodeJS`原生 `fs` 模块内存版(`in-memory`)的完整功能实现，会将你请求的`url`映射到对应的内存区域当中，因此读写都比较快
+
+> 补充（现代做法）：Webpack 5 已将 `memory-fs` 替换为 **`memfs`**（`webpack-dev-middleware` v4+ 默认使用），API 兼容但维护更活跃。Webpack 5 内置了 `compiler.outputFileSystem` 的抽象，插件可直接替换文件系统而无需 `memory-fs` 包。
 ```js
     // webpack-dev-middleware/lib/fs.js
     fileSystem = fs;
-    } elseif (isMemoryFs) {
+    } else if (isMemoryFs) {
         fileSystem = compiler.outputFileSystem;
     } else {
         fileSystem = new MemoryFileSystem();
@@ -95,7 +111,7 @@
         this.sockWrite(sockets, 'hash', stats.hash);
         if (stats.errors.length > 0) {
             this.sockWrite(sockets, 'errors', stats.errors);
-        } elseif (stats.warnings.length > 0) {
+        } else if (stats.warnings.length > 0) {
             this.sockWrite(sockets, 'warnings', stats.warnings);
         } else {
             this.sockWrite(sockets, 'ok');
@@ -111,7 +127,7 @@
     let hotEntry;
     if (options.hotOnly) {
         hotEntry = require.resolve('webpack/hot/only-dev-server');
-    } elseif (options.hot) {
+    } else if (options.hot) {
         hotEntry = require.resolve('webpack/hot/dev-server');
     }
     ...
@@ -186,7 +202,7 @@
         }
 ```
 
-  5. 以上代码可以看出，在 `check` 过程中，主要调用了两个方法 `hotDownloadManifest` 和 `hotDownloadUpdateChunk`。`hotDownloadManifest` 是通过 `Ajax` 向服务器请求十分有更新的文件，如果有就返回对应的文件信息，`hotDownloadUpdateChunk` 是通过`Jsonp`的方式，请求最新的代码模块。如下图所示:
+  5. 以上代码可以看出，在 `check` 过程中，主要调用了两个方法 `hotDownloadManifest` 和 `hotDownloadUpdateChunk`。`hotDownloadManifest` 是通过 `Ajax` 向服务器请求是否有更新的文件，如果有就返回对应的文件信息，`hotDownloadUpdateChunk` 是通过`Jsonp`的方式，请求最新的代码模块。如下图所示:
 
 ![](/images/s_poetries_work_gitee_2020_07_72.webp)
 ![](/images/s_poetries_work_gitee_2020_07_73.webp)
