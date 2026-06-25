@@ -26,7 +26,7 @@ target="_blank">https://s.poetries.work/gitee/2019/12/12.png</a></p>
   * `PUT` 基本上是 `POST` 的同义词，多用于更新数据；
   * “安全”与“幂等”是描述请求方法的两个重要属性，具有理论指导意义，可以帮助我们设计系统
 
-![](/images/s_poetries_work_gitee_2019_12_96.png)
+![](/images/s_poetries_work_gitee_2019_12_96.webp)
 
 阅读全文
 

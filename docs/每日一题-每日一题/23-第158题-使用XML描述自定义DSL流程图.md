@@ -2,7 +2,7 @@
 
 用`xml`描述这个流程图
 
-![](/images/s_poetries_work_uploads_2023_02_51fa2d56fbff44fa.png)
+![](/images/s_poetries_work_uploads_2023_02_51fa2d56fbff44fa.webp)
 ```xml
     <chart>
       <start-end id="start">开始</start-end>

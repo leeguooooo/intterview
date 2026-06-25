@@ -495,7 +495,7 @@
 
 ### webpack热更新原理
 
-![](/images/s_poetries_work_images_20210319101659.png)
+![](/images/s_poetries_work_images_20210319101659.webp)
 
   * 当修改了一个或多个文件；
   * 文件系统接收更改并通知 `webpack`；
@@ -622,7 +622,7 @@ webpack 是一种模块打包工具，可以将各类型的资源，例如图片
 
 从 webpack 项目 `webpack.config.js` 文件 webpack 方法出发，可以看到初始化过程如下：
 
-![](/images/s_poetries_work_uploads_2022_09_195112577f1777bf.png)
+![](/images/s_poetries_work_uploads_2022_09_195112577f1777bf.webp)
 
   * 将命令行参数和用户的配置文件进行合并
   * 调用 `getValidateSchema` 对配置进行校验
@@ -684,7 +684,7 @@ webpack 是一种模块打包工具，可以将各类型的资源，例如图片
 在 webpack 函数执行完之后，就到主要的构建阶段，首先执行 `compiler.run()`，然后触发一系列钩子函数，执行
 `compiler.compile()`
 
-![](/images/s_poetries_work_uploads_2022_09_2b1da6bb8a3fd972.png)
+![](/images/s_poetries_work_uploads_2022_09_2b1da6bb8a3fd972.webp)
 
   * 在实例化 `compiler` 之后，执行 `compiler.run()`
   * 执行 `newCompilation` 函数，调用 `createCompilation` 初始化 `Compilation` 对象
@@ -800,7 +800,7 @@ webpack 是一种模块打包工具，可以将各类型的资源，例如图片
 
 > 先分析遇到哪些问题，在配合下面的方法优化，不要上来就回答，让人觉得背面试题
 
-  * 优化`babel-loader`缓存 ![](/images/s_poetries_work_uploads_2023_02_a9f33d5b7fb0dfad.png)
+  * 优化`babel-loader`缓存 ![](/images/s_poetries_work_uploads_2023_02_a9f33d5b7fb0dfad.webp)
   * `IgnorePlugin` 忽略某些包，避免引入无用模块（直接不引入，需要在代码中引入） 
     * `import moment from 'moment'`
     * 默认会引入所有语言JS代码，代码过大
@@ -819,7 +819,7 @@ webpack 是一种模块打包工具，可以将各类型的资源，例如图片
     ]
 ```
 
-  * `noParse` 避免重复打包（引入但不打包） ![](/images/s_poetries_work_uploads_2023_02_0a9cd08a1e89e2f1.png)
+  * `noParse` 避免重复打包（引入但不打包） ![](/images/s_poetries_work_uploads_2023_02_0a9cd08a1e89e2f1.webp)
   * `happyPack`多线程打包 
     * JS单线程的，开启多进程打包
     * 提高构建速度(特别是多核`CPU`)
@@ -886,7 +886,7 @@ webpack 是一种模块打包工具，可以将各类型的资源，例如图片
         }
 ```
 
-  * 自动刷新（开发环境）使用`dev-server`即可 ![](/images/s_poetries_work_uploads_2023_02_d88cc6944c88ef16.png)
+  * 自动刷新（开发环境）使用`dev-server`即可 ![](/images/s_poetries_work_uploads_2023_02_d88cc6944c88ef16.webp)
   * 热更新（开发环境） 
     * 自动刷新：整个网页全部刷新，速度较慢，状态会丢失
 
@@ -1427,8 +1427,8 @@ webpack 是一种模块打包工具，可以将各类型的资源，例如图片
       * **ES6模块和Commonjs模块区别**
         * `ES6`模块是静态引入，编译时引入
         * `Commonjs`是动态引入，执行时引入
-        * 只有`ES6 Module`才能静态分析，实现`Tree Shaking` ![](/images/s_poetries_work_uploads_2023_02_8c992a059adfd272.png)
+        * 只有`ES6 Module`才能静态分析，实现`Tree Shaking` ![](/images/s_poetries_work_uploads_2023_02_8c992a059adfd272.webp)
   * `Scope Hoisting`：是`webpack3`引入的一个新特性，它会分析出模块之间的依赖关系，尽可能地把打散的模块合并到一个函数中去，减少代码间的引用，从而减少代码体积 
     * 减少代码体积
     * 创建函数作用域更少
-    * 代码可读性更好 ![](/images/s_poetries_work_uploads_2023_02_4312a5cf7761b232.png)
+    * 代码可读性更好 ![](/images/s_poetries_work_uploads_2023_02_4312a5cf7761b232.webp)

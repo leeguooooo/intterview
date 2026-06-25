@@ -202,7 +202,7 @@
 > 在`react-router`中最主要的`component`是`Router RouterContext
 > Link`，`history`库起到了中间桥梁的作用
 
-![](/images/s_poetries_work_uploads_2022_12_9df13e6c236538bd.png)
+![](/images/s_poetries_work_uploads_2022_12_9df13e6c236538bd.webp)
 
 > 以`browserHistory`(一种`history`类型:一个 `history` 知道如何去监听浏览器地址栏的变化， 并解析这个 `URL`
 > 转化为 `location` 对象)为例 :
@@ -260,11 +260,11 @@
 
 > 为了简单说明，只描述使用`browserHistory`的实现，`hashHistory`的实现过程是类似的，就不在说明
 
-![](/images/s_poetries_work_uploads_2022_12_50910ca45a7ce35a.png)
+![](/images/s_poetries_work_uploads_2022_12_50910ca45a7ce35a.webp)
 
 ### 2.3 用户点击了Link组件后路由系统中到底发生了哪些变化
 
-![img](/images/s_poetries_work_gitee_2019_10_429.png)
+![img](/images/s_poetries_work_gitee_2019_10_429.webp)
 
 > `Link` 组件最终会渲染为 `HTML` 标签 `<a>`，它的 `to`、`query`、`hash`属性会被组合在一起并渲染为 `href`
 > 属性。虽然 `Link` 被渲染为超链接，但在内部实现上使用脚本拦截了浏览器的默认行为，然后调用了`history.pushState` 方法
@@ -286,7 +286,7 @@
 > 就可以实现重新渲染 `Router`组件。举个简单的例子，当 URL（准确的说应该是 `location.pathname`） 为
 > `/archives/posts` 时，应用的匹配结果如下图所示
 
-![img](/images/s_poetries_work_gitee_2019_10_430.png)
+![img](/images/s_poetries_work_gitee_2019_10_430.webp)
 
 > 到这里，系统已经完成了当用户点击一个由 `Link` 组件渲染出的超链接到页面刷新的全过程
 

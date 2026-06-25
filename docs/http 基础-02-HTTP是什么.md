@@ -7,9 +7,9 @@
 
 > 把这些综合起来，使用递归缩写方式，我们可以把 `HTTP` 定义为“与 `HTTP` 协议相关的所有应用层技术的总和”
 
-![](/images/s_poetries_work_gitee_2019_12_1.png)
+![](/images/s_poetries_work_gitee_2019_12_1.webp)
 
-![](/images/s_poetries_work_gitee_2019_12_90.png)
+![](/images/s_poetries_work_gitee_2019_12_90.webp)
 
 阅读全文
 

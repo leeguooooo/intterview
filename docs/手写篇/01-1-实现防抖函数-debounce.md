@@ -3,8 +3,8 @@
 > 防抖函数原理：**把触发非常频繁的事件合并成一次去执行**
 > 在指定时间内只执行一次回调函数，如果在指定的时间内又触发了该事件，则回调函数的执行时间会基于此刻重新开始计算
 
-![](/images/s_poetries_work_uploads_2022_07_e47703fd75859ad8.png)
-![](/images/s_poetries_work_uploads_2023_01_b6ce0bd8b072ae9c.png)
+![](/images/s_poetries_work_uploads_2022_07_e47703fd75859ad8.webp)
+![](/images/s_poetries_work_uploads_2023_01_b6ce0bd8b072ae9c.webp)
 
 防抖动和节流本质是不一样的。**防抖动是将多次执行变为`最后一次执行`，节流是将多次执行变成`每隔一段时间执行`**
 

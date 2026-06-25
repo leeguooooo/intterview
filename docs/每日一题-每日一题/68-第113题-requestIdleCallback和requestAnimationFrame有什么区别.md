@@ -12,8 +12,8 @@
   * `requestIdleCallback` 空闲时才执行，低优先级
   * 都是宏任务，要等待DOM渲染完后在执行
 
-![](/images/s_poetries_work_images_20210414212916.png)
-![](/images/s_poetries_work_uploads_2023_01_c49d6ea59a1482e4.png)
+![](/images/s_poetries_work_images_20210414212916.webp)
+![](/images/s_poetries_work_uploads_2023_01_c49d6ea59a1482e4.webp)
 ```html
     <p>requestAnimationFrame</p>
     

@@ -94,11 +94,11 @@
     }
 ```
 
-![](/images/s_poetries_work_images_20210427115937.png)
+![](/images/s_poetries_work_images_20210427115937.webp)
 
   * 上图表达的是 `redux` 中一个简单的同步数据流动的场景，点击`button` 后，在回调中 `dispatch` 一个 `action`，`reducer` 收到`action` 后，更新 `state` 并通知 `view` 重新渲染
 
-![](/images/s_poetries_work_images_20210427115946.png)
+![](/images/s_poetries_work_images_20210427115946.webp)
 
   * 上面这张图展示了应用`middleware` 后 `redux` 处理事件的逻辑，每一个 `middleware` 处理一个相对独立的业务需求，通过串联不同的 `middleware`，实现变化多样的的功能。那么问题来了： 
     * `middleware` 怎么写？

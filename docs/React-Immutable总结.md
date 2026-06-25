@@ -64,7 +64,7 @@
 
 > 打印`immutableJS`看看有什么东西
 
-![](/images/s_poetries_work_images_20210427120238.png)
+![](/images/s_poetries_work_images_20210427120238.webp)
 
 **一个说明不可变的例子**
 ```javascript

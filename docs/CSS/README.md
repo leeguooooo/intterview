@@ -24,7 +24,7 @@
 - **fixed 失效**：祖先元素设了 `transform/filter/perspective`(非 none) 时，fixed 相对该祖先而非视口。
 
 ![CSS CHEAT
-SHEET](/images/s_poetries_work_uploads_2022_07_47b89e6c7852b4c4.png)
+SHEET](/images/s_poetries_work_uploads_2022_07_47b89e6c7852b4c4.webp)
 
 
 ## 目录

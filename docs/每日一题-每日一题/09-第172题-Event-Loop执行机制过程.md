@@ -2,9 +2,9 @@
 
 ![事件循环：执行同步代码→清空所有微任务→取一个宏任务执行，如此循环往复](/images/diagrams/event-loop.webp)
 
-![](/images/s_poetries_work_uploads_2023_02_4fdc86445fa2367b.png)
-![](/images/s_poetries_work_uploads_2023_02_0c93d362749fe612.png)
-![](/images/s_poetries_work_uploads_2023_02_facd54cb3df73dd0.png)
+![](/images/s_poetries_work_uploads_2023_02_4fdc86445fa2367b.webp)
+![](/images/s_poetries_work_uploads_2023_02_0c93d362749fe612.webp)
+![](/images/s_poetries_work_uploads_2023_02_facd54cb3df73dd0.webp)
 
   * 同步代码一行行放到`Call Stack`执行，执行完就出栈
   * 遇到异步优先记录下，等待时机（定时、网络请求）
@@ -22,7 +22,7 @@
 
 > `DOM`事件会放到`Web API中`等待用户点击，放到`Call Queue`，在移动到`Call Stack`执行
 
-![](/images/s_poetries_work_uploads_2023_02_181bf0446f68007f.png)
+![](/images/s_poetries_work_uploads_2023_02_181bf0446f68007f.webp)
 
   * `JS`是单线程的，异步(`setTimeout`、`Ajax`)使用回调，基于`Event Loop`
   * `DOM`事件也使用回调，`DOM`事件非异步，但也是基于`Event Loop`实现
@@ -99,4 +99,4 @@
   * **微任务** ：`ES` 语法标准之内，`JS` 引擎来统一处理。即，不用浏览器有任何干预，即可一次性处理完，更快更及时。
   * **宏任务** ：`ES` 语法没有，`JS` 引擎不处理，浏览器（或 `nodejs`）干预处理。
 
-![](/images/s_poetries_work_uploads_2023_02_facd54cb3df73dd0.png)
+![](/images/s_poetries_work_uploads_2023_02_facd54cb3df73dd0.webp)

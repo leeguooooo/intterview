@@ -117,11 +117,11 @@
   * `event`不是原生的，是`SyntheticEvent`合成事件对象
   * 和`Vue`不同，和`DOM`事件也不同
 
-![](/images/s_poetries_work_uploads_2023_02_2ed64c281a747078.png)
+![](/images/s_poetries_work_uploads_2023_02_2ed64c281a747078.webp)
 
 **合成事件图示**
 
-![](/images/s_poetries_work_uploads_2023_02_bd7cd8acbb3cfd85.png)
+![](/images/s_poetries_work_uploads_2023_02_bd7cd8acbb3cfd85.webp)
 
 **为何需要合成事件**
 
@@ -171,12 +171,12 @@
     * 自定义`DOM`事件
     * 总之不在`react`的上下文中，`react`管不到的
 
-![](/images/s_poetries_work_uploads_2023_02_1ede1982d9eb5a45.png)
+![](/images/s_poetries_work_uploads_2023_02_1ede1982d9eb5a45.webp)
 
   2. `batchUpdate`机制
 
-![](/images/s_poetries_work_uploads_2023_02_7bb96642c305b9d6.png)
-![](/images/s_poetries_work_uploads_2023_02_e0e5828f54c4d6a1.png)
+![](/images/s_poetries_work_uploads_2023_02_7bb96642c305b9d6.webp)
+![](/images/s_poetries_work_uploads_2023_02_e0e5828f54c4d6a1.webp)
 ```js
     // setState batchUpdate原理模拟
     let isBatchingUpdate = true;
@@ -219,9 +219,9 @@
 
   3. `transaction`事务机制
 
-![](/images/s_poetries_work_uploads_2023_02_4b2c232c6b39d3ac.png)
-![](/images/s_poetries_work_uploads_2023_02_5a0b0ab821739984.png)
-![](/images/s_poetries_work_uploads_2023_02_ad98ab68ffa45716.png)
+![](/images/s_poetries_work_uploads_2023_02_4b2c232c6b39d3ac.webp)
+![](/images/s_poetries_work_uploads_2023_02_5a0b0ab821739984.webp)
+![](/images/s_poetries_work_uploads_2023_02_ad98ab68ffa45716.webp)
 ```js
     // setState现象演示
     
@@ -520,7 +520,7 @@
 
 > 并不是所有的框架都在用`vdom`，`svelte`就不用`vdom`
 
-![](/images/s_poetries_work_uploads_2023_01_6632a7a051a60c4c.png)
+![](/images/s_poetries_work_uploads_2023_01_6632a7a051a60c4c.webp)
 
 ### react组件渲染过程
 
@@ -535,7 +535,7 @@
     * `render()`生成`vnode`
     * `patch(elem, vnode)` 渲染到页面上（`react`并一定用`patch`）
   * 渲染过程 
-    * `setState(newState)` => `newState`存入`pending`队列，判断是否处于`batchUpdate`状态，保存组件于`dirtyComponents`中（可能有子组件） ![](/images/s_poetries_work_uploads_2023_02_1ede1982d9eb5a45.png)
+    * `setState(newState)` => `newState`存入`pending`队列，判断是否处于`batchUpdate`状态，保存组件于`dirtyComponents`中（可能有子组件） ![](/images/s_poetries_work_uploads_2023_02_1ede1982d9eb5a45.webp)
     * 遍历所有的`dirtyComponents`调用`updateComponent`生成`newVnode`
     * `patch(vnode,newVnode)`
 
@@ -932,7 +932,7 @@
   * `Vue React diff` 不是对比文字，而是 `vdom` 树，即 `tree diff`
   * 传统的 `tree diff` 算法复杂度是 `O(n^3)` ，算法不可用。
 
-![](/images/s_poetries_work_uploads_2023_02_98d2444a4b7995d9.png)
+![](/images/s_poetries_work_uploads_2023_02_98d2444a4b7995d9.webp)
 
 **优化**
 
@@ -944,17 +944,17 @@
 
 > 最终把时间复杂度降低到 `O(n)` ，生产环境下可用。这一点 `Vue React` 都是相同的。
 
-![](/images/s_poetries_work_uploads_2023_02_49204f33f8e7a350.png)
+![](/images/s_poetries_work_uploads_2023_02_49204f33f8e7a350.webp)
 
 **React diff 特点 - 仅向右移动**
 
 > 比较子节点时，仅向右移动，不向左移动。
 
-![](/images/s_poetries_work_uploads_2023_02_7e0177856595febb.png)
+![](/images/s_poetries_work_uploads_2023_02_7e0177856595febb.webp)
 
 **Vue2 diff 特点 - 双端比较**
 
-![](/images/s_poetries_work_uploads_2023_02_dc386faff0955e94.png)
+![](/images/s_poetries_work_uploads_2023_02_dc386faff0955e94.webp)
 
 定义四个指针，分别比较
 
@@ -969,7 +969,7 @@
 
 > 例如数组 `[3，5，7，1，2，8]` 的最长递增子序列就是 `[3，5，7，8 ]` 。这是一个专门的算法。
 
-![](/images/s_poetries_work_uploads_2023_02_05879e82f60fa7af.png)
+![](/images/s_poetries_work_uploads_2023_02_05879e82f60fa7af.webp)
 
 **算法步骤**
 
@@ -993,7 +993,7 @@
 
 无论在 `Vue` 还是 React 中，`key` 的作用都非常大。以 `React` 为例，是否使用 `key` 对内部 `DOM` 变化影响非常大。
 
-![](/images/s_poetries_work_uploads_2023_02_a68a7962c0801e70.png)
+![](/images/s_poetries_work_uploads_2023_02_a68a7962c0801e70.webp)
 ```html
     <ul>
       <li v-for="(index, num) in nums" :key="index">
@@ -1274,7 +1274,7 @@
 
 **5\. react router如何配置懒加载**
 
-![](/images/s_poetries_work_uploads_2023_02_bd495d045b61d7bc.png)
+![](/images/s_poetries_work_uploads_2023_02_bd495d045b61d7bc.webp)
 
 ### React和Vue的区别（常考）
 

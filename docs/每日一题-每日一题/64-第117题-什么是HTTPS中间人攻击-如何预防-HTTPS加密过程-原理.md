@@ -25,7 +25,7 @@
   6. 服务端拿私钥解密随机码`KEY`，使用随机码`KEY` 对传输数据进行对称加密
   7. 把对称加密后的内容传输给客户端，客户端使用之前生成的随机码`KEY`进行解密数据
 
-![](/images/s_poetries_work_uploads_2023_01_dd8c1b843050ec62.png)
+![](/images/s_poetries_work_uploads_2023_01_dd8c1b843050ec62.webp)
 
 **介绍下https中间人攻击的过程**
 
@@ -46,11 +46,11 @@
 > 简单来说，中间人攻击中，中间人首先伪装成服务端和客户端通信，然后又伪装成客户端和服务端进行通信（如图）。
 > 整个过程中，由于缺少了证书的验证过程，虽然使用了`https`，但是传输的数据已经被监听，客户端却无法得知
 
-![](/images/s_poetries_work_gitee_2020_03_1.png)
-![](/images/s_poetries_work_uploads_2023_01_d007d70173797c88.png)
+![](/images/s_poetries_work_gitee_2020_03_1.webp)
+![](/images/s_poetries_work_uploads_2023_01_d007d70173797c88.webp)
 
 **预防中间人攻击**
 
 > 使用正规厂商的证书，慎用免费的
 
-![](/images/s_poetries_work_uploads_2023_01_8cb095d80e81cb18.png)
+![](/images/s_poetries_work_uploads_2023_01_8cb095d80e81cb18.webp)

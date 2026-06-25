@@ -219,7 +219,7 @@ webpack 的性能优化上。
 window)](https://www.npmjs.com/package/webpack-bundle-analyzer)，配置方法和普通的
 plugin 无异，它会以矩形树图的形式将包内各个模块的大小和依赖关系呈现出来，格局如官方所提供这张图所示：
 
-![](/images/s_poetries_work_gitee_2020_07_performance_3.png)
+![](/images/s_poetries_work_gitee_2020_07_performance_3.webp)
 
 在使用时，我们只需要将其以插件的形式引入：
 ```js

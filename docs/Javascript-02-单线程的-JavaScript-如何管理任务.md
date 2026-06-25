@@ -41,7 +41,7 @@ stack）（调用栈可理解为一个存储函数调用的栈结构，遵循 FI
 
 由于栈的容量是有限制的，所以当我们没有合理调用函数的时候，可能会导致爆栈异常，此时控制台便会抛出错误：
 
-![](/images/s_poetries_work_images_20210719144617.png)
+![](/images/s_poetries_work_images_20210719144617.webp)
 
 这样的一个函数调用栈结构，可以理解为 JavaScript 中同步任务的执行环境，同步任务也可以理解为 JavaScript 代码片段的执行。
 
@@ -88,7 +88,7 @@ Loop。
   * 计时器产生的事件任务，比如setTimeout；
   * 异步请求产生的事件任务，比如 HTTP 请求。
 
-![](/images/s_poetries_work_images_20210719145333.png)
+![](/images/s_poetries_work_images_20210719145333.webp)
 
 如图，主线程运行的时候，会产生堆（heap）和栈（stack），其中堆为内存、栈为函数调用栈。我们能看到，Event Loop
 负责执行代码、收集和处理事件以及执行队列中的子任务，具体包括以下过程
@@ -159,7 +159,7 @@ Event Loop
        └───────────────────────────┘
 ```
 
-![](/images/s_poetries_work_images_20210719145944.png)
+![](/images/s_poetries_work_images_20210719145944.webp)
 
 由于事件循环阶段划分不一致，Node.js 和浏览器在对宏任务和微任务的处理上也不一样
 

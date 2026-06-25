@@ -6,8 +6,8 @@
   * 需要通过一些特定的格式来调用
   * 这些格式就统称`js-bridge`，例如微信`JSSKD`
 
-![](/images/s_poetries_work_uploads_2023_01_0e45cf3988121684.png)
-![](/images/s_poetries_work_uploads_2023_01_e68963dec49dbe97.png)
+![](/images/s_poetries_work_uploads_2023_01_0e45cf3988121684.webp)
+![](/images/s_poetries_work_uploads_2023_01_e68963dec49dbe97.webp)
 
 **JS Bridge的常见实现方式**
 

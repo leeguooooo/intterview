@@ -37,15 +37,15 @@
   * 执行内部初始化方法，首先是`options`的合并，之后是一堆init方法
   * 对`options`进行合并，vue会将相关的属性和方法都统一放到`vm.$options`中，为后续的调用做准备工作。`vm.$option`的属性来自两个方面，一个是`Vue`的构造函数(`vm.constructor`)预先定义的，一个是`new Vue`时传入的入参对象。合并完成后的`options`属性包括：
 
-![](/images/s_poetries_work_images_20210403162230.png)
+![](/images/s_poetries_work_images_20210403162230.webp)
 
   * 初始化各类属性和事件
 
-![](/images/s_poetries_work_images_20210403162331.png)
+![](/images/s_poetries_work_images_20210403162331.webp)
 
   * 挂载。如果说前面几部分都是准备阶段，那么这部分是整个`new Vue`的核心部分，将`template`编译成`render`表达式，然后转化为大名鼎鼎的`Vnode`，最终渲染为真实的`dom`节点
 
-![](/images/s_poetries_work_images_20210403162420.png)
+![](/images/s_poetries_work_images_20210403162420.webp)
 ```js
     // _init()的实现在src/core/instance/init.js中
     Vue.prototype._init = function (options) {
@@ -169,6 +169,6 @@
 > `Vue` 初始化主要就干了几件事情，合并配置，初始化生命周期，初始化事件中心，初始化渲染，初始化
 > `data`、`props`、`computed`、`watcher` 等
 
-![](/images/s_poetries_work_images_20210403192632.png)
+![](/images/s_poetries_work_images_20210403192632.webp)
 
-![](/images/s_poetries_work_images_20210504210642.png)
+![](/images/s_poetries_work_images_20210504210642.webp)

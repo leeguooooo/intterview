@@ -23,7 +23,7 @@
   * `session`在服务端，存储用户详细信息，和`cookie`信息一一对应
   * `cookie+session`是常见的登录验证解决方案
 
-![](/images/s_poetries_work_uploads_2023_01_bea409a27a4e9ad2.png)
+![](/images/s_poetries_work_uploads_2023_01_bea409a27a4e9ad2.webp)
 ```js
     // 登录：用户名 密码
     // 服务端set-cookie: userId=x1 把用户id传给浏览器存储在cookie中
@@ -91,4 +91,4 @@
     * 用户访问`B`系统，`B`系统没有登录，重定向到`SSO`获取`token`（由于`SSO`已经登录了，不需要重新登录认证，之前在`A`系统登录过）,拿着`token`去`B`系统，`B`系统拿着`token`去`SSO`里面换取用户信息
     * 整个所有用户的登录、用户信息的保存、用户的`token`验证，全部都在`SSO`第三方独立的服务中处理
 
-![](/images/s_poetries_work_uploads_2023_01_428ac761b592fbc1.png)
+![](/images/s_poetries_work_uploads_2023_01_428ac761b592fbc1.webp)

@@ -122,11 +122,11 @@ props，例如 `onClick`。
 倍，但更有趣的是它在这之外的表现。真实项目与合成基准测试往往大不相同。因此，我选择了我的网站进行这个测试。代码中有健康的静态部分和动态组件的混合。像往常一样，这些数据是在我的
 MacBook M1 Air 上测量得到的。
 
-![](/images/res_cloudinary_com_sorrycc_image_upload_v1717657713_blog_o6h3n59l.png)
+![](/images/res_cloudinary_com_sorrycc_image_upload_v1717657713_blog_o6h3n59l.webp)
 
 以图表形式显示：
 
-![预编译是原来的 8 倍速](/images/marvinh_dev_media_jsx_precompile_chart.png)
+![预编译是原来的 8 倍速](/images/marvinh_dev_media_jsx_precompile_chart.webp)
 
 ## 结论
 

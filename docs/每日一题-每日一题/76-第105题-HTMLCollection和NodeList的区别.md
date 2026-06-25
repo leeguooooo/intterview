@@ -6,7 +6,7 @@
   * `Node`是`Element`的基类
   * `Element`是其他`HTML`元素的基类，如`HTMLDivElement`、`HTMLImageElement`等
 
-![](/images/s_poetries_work_uploads_2023_01_ede61848ee4d078c.png)
+![](/images/s_poetries_work_uploads_2023_01_ede61848ee4d078c.webp)
 
   * `HTMLCollection`是`Element`的集合
   * `NodeList`是`Node`的集合，包含`Text`和`Comment`节点

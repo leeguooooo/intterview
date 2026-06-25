@@ -33,11 +33,11 @@ Protocol），它非常简单，就是一个“通知”，告诉对方，后续
 下面的这张图简要地描述了 TLS 的握手过程，其中每一个“框”都是一个记录，多个记录组合成一个 TCP 包发送。所以，最多经过两次消息往返（4
 个消息）就可以完成握手，然后就可以在安全的通信环境里发送 HTTP 报文，实现 HTTPS 协议
 
-![](/images/s_poetries_work_gitee_2019_12_49.png)
+![](/images/s_poetries_work_gitee_2019_12_49.webp)
 
 ## ECDHE 握手过程
 
-![](/images/s_poetries_work_gitee_2019_12_50.png)
+![](/images/s_poetries_work_gitee_2019_12_50.webp)
 
 在 TCP 建立连接之后，浏览器会首先发一个“Client
 Hello”消息，也就是跟服务器“打招呼”。里面有客户端的版本号、支持的密码套件，还有一个随机数（Client Random），用于后续生成会话密钥
@@ -142,7 +142,7 @@ HTTP 请求和响应了
 报文，省去了一个消息往返的时间浪费。这个叫“TLS False Start”，意思就是“抢跑”，和“TCP Fast
 Open”有点像，都是不等连接完全建立就提前发应用数据，提高传输的效率。
 
-![](/images/s_poetries_work_gitee_2019_12_51.png)
+![](/images/s_poetries_work_gitee_2019_12_51.webp)
 
 大体的流程没有变，只是“Pre-Master”不再需要用算法生成，而是客户端直接生成随机数，然后用服务器的公钥加密，通过“Client Key
 Exchange”消息发给服务器。服务器再用私钥解密，这样双方也实现了共享三个随机数，就可以生成主密钥
@@ -165,7 +165,7 @@ Certificate”消息，服务器收到后也把证书链走一遍，验证客户
   * “Hello”消息交换随机数，“Key Exchange”消息交换“Pre-Master”；
   * “Change Cipher Spec”之前传输的都是明文，之后都是对称密钥加密的密文
 
-![](/images/s_poetries_work_gitee_2019_12_52.png)
+![](/images/s_poetries_work_gitee_2019_12_52.webp)
 
 阅读全文
 

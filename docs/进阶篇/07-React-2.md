@@ -14,7 +14,7 @@
 > `Redux`是将整个应用状态存储到一个地方上称为`store`,里面保存着一个状态树`store
 > tree`,组件可以派发(`dispatch`)行为(`action`)给`store`,而不是直接通知其他组件，组件内部通过订阅`store`中的状态`state`来刷新自己的视图
 
-![](/images/s_poetries_work_gitee_2020_07_68.png)
+![](/images/s_poetries_work_gitee_2020_07_68.webp)
 
 > 如果你想对数据进行修改，`只有一种途径：派发 action`。action 会被 reducer 读取，进而根据 action
 > 内容的不同对数据进行修改、生成新的 state（状态），这个新的 state 会更新到 store 对象里，进而驱动视图层面做出对应的改变。
@@ -106,7 +106,7 @@ store.dispatch 完成的`。这里我简单地示范一下：
 
 以上这段代码，是从编码角度对 Redux 主要工作流的概括，这里我同样为你总结了一张对应的流程图：
 
-![](/images/s_poetries_work_images_20210426215948.png)
+![](/images/s_poetries_work_images_20210426215948.webp)
 
 **Redux源码**
 ```js
@@ -443,7 +443,7 @@ docs/react/08-%E6%B5%85%E6%9E%90%E4%B8%AD%E9%97%B4%E4%BB%B6.html)
 
   3. redux异步流程
 
-![](/images/s_poetries_work_images_20210427115241.png)
+![](/images/s_poetries_work_images_20210427115241.webp)
 
   * 首先发起一个action，然后通过中间件，这里为什么要用中间件呢，因为这样`dispatch`的返回值才能是一个函数。
   * 通过`store.dispatch`，将状态的的改变传给`store`的小弟`reducer`，`reducer`根据`action`的改变，传递新的状态`state`。
@@ -762,7 +762,7 @@ docs/react/08-%E6%B5%85%E6%9E%90%E4%B8%AD%E9%97%B4%E4%BB%B6.html)
 >
 > 这样就完成了`redux`的异步操作。其实最主要的区别还是`action`里面还有中间件的调用，其他的地方基本跟同步的`redux`差不多的。搞懂了中间件，就基本搞懂了`redux`的异步操作
 
-![](/images/s_poetries_work_images_20210427115322.png)
+![](/images/s_poetries_work_images_20210427115322.webp)
 
 ### 18 谈谈你对状态管理的理解
 
@@ -785,7 +785,7 @@ docs/react/08-%E6%B5%85%E6%9E%90%E4%B8%AD%E9%97%B4%E4%BB%B6.html)
   * `最后是 Mobx`，Mobx 通过监听数据的属性变化，可以直接在数据上更改触发UI 的渲染。在使用上更接近 Vue，比起 `Flux 与 Redux` 的手动挡的体验，更像开自动挡的汽车。`Mobx 的响应式实现原理与 Vue 相同`，以 `Mobx 5` 为分界点，5 以前采用 `Object.defineProperty` 的方案，5 及以后使用 `Proxy` 的方案。`它的优点是样板代码少、简单粗暴、用户学习快、响应式自动更新数据`让开发者的心智负担更低。
   * Mobx 在开发项目时简单快速，但应用 Mobx 的场景 ，其实完全可以用 Vue 取代。如果纯用 Vue，体积还会更小巧
 
-![](/images/s_poetries_work_images_20210425201200.png)
+![](/images/s_poetries_work_images_20210425201200.webp)
 
 ### 19 connect组件原理分析
 
@@ -1048,7 +1048,7 @@ docs/react/08-%E6%B5%85%E6%9E%90%E4%B8%AD%E9%97%B4%E4%BB%B6.html)
 
 **React Hooks 的限制**
 
-![](/images/s_poetries_work_images_20210425213051.png)
+![](/images/s_poetries_work_images_20210425213051.webp)
 
   * 不要在`循环、条件`或`嵌套函数中调用 Hook`；
   * 在 React 的函数组件中调用 `Hook`
@@ -1071,7 +1071,7 @@ docs/react/08-%E6%B5%85%E6%9E%90%E4%B8%AD%E9%97%B4%E4%BB%B6.html)
 
 **useEffect 与 useLayoutEffect 区别在哪里**
 
-![](/images/s_poetries_work_images_20210425213302.png)
+![](/images/s_poetries_work_images_20210425213302.webp)
 
   * 它们的共同点很简单，底层的函数签名是完全一致的，都是调用的 `mountEffectImpl`，在使用上也没什么差异，基本可以直接替换，也都是用于处理副作用。
   * 那不同点就很大了，`useEffect` 在 React 的渲染过程中是被异步调用的，用于绝大多数场景，而 `LayoutEffect` 会在所有的 DOM 变更之后同步调用，主要用于处理 DOM 操作、调整样式、避免页面闪烁等问题。也正因为是同步处理，所以需要避免在 `LayoutEffect` 做计算量较大的耗时任务从而造成阻塞。
@@ -1114,7 +1114,7 @@ docs/react/08-%E6%B5%85%E6%9E%90%E4%B8%AD%E9%97%B4%E4%BB%B6.html)
     * 第二个是使用全局变量与事件。
     * 第三个是使用状态管理框架，比如 Flux、Redux 及 Mobx。优点是由于引入了状态管理，使得项目的开发模式与代码结构得以约束，缺点是学习成本相对较高
 
-![](/images/s_poetries_work_images_20210425145857.png)
+![](/images/s_poetries_work_images_20210425145857.webp)
 
 ### 24 类组件与函数组件有什么区别呢？
 
@@ -1127,7 +1127,7 @@ docs/react/08-%E6%B5%85%E6%9E%90%E4%B8%AD%E9%97%B4%E4%BB%B6.html)
   * 从上手程度而言，类组件更容易上手，从未来趋势上看，由于React Hooks 的推出，函数组件成了社区未来主推的方案。
   * 类组件在未来时间切片与并发模式中，由于生命周期带来的复杂度，并不易于优化。而函数组件本身轻量简单，且在 Hooks 的基础上提供了比原先更细粒度的逻辑组织与复用，更能适应 React 的未来发展。
 
-![](/images/s_poetries_work_images_20210425134417.png)
+![](/images/s_poetries_work_images_20210425134417.webp)
 
 ### 25 如何设计React组件
 
@@ -1138,7 +1138,7 @@ React 组件应从`设计与工程实践`两个方向进行探讨
   * `展示组件内部没有状态管理，仅仅用于最简单的展示表达`。展示组件中最基础的一类组件称作代理组件。代理组件常用于封装常用属性、减少重复代码。很经典的场景就是引入 Antd 的 Button 时，你再自己封一层。如果未来需要替换掉 Antd 或者需要在所有的 Button 上添加一个属性，都会非常方便。基于代理组件的思想还可以继续分类，分为样式组件与布局组件两种，分别是将样式与布局内聚在自己组件内部。
   * 从工程实践而言，通过文件夹划分的方式切分代码。我初步常用的分割方式是将页面单独建立一个目录，将复用性略高的 components 建立一个目录，在下面分别建立 basic、container 和 hoc 三类。这样可以保证无法复用的业务逻辑代码尽量留在 Page 中，而可以抽象复用的部分放入 components 中。其中 basic 文件夹放展示组件，由于展示组件本身与业务关联性较低，所以可以使用 Storybook 进行组件的开发管理，提升项目的工程化管理能力
 
-![](/images/s_poetries_work_images_20210425134939.png)
+![](/images/s_poetries_work_images_20210425134939.webp)
 
 ### 26 组件的协同及（不）可控组件
 
@@ -1146,7 +1146,7 @@ React 组件应从`设计与工程实践`两个方向进行探讨
 
   * 我们在实际的开发项目的时候，不会只用几个组件，有时候遇到大型的项目，可能会有成千上百的组件，难免会遇到有功能重复的组件。要进行修改，就会修改大部分的文件。所以我们需要进行组件的协同开发。
 
-![](/images/s_poetries_work_images_20210427114453.png)
+![](/images/s_poetries_work_images_20210427114453.webp)
 
 **什么是组件的协同使用？**
 
@@ -1166,7 +1166,7 @@ React 组件应从`设计与工程实践`两个方向进行探讨
 
   * 组件嵌套的本质是父子关系
 
-![](/images/s_poetries_work_images_20210427114544.png)
+![](/images/s_poetries_work_images_20210427114544.webp)
 
 **组件嵌套的优缺点**
 
@@ -1185,7 +1185,7 @@ React 组件应从`设计与工程实践`两个方向进行探讨
   * `Mixin=一组方法`。
   * 他的目的是横向抽离出组件的相似代码，把组件的共同作用以及效果的代码提出来
 
-![](/images/s_poetries_work_images_20210427114655.png)
+![](/images/s_poetries_work_images_20210427114655.webp)
 
 **Mixin的优缺点**
 
@@ -1199,14 +1199,14 @@ React 组件应从`设计与工程实践`两个方向进行探讨
 
 **不可控组件**
 
-![](/images/s_poetries_work_images_20210427114820.png)
+![](/images/s_poetries_work_images_20210427114820.webp)
 
   * 上图：`defaultValue`的值是固定的，这就是一个不可控组件
   * 如果要获取`input`的`value`值，只有使用`ref`获取节点来获取值
 
 **可控组件**
 
-![](/images/s_poetries_work_images_20210427114833.png)
+![](/images/s_poetries_work_images_20210427114833.webp)
 
   * `defaultValue`的值是根据状态确定了，只需要拿到`this.state.value`的值就可以了
   * 这里需要注意一下：使用`value`的值是不可修改的，`defaultValue`的值是可以修改的
@@ -1224,9 +1224,9 @@ React 组件应从`设计与工程实践`两个方向进行探讨
   * `React Router` 的工作方式可以分为设计模式与关键模块两个部分。从设计模式的角度出发，在架构上通过 `Monorepo`进行库的管理。`Monorepo` 具有团队间透明、迭代便利的优点。其次在整体的数据通信上使用了 Context API 完成上下文传递。
   * 在关键模块上，主要分为三类组件：`第一类是 Context 容器`，比如 Router 与 MemoryRouter；`第二类是消费者组件，用以匹配路由`，主要有 Route、Redirect、Switch 等；`第三类是与平台关联的功能组件`，比如 `Link、NavLink、DeepLinking` 等。
 
-![](/images/s_poetries_work_images_20210425214114.png)
+![](/images/s_poetries_work_images_20210425214114.webp)
 
-![](/images/s_poetries_work_images_20210409164620.png)
+![](/images/s_poetries_work_images_20210409164620.webp)
 
 [React router原理分析 (opens new window)](http://interview.poetries.top/principle-
 docs/react/01-React-router%E5%8E%9F%E7%90%86.html)

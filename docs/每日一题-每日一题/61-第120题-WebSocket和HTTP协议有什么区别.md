@@ -9,7 +9,7 @@
   * 先发起一个`HTTP`请求
   * 成功之后在升级到`WebSocket`协议，再通讯
 
-![](/images/s_poetries_work_uploads_2023_01_6772692df973c752.png)
+![](/images/s_poetries_work_uploads_2023_01_6772692df973c752.webp)
 
 **WebSocket和HTTP区别**
 

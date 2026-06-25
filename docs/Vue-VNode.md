@@ -333,7 +333,7 @@ TIP
 总的来说，我们可以把 `VNode` 分成五类，分别是：**`html/svg` 元素**、**组件** 、**纯文本** 、**Fragment** 以及
 **Portal** ：
 
-![](/images/s_poetries_work_uploads_2024_02_91644f2f0ad1d19b.png)
+![](/images/s_poetries_work_uploads_2024_02_91644f2f0ad1d19b.webp)
 
 如上图所示，我们可以把组件细分为 **有状态组件** 和 **函数式组件** 。同时有状态组件还可以细分为三部分：**普通的有状态组件** 、**需要被
 keepAlive 的有状态组件** 以及 **已经被 keepAlive 的有状态组件** 。
@@ -417,7 +417,7 @@ window)](https://github.com/infernojs/inferno) 的手段。具体如何做我们
 
 如上这些枚举属性所代表的意义能够与下面的图片一一对应上：
 
-![](/images/s_poetries_work_uploads_2024_02_91644f2f0ad1d19b.png)
+![](/images/s_poetries_work_uploads_2024_02_91644f2f0ad1d19b.webp)
 
 我们注意到，这些枚举属性的值基本都是通过将十进制数字 `1` 左移不同的位数得来的。根据这些基本的枚举属性值，我们还可以派生出额外的三个标识：
 ```js

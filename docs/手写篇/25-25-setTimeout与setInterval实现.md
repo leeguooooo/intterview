@@ -78,7 +78,7 @@
     //即：每隔N秒把function事件推到消息队列中
 ```
 
-![](/images/s_poetries_work_uploads_2022_08_7f7c9be625208e11.png)
+![](/images/s_poetries_work_uploads_2022_08_7f7c9be625208e11.webp)
 
 > 上图可见，`setInterval` 每隔 `100ms` 往队列中添加一个事件；`100ms` 后，添加 `T1`
 > 定时器代码至队列中，主线程中还有任务在执行，所以等待，`some event` 执行结束后执行 `T1`定时器代码；又过了 `100ms`，`T2`

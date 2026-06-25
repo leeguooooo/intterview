@@ -11,12 +11,12 @@
 
 SSR
 
-![](/images/s_poetries_work_uploads_2022_08_a3c8cf7c4b9b8825.png)
+![](/images/s_poetries_work_uploads_2022_08_a3c8cf7c4b9b8825.webp)
 
 SPA
 
-![](/images/s_poetries_work_uploads_2022_08_46149f14f3674b16.png)
+![](/images/s_poetries_work_uploads_2022_08_46149f14f3674b16.webp)
 
 **部署上的区别**
 
-![](/images/s_poetries_work_uploads_2022_08_e302c2f6998f2c7e.png)
+![](/images/s_poetries_work_uploads_2022_08_e302c2f6998f2c7e.webp)

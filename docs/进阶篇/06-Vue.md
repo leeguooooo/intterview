@@ -8,12 +8,12 @@
 > 树，Vue 框架会遍历并对比新虚拟 DOM 树和旧虚拟 DOM 树中每个节点的差别，并记录下来，最后，加载操作，将所有记录的不同点，局部修改到真实
 > DOM树上。
 
-![](/images/s_poetries_work_gitee_2021_01_15.png)
+![](/images/s_poetries_work_gitee_2021_01_15.webp)
 
   * 虚拟DOM (Virtaul DOM): 用 js 对象模拟的，保存当前视图内所有 DOM 节点对象基本描述属性和节点间关系的树结构。用 js 对象，描述每个节点，及其父子关系，形成虚拟 DOM 对象树结构。
   * 因为只要在 `data` 中声明的基本数据类型的数据，基本不存在数据不响应问题，所以重点介绍数组和对象在`vue`中的数据响应问题，vue可以检测对象属性的修改，但无法监听数组的所有变动及对象的新增和删除，只能使用数组变异方法及`$set`方法。
 
-![](/images/s_poetries_work_gitee_2021_01_16.png)
+![](/images/s_poetries_work_gitee_2021_01_16.webp)
 
 > 可以看到，`arrayMethods` 首先继承了 `Array`，然后对数组中所有能改变数组自身的方法，如 `push`、`pop`
 > 等这些方法进行重写。重写后的方法会先执行它们本身原有的逻辑，并对能增加数组长度的 3 个方法 `push`、`unshift`、`splice`
@@ -154,7 +154,7 @@
 
 **总结**
 
-![](/images/s_poetries_work_images_20210408091523.png)
+![](/images/s_poetries_work_images_20210408091523.webp)
 
   * Vue 
     * 记录传入的选项，设置 `$data/$el`
@@ -307,7 +307,7 @@
   * **观察者模式** 是由具体目标调度，比如当事件触发，`Dep` 就会去调用观察者的方法，所以观察者模 式的订阅者与发布者之间是存在依赖的
   * **发布/订阅模式** 由统一调度中心调用，因此发布者和订阅者不需要知道对方的存在
 
-![](/images/s_poetries_work_images_20210328214834.png)
+![](/images/s_poetries_work_images_20210328214834.webp)
 
 ### 3 为什么使用 Virtual DOM
 
@@ -324,7 +324,7 @@
   * 复杂视图情况下提升渲染性能
   * 除了渲染 `DOM` 以外，还可以实现 `SSR(Nuxt.js/Next.js)`、原生应用(`Weex/React Native`)、小程序(`mpvue/uni-app`)等
 
-![img](/images/s_poetries_work_images_20210328112610.png)
+![img](/images/s_poetries_work_images_20210328112610.webp)
 
 ### 4 VDOM：三个 part
 
@@ -384,7 +384,7 @@
 
 ### 7 生命周期
 
-![](/images/s_poetries_work_images_20210408093135.png)
+![](/images/s_poetries_work_images_20210408093135.webp)
 
 **_init_**
 
@@ -949,7 +949,7 @@ state保存应用状态
     <div id="container"></div>
 ```
 
-![](/images/s_poetries_work_images_20210407162653.png)
+![](/images/s_poetries_work_images_20210407162653.webp)
 
 **Suspense**
 
@@ -1071,7 +1071,7 @@ api就是为了解决这个问题而生的
 
 ### 14 vue 渲染过程
 
-![](/images/s_poetries_work_images_20210504211204.png)
+![](/images/s_poetries_work_images_20210504211204.webp)
 
   * 调用 `compile` 函数,生成 render 函数字符串 ,编译过程如下: 
     * parse 使用大量的正则表达式对template字符串进行解析，将标签、指令、属性等转化为抽象语法树AST。`模板 -> AST （最消耗性能）`

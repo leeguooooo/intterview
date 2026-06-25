@@ -97,7 +97,7 @@
   * 但是浏览器要把这个文档中的 HTML 按照标准渲染成一个页面，此时浏览器就需要将这堆代码处理成自己能理解的东西，也得处理成 JS 能理解的东西，因为还得允许 JS 修改页面内容呢。
   * 基于以上需求，浏览器就需要把 HTML 转变成 `DOM`，HTML 是一棵树，DOM 也是一棵树。对 DOM 的理解，可以暂时先抛开浏览器的内部因素，先从 JS 着手，即可以认为 `DOM` 就是 `JS` 能识别的 `HTML` 结构，一个普通的 JS 对象或者数组。
 
-![](/images/s_poetries_work_gitee_2020_07_guide_1.png)
+![](/images/s_poetries_work_gitee_2020_07_guide_1.webp)
 
 **2\. 获取 DOM 节点**
 

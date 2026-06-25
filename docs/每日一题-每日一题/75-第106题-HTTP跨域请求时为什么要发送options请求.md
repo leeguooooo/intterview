@@ -31,7 +31,7 @@
 
 **多余的options请求**
 
-![](/images/s_poetries_work_uploads_2023_01_8137dab52f536f6d.png)
+![](/images/s_poetries_work_uploads_2023_01_8137dab52f536f6d.webp)
 
   * `options`是跨域请求之前的预检查
   * 浏览器自行发起的，无需我们干预

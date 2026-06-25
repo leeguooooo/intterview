@@ -2,7 +2,7 @@
 
 ![HMR 热更新：文件改动 → webpack 重新编译模块 → HMR Server 经 WebSocket 通知运行时 → 浏览器局部替换模块，页面不刷新、状态不丢失](/images/diagrams/webpack-hmr.webp)
 
-![](/images/s_poetries_work_images_20210319101659.png)
+![](/images/s_poetries_work_images_20210319101659.webp)
 
   * 当修改了一个或多个文件；
   * 文件系统接收更改并通知 `webpack`；

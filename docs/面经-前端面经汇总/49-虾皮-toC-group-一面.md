@@ -2,7 +2,7 @@
 
 ### 说出打印结果
 
-![](/images/raw_githubusercontent_com_LaamGinghong_pics_master_img_20200902162836.png)
+![](/images/raw_githubusercontent_com_LaamGinghong_pics_master_img_20200902162836.webp)
 
 ### 手写原型链继承
 
@@ -82,6 +82,6 @@
 
 ### 实现一个节流函数
 
-![](/images/raw_githubusercontent_com_LaamGinghong_pics_master_img_20200907163633.png)
+![](/images/raw_githubusercontent_com_LaamGinghong_pics_master_img_20200907163633.webp)
 
 要求初次执行的时候立刻执行

@@ -6,9 +6,9 @@
 
 ### 笔试题
 
-  1. ![](/images/raw_githubusercontent_com_LaamGinghong_pics_master_img_20200902162726.png)
+  1. ![](/images/raw_githubusercontent_com_LaamGinghong_pics_master_img_20200902162726.webp)
 
-  2. ![](/images/raw_githubusercontent_com_LaamGinghong_pics_master_img_20200902162836.png)
+  2. ![](/images/raw_githubusercontent_com_LaamGinghong_pics_master_img_20200902162836.webp)
 
   3.   
 ```js
@@ -50,9 +50,9 @@
     console.log('script end');
 ```
 
-  4. ![](/images/raw_githubusercontent_com_LaamGinghong_pics_master_img_20200902163011.png)
+  4. ![](/images/raw_githubusercontent_com_LaamGinghong_pics_master_img_20200902163011.webp)
 
-  5. ![](/images/raw_githubusercontent_com_LaamGinghong_pics_master_img_20200902163024.png)
+  5. ![](/images/raw_githubusercontent_com_LaamGinghong_pics_master_img_20200902163024.webp)
 
 ### 浏览器渲染机制的理解
 

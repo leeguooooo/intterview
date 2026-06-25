@@ -41,7 +41,7 @@
   * 复杂视图情况下提升渲染性能
   * 除了渲染 `DOM` 以外，还可以实现 `SSR(Nuxt.js/Next.js)`、原生应用(`Weex/React Native`)、小程序(`mpvue/uni-app`)等
 
-![](/images/s_poetries_work_images_20210328112610.png)
+![](/images/s_poetries_work_images_20210328112610.webp)
 
 ## Virtual DOM 库
 
@@ -74,7 +74,7 @@
 
 创建目录结构
 
-![](/images/s_poetries_work_images_20210328123653.png)
+![](/images/s_poetries_work_images_20210328123653.webp)
 ```javascript
     yarn add snabbdom
 ```  
@@ -100,7 +100,7 @@
 > 'snabbdom'`。原因:`node_modules/src/snabbdom.ts` 末尾导出使用的语法是 `export` 导出
 > `API`，没有使用 `export default` 导出默认输出
 
-![](/images/s_poetries_work_images_20210328124133.png)
+![](/images/s_poetries_work_images_20210328124133.webp)
 
 ### 基本使用
 
@@ -312,7 +312,7 @@
 
 src 目录结构
 
-![](/images/s_poetries_work_images_20210328125857.png)
+![](/images/s_poetries_work_images_20210328125857.webp)
 
 ### h 函数
 
@@ -467,7 +467,7 @@ src 目录结构
   * 如果新的 `VNode` 有 `children`，判断子节点是否有变化，判断子节点的过程使用的就是 `diff` 算法
   * `diff` 过程只进行同层级比较
 
-![](/images/s_poetries_work_images_20210329091820.png)
+![](/images/s_poetries_work_images_20210329091820.webp)
 
 ### init
 
@@ -769,7 +769,7 @@ src 目录结构
   * 在 `DOM` 操作的时候我们很少很少会把一个父节点移动/更新到某一个子节点
   * 因此只需要找同级别的子节点依次比较，然后再找下一级别的节点比较，这样算法的时间复 杂度为 `O(n)`
 
-![](/images/s_poetries_work_images_20210329092027.png)
+![](/images/s_poetries_work_images_20210329092027.webp)
 
   * 在进行同级别节点比较的时候，首先会对新老节点数组的开始和结尾节点设置标记索引，遍 历的过程中移动索引
   * 在对开始和结束节点比较的时候，总共有四种情况 
@@ -778,7 +778,7 @@ src 目录结构
     * `oldStartVnode / oldEndVnode` (旧开始节点 / 新结束节点)
     * `oldEndVnode / newStartVnode` (旧结束节点 / 新开始节点)
 
-![](/images/s_poetries_work_images_20210329092301.png)
+![](/images/s_poetries_work_images_20210329092301.webp)
 
   * 开始节点和结束节点比较，这两种情况类似 
     * `oldStartVnode / newStartVnode` (旧开始节点 / 新开始节点)
@@ -787,21 +787,21 @@ src 目录结构
     * 调用 `patchVnode()` 对比和更新节点
     * 把旧开始和新开始索引往后移动 `oldStartIdx++ / oldEndIdx++`
 
-![](/images/s_poetries_work_images_20210329092430.png)
+![](/images/s_poetries_work_images_20210329092430.webp)
 
   * `oldStartVnode / newEndVnode` (旧开始节点 / 新结束节点) 相同 
     * 调用 `patchVnode()` 对比和更新节点
     * 把 `oldStartVnode` 对应的 `DOM` 元素，移动到右边 
       * 更新索引
 
-![](/images/s_poetries_work_images_20210329092820.png)
+![](/images/s_poetries_work_images_20210329092820.webp)
 
   * `oldEndVnode / newStartVnode` (旧结束节点 / 新开始节点) 相同 
     * 调用 `patchVnode()` 对比和更新节点
     * 把 `oldEndVnode` 对应的 `DOM` 元素，移动到左边
     * 更新索引
 
-![](/images/s_poetries_work_images_20210329093025.png)
+![](/images/s_poetries_work_images_20210329093025.webp)
 
   * 如果不是以上四种情况 
     * 遍历新节点，使用 `newStartNode` 的 `key` 在老节点数组中找相同节点
@@ -813,18 +813,18 @@ src 目录结构
         * 重新创建对应的 `DOM` 元素，插入到 DOM 树中
       * 如果相同，把 `elmToMove` 对应的 DOM 元素，移动到左边
 
-![](/images/s_poetries_work_images_20210329093137.png)
+![](/images/s_poetries_work_images_20210329093137.webp)
 
   * 循环结束 
     * 当老节点的所有子节点先遍历完 (`oldStartIdx > oldEndIdx`)，循环结束
     * 新节点的所有子节点先遍历完 (`newStartIdx > newEndIdx`)，循环结束
   * 如果老节点的数组先遍历完(`oldStartIdx > oldEndIdx`)，说明新节点有剩余，把剩余节点批量插入到右边
 
-![](/images/s_poetries_work_images_20210329093302.png)
+![](/images/s_poetries_work_images_20210329093302.webp)
 
   * 如果新节点的数组先遍历完(`newStartIdx > newEndIdx`)，说明老节点有剩余，把剩余节点批 量删除
 
-![](/images/s_poetries_work_images_20210329093414.png)
+![](/images/s_poetries_work_images_20210329093414.webp)
 
 阅读全文
 

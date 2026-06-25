@@ -61,7 +61,7 @@
   * 在同一层叠上下文中，层叠等级才有意义
   * `z-index`的优先级最高
 
-![](/images/s_poetries_work_gitee_2020_09_111.png)
+![](/images/s_poetries_work_gitee_2020_09_111.webp)
 
 ### 4 左右居中方案
 

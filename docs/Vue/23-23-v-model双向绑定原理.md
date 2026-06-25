@@ -180,7 +180,7 @@
     <!-- 回调函数中，会把接收到的值赋值给属性绑定的数据项中。 -->
 ```
 
-![](/images/s_poetries_work_uploads_2022_08_a50931f6f3c0cf0c.png)
+![](/images/s_poetries_work_uploads_2022_08_a50931f6f3c0cf0c.webp)
 
 **`v-model`的工作原理**
 ```html

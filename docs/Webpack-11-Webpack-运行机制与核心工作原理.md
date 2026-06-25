@@ -4,11 +4,11 @@
 
 其实 Webpack 官网首屏的英雄区就已经很清楚地描述了它的工作原理，如下图所示：
 
-![](/images/s_poetries_work_images_20210503220726.png)
+![](/images/s_poetries_work_images_20210503220726.webp)
 
 那这里我们先来快速理解一下 Webpack 打包的核心工作过程。我们以一个普通的前端项目为例，项目中一般都会散落着各种各样的代码及资源文件，如下图所示：
 
-![](/images/s_poetries_work_images_20210503220733.png)
+![](/images/s_poetries_work_images_20210503220733.webp)
 
 比如 JS、CSS、图片、字体等，这些文件在 Webpack 的思想中都属于当前项目中的一个模块。Webpack
 可以通过打包，将它们最终聚集到一起。Webpack 在整个打包的过程中：
@@ -78,23 +78,23 @@ Webpack CLI 的作用就是将 CLI 参数和 Webpack 配置文件中的配置整
 模块解析 CLI 参数，所谓 CLI 参数指的就是我们在运行 webpack 命令时通过命令行传入的参数，例如
 --mode=production，具体位置如下：
 
-![](/images/s_poetries_work_images_20210503220803.png)
+![](/images/s_poetries_work_images_20210503220803.webp)
 
 紧接着后面，调用了 bin/utils/convert-argv.js 模块，将得到的命令行参数转换为 Webpack 的配置选项对象，具体操作如下：
 
-![](/images/s_poetries_work_images_20210503220812.png)
+![](/images/s_poetries_work_images_20210503220812.webp)
 
 在 convert-argv.js
 工作过程中，首先为传递过来的命令行参数设置了默认值，然后判断了命令行参数中是否指定了一个具体的配置文件路径，如果指定了就加载指定配置文件，反之则需要根据默认配置文件加载规则找到配置文件，具体代码如下：
 
-![](/images/s_poetries_work_images_20210503220820.png)
+![](/images/s_poetries_work_images_20210503220820.webp)
 
 找到配置文件过后，将配置文件中的配置和 CLI 参数中的配置合并，如果出现重复的情况，会优先使用 CLI 参数，最终得到一个完整的配置选项。
 
 有了配置选项过后，开始载入 Webpack 核心模块，传入配置选项，创建 Compiler 对象，这个 Compiler 对象就是整个 Webpack
 工作过程中最核心的对象了，负责完成整个项目的构建工作。
 
-![](/images/s_poetries_work_images_20210503220829.png)
+![](/images/s_poetries_work_images_20210503220829.webp)
 
 ### 二、创建 Compiler 对象
 
@@ -104,7 +104,7 @@ window)](https://github.com/webpack/webpack/tree/v4.43.0)。
 
 同样，这里我们需要找到这个模块的入口文件，也就是 lib/webpack.js 文件。这个文件导出的是一个用于创建 Compiler 的函数，具体如下：
 
-![](/images/s_poetries_work_images_20210503220837.png)
+![](/images/s_poetries_work_images_20210503220837.webp)
 
 在这个函数中，首先校验了外部传递过来的 options 参数是否符合要求，紧接着判断了 options 的类型。
 
@@ -113,37 +113,37 @@ MultiCompiler，也就是说 Webpack
 应该支持同时开启多路打包，配置数组中的每一个成员就是一个独立的配置选项。而如果我们传入的是普通的对象，就会按照我们最熟悉的方式创建一个 Compiler
 对象，进行单线打包。
 
-![](/images/s_poetries_work_images_20210503220851.png)
+![](/images/s_poetries_work_images_20210503220851.webp)
 
 我们顺着主线接着往下看，如下图所示：在创建了 Compiler 对象过后，Webpack 就开始注册我们配置中的每一个插件了，因为再往后 Webpack
 工作过程的生命周期就要开始了，所以必须先注册，这样才能确保插件中的每一个钩子都能被命中。
 
-![](/images/s_poetries_work_images_20210503220858.png)
+![](/images/s_poetries_work_images_20210503220858.webp)
 
 ### 三、开始构建
 
 完成 Compiler 对象的创建过后，紧接着这里的代码开始判断配置选项中是否启用了监视模式，具体操作如下：
 
-![](/images/s_poetries_work_images_20210503220906.png)
+![](/images/s_poetries_work_images_20210503220906.webp)
 
   * 如果是监视模式就调用 Compiler 对象的 watch 方法，以监视模式启动构建，但这不是我们主要关心的主线。
   * 如果不是监视模式就调用 Compiler 对象的 run 方法，开始构建整个应用。
 
 这个 run 方法定义在 Compiler 类型中，具体文件在 webpack 模块下的 lib/Compiler.js 中，代码位置如下：
 
-![](/images/s_poetries_work_images_20210503220914.png)
+![](/images/s_poetries_work_images_20210503220914.webp)
 
 这个方法内部就是先触发了 beforeRun 和 run 两个钩子，然后最关键的是调用了当前对象的 compile
 方法，真正开始编译整个项目，具体代码位置如下：
 
-![](/images/s_poetries_work_images_20210503220921.png)
+![](/images/s_poetries_work_images_20210503220921.webp)
 
 compile 方法内部主要就是创建了一个 Compilation 对象，这个对象我们在[插件机制 (opens new
 window)](https://blog.zce.me/2020/04/how-to-extend-webpack-by-
 plugin/)中有提到，Compilation
 字面意思是“合集”，实际上，你就可以理解为一次构建过程中的上下文对象，里面包含了这次构建中全部的资源和信息。
 
-![](/images/s_poetries_work_images_20210503220930.png)
+![](/images/s_poetries_work_images_20210503220930.webp)
 
 创建完 Compilation 对象过后，紧接着触发了一个叫作 make 的钩子，进入整个构建过程最核心的 make 阶段。
 
@@ -152,7 +152,7 @@ plugin/)中有提到，Compilation
 make 阶段主体的目标就是：根据 entry 配置找到入口模块，开始依次递归出所有依赖，形成依赖关系树，然后将递归到的每个模块交给不同的 Loader
 处理。
 
-![](/images/s_poetries_work_images_20210503220937.png)
+![](/images/s_poetries_work_images_20210503220937.webp)
 
 由于这个阶段的调用过程并不像之前一样，直接调用某个对象的某个方法，而是采用事件触发机制，让外部监听这个 make
 事件的地方开始执行，所以从这里往后的代码可能找起来会费点劲儿。
@@ -163,19 +163,19 @@ Webpack 的插件系统是基于官方自己的 [Tapable (opens new
 window)](https://github.com/webpack/tapable)
 库实现的，我们想要知道在哪里注册了某个事件，必须要知道如何注册的事件。Tapable 的注册方式具体如下：
 
-![](/images/s_poetries_work_images_20210503220946.png)
+![](/images/s_poetries_work_images_20210503220946.webp)
 
 所以，我们只需要通过开发工具搜索源代码中的 make.tap，就应该能够找到事件注册的位置，具体操作如下：
 
-![](/images/s_poetries_work_images_20210503220953.png)
+![](/images/s_poetries_work_images_20210503220953.webp)
 
 这里搜索到了六个插件中都注册了 make 事件，这些插件实际上是前面创建 Compiler 对象的时候创建的，刚刚因为没有影响，所以我们就忽略了：
 
-![](/images/s_poetries_work_images_20210503221001.png)
+![](/images/s_poetries_work_images_20210503221001.webp)
 
 因为我们默认使用的就是单一入口打包的方式，所以这里最终会执行其中的 SingleEntryPlugin。
 
-![](/images/s_poetries_work_images_20210503221009.png)
+![](/images/s_poetries_work_images_20210503221009.webp)
 
 这个插件中调用了 Compilation 对象的 addEntry 方法，开始解析我们源代码中的入口文件，以此开始“顺藤摸瓜”式的寻找。
 

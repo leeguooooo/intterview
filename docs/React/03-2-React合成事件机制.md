@@ -10,11 +10,11 @@
 > 并没有直接将事件附着到子元素上，而是以单一事件监听器的方式将所有的事件发送到顶层进行处理。这样 `React` 在更新 `DOM`
 > 的时候就不需要考虑如何去处理附着在 `DOM` 上的事件监听器，最终达到优化性能的目的
 
-![](/images/s_poetries_work_uploads_2023_02_2ed64c281a747078.png)
+![](/images/s_poetries_work_uploads_2023_02_2ed64c281a747078.webp)
 
 **合成事件图示**
 
-![](/images/s_poetries_work_uploads_2023_02_bd7cd8acbb3cfd85.png)
+![](/images/s_poetries_work_uploads_2023_02_bd7cd8acbb3cfd85.webp)
 
 **为何需要合成事件**
 

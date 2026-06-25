@@ -684,7 +684,7 @@
   * 只能用于顶层代码，不能在判断、循环中使用`Hooks`
   * `eslint`插件`eslint-plugin-react-hooks`可以帮助检查`Hooks`的使用规则
 
-![](/images/s_poetries_work_uploads_2023_02_ee5e71b37a63fb7b.png)
+![](/images/s_poetries_work_uploads_2023_02_ee5e71b37a63fb7b.webp)
 
 ### 为何Hooks要依赖于调用顺序
 

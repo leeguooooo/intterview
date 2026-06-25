@@ -158,7 +158,7 @@
 
 我们将上述过程总结为下图，帮助你理解：
 
-![](/images/s_poetries_work_images_20210418222200.png)
+![](/images/s_poetries_work_images_20210418222200.webp)
 
 通过上述内容，我们可以看到，Express 的`next()`方法维护了遍历中间件列表的 `Index
 游标`，中间件每次调用`next()`方法时，会通过增加 `Index 游标`的方式找到下一个中间件并执行。我们采用类似的 `hard coding`
@@ -275,7 +275,7 @@ Koa 里，一般只需要一个中间件就能全部搞定。
 
 我们将 Redux 的中间件作用机制总结为下图：
 
-![](/images/s_poetries_work_images_20210418222449.png)
+![](/images/s_poetries_work_images_20210418222449.webp)
 
 看上去也像是一个洋葱圈模型，但是对于同步调用和异步调用稍有不同，以三个中间件为例。
 
@@ -398,7 +398,7 @@ Koa 里，一般只需要一个中间件就能全部搞定。
 > 我们可以看到，上述源码更像 Koa 的实现了，但其实道理和上面的 fetch-wrap
 > 大同小异。至此，相信你已经了解了中间件的思想，也能够体会洋葱模型的精妙设计
 
-![](/images/s_poetries_work_images_20210418222847.png)
+![](/images/s_poetries_work_images_20210418222847.webp)
 
 阅读全文
 

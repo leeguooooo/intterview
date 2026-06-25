@@ -68,7 +68,7 @@
 > 首先，`new` 的方式优先级最高，接下来是 `bind` 这些函数，然后是 `obj.foo()` 这种调用方式，最后是 `foo`
 > 这种调用方式，同时，箭头函数的 `this` 一旦被绑定，就不会再被任何方式所改变。
 
-![image.png](/images/s_poetries_work_gitee_2020_07_2.png)
+![image.png](/images/s_poetries_work_gitee_2020_07_2.webp)
 
 **总结**
 

@@ -113,7 +113,7 @@ render`)是由组件的更新开始的，因为在框架的使用层面开发者
 语句，其核心原则是：**如果类型不同，则直接调用`replaceVNode` 函数使用新的 `VNode` 替换旧的
 `VNode`，否则根据不同的类型调用与之相符的比对函数**，如下图所示：
 
-![](/images/s_poetries_work_uploads_2024_02_0fb891a8c939750a.png)
+![](/images/s_poetries_work_uploads_2024_02_0fb891a8c939750a.webp)
 
 ## 替换 VNode
 
@@ -1006,12 +1006,12 @@ window)](https://codesandbox.io/s/lpm17161m)
 
 以上我们讲解并实现了当旧的 `children` 类型为单个子节点时，所有情况下的更新操作，可以用一张图来总结，如下：
 
-![](/images/s_poetries_work_uploads_2024_02_9d80fe7de09592dc.png)
+![](/images/s_poetries_work_uploads_2024_02_9d80fe7de09592dc.webp)
 
 类似的，当旧的 `children` 类型为 `ChildrenFlags.NO_CHILDREN`，即没有子节点时，新的 `children`
 依然可能有三种情况，我们也可以用一张图来表示：
 
-![](/images/s_poetries_work_uploads_2024_02_1ce999b58fbe87ce.png)
+![](/images/s_poetries_work_uploads_2024_02_1ce999b58fbe87ce.webp)
 
 我们来解释一下上图的操作：
 
@@ -1100,7 +1100,7 @@ window)](https://codesandbox.io/s/62x41myyrz)
 
 现在对于旧的 `children` 类型来说，我们只剩下最后一种情况没有处理了，就是当旧的 `children` 类型为多个子节点时，同样的我们来画一张图：
 
-![](/images/s_poetries_work_uploads_2024_02_7cb972d068b2d405.png)
+![](/images/s_poetries_work_uploads_2024_02_7cb972d068b2d405.webp)
 
 如上图所示，当旧的 `children` 类型为多个子节点时，新的 `children` 类型有三种情况，不同的情况采用不同的操作：
 

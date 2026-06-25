@@ -27,7 +27,7 @@
   * 全局上下文（`script` 标签）被推入调用栈，同步代码执行。在执行的过程中，通过对一些接口的调用，可以产生新的 `macro-task` 与 `micro-task`，它们会分别被推入各自的任务队列里。同步代码执行完了，`script` 脚本会被移出 `macro` 队列，**这个过程本质上是队列的 macro-task 的执行和出队的过程** 。
   * 上一步我们出队的是一个 `macro-task`，这一步我们处理的是 `micro-task`。但需要注意的是：当 `macro-task` 出队时，任务是**一个一个** 执行的；而 `micro-task` 出队时，任务是**一队一队** 执行的（如下图所示）。因此，我们处理 `micro` 队列这一步，会逐个执行队列中的任务并把它出队，直到队列被清空。
 
-![](/images/s_poetries_work_gitee_2020_07_performance_39.png)
+![](/images/s_poetries_work_gitee_2020_07_performance_39.webp)
 
   * **执行渲染操作，更新界面** （敲黑板划重点）。
   * 检查是否存在 `Web worker` 任务，如果有，则对其进行处理 。
@@ -35,7 +35,7 @@
 
 我们总结一下，每一次循环都是一个这样的过程：
 
-![](/images/s_poetries_work_gitee_2020_07_performance_40.png)
+![](/images/s_poetries_work_gitee_2020_07_performance_40.webp)
 
 ### 渲染的时机
 

@@ -19,7 +19,7 @@
 
 可以把执行栈认为是一个存储函数调用的栈结构，遵循先进后出的原则
 
-![](/images/s_poetries_work_gitee_2020_09_102.png)
+![](/images/s_poetries_work_gitee_2020_09_102.webp)
 
 > 当开始执行 `JS` 代码时，首先会执行一个 `main`
 > 函数，然后执行我们的代码。根据先进后出的原则，后执行的函数会先弹出栈，在图中我们也可以发现，`foo` 函数后执行，当执行完毕后就从栈中弹出了
@@ -35,7 +35,7 @@
     bar()
 ```
 
-![](/images/s_poetries_work_gitee_2020_07_fe_2.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_2.webp)
 
 > 大家可以在上图清晰的看到报错在 `foo` 函数，`foo` 函数又是在 `bar` 函数中调用的
 
@@ -47,7 +47,7 @@
     bar()
 ```
 
-![](/images/s_poetries_work_gitee_2020_07_fe_1.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_1.webp)
 
 ### 12.3 浏览器中的 Event Loop
 
@@ -60,7 +60,7 @@
 
   * `JS` 在执行的过程中会产生执行环境，这些执行环境会被顺序的加入到执行栈中。如果遇到异步的代码，会被挂起并加入到 `Task`（有多种 `task`） 队列中。一旦执行栈为空，`Event Loop` 就会从 `Task` 队列中拿出需要执行的代码并放入执行栈中执行，所以本质上来说 `JS` 中的异步还是同步行为 
 
-![](/images/s_poetries_work_gitee_2020_07_fe_4.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_4.webp)
 ```js
     console.log('script start');
     
@@ -235,4 +235,4 @@
 
 > 对于 `microtask` 来说，它会在以上每个阶段完成前清空 `microtask` 队列，下图中的 `Tick` 就代表了 `microtask`
 
-![](/images/s_poetries_work_gitee_2020_07_fe_5.png)
+![](/images/s_poetries_work_gitee_2020_07_fe_5.webp)

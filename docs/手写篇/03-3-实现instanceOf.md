@@ -10,7 +10,7 @@
     * 如果 当前实例的原型链`__proto__`上找到了当前类的原型`prototype`，则返回 `true`
     * 如果 一直找到`Object.prototype.__proto__ == null`，`Object`的基类(`null`)上面都没找到，则返回 `false`
 
-![](/images/s_poetries_work_uploads_2023_02_5c6bd3977e62de20.png)
+![](/images/s_poetries_work_uploads_2023_02_5c6bd3977e62de20.webp)
 ```js
     // 实例.__ptoto__ === 构造函数.prototype
     function _instanceof(instance, classOrFunc) {

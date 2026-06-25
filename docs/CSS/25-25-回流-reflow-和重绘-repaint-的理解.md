@@ -11,7 +11,7 @@
 
 具体的浏览器解析渲染机制如下所示：
 
-![](/images/s_poetries_work_uploads_2022_09_b3fc0062bac6f0ff.png)
+![](/images/s_poetries_work_uploads_2022_09_b3fc0062bac6f0ff.webp)
 
   * 解析HTML，生成`DOM`树，解析`CSS`，生成`CSSOM`树
   * 将`DOM`树和`CSSOM`树结合，生成渲染树(`Render Tree`)

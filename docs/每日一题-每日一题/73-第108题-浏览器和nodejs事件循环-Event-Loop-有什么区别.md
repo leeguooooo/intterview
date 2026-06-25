@@ -17,7 +17,7 @@
     * 微任务在`页面渲染之前`执行
     * 也就是微任务在下一轮`DOM`渲染之前执行，宏任务在`DOM`渲染之后执行
 
-![](/images/s_poetries_work_uploads_2023_01_fe5986f609f48612.png)
+![](/images/s_poetries_work_uploads_2023_01_fe5986f609f48612.webp)
 ```js
     console.log('start')
     setTimeout(() => { 
@@ -89,7 +89,7 @@
     </script>
 ```
 
-![](/images/s_poetries_work_uploads_2023_01_4ad9b7d93fa9ad2b.png)
+![](/images/s_poetries_work_uploads_2023_01_4ad9b7d93fa9ad2b.webp)
 
 ### nodejs中的事件循环
 
@@ -117,7 +117,7 @@
   * 执行微任务（`process.nextTick`优先级最高）
   * 按顺序执行6个类型的宏任务（每个开始之前都执行当前的微任务）
 
-![](/images/s_poetries_work_uploads_2023_01_0e07c6f647f1a3c5.png)
+![](/images/s_poetries_work_uploads_2023_01_0e07c6f647f1a3c5.webp)
 
 **总结**
 

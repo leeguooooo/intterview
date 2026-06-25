@@ -7,7 +7,7 @@
 > `Computed`本质是一个具备缓存的`watcher`，依赖的属性发生变化就会更新视图。
 > 适用于计算比较消耗性能的计算场景。当表达式过于复杂时，在模板中放入过多逻辑会让模板难以维护，可以将复杂的逻辑放入计算属性中处理
 
-![](/images/s_poetries_work_gitee_2020_01_25.png)
+![](/images/s_poetries_work_gitee_2020_01_25.webp)
 ```jsx
     <template>{{fullName}}</template>
     export default {
@@ -30,7 +30,7 @@
 >
 > `Watch`没有缓存性，更多的是观察的作用，可以监听某些数据执行回调。当我们需要深度监听对象中的属性时，可以打开`deep：true`选项，这样便会对对象中的每一项进行监听。这样会带来性能问题，优化的话可以使用字符串形式监听，如果没有写到组件中，不要忘记使用`unWatch`手动注销
 
-![](/images/s_poetries_work_gitee_2020_01_26.png)
+![](/images/s_poetries_work_gitee_2020_01_26.webp)
 ```js
     <template>{{fullName}}</template>
     export default {
@@ -202,7 +202,7 @@
     }
 ```
 
-![](/images/s_poetries_work_uploads_2022_08_a263c317b0cb2793.png)
+![](/images/s_poetries_work_uploads_2022_08_a263c317b0cb2793.webp)
 
 ### vue3中 watch、watchEffect区别
 
@@ -258,8 +258,8 @@
     </script>
 ```
 
-![](/images/s_poetries_work_uploads_2022_08_99d5a09b368aeaa7.png)
-![](/images/s_poetries_work_uploads_2022_08_c098258e10bbeccf.png)
+![](/images/s_poetries_work_uploads_2022_08_99d5a09b368aeaa7.webp)
+![](/images/s_poetries_work_uploads_2022_08_c098258e10bbeccf.webp)
 
 改造一下代码
 ```js
@@ -270,7 +270,7 @@
     })
 ```
 
-![](/images/s_poetries_work_uploads_2022_08_41a0ee2dc000ecc3.png)
+![](/images/s_poetries_work_uploads_2022_08_41a0ee2dc000ecc3.webp)
 ```js
     watchEffect(()=>{
       console.log('触发了watchEffect');
@@ -278,7 +278,7 @@
     })
 ```
 
-![](/images/s_poetries_work_uploads_2022_08_0277951e96a40117.png)
+![](/images/s_poetries_work_uploads_2022_08_0277951e96a40117.webp)
 
 稍微改造一下
 ```js
@@ -291,7 +291,7 @@
     })
 ```
 
-![](/images/s_poetries_work_uploads_2022_08_f959357382b9935a.png)
+![](/images/s_poetries_work_uploads_2022_08_f959357382b9935a.webp)
 
 **再看一下watch的代码，验证一下**
 ```js
@@ -310,13 +310,13 @@
     })
 ```
 
-![](/images/s_poetries_work_uploads_2022_08_c5ec33f5f3b8b6a1.png)
+![](/images/s_poetries_work_uploads_2022_08_c5ec33f5f3b8b6a1.webp)
 
   * 监控整个`reactive`对象，从上面的图可以看到 `deep` 实际默认是开启的，就算我们设置为`false`也还是无效。而且旧值获取不到。
   * 要获取旧值则需要监控对象的属性，也就是监听一个`getter`，看下图
 
-![](/images/s_poetries_work_uploads_2022_08_f3bbb272dee1d73c.png)
-![](/images/s_poetries_work_uploads_2022_08_6a6bba3d39dbdc6f.png)
+![](/images/s_poetries_work_uploads_2022_08_f3bbb272dee1d73c.webp)
+![](/images/s_poetries_work_uploads_2022_08_6a6bba3d39dbdc6f.webp)
 
 **总结**
 

@@ -94,11 +94,11 @@
     }
 ```
 
-![img](/images/s_poetries_work_gitee_2019_10_466.png)
+![img](/images/s_poetries_work_gitee_2019_10_466.webp)
 
   * 上图表达的是 `redux` 中一个简单的同步数据流动的场景，点击`button` 后，在回调中 `dispatch` 一个 `action`，`reducer` 收到`action` 后，更新 `state` 并通知 `view` 重新渲染
 
-![img](/images/s_poetries_work_gitee_2019_10_467.png)
+![img](/images/s_poetries_work_gitee_2019_10_467.webp)
 
   * 上面这张图展示了应用
 ```javascript

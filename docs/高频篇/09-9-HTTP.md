@@ -177,7 +177,7 @@
         * 未命中强制缓存，会带上`If-Modified-Since` `If-None-Match`，服务器根据这两个值判断是否命中协商缓存
         * 命中协商缓存，返回`304`，浏览器直接从缓存中读取资源
         * 未命中协商缓存，返回`200`，浏览器重新请求资源
-      * **强制缓存的流程图** ![](/images/s_poetries_work_uploads_2023_02_cf357b148b63c080.png) ![](/images/s_poetries_work_uploads_2023_02_c64e9237d005100c.png)
+      * **强制缓存的流程图** ![](/images/s_poetries_work_uploads_2023_02_cf357b148b63c080.webp) ![](/images/s_poetries_work_uploads_2023_02_c64e9237d005100c.webp)
     * **协商缓存**
       * 服务端缓存策略
       * 服务端判断客户端资源，是否和服务端资源一样
@@ -186,12 +186,12 @@
         * 在`Response Headers`中，有两种
         * `Last-Modified`和`Etag`会优先使用`Etag`，`Last-Modified`只能精确到秒级，如果资源被重复生成而内容不变，则`Etag`更准确
         * `Last-Modified` 服务端返回的资源的最后修改时间 
-          * `If-Modified-Since` 客户端请求时，携带的资源的最后修改时间（即`Last-Modified`的值） ![](/images/s_poetries_work_uploads_2023_02_282933521c137ef6.png)
+          * `If-Modified-Since` 客户端请求时，携带的资源的最后修改时间（即`Last-Modified`的值） ![](/images/s_poetries_work_uploads_2023_02_282933521c137ef6.webp)
         * `Etag`服务端返回的资源的唯一标识（一个字符串，类似指纹） 
-          * `If-None-Matche` 客户端请求时，携带的资源的唯一标识（即`Etag`的值） ![](/images/s_poetries_work_uploads_2023_02_5410537fc2ebf124.png)
-        * **Headers示例** ![](/images/s_poetries_work_uploads_2023_02_704949dd8a110763.png)
-        * **请求示例** 通过`Etag`或`Last-Modified`命中缓存，没有返回资源，返回`304`，体积非常小 ![](/images/s_poetries_work_uploads_2023_02_8aa4cc91818455d9.png)
-    * **HTTP缓存总结** ![](/images/s_poetries_work_uploads_2023_02_e808802f780e55c9.png)
+          * `If-None-Matche` 客户端请求时，携带的资源的唯一标识（即`Etag`的值） ![](/images/s_poetries_work_uploads_2023_02_5410537fc2ebf124.webp)
+        * **Headers示例** ![](/images/s_poetries_work_uploads_2023_02_704949dd8a110763.webp)
+        * **请求示例** 通过`Etag`或`Last-Modified`命中缓存，没有返回资源，返回`304`，体积非常小 ![](/images/s_poetries_work_uploads_2023_02_8aa4cc91818455d9.webp)
+    * **HTTP缓存总结** ![](/images/s_poetries_work_uploads_2023_02_e808802f780e55c9.webp)
   * **刷新操作方式，对缓存的影响**
     * 正常操作：地址栏输入`url`，跳转链接，前进后退
     * 手动操作：`F5`，点击刷新，右键菜单刷新
@@ -239,7 +239,7 @@
   * 先发起一个`HTTP`请求
   * 成功之后在升级到`WebSocket`协议，再通讯
 
-![](/images/s_poetries_work_uploads_2023_01_6772692df973c752.png)
+![](/images/s_poetries_work_uploads_2023_01_6772692df973c752.webp)
 
 **WebSocket和HTTP区别**
 
@@ -343,8 +343,8 @@
   * `Server`发包，`Client`接收。`Client`就知道`Server`已经传输完成了，可以关闭连接了
   * `Client`发包，`Server`接收。`Server`就知道`Client`已经关闭了，`Server`可以关闭连接了
 
-![](/images/s_poetries_work_uploads_2023_01_4c1465795bc8f0c2.png)
-![](/images/s_poetries_work_uploads_2023_01_0b9d0fa902d5bf1c.png)
+![](/images/s_poetries_work_uploads_2023_01_4c1465795bc8f0c2.webp)
+![](/images/s_poetries_work_uploads_2023_01_0b9d0fa902d5bf1c.webp)
 
 ### HTTP跨域请求时为什么要发送options请求
 
@@ -379,7 +379,7 @@
 
 **多余的options请求**
 
-![](/images/s_poetries_work_uploads_2023_01_8137dab52f536f6d.png)
+![](/images/s_poetries_work_uploads_2023_01_8137dab52f536f6d.webp)
 
   * `options`是跨域请求之前的预检查
   * 浏览器自行发起的，无需我们干预
@@ -410,7 +410,7 @@
   * `session`在服务端，存储用户详细信息，和`cookie`信息一一对应
   * `cookie+session`是常见的登录验证解决方案
 
-![](/images/s_poetries_work_uploads_2023_01_bea409a27a4e9ad2.png)
+![](/images/s_poetries_work_uploads_2023_01_bea409a27a4e9ad2.webp)
 ```js
     // 登录：用户名 密码
     // 服务端set-cookie: userId=x1 把用户id传给浏览器存储在cookie中
@@ -478,7 +478,7 @@
     * 用户访问`B`系统，`B`系统没有登录，重定向到`SSO`获取`token`（由于`SSO`已经登录了，不需要重新登录认证，之前在`A`系统登录过）,拿着`token`去`B`系统，`B`系统拿着`token`去`SSO`里面换取用户信息
     * 整个所有用户的登录、用户信息的保存、用户的`token`验证，全部都在`SSO`第三方独立的服务中处理
 
-![](/images/s_poetries_work_uploads_2023_01_428ac761b592fbc1.png)
+![](/images/s_poetries_work_uploads_2023_01_428ac761b592fbc1.webp)
 
 ### 什么是HTTPS中间人攻击，如何预防（HTTPS加密过程、原理）
 
@@ -507,7 +507,7 @@
   6. 服务端拿私钥解密随机码`KEY`，使用随机码`KEY` 对传输数据进行对称加密
   7. 把对称加密后的内容传输给客户端，客户端使用之前生成的随机码`KEY`进行解密数据
 
-![](/images/s_poetries_work_uploads_2023_01_dd8c1b843050ec62.png)
+![](/images/s_poetries_work_uploads_2023_01_dd8c1b843050ec62.webp)
 
 **介绍下https中间人攻击的过程**
 
@@ -528,11 +528,11 @@
 > 简单来说，中间人攻击中，中间人首先伪装成服务端和客户端通信，然后又伪装成客户端和服务端进行通信（如图）。
 > 整个过程中，由于缺少了证书的验证过程，虽然使用了`https`，但是传输的数据已经被监听，客户端却无法得知
 
-![](/images/s_poetries_work_gitee_2020_03_1.png)
-![](/images/s_poetries_work_uploads_2023_01_d007d70173797c88.png)
+![](/images/s_poetries_work_gitee_2020_03_1.webp)
+![](/images/s_poetries_work_uploads_2023_01_d007d70173797c88.webp)
 
 **预防中间人攻击**
 
 > 使用正规厂商的证书，慎用免费的
 
-![](/images/s_poetries_work_uploads_2023_01_8cb095d80e81cb18.png)
+![](/images/s_poetries_work_uploads_2023_01_8cb095d80e81cb18.webp)

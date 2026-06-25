@@ -264,7 +264,7 @@ state，因此它还有一个别名叫“无状态组件”。
 
 为什么要这样做？别忘了，React 的核心特征是“数据驱动视图”，我们经常用下图的公式来表达它的工作模式：
 
-![](/images/s_poetries_work_images_20210428220645.png)
+![](/images/s_poetries_work_images_20210428220645.webp)
 
 因此对一个 React 组件来说，它做的事情说到底无外乎是这两件：
 

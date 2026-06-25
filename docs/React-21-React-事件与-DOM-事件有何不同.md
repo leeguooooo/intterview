@@ -13,7 +13,7 @@
   * 目标阶段
   * 事件冒泡阶段
 
-![](/images/s_poetries_work_images_20210429165934.png)
+![](/images/s_poetries_work_images_20210429165934.webp)
 
 当事件被触发时，`首先经历的是一个捕获过程`：事件会从最外层的元素开始“穿梭”，逐层“穿梭”到最内层元素，这个过程会持续到事件抵达它目标的元素（也就是真正触发这个事件的元素）为止；此时事件流就切换到了“目标阶段”——事件被目标元素所接收；然后事件会被“回弹”，进入到冒泡阶段——它会沿着来时的路“逆流而上”，一层一层再走回去。
 
@@ -108,11 +108,11 @@ e.target，就相当于拿到了真正触发事件的那个元素。拿到这个
 虽然合成事件并不是原生 DOM 事件，但它保存了原生 DOM 事件的引用。当你需要访问原生 DOM 事件对象时，可以通过合成事件对象的
 `e.nativeEvent` 属性获取到它，如下图所示
 
-![](/images/s_poetries_work_images_20210429171107.png)
+![](/images/s_poetries_work_images_20210429171107.webp)
 
 `e.nativeEvent` 将会输出 `MouseEvent` 这个原生事件，如下图所示：
 
-![](/images/s_poetries_work_images_20210429171144.png)
+![](/images/s_poetries_work_images_20210429171144.webp)
 
 到这里，大家就对 React 事件系统的基本原理，包括合成事件的基本概念有了一定的了解。接下来，我们将在此基础上结合 React
 源码和调用栈，对事件系统的工作流进行深入的拆解。
@@ -132,11 +132,11 @@ e.target，就相当于拿到了真正触发事件的那个元素。拿到这个
 其中“为 DOM 节点 **设置属性”** 这个环节，会遍历 `FiberNode` 的 `props key`。当遍历到事件相关的 `props`
 时，就会触发事件的注册链路。整个过程涉及的函数调用栈如下图所示：
 
-![](/images/s_poetries_work_images_20210429171344.png)
+![](/images/s_poetries_work_images_20210429171344.webp)
 
 这些函数之间是如何各司其职、打好“配合”的呢？请看下面这张工作流大图：
 
-![](/images/s_poetries_work_images_20210429171402.png)
+![](/images/s_poetries_work_images_20210429171402.webp)
 
 > 从图中可以看出，事件的注册过程是由 `ensureListeningTo` 函数开启的。在 `ensureListeningTo` 中，会尝试获取当前
 > DOM 结构中的根节点（这里指的是 `document 对象`），然后通过调用 `legacyListenToEvent`，将统一的事件监听函数注册到
@@ -147,7 +147,7 @@ e.target，就相当于拿到了真正触发事件的那个元素。拿到这个
 直译过来是“监听顶层的事件”，这里的“顶层”就可以理解为事件委托的最上层，也就是 `document` 节点。在
 `legacyListenToTopLevelEvent` 中，有这样一段逻辑值得我们注意，请看下图：
 
-![](/images/s_poetries_work_images_20210429171554.png)
+![](/images/s_poetries_work_images_20210429171554.webp)
 
 `listenerMap` 是在 `legacyListenToEvent` 里创建/获取的一个数据结构，它将记录当前 `document`
 已经监听了哪些事件。在 `legacyListenToTopLevelEvent` 逻辑的起点，会首先判断
@@ -156,7 +156,7 @@ e.target，就相当于拿到了真正触发事件的那个元素。拿到这个
 这里插播一个小的前置知识：`topLevelType` 在 `legacyListenToTopLevelEvent`
 的函数上下文中代表事件的类型，比如说我尝试监听的是一个点击事件，那么 `topLevelType` 的值就会是 `click`，如下图所示：
 
-![](/images/s_poetries_work_images_20210429171638.png)
+![](/images/s_poetries_work_images_20210429171638.webp)
 
 若事件系统识别到 `listenerMap.has(topLevelType) 为 true`，也就是当前这个事件 `document`
 已经监听过了，那么就会直接跳过对这个事件的处理，否则才会进入具体的事件监听逻辑。如此一来，`即便我们在 React
@@ -165,22 +165,22 @@ e.target，就相当于拿到了真正触发事件的那个元素。拿到这个
 为什么针对同一个事件，即便可能会存在多个回调，document 也只需要注册一次监听？因为 `React最终注册到 document 上的并不是某一个
 DOM 节点上对应的具体回调逻辑，而是一个统一的事件分发函数`。这里我将断点打在事件监听函数的绑定动作上，请看下图：
 
-![](/images/s_poetries_work_images_20210429171744.png)
+![](/images/s_poetries_work_images_20210429171744.webp)
 
 在这段逻辑中，`element` 就是 `document` 这个 `DOM` 元素，如下图所示，它在 `legacyListenToEvent`
 阶段被获取后，又被层层的逻辑传递到了这个位置。
 
-![](/images/s_poetries_work_images_20210429171811.png)
+![](/images/s_poetries_work_images_20210429171811.webp)
 
 `addEventListener` 就更不用多说了，它是原生 DOM 里专门用来注册事件监听器的接口。我们真正需要关注的是图中这个函数的前两个入参，首先看
 `eventType`，它表示事件的类型，这里我监听的是一个点击事件，因此 `eventType` 就是 `click`（见下图的运行时输出结果）。
 
-![](/images/s_poetries_work_images_20210429171835.png)
+![](/images/s_poetries_work_images_20210429171835.webp)
 
 重点在 `listener` 上，前面刚说过，最终注册到 `document` 上的是一个统一的事件分发函数，这个函数到底长啥样？我们来看看，以下是运行时的
 listener 输出结果：
 
-![](/images/s_poetries_work_images_20210429171910.png)
+![](/images/s_poetries_work_images_20210429171910.webp)
 
 可以看到，`listener 本体是一个名为 dispatchDiscreteEvent 的函数`。事实上，根据情况的不同，`listener` 可能是以下
 3 个函数中的任意一个：
@@ -201,7 +201,7 @@ listener 输出结果：
 > 事件触发的本质是对 `dispatchEvent` 函数的调用。由于
 > `dispatchEvent`触发的调用链路较长，中间涉及的要素也过多，因此我们这里不再逐个跟踪函数的调用栈，直接来看核心工作流，请看下图：
 
-![](/images/s_poetries_work_images_20210429172119.png)
+![](/images/s_poetries_work_images_20210429172119.webp)
 
 工作流中前三步我们在前面都有所提及，对你来说相对难以理解的应该是 4、5、6 这三步，这三步也是我们接下来讲解的重点。
 
@@ -229,14 +229,14 @@ listener 输出结果：
 
 这个组件对应的界面如下图所示：
 
-![](/images/s_poetries_work_images_20210429172531.png)
+![](/images/s_poetries_work_images_20210429172531.webp)
 
 界面中渲染出来的是一行数字文本和一个按钮，每点击一下按钮，数字文本会 +1。在 JSX 结构中，监听点击事件的除了 button 按钮外，还有 id 为
 container 的 div 元素，这个 div 元素同时监听了点击事件的冒泡和捕获。
 
 App 组件对应的 Fiber 树结构如下图所示：
 
-![](/images/s_poetries_work_images_20210429172652.png)
+![](/images/s_poetries_work_images_20210429172652.webp)
 
 接下来我们借助这张 Fiber 树结构图来理解事件回调的收集过程。
 
@@ -279,12 +279,12 @@ Fiber 节点类型。此处限制 `tag===HostComponent`，也就是说只收集 
 将这个过程对应到 Demo 示例的 Fiber 树中来看，button 节点是事件触发的起点，在它的父节点中，符合
 `tag===HostComponent` 这个条件的只有 `div#container` 和 `div.App`（即下图高亮处）。
 
-![](/images/s_poetries_work_images_20210429174119.png)
+![](/images/s_poetries_work_images_20210429174119.webp)
 
 因此最后收集上来的 path 数组内容就是 `div#container`、`div.App` 及 `button` 节点自身（button
 节点别忘了，它是 while 循环的起点，一开始就会被推进 path 数组），如下图所示：
 
-![](/images/s_poetries_work_images_20210429174151.png)
+![](/images/s_poetries_work_images_20210429174151.webp)
 
 **2\. 模拟事件在捕获阶段的传播顺序，收集捕获阶段相关的节点实例与回调函数**
 
@@ -315,7 +315,7 @@ SyntheticEvent._dispatchListeners。
 接下来仍然是以 Demo 为例，我们来看看 button 上触发的点击事件对应的 SyntheticEvent 对象上的
 _dispatchInstances 和 _dispatchListeners 各是什么内容，请看下图：
 
-![](/images/s_poetries_work_images_20210429174431.png)
+![](/images/s_poetries_work_images_20210429174431.webp)
 
 > 可以看出，_dispatchInstances 和 _dispatchListeners
 > 两个数组中的元素是严格的一一对应关系，这确保了在回调的执行阶段，我们可以简单地通过索引来将实例与监听函数关联起来，实现事件委托的效果。同时，`两个数组中元素的排序，完美地契合了

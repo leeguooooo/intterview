@@ -108,11 +108,11 @@ JS 文件路径。
 完成配置之后，我们就可以打开命令行终端，运行 Webpack
 打包，那此次打包会有两个入口。打包完成后，我们找到输出目录，这里就能看到两个入口文件各自的打包结果了，如下图所示：
 
-![](/images/s_poetries_work_images_20210503215543.png)
+![](/images/s_poetries_work_images_20210503215543.webp)
 
 但是这里还有一个小问题，我们打开任意一个输出的 HTML 文件，具体结果如下图：
 
-![](/images/s_poetries_work_images_20210503215550.png)
+![](/images/s_poetries_work_images_20210503215550.webp)
 
 你就会发现 index 和 album 两个打包结果都被页面载入了，而我们希望的是每个页面只使用它对应的那个输出结果。
 
@@ -154,7 +154,7 @@ chunk，具体配置如下：
 
 完成以后我们再次回到命令行终端，然后运行打包，打包结果如下图：
 
-![](/images/s_poetries_work_images_20210503215602.png)
+![](/images/s_poetries_work_images_20210503215602.webp)
 
 这一次打包的结果就完全正常了。
 
@@ -196,7 +196,7 @@ chunk，具体配置如下：
 
 完成以后我们打开命令行终端，再次运行 Webpack 打包，打包结果如下图：
 
-![](/images/s_poetries_work_images_20210503215612.png)
+![](/images/s_poetries_work_images_20210503215612.webp)
 
 此时在我们的 dist 下就会额外生成一个 JS 文件，在这个文件中就是 index 和 album 中公共的模块部分了。
 
@@ -215,7 +215,7 @@ Webpack 中支持使用动态导入的方式实现模块的按需加载，而且
 
 接下来，我们具体来看如何使用动态导入特性，这里我已经设计了一个可以发挥按需加载作用的场景，具体效果如下图所示：
 
-![](/images/s_poetries_work_images_20210503215627.png)
+![](/images/s_poetries_work_images_20210503215627.webp)
 
 在这个应用的主体区域，如果我们访问的是首页，它显示的是一个文章列表，如果我们访问的是相册页，它显示的就是相册列表。
 
@@ -327,13 +327,13 @@ name>'`，这样就可以给分包的 chunk 起名字了。
 
 完成过后，我们再次打开命令行终端，运行 Webpack 打包，那此时我们生成 bundle 的 name 就会使用刚刚注释中提供的名称了，具体结果如下：
 
-![](/images/s_poetries_work_images_20210503215647.png)
+![](/images/s_poetries_work_images_20210503215647.webp)
 
 除此之外，魔法注释还有个特殊用途：如果你的 `<chunk-name>` 相同的话，那相同的 `<chunk-name>`
 最终就会被打包到一起，例如我们这里可以把这两个 `<chunk-name>` 都设置为
 components，然后再次运行打包，那此时这两个模块都会被打包到一个文件中，具体操作如下图所示：
 
-![](/images/s_poetries_work_images_20210503215654.png)
+![](/images/s_poetries_work_images_20210503215654.webp)
 
 借助这个特点，你就可以根据自己的实际情况，灵活组织动态加载的模块了。
 

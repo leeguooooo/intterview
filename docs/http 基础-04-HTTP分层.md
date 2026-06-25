@@ -1,6 +1,6 @@
 原文链接: [https://interview.poetries.top/fe-base-docs/http-protocol/base/04-HTTP%E5%88%86%E5%B1%82.html](https://interview.poetries.top/fe-base-docs/http-protocol/base/04-HTTP%E5%88%86%E5%B1%82.html)
 
-![](/images/s_poetries_work_gitee_2019_12_4.png)
+![](/images/s_poetries_work_gitee_2019_12_4.webp)
 
   * 第一层：物理层，`TCP/IP` 里无对应；
   * 第二层：数据链路层，对应 `TCP/IP` 的链接层；
@@ -19,7 +19,7 @@
 >
 > 有一个辨别四层和七层比较好的（但不是绝对的）小窍门，“两个凡是”：凡是由操作系统负责处理的就是四层或四层以下，否则，凡是需要由应用程序（也就是你自己写代码）负责处理的就是七层
 
-![](/images/s_poetries_work_gitee_2019_12_93.png)
+![](/images/s_poetries_work_gitee_2019_12_93.webp)
 
 阅读全文
 

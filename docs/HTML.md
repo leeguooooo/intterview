@@ -168,7 +168,7 @@
   * `defer`:浏览器指示脚本在文档被解析后执行，`script`被异步加载后并不会立刻执行，而是等待文档被解析完毕后执行。
   * `async`:同样是异步加载脚本，区别是脚本加载完毕后立即执行，这导致`async`属性下的脚本是乱序的，对于 `script` 有先后依赖关系的情况，并不适用
 
-![](/images/s_poetries_work_images_20210314221335.png)
+![](/images/s_poetries_work_images_20210314221335.webp)
 
 > 蓝色线代表网络读取，红色线代表执行时间，这俩都是针对脚本的;绿色线代表 HTML 解析
 
@@ -523,7 +523,7 @@
   * `Node`是`Element`的基类
   * `Element`是其他HTML元素的基类，如`HTMLDivElement`、`HTMLImageElement`等
 
-![](/images/s_poetries_work_uploads_2023_01_ede61848ee4d078c.png)
+![](/images/s_poetries_work_uploads_2023_01_ede61848ee4d078c.webp)
 
   * `HTMLCollection`是`Element`的集合
   * `NodeList`是`Node`的集合，包含`Text`和`Comment`节点

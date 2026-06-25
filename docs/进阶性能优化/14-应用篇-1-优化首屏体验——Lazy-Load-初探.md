@@ -14,16 +14,16 @@
 
 现在我们打开掘金首页：
 
-![](/images/s_poetries_work_gitee_2020_07_performance_42.png)
+![](/images/s_poetries_work_gitee_2020_07_performance_42.webp)
 
 大家留意一栏文章右侧可能会出现的图片，这里咱们给个特写：
 
-![](/images/s_poetries_work_gitee_2020_07_performance_43.png)
+![](/images/s_poetries_work_gitee_2020_07_performance_43.webp)
 
 大家现在以尽可能快的速度，疯狂向下拉动页面。发现什么？是不是发现我们图示的这个图片的位置，会出现闪动——有时候我们明明已经拉到目标位置了，文字也呈现完毕了，图片却慢半拍才显示出来。这是因为，掘金首页也采用了懒加载策略。当我们的页面并未滚动至包含图片的
 div 元素所在的位置时，它的样式是这样的：
 
-![](/images/s_poetries_work_gitee_2020_07_performance_44.png)
+![](/images/s_poetries_work_gitee_2020_07_performance_44.webp)
 
 我们把代码提出来看一下：
 ```html
@@ -39,12 +39,12 @@ div 元素所在的位置时，它的样式是这样的：
   * 我们注意到 `style` 内联样式中，背景图片设置为了 `none`。也就是说这个 `div` 是没有内容的，它只起到一个**占位** 的作用。
   * 这个“占位”的概念，在这个例子里或许体现得不够直观。最直观的应该是淘宝首页的 HTML Preview 效果：
 
-![](/images/s_poetries_work_gitee_2020_07_performance_45.png)
+![](/images/s_poetries_work_gitee_2020_07_performance_45.webp)
 
   * 我们看到，这个还没来得及被图片填充完全的网页，是用大大小小的空 `div` 元素来占位的。掘金首页也是如此。
   * 一旦我们通过滚动使得这个 `div` 出现在了可见范围内，那么 `div` 元素的内容就会发生变化，呈现如下的内容：
 
-![](/images/s_poetries_work_gitee_2020_07_performance_46.png)
+![](/images/s_poetries_work_gitee_2020_07_performance_46.webp)
 
 我们给 `style` 一个特写：
 ```javascript
@@ -62,7 +62,7 @@ div 元素所在的位置时，它的样式是这样的：
 
 首先新建一个空项目，目录结构如下：
 
-![](/images/s_poetries_work_gitee_2020_07_performance_47.png)
+![](/images/s_poetries_work_gitee_2020_07_performance_47.webp)
 
   * 大家可以往 `images` 文件夹里塞入各种各样自己喜欢的图片。
   * 我们在 `index.html` 中，为这些图片预置 `img` 标签：
@@ -140,7 +140,7 @@ MDN 给出了非常清晰的解释：
 
 其中需要引起我们注意的就是 `left`、`top`、`right` 和 `bottom`，它们对应到元素上是这样的：
 
-![](/images/s_poetries_work_gitee_2020_07_performance_48.png)
+![](/images/s_poetries_work_gitee_2020_07_performance_48.webp)
 
 可以看出，`top` 属性代表了元素距离可视区域顶部的高度，正好可以为我们所用！
 

@@ -16,7 +16,7 @@
 
 借中国地图一角来给大家举一个简单的🌰：
 
-![](/images/s_poetries_work_gitee_2020_07_performance_24.png)
+![](/images/s_poetries_work_gitee_2020_07_performance_24.webp)
 
 假设我的根服务器在杭州，同时在图示的五个城市里都有自己可用的机房。
 
@@ -60,22 +60,22 @@ copy 这批资源呢？它会再向杭州的根服务器去要这个资源。在
 比如以淘宝为代表的阿里系产品，就遵循着这个“规定”。  
 打开淘宝首页，我们可以在 Network 面板中看到，“非纯静态”的 HTML 页面，是向业务服务器请求来的：
 
-![](/images/s_poetries_work_gitee_2020_07_performance_25.png)
+![](/images/s_poetries_work_gitee_2020_07_performance_25.webp)
 
 我们点击 preview，可以看到业务服务器确实是返回给了我们一个尚未被静态资源加持过的简单 HTML 页面，所有的图片内容都是先以一个 div 占位：
 
-![](/images/s_poetries_work_gitee_2020_07_performance_26.png)
+![](/images/s_poetries_work_gitee_2020_07_performance_26.webp)
 
 相应地，我们随便点开一个静态资源，可以看到它都是从 CDN 服务器上请求来的。
 
 比如说图片：
 
-![](/images/s_poetries_work_gitee_2020_07_performance_27.png)
+![](/images/s_poetries_work_gitee_2020_07_performance_27.webp)
 
 再比如 JS、CSS 文件：
 
-![](/images/s_poetries_work_gitee_2020_07_performance_28.png)
-![](/images/s_poetries_work_gitee_2020_07_performance_29.png)
+![](/images/s_poetries_work_gitee_2020_07_performance_28.webp)
+![](/images/s_poetries_work_gitee_2020_07_performance_29.webp)
 
 ### CDN 优化细节
 

@@ -714,13 +714,13 @@ Zepto 是一个轻量级的 JavaScript 库，旨在提供类似于 jQuery 的功
 
 ### 19 是否用过 jQuery 的 Deferred
 
-![](/images/s_poetries_work_gitee_2020_07_7.png)
-![](/images/s_poetries_work_gitee_2020_07_8.png)
-![](/images/s_poetries_work_gitee_2020_07_9.png)
-![](/images/s_poetries_work_gitee_2020_07_10.png)
-![](/images/s_poetries_work_gitee_2020_07_11.png)
-![](/images/s_poetries_work_gitee_2020_07_12.png)
-![](/images/s_poetries_work_gitee_2020_07_13.png)
-![](/images/s_poetries_work_gitee_2020_07_14.png)
-![](/images/s_poetries_work_gitee_2020_07_15.png)
-![](/images/s_poetries_work_gitee_2020_07_16.png)
+![](/images/s_poetries_work_gitee_2020_07_7.webp)
+![](/images/s_poetries_work_gitee_2020_07_8.webp)
+![](/images/s_poetries_work_gitee_2020_07_9.webp)
+![](/images/s_poetries_work_gitee_2020_07_10.webp)
+![](/images/s_poetries_work_gitee_2020_07_11.webp)
+![](/images/s_poetries_work_gitee_2020_07_12.webp)
+![](/images/s_poetries_work_gitee_2020_07_13.webp)
+![](/images/s_poetries_work_gitee_2020_07_14.webp)
+![](/images/s_poetries_work_gitee_2020_07_15.webp)
+![](/images/s_poetries_work_gitee_2020_07_16.webp)

@@ -48,7 +48,7 @@
 
   3. `vdom`如何生成？在vue中我们常常会为组件编写模板 - `template`， 这个模板会被编译器 - `compiler`编译为渲染函数，在接下来的挂载（`mount`）过程中会调用`render`函数，返回的对象就是虚拟`dom`。但它们还不是真正的`dom`，所以会在后续的`patch`过程中进一步转化为`dom`。
 
-![](/images/s_poetries_work_uploads_2022_08_8154cc1efc0aea96.png)
+![](/images/s_poetries_work_uploads_2022_08_8154cc1efc0aea96.webp)
 
   4. 挂载过程结束后，`vue`程序进入更新流程。如果某些响应式数据发生变化，将会引起组件重新`render`，此时就会生成新的`vdom`，和上一次的渲染结果`diff`就能得到变化的地方，从而转换为最小量的`dom`操作，高效更新视图
 
@@ -551,7 +551,7 @@
   * `Vue2`的核心`Diff`算法采用了`双端比较`的算法，同时从新旧`children`的两端开始进行比较，借助`key`值找到可复用的节点，再进行相关操作。相比`React`的`Diff`算法，同样情况下可以减少移动节点次数，减少不必要的性能损耗，更加的优雅
   * 在创建`VNode`时就确定其类型，以及在`mount/patch`的过程中采用位运算来判断一个`VNode`的类型，在这个基础之上再配合核心的`Diff`算法，使得性能上较`Vue2.x`有了提升
 
-![](/images/s_poetries_work_uploads_2022_08_15b3a98fc9f361d8.png)
+![](/images/s_poetries_work_uploads_2022_08_15b3a98fc9f361d8.webp)
 
 > vue3中采用最长递增子序列来实现`diff`优化
 
@@ -1037,47 +1037,47 @@
 
   1. 比较只会在同层级进行, 不会跨层级比较
 
-![](/images/s_poetries_work_uploads_2022_09_f29c33c806ecffb5.png)
+![](/images/s_poetries_work_uploads_2022_09_f29c33c806ecffb5.webp)
 
   2. 比较的过程中，循环从两边向中间收拢
 
-![](/images/s_poetries_work_uploads_2022_09_8121a9b6102e5377.png)
+![](/images/s_poetries_work_uploads_2022_09_8121a9b6102e5377.webp)
 
 下面举个`vue`通过`diff`算法更新的例子：
 
 新旧`VNode`节点如下图所示：
 
-![](/images/s_poetries_work_uploads_2022_09_78fa0e7847772ef5.png)
+![](/images/s_poetries_work_uploads_2022_09_78fa0e7847772ef5.webp)
 
 第一次循环后，发现旧节点D与新节点D相同，直接复用旧节点D作为`diff`后的第一个真实节点，同时旧节点`endIndex`移动到C，新节点的
 `startIndex` 移动到了 C
 
-![](/images/s_poetries_work_uploads_2022_09_4ddfc7e80cffdb80.png)
+![](/images/s_poetries_work_uploads_2022_09_4ddfc7e80cffdb80.webp)
 
 第二次循环后，同样是旧节点的末尾和新节点的开头(都是 C)相同，同理，`diff` 后创建了 C 的真实节点插入到第一次创建的 D 节点后面。同时旧节点的
 `endIndex` 移动到了 B，新节点的 `startIndex` 移动到了 E
 
-![](/images/s_poetries_work_uploads_2022_09_7fff25b5fa48acf4.png)
+![](/images/s_poetries_work_uploads_2022_09_7fff25b5fa48acf4.webp)
 
 第三次循环中，发现E没有找到，这时候只能直接创建新的真实节点 E，插入到第二次创建的 C 节点之后。同时新节点的 `startIndex` 移动到了
 A。旧节点的 `startIndex` 和 `endIndex` 都保持不动
 
-![](/images/s_poetries_work_uploads_2022_09_4a6aa4297e796b54.png)
+![](/images/s_poetries_work_uploads_2022_09_4a6aa4297e796b54.webp)
 
 第四次循环中，发现了新旧节点的开头(都是 A)相同，于是 `diff` 后创建了 A 的真实节点，插入到前一次创建的 E 节点后面。同时旧节点的
 `startIndex` 移动到了 B，新节点的`startIndex` 移动到了 B
 
-![](/images/s_poetries_work_uploads_2022_09_121fc9375e2537f6.png)
+![](/images/s_poetries_work_uploads_2022_09_121fc9375e2537f6.webp)
 
 第五次循环中，情形同第四次循环一样，因此 `diff` 后创建了 B 真实节点 插入到前一次创建的 A 节点后面。同时旧节点的
 `startIndex`移动到了 C，新节点的 startIndex 移动到了 F
 
-![](/images/s_poetries_work_uploads_2022_09_1c0782546f0e6e97.png)
+![](/images/s_poetries_work_uploads_2022_09_1c0782546f0e6e97.webp)
 
 新节点的 `startIndex` 已经大于 `endIndex` 了，需要创建 `newStartIdx` 和 `newEndIdx`
 之间的所有节点，也就是节点F，直接创建 F 节点对应的真实节点放到 B 节点后面
 
-![](/images/s_poetries_work_uploads_2022_09_94437bcc7fdc74ba.png)
+![](/images/s_poetries_work_uploads_2022_09_94437bcc7fdc74ba.webp)
 
 **3\. 原理分析**
 
@@ -1362,11 +1362,11 @@ A。旧节点的 `startIndex` 和 `endIndex` 都保持不动
   * `tag`不同则删掉重建（不在去比较内部细节）
   * 子节点通过`key`区分
 
-![](/images/s_poetries_work_uploads_2023_01_4c213c57e4a91c38.png)
+![](/images/s_poetries_work_uploads_2023_01_4c213c57e4a91c38.webp)
 
 **React diff仅右移动**
 
-![](/images/s_poetries_work_uploads_2023_01_8c436b7f707c2e0d.png)
+![](/images/s_poetries_work_uploads_2023_01_8c436b7f707c2e0d.webp)
 
 **Vue2 深度递归的方式 + 双指针的方式**
 
@@ -1379,7 +1379,7 @@ A。旧节点的 `startIndex` 和 `endIndex` 都保持不动
     * 优化比较：`头头`、`尾尾`、`头尾`、`尾头`
     * 比对查找进行复用
 
-![](/images/s_poetries_work_uploads_2023_01_b200d667af842b4d.png)
+![](/images/s_poetries_work_uploads_2023_01_b200d667af842b4d.webp)
 
 **Vue3中采用最长递增子序列实现diff算法**
 
@@ -1396,7 +1396,7 @@ A。旧节点的 `startIndex` 和 `endIndex` 都保持不动
 
 ### 请说明Vue中key的作用和原理，谈谈你对它的理解
 
-![](/images/s_poetries_work_gitee_2020_07_67.png)
+![](/images/s_poetries_work_gitee_2020_07_67.webp)
 
   * `key`是为`Vue`中的`VNode`标记的唯一`id`，在`patch`过程中通过`key`可以判断两个虚拟节点是否是相同节点，通过这个`key`，我们的`diff`操作可以更准确、更快速
   * `diff`算法的过程中,先会进行新旧节点的首尾交叉对比,当无法匹配的时候会用新节点的`key`与旧节点进行比对,然后检出差异
@@ -1441,7 +1441,7 @@ A。旧节点的 `startIndex` 和 `endIndex` 都保持不动
 > 如果不使用 `key`，`Vue` 会使用一种最大限度减少动态元素并且尽可能的尝试就地修改/复用相同类型元素的算法。`key` 是为 `Vue` 中
 > `vnode` 的唯一标记，通过这个 `key`，我们的 `diff` 操作可以更准确、更快速
 
-![](/images/s_poetries_work_uploads_2022_08_8c7511b8697e15ea.png)
+![](/images/s_poetries_work_uploads_2022_08_8c7511b8697e15ea.webp)
 
 >
 > diff程可以概括为：`oldCh`和`newCh`各有两个头尾的变量S`tartIdx`和`EndIdx`，它们的`2`个变量相互比较，一共有`4`种比较方式。如果`4`种比较都没匹配，如果设置了`key`，就会用`key`进行比较，在比较的过程中，变量会往中间靠，一旦`StartIdx>EndIdx`表明`oldCh`和`newCh`至少有一个已经遍历完了，就会结束比较,这四种比较方式就是`首`、`尾`、`旧尾新头`、`旧头新尾`

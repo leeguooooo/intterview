@@ -69,7 +69,7 @@ Body 却经常只有几十字节（比如 GET 请求、204/301/304
 这种做法有点像是“Chunked”分块编码的方式（参见第 16 讲），也是“化整为零”的思路，但 HTTP/2
 数据分帧后“Header+Body”的报文结构就完全消失了，协议看到的只是一个个的“碎片”。
 
-![](/images/s_poetries_work_gitee_2019_12_62.png)
+![](/images/s_poetries_work_gitee_2019_12_62.webp)
 
 ## 虚拟的“流”
 
@@ -84,7 +84,7 @@ Multiplexing）——多个往返通信都复用一个连接来处理。
 在“流”的层面上看，消息是一些有序的“帧”序列，而在“连接”的层面上看，消息却是乱序收发的“帧”。多个请求 /
 响应之间没有了顺序关系，不需要排队等待，也就不会再出现“队头阻塞”问题，降低了延迟，大幅度提高了连接的利用率
 
-![](/images/s_poetries_work_gitee_2019_12_63.png)
+![](/images/s_poetries_work_gitee_2019_12_63.webp)
 
 为了更好地利用连接，加大吞吐量，HTTP/2 还添加了一些控制帧来管理虚拟的“流”，实现了优先级和流量控制，这些特性也和 TCP 协议非常相似。
 
@@ -111,7 +111,7 @@ DES、RC4、CBC、SHA-1 都不能在 HTTP/2 里使用，相当于底层用的是
 下面的这张图对比了 HTTP/1、HTTPS 和 HTTP/2 的协议栈，你可以清晰地看到，HTTP/2
 是建立在“HPack”“Stream”“TLS1.2”基础之上的，比 HTTP/1、HTTPS 复杂了一些
 
-![](/images/s_poetries_work_gitee_2019_12_64.png)
+![](/images/s_poetries_work_gitee_2019_12_64.webp)
 
 虽然 HTTP/2 的底层实现很复杂，但它的“语义”还是简单的 HTTP/1，之前学习的知识不会过时，仍然能够用得上。
 
@@ -124,7 +124,7 @@ DES、RC4、CBC、SHA-1 都不能在 HTTP/2 里使用，相当于底层用的是
   * HTTP/2 使用虚拟的“流”传输消息，解决了困扰多年的“队头阻塞”问题，同时实现了“多路复用”，提高连接的利用率；
   * HTTP/2 也增强了安全性，要求至少是 TLS1.2，而且禁用了很多不安全的密码套件
 
-![](/images/s_poetries_work_gitee_2019_12_65.png)
+![](/images/s_poetries_work_gitee_2019_12_65.webp)
 
 阅读全文
 

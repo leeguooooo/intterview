@@ -2,7 +2,7 @@
 
 ## 源码结构
 
-![image-20210313232042704](/images/s_poetries_work_images_image_20210313232042704.png)
+![image-20210313232042704](/images/s_poetries_work_images_image_20210313232042704.webp)
 
 > 源码位置是在`packages`文件件内，实际上源码主要分为两部分，编译器和运行时环境
 
@@ -79,25 +79,25 @@
     <div>doubleCount: {{doubleCount}}</div>
 ```
 
-![](/images/s_poetries_work_images_20210314095454.png)
+![](/images/s_poetries_work_images_20210314095454.webp)
 
 ### **3\. 事件处理**
 ```javascript
     <div @click="add">count: {{ state.count }}</div>
 ```
 
-![](/images/s_poetries_work_images_20210314095527.png)
+![](/images/s_poetries_work_images_20210314095527.webp)
 
 ### **4\. 侦听器**
 
-![](/images/s_poetries_work_images_20210314095633.png)
+![](/images/s_poetries_work_images_20210314095633.webp)
 
 ### 5\. 引用对象:单个原始值响应化
 ```javascript
     <div>counter: {{ counter }}</div>
 ```
 
-![](/images/s_poetries_work_images_20210314095720.png)
+![](/images/s_poetries_work_images_20210314095720.webp)
 
 ### **6\. 体验逻辑组合**
 ```js
@@ -269,7 +269,7 @@
 
 添加对象类型递归
 
-![](/images/s_poetries_work_images_20210314101206.png)
+![](/images/s_poetries_work_images_20210314101206.webp)
 
 **2\. 避免重复代理**
 
@@ -302,7 +302,7 @@
 
 建立响应数据key和更新函数之间的对应关系。
 
-![](/images/s_poetries_work_images_20210314101447.png)
+![](/images/s_poetries_work_images_20210314101447.webp)
 
 **设计**
 
@@ -310,11 +310,11 @@
   * track:getter中调用track，把前面存储的回调函数和当前target,key之间建立映射关系
   * trigger:setter中调用trigger，把target,key对应的响应函数都执行一遍
 
-![](/images/s_poetries_work_images_20210314101611.png)
+![](/images/s_poetries_work_images_20210314101611.webp)
 
 target,key和响应函数映射关系
 
-![](/images/s_poetries_work_images_20210314101631.png)
+![](/images/s_poetries_work_images_20210314101631.webp)
 
 **实现**
 

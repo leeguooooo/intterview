@@ -4,8 +4,8 @@
 > 节流函数原理:指频繁触发事件时，只会在指定的时间段内执行事件回调，即触发事件间隔大于等于指定的时间才会执行回调函数。总结起来就是：**事件，按照一段时间的间隔来进行触发**
 > 。
 
-![](/images/s_poetries_work_uploads_2022_07_0abcf5e689d2716b.png)
-![](/images/s_poetries_work_uploads_2023_01_07fded84cc81ece4.png)
+![](/images/s_poetries_work_uploads_2022_07_0abcf5e689d2716b.webp)
+![](/images/s_poetries_work_uploads_2023_01_07fded84cc81ece4.webp)
 
 > 像dom的拖拽，如果用消抖的话，就会出现卡顿的感觉，因为只在停止的时候执行了一次，这个时候就应该用节流，在一定时间内多次执行，会流畅很多
 

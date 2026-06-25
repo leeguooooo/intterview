@@ -4,11 +4,11 @@
 
 > 打印`mobx`，看看`mobx`中有什么
 
-![mobx](/images/s_poetries_work_gitee_20191001_8.png)
+![mobx](/images/s_poetries_work_gitee_20191001_8.webp)
 
 > `MobX`的整个流程
 
-![mobx](/images/s_poetries_work_gitee_20191001_9.png)
+![mobx](/images/s_poetries_work_gitee_20191001_9.webp)
 
 **MobX 和 Redux 的比较**
 
@@ -41,7 +41,7 @@
 
 ## 二、核心API
 
-![mobx](/images/s_poetries_work_gitee_20191001_10.png)
+![mobx](/images/s_poetries_work_gitee_20191001_10.webp)
 
 ### 2.1 @observable
 

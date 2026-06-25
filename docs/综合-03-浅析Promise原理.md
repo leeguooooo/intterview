@@ -23,7 +23,7 @@
 > `fulfilled`状态返回了一个值，也可能被某种理由（异常信息）拒绝（`reject`）了。当其中任一种情况出现时，`Promise` 对象的
 > `then` 方法绑定的处理方法（handlers）就会被调用，then方法分别指定了`resolve`方法和`reject`方法的回调函数
 
-![img](/images/mengera88_github_io_images_promises.png)
+![img](/images/mengera88_github_io_images_promises.webp)
 ```javascript
     var promise = new Promise(function(resolve, reject) {
       if (/* 异步操作成功 */){
@@ -429,7 +429,7 @@ window)](http://www.ituring.com.cn/article/66566)
 > `Promises/A+`规范中的`2.1 Promise
 > States`中明确规定了，`pending`可以转化为`fulfilled`或`rejected`并且只能转化一次，也就是说如果`pending`转化到`fulfilled`状态，那么就不能再转化到r`ejected`。并且`fulfilled`和`rejected`状态只能由`pending`转化而来，两者之间不能互相转换
 
-![img](/images/mengera88_github_io_images_promiseState.png)
+![img](/images/mengera88_github_io_images_promiseState.webp)
 ```javascript
     //改进后的代码是这样的：
     

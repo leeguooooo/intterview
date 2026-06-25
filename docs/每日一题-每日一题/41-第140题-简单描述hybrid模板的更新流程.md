@@ -1,10 +1,10 @@
 # 第140题 简单描述hybrid模板的更新流程
 
-![](/images/s_poetries_work_uploads_2023_02_1b3043adcf4f2b97.png)
+![](/images/s_poetries_work_uploads_2023_02_1b3043adcf4f2b97.webp)
 
 增加版本后
 
-![](/images/s_poetries_work_uploads_2023_02_a77e8cbc48206193.png)
+![](/images/s_poetries_work_uploads_2023_02_a77e8cbc48206193.webp)
 
   * **App何时下载新版本**
     * `App`启动时检查、下载

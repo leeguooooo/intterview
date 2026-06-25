@@ -43,7 +43,7 @@
 
 > 前端基础题型，快速过一遍即可
 
-![面试经验谈](/images/s_poetries_work_uploads_2022_07_ee7310c4f45b9bd6.png)
+![面试经验谈](/images/s_poetries_work_uploads_2022_07_ee7310c4f45b9bd6.webp)
 
 
 ## 目录

@@ -34,7 +34,7 @@
         </body>
 ```
 
-      * 需要注意的是，`Zoom` 并不是标准属性，需要考虑其兼容性 ![](/images/s_poetries_work_uploads_2022_09_09eaff33b52d18d5.png)
+      * 需要注意的是，`Zoom` 并不是标准属性，需要考虑其兼容性 ![](/images/s_poetries_work_uploads_2022_09_09eaff33b52d18d5.webp)
     * **-webkit-transform:scale()** 大部分现代浏览器支持，并且对英文、数字、中文也能够生效，缩放不会改变了元素占据的空间大小，页面布局不会发生变化 
       * 针对`chrome`浏览器,加`webkit`前缀，用`transform:scale()`这个属性进行放缩
       * 当我们在使用`transform: scale`缩小元素的时候，顺便把`transform-origin`改成`left top`，才能保证左上角不动，因为左上角一动就导致定位就不准了（`top`、`left`、`margin`等都不准了）

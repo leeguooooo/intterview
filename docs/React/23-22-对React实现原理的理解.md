@@ -32,7 +32,7 @@
   * 渲染就是用 `dom api` 对真实 `dom` 做增删改，如果已经渲染了一个 `dom`，后来要更新，那就要遍历它所有的属性，重新设置，比如 `id`、`clasName`、`onclick` 等。
   * 而 `dom` 的属性是很多的：
 
-![](/images/s_poetries_work_uploads_2022_08_b14c40db3beb9881.png)
+![](/images/s_poetries_work_uploads_2022_08_b14c40db3beb9881.webp)
 
   * 有很多属性根本用不到，但在更新时却要跟着重新设置一遍。
   * 能不能只对比我们关心的属性呢？
@@ -61,7 +61,7 @@
   * 直接写 `vdom` 太麻烦了，所以前端框架都会设计一套 `dsl`，然后编译成 `render function`，执行后产生 `vdom`。
   * `vue` 和 `react` 都是这样
 
-![](/images/s_poetries_work_uploads_2022_08_3d654d2b28b78f94.png)
+![](/images/s_poetries_work_uploads_2022_08_3d654d2b28b78f94.webp)
 
 > 这套 dsl 怎么设计呢？前端领域大家熟悉的描述 `dom` 的方式是 `html`，最好的方式自然是也设计成那样。所以 `vue` 的
 > `template`，`react` 的 `jsx` 就都是这么设计的。`vue` 的 `template compiler` 是自己实现的，而
@@ -137,7 +137,7 @@ else`，分别做不同的处理就行了。没错，不管 `vue` 还是 `react`
 大家可能平时会写单文件组件 `sfc`的形式，那个会有专门的编译器，把 `template` 编译成 `render function`，然后挂到
 `option 对象的`render` 方法上
 
-![](/images/s_poetries_work_uploads_2022_08_b5a9bf470a936def.png)
+![](/images/s_poetries_work_uploads_2022_08_b5a9bf470a936def.webp)
 
 所以组件本质上只是对产生 `vdom` 的逻辑的封装，函数的形式、`option` 对象的形式、`class` 的形式都可以。就像 `vue3`
 也有了函数组件一样，组件的形式并不重要。基于 `vdom` 的前端框架渲染流程都差不多，vue 和 react
@@ -188,7 +188,7 @@ else`，分别做不同的处理就行了。没错，不管 `vue` 还是 `react`
 
 现有的 `vdom` 是不行的，需要再记录下 `parent`、`silbing` 的信息。所以 `react` 创造了 `fiber` 的数据结构。
 
-![](/images/s_poetries_work_uploads_2022_08_61ab11477198a2fe.png)
+![](/images/s_poetries_work_uploads_2022_08_61ab11477198a2fe.webp)
 
   * 除了 `children` 信息外，额外多了 `sibling`、`return`，分别记录着兄弟节点、父节点的信息。
   * 这个数据结构也叫做 `fiber`。（`fiber` 既是一种数据结构，也代表 `render + commit` 的渲染流程） `react` 会先把 `vdom` 转换成 `fiber`，再去进行 `reconcile`，这样就是可打断的了。

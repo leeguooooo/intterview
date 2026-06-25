@@ -128,7 +128,7 @@
 
 先看一张图，看看 websocket 中的消息长什么样子：
 
-![](/images/s_poetries_work_gitee_2020_07_71.png)
+![](/images/s_poetries_work_gitee_2020_07_71.webp)
 
 > 可以看到，接收的消息只有 `type` 和 `hash` 两个内容。在 `client` 里面的逻辑，他们分别对应不同的处理逻辑：
 ```js
@@ -188,8 +188,8 @@
 
   5. 以上代码可以看出，在 `check` 过程中，主要调用了两个方法 `hotDownloadManifest` 和 `hotDownloadUpdateChunk`。`hotDownloadManifest` 是通过 `Ajax` 向服务器请求十分有更新的文件，如果有就返回对应的文件信息，`hotDownloadUpdateChunk` 是通过`Jsonp`的方式，请求最新的代码模块。如下图所示:
 
-![](/images/s_poetries_work_gitee_2020_07_72.png)
-![](/images/s_poetries_work_gitee_2020_07_73.png)
+![](/images/s_poetries_work_gitee_2020_07_72.webp)
+![](/images/s_poetries_work_gitee_2020_07_73.webp)
 
 > 补充，这两个文件的名称是可以配置的，如果没有配置，则取定义在 `WebpackOptionsDefaulter` 中的默认配置。
 ```js

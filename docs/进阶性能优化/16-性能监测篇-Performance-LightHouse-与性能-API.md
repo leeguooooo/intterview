@@ -12,23 +12,23 @@
 
 右键打开开发者工具，选中我们的 `Performance` 面板：
 
-![](/images/s_poetries_work_gitee_2020_07_performance_49.png)
+![](/images/s_poetries_work_gitee_2020_07_performance_49.webp)
 
   * 当我们选中图中所标示的实心圆按钮，`Performance` 会开始帮我们记录我们后续的交互操作；当我们选中圆箭头按钮，`Performance` 会将页面重新加载，计算加载过程中的性能表现。
   * tips：使用 `Performance` 工具时，为了规避其它 Chrome 插件对页面的性能影响，我们最好在无痕模式下打开页面：
 
-![](/images/s_poetries_work_gitee_2020_07_performance_50.png)
-![](/images/s_poetries_work_gitee_2020_07_performance_51.png)
+![](/images/s_poetries_work_gitee_2020_07_performance_50.webp)
+![](/images/s_poetries_work_gitee_2020_07_performance_51.webp)
 
 **2\. 简要分析**
 
 这里我打开掘金首页，选中 `Performance` 面板中的圆箭头，来看一下页面加载过程中的性能表现：
 
-![](/images/s_poetries_work_gitee_2020_07_performance_52.png)
+![](/images/s_poetries_work_gitee_2020_07_performance_52.webp)
 
 从上到下，依次为概述面板、详情面板。下我们先来观察一下概述面板，了解页面的基本表现：
 
-![](/images/s_poetries_work_gitee_2020_07_performance_53.png)
+![](/images/s_poetries_work_gitee_2020_07_performance_53.webp)
 
 我们看右上角的三个栏目：FPS、CPU 和 NET。
 
@@ -45,7 +45,7 @@
 > 详情面板中的内容有很多。但一般来说，我们会主要去看 `Main` 栏目下的火焰图和 `Summary` 提供给我们的饼图——这两者和概述面板中的
 > `CPU` 一栏结合，可以帮我们迅速定位性能瓶颈（如下图）。
 
-![](/images/s_poetries_work_gitee_2020_07_performance_55.png)
+![](/images/s_poetries_work_gitee_2020_07_performance_55.webp)
 
   * 先看 `CPU` 图表和 `Summary` 饼图。`CPU` 图表中，我们可以根据颜色填充的饱满程度，确定 `CPU` 的忙闲，进而了解该页面的总的任务量。而 `Summary` 饼图则以一种直观的方式告诉了我们，哪个类型的任务最耗时（从本例来看是脚本执行过程）。这样我们在优化的时候，就可以抓到“主要矛盾”，进而有的放矢地开展后续的工作了。
   * 再看 `Main` 提供给我们的火焰图。这个火焰图非常关键，它展示了整个运行时主进程所做的每一件事情（包括加载、脚本运行、渲染、布局、绘制等）。`x` 轴表示随时间的记录。每个长条就代表一个活动。更宽的条形意味着事件需要更长时间。`y` 轴表示调用堆栈，我们可以看到事件是相互堆叠的，上层的事件触发了下层的事件。
@@ -58,7 +58,7 @@
 
 程序员们许了个愿：如果工具能帮助我们把页面的问题也分析出来就好了！上帝听到了这个愿望，于是给了我们 `LightHouse`：
 
-![](/images/s_poetries_work_gitee_2020_07_performance_56.png)
+![](/images/s_poetries_work_gitee_2020_07_performance_56.webp)
 
 > `Lighthouse` 是一个开源的自动化工具，用于改进网络应用的质量。 你可以将其作为一个 Chrome 扩展程序运行，或从命令行运行。
 > 为`Lighthouse`提供一个需要审查的网址，它将针对此页面运行一连串的测试，然后生成一个有关页面性能的报告。
@@ -68,24 +68,24 @@
 首先在 `Chrome` 的应用商店里下载一个 `LightHouse`。这一步 OK 之后，我们浏览器右上角会出现一个小小的灯塔
 `ICON`。打开我们需要测试的那个页面，点击这个 `ICON`，唤起如下的面板：
 
-![](/images/s_poetries_work_gitee_2020_07_performance_57.png)
+![](/images/s_poetries_work_gitee_2020_07_performance_57.webp)
 
 然后点击“Generate report”按钮，只需静候数秒，`LightHouse` 就会为我们输出一个完美的性能报告。
 
 这里我拿掘金首页“开刀”：
 
-![](/images/s_poetries_work_gitee_2020_07_performance_58.png)
+![](/images/s_poetries_work_gitee_2020_07_performance_58.webp)
 
 稍事片刻，`Report` 便输出成功了，`LightHouse`
 默认会帮我们打开一个新的标签页来展示报告内容。报告内容非常丰富，首先我们看到的是整体的跑分情况：
 
-![](/images/s_poetries_work_gitee_2020_07_performance_59.png)
+![](/images/s_poetries_work_gitee_2020_07_performance_59.webp)
 
 上述分别是页面性能、`PWA`（渐进式 Web 应用）、可访问性（无障碍）、最佳实践、`SEO` 五项指标的跑分。孰强孰弱，我们一看便知。
 
 向下拉动 `Report` 页，我们还可以看到每一个指标的细化评估：
 
-![](/images/s_poetries_work_gitee_2020_07_performance_60.png)
+![](/images/s_poetries_work_gitee_2020_07_performance_60.webp)
 
   * 在“Opportunities”中，`LightHouse` 甚至针对我们的性能问题给出了可行的建议、以及每一项优化操作预期会帮我们节省的时间。这份报告的可操作性是很强的——我们只需要对着 `LightHouse` 给出的建议，一条一条地去尝试，就可以看到自己的页面，在一秒一秒地变快。
   * 除了直接下载，我们还可以通过命令行使用 `LightHouse`：
@@ -98,7 +98,7 @@
 
 此外，从 `Chrome 60` 开始，`DevTools` 中直接加入了基于 `LightHouse` 的 `Audits` 面板：
 
-![](/images/s_poetries_work_gitee_2020_07_performance_61.png)
+![](/images/s_poetries_work_gitee_2020_07_performance_61.webp)
 
 > `LightHouse` 因此变得更加触手可及了，这一操作也足以证明 `Chrome` 团队对 `LightHouse` 的推崇。
 
@@ -113,17 +113,17 @@
 
 > `performance` 是一个全局对象。我们在控制台里输入 `window.performance`，就可一窥其全貌：
 
-![](/images/s_poetries_work_gitee_2020_07_performance_62.png)
+![](/images/s_poetries_work_gitee_2020_07_performance_62.webp)
 
 **2\. 关键时间节点**
 
 在 `performance` 的 `timing` 属性中，我们可以查看到如下的时间戳：
 
-![](/images/s_poetries_work_gitee_2020_07_performance_63.png)
+![](/images/s_poetries_work_gitee_2020_07_performance_63.webp)
 
 这些时间戳与页面整个加载流程中的关键时间节点有着一一对应的关系：
 
-![](/images/s_poetries_work_gitee_2020_07_performance_64.png)
+![](/images/s_poetries_work_gitee_2020_07_performance_64.webp)
 
 通过求两个时间点之间的差值，我们可以得出某个过程花费的时间，举个🌰：
 ```js

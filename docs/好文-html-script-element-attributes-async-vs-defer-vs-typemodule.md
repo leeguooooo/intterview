@@ -10,14 +10,14 @@ script-element-attributes-async-vs-defer-vs-typemodule/)
 
 **编者注：一图胜千言，建议拉到最后直接看图，一目了然。**
 
-![](/images/images_unsplash_com_photo_1619545493446_b378e885c6de_crop_entropy_cs_tinysrgb_fit_max_fm_jpg_ixid_M3w0ODM4NTF8MHwxfHNlYXJjaHw0fHxsb2FkfGVufDB8fHx8MTcxNjM4ODQwNnww_ixlib_rb_4_0.png)
+![](/images/images_unsplash_com_photo_1619545493446_b378e885c6de_crop_entropy_cs_tinysrgb_fit_max_fm_jpg_ixid_M3w0ODM4NTF8MHwxfHNlYXJjaHw0fHxsb2FkfGVufDB8fHx8MTcxNjM4ODQwNnww_ixlib_rb_4_0.webp)
 
 我相信你对 HTML 中的 script 元素并不陌生。它有一些属性，例如 async、defer 等。你知道它们的作用以及它们之间的区别吗？
 
 如果 script 元素没有添加任何属性，那么当浏览器遇到脚本时，会立即加载并执行它。在等待执行完成之后，才会继续解析后续的标签。这个阶段被称为解析
 HTML。
 
-![](/images/cdn_images_1_medium_com_max_1117_1_B4dnRdJiDywdFML4uIWZUw.png)
+![](/images/cdn_images_1_medium_com_max_1117_1_B4dnRdJiDywdFML4uIWZUw.webp)
 
 如果脚本体积大或执行时间长，页面会长时间出现空白。就像上面的截图一样。这在一些
 [SPA](https://en.wikipedia.org/wiki/Single-
@@ -82,7 +82,7 @@ script-element-attributes-async-vs-defer-vs-type-module)
 
 下面的截图清楚地展示了这些类型之间的差异：
 
-![](/images/cdn_images_1_medium_com_max_1117_1_nmzAKz_RSbZ_E_m5B6pPaA.png)
+![](/images/cdn_images_1_medium_com_max_1117_1_nmzAKz_RSbZ_E_m5B6pPaA.webp)
 
 图片来自
 [WHATWG](https://html.spec.whatwg.org/multipage/scripting.html?utm_source=webdeveloper.beehiiv.com&utm_medium=referral&utm_campaign=html-

@@ -1231,9 +1231,11 @@ const config = defineUserConfig({
       "serviceWorker": true,
       "updatePopup": true,
       "showInstall": true,
-      "cacheHTML": true,
-      "maxSize": 1024 * 1024 * 9,
-      "maxImageSize": 1024 * 1024 * 80,
+      // 只预缓存应用外壳(JS/CSS)。不缓 830 个 HTML 页 + 大量内容图——否则预缓存
+      // >100MB,Service Worker 在 Safari/部分浏览器无法注册。内容按需在线获取。
+      "cacheHTML": false,
+      "maxSize": 1024 * 1024 * 4,
+      "maxImageSize": 1024 * 60,
       "favicon": "images/Favicons/favicon-32.png"
     }),
     blogPlugin({

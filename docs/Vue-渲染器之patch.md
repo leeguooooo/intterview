@@ -1094,7 +1094,7 @@ window)](https://codesandbox.io/s/62x41myyrz)
 
 现在对于旧的 `children` 类型来说，我们只剩下最后一种情况没有处理了，就是当旧的 `children` 类型为多个子节点时，同样的我们来画一张图：
 
-![](/images/s_poetries_work_uploads_2024_02_7cb972d068b2d405.png)
+![](/images/s_poetries_work_uploads_2024_02_7cb972d068b2d405.webp)
 
 如上图所示，当旧的 `children` 类型为多个子节点时，新的 `children` 类型有三种情况，不同的情况采用不同的操作：
 

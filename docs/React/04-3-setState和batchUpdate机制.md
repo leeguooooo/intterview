@@ -15,14 +15,14 @@
     * 自定义`DOM`事件
     * 总之不在`react`的上下文中，`react`管不到的
 
-![](/images/s_poetries_work_uploads_2023_02_1ede1982d9eb5a45.png)
+![](/images/s_poetries_work_uploads_2023_02_1ede1982d9eb5a45.webp)
 
 ### batchUpdate机制
 
 ![setState 批处理：合成事件/生命周期中多次 setState 入队合并，命中 batchUpdate 后一次性更新](/images/diagrams/react-setstate-batch.webp)
 
-![](/images/s_poetries_work_uploads_2023_02_7bb96642c305b9d6.png)
-![](/images/s_poetries_work_uploads_2023_02_e0e5828f54c4d6a1.png)
+![](/images/s_poetries_work_uploads_2023_02_7bb96642c305b9d6.webp)
+![](/images/s_poetries_work_uploads_2023_02_e0e5828f54c4d6a1.webp)
 ```js
     // setState batchUpdate原理模拟
     let isBatchingUpdate = true;
@@ -65,9 +65,9 @@
 
 ### transaction事务机制
 
-![](/images/s_poetries_work_uploads_2023_02_4b2c232c6b39d3ac.png)
-![](/images/s_poetries_work_uploads_2023_02_5a0b0ab821739984.png)
-![](/images/s_poetries_work_uploads_2023_02_ad98ab68ffa45716.png)
+![](/images/s_poetries_work_uploads_2023_02_4b2c232c6b39d3ac.webp)
+![](/images/s_poetries_work_uploads_2023_02_5a0b0ab821739984.webp)
+![](/images/s_poetries_work_uploads_2023_02_ad98ab68ffa45716.webp)
 ```js
     // setState现象演示
     

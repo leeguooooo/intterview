@@ -1,16 +1,16 @@
 原文链接: [https://interview.poetries.top/principle-docs/comprehensive/05-%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%AF%95%E4%B9%8BMVVM%E6%B5%85%E6%9E%90.html](https://interview.poetries.top/principle-docs/comprehensive/05-%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%AF%95%E4%B9%8BMVVM%E6%B5%85%E6%9E%90.html)
 
-![img](/images/s_poetries_work_gitee_2019_10_89.png)
+![img](/images/s_poetries_work_gitee_2019_10_89.webp)
 
 ## 一、说一下使用 jquery 和使用框架的区别
 
 ### 1.1 jQuery 实现 todo-list
 
-![img](/images/s_poetries_work_gitee_2019_10_90.png)
+![img](/images/s_poetries_work_gitee_2019_10_90.webp)
 
 ### 1.2 vue 实现 todo-list
 
-![img](/images/s_poetries_work_gitee_2019_10_91.png)
+![img](/images/s_poetries_work_gitee_2019_10_91.webp)
 
 ### 1.3 jQuery 和框架的区别
 
@@ -25,8 +25,8 @@
   * `V - View` 视图、界面
   * `C - Controller` 控制器、逻辑处理
 
-![img](/images/s_poetries_work_gitee_2019_10_92.png)
-![img](/images/s_poetries_work_gitee_2019_10_93.png)
+![img](/images/s_poetries_work_gitee_2019_10_92.webp)
+![img](/images/s_poetries_work_gitee_2019_10_93.webp)
 
 ### 2.2 MVVM
 
@@ -34,7 +34,7 @@
   * `View` \- 视图、模板（视图和模型是分离的）
   * `ViewModel` \- 连接 `Model` 和 `View`
 
-![img](/images/s_poetries_work_gitee_2019_10_94.png)
+![img](/images/s_poetries_work_gitee_2019_10_94.webp)
 
 ### 2.3 关于 ViewModel
 
@@ -42,8 +42,8 @@
   * 但其中的 `ViewModel` 确实一种创新
   * 真正结合前端场景应用的创建
 
-![img](/images/s_poetries_work_gitee_2019_10_95.png)
-![img](/images/s_poetries_work_gitee_2019_10_96.png)
+![img](/images/s_poetries_work_gitee_2019_10_95.webp)
+![img](/images/s_poetries_work_gitee_2019_10_96.webp)
 
 ### 2.4 MVVM 框架的三大要素
 
@@ -58,17 +58,17 @@
   * 修改 data 属性之后，vue 立刻监听到
   * data 属性被代理到 vm 上
 
-![img](/images/s_poetries_work_gitee_2019_10_97.png)
+![img](/images/s_poetries_work_gitee_2019_10_97.webp)
 
 ### 3.2 Object.defineProperty
 
-![img](/images/s_poetries_work_gitee_2019_10_98.png)
+![img](/images/s_poetries_work_gitee_2019_10_98.webp)
 
 ### 3.3 模拟实现
 
-![img](/images/s_poetries_work_gitee_2019_10_99.png)
+![img](/images/s_poetries_work_gitee_2019_10_99.webp)
 
-![img](/images/s_poetries_work_gitee_2019_10_100.png)
+![img](/images/s_poetries_work_gitee_2019_10_100.webp)
 
 ## 四、vue 中如何解析模板
 
@@ -85,7 +85,7 @@
   * 转换为 `html` 渲染页面，必须用 `JS` 才能实现
   * 因此，模板最重要转换成一个 `JS` 函数（`render` 函数）
 
-![img](/images/s_poetries_work_gitee_2019_10_101.png)
+![img](/images/s_poetries_work_gitee_2019_10_101.webp)
 
 ### 4.2 render 函数
 
@@ -94,20 +94,20 @@
   * `price` 即 `this.price` 即 `vm.price`，即 `data` 中的 `price`
   * `_c` 即 `this._c` 即 `vm._c`
 
-![img](/images/s_poetries_work_gitee_2019_10_102.png)
+![img](/images/s_poetries_work_gitee_2019_10_102.webp)
 
-![img](/images/s_poetries_work_gitee_2019_10_103.png)
+![img](/images/s_poetries_work_gitee_2019_10_103.webp)
 
-![img](/images/s_poetries_work_gitee_2019_10_104.png)
+![img](/images/s_poetries_work_gitee_2019_10_104.webp)
 
 ### 4.3 render 函数与 vdom
 
   * `vm._c` 其实就相当于 `snabbdom`中的 `h` 函数
   * `render` 函数执行之后，返回的是 `vnode`
 
-![img](/images/s_poetries_work_gitee_2019_10_105.png)
+![img](/images/s_poetries_work_gitee_2019_10_105.webp)
 
-![img](/images/s_poetries_work_gitee_2019_10_106.png)
+![img](/images/s_poetries_work_gitee_2019_10_106.webp)
 
   * `updateComponent`中实现了 `vdom` 的 `patch`
   * 页面首次渲染执行 `updateComponent`
@@ -120,17 +120,17 @@
   * 第三步：首次渲染，显示页面，且绑定依赖
   * 第四步：`data` 属性变化，触发 `rerender`
 
-![img](/images/s_poetries_work_gitee_2019_10_107.png)
+![img](/images/s_poetries_work_gitee_2019_10_107.webp)
 
 ### 5.1 第一步：解析模板成 render 函数
 
-![img](/images/s_poetries_work_gitee_2019_10_108.png)
+![img](/images/s_poetries_work_gitee_2019_10_108.webp)
 
-![img](/images/s_poetries_work_gitee_2019_10_109.png)
+![img](/images/s_poetries_work_gitee_2019_10_109.webp)
 
-![img](/images/s_poetries_work_gitee_2019_10_110.png)
+![img](/images/s_poetries_work_gitee_2019_10_110.webp)
 
-![img](/images/s_poetries_work_gitee_2019_10_111.png)
+![img](/images/s_poetries_work_gitee_2019_10_111.webp)
 
   * 模板中的所有信息都被 `render`函数包含
   * 模板中用到的 `data` 中的属性，都变成了 `JS` 变量
@@ -142,7 +142,7 @@
   * `Object.defineProperty`
   * 将 `data` 的属性代理到 `vm`上
 
-![img](/images/s_poetries_work_gitee_2019_10_112.png)
+![img](/images/s_poetries_work_gitee_2019_10_112.webp)
 
 ### 5.3 第三步：首次渲染，显示页面，且绑定依赖
 
@@ -152,8 +152,8 @@
   * 执行 `updateComponent` ，会走到 `vdom` 的 `patch` 方法
   * `patch` 将 `vnode`渲染成 `DOM` ，初次渲染完成
 
-![img](/images/s_poetries_work_gitee_2019_10_113.png)
-![img](/images/s_poetries_work_gitee_2019_10_114.png)
+![img](/images/s_poetries_work_gitee_2019_10_113.webp)
+![img](/images/s_poetries_work_gitee_2019_10_114.webp)
 
 **为何要监听 get ，直接监听 set 不行吗？**
 
@@ -162,12 +162,12 @@
   * 未走到 `get` 中的属性，`set`的时候我们也无需关心
   * 避免不必要的重复渲染
 
-![img](/images/s_poetries_work_gitee_2019_10_115.png)
+![img](/images/s_poetries_work_gitee_2019_10_115.webp)
 
 ### 5.4 第四步：data 属性变化
 
-![img](/images/s_poetries_work_gitee_2019_10_116.png)
-![img](/images/s_poetries_work_gitee_2019_10_117.png)
+![img](/images/s_poetries_work_gitee_2019_10_116.webp)
+![img](/images/s_poetries_work_gitee_2019_10_117.webp)
 
   * 修改属性，被响应式的 `set` 监听到
   * `set`中执行 `updateComponent`
@@ -175,7 +175,7 @@
   * 生成的 `vnode` 和 `prevVnode` ，通过 `patch`进行对比
   * 渲染到 `html` 中
 
-![img](/images/s_poetries_work_gitee_2019_10_118.png)
+![img](/images/s_poetries_work_gitee_2019_10_118.webp)
 
 阅读全文
 

@@ -17,8 +17,8 @@
 
 `redux connect`是高阶组件
 
-![](/images/s_poetries_work_uploads_2023_02_572d9a77c0c8d67f.png)
-![](/images/s_poetries_work_uploads_2023_02_b64b3f1732ac0c9e.png)
+![](/images/s_poetries_work_uploads_2023_02_572d9a77c0c8d67f.webp)
+![](/images/s_poetries_work_uploads_2023_02_b64b3f1732ac0c9e.webp)
 ```js
     import React from 'react'
     
@@ -233,7 +233,7 @@
 
 ### render props
 
-![](/images/s_poetries_work_uploads_2023_02_113889f4a723c2e3.png)
+![](/images/s_poetries_work_uploads_2023_02_113889f4a723c2e3.webp)
 ```js
     import React from 'react'
     import PropTypes from 'prop-types'

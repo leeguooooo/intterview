@@ -15,7 +15,7 @@
   * 如果以上都不行则采用`setTimeout`
   * 最后执行`flushCallbacks`，把`callbacks`里面的数据依次执行
 
-![](/images/s_poetries_work_uploads_2022_08_dbe8ffb2bbf12d38.png)
+![](/images/s_poetries_work_uploads_2022_08_dbe8ffb2bbf12d38.webp)
 
 回答范例
 
@@ -57,7 +57,7 @@
 
 相关代码如下
 
-![](/images/s_poetries_work_uploads_2022_08_336264b6b10bd324.png)
+![](/images/s_poetries_work_uploads_2022_08_336264b6b10bd324.webp)
 ```js
     // src/core/utils/nextTick
     let callbacks = [];

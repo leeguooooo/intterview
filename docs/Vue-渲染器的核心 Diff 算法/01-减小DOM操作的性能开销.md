@@ -3,7 +3,7 @@
 上一章我们讨论了渲染器是如何更新各种类型的 `VNode` 的，实际上，上一章所讲解的内容归属于完整的 `Diff` 算法之内，但并不包含核心的
 `Diff` 算法。那什么才是核心的 `Diff` 算法呢？看下图：
 
-![](/images/s_poetries_work_uploads_2024_02_7cb972d068b2d405.png)
+![](/images/s_poetries_work_uploads_2024_02_7cb972d068b2d405.webp)
 
 我们曾在上一章中讲解子节点更新的时候见到过这张图，当时我们提到**只有当新旧子节点的类型都是多个子节点时，核心`Diff`
 算法才派得上用场**，并且当时我们采用了一种仅能实现目标但并不完美的算法：**遍历旧的子节点，将其全部移除；再遍历新的子节点，将其全部添加**
@@ -102,7 +102,7 @@
 
 新的列表和旧的列表构成了新旧 `children`，当我们使用**简单 Diff 算法** 更新这两个列表时，其操作行为可以用下图表示：
 
-![](/images/s_poetries_work_uploads_2024_02_ac9f3b53fa31e426.png)
+![](/images/s_poetries_work_uploads_2024_02_ac9f3b53fa31e426.webp)
 
 在这张图中我们使用圆形表示真实 DOM 元素，用菱形表示 `VNode`，旧的 `VNode` 保存着对真实 DOM 的引用(即 `vnode.el`
 属性)，新的 `VNode` 是不存在对真实 DOM 的引用的。上图描述了**简单 Diff 算法** 的操作行为，首先遍历旧的 `VNode`，通过旧
@@ -114,7 +114,7 @@
 `VNode`，并一一比对它们，这样对于任何一个 DOM 元素来说，由于它们都是相同的标签，所以更新的过程是不会“移除”和“新建”任何 DOM
 元素的，而是复用已有 DOM 元素，需要更新的只有 `VNodeData` 和 `children`。优化后的更新操作可以用下图表示：
 
-![](/images/s_poetries_work_uploads_2024_02_f29c1e3d3ec2e9cd.png)
+![](/images/s_poetries_work_uploads_2024_02_f29c1e3d3ec2e9cd.webp)
 
 用代码实现起来也非常简单，如下高亮代码所示：
 
@@ -180,13 +180,13 @@
 `children`，如果新旧 `children` 的长度相同的话，则这段代码可以正常工作，但是一旦新旧 `children`
 的长度不同，这段代码就不能正常工作了，如下图所示：
 
-![](/images/s_poetries_work_uploads_2024_02_c51050b67f2e6cce.png)
+![](/images/s_poetries_work_uploads_2024_02_c51050b67f2e6cce.webp)
 
 当新的 `children` 比旧的 `children` 的长度要长时，多出来的子节点是没办法应用 `patch`
 函数的，此时我们应该把多出来的子节点作为新的节点添加上去。类似的，如果新的 `children` 比旧的 `children` 的长度要短时，我们应该把旧的
 `children` 中多出来的子节点移除，如下图所示：
 
-![](/images/s_poetries_work_uploads_2024_02_40dce2fec8ddba9a.png)
+![](/images/s_poetries_work_uploads_2024_02_40dce2fec8ddba9a.webp)
 
 通过分析我们得出一个规律，我们不应该总是遍历旧的 `children`，而是应该遍历新旧 `children`
 中长度较短的那一个，这样我们能够做到尽可能多的应用 `patch` 函数进行更新，然后再对比新旧 `children` 的长度，如果新的

@@ -6,7 +6,7 @@
   * 线程，`OS`进程运算调度的最小单位，共享进程内存空间
   * JS是单线程的，但可以开启多进程执行，如`WebWorker`
 
-![](/images/s_poetries_work_uploads_2023_01_030cb840c0edabe7.png)
+![](/images/s_poetries_work_uploads_2023_01_030cb840c0edabe7.webp)
 
 **为何需要多进程**
 

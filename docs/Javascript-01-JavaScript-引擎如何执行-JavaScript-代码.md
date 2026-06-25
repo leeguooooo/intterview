@@ -104,7 +104,7 @@ Environment）两种，其中：
 
 运行上述代码，我们可以在控制台看到符合预期的输出：
 
-![](/images/s_poetries_work_images_20210719135804.png)
+![](/images/s_poetries_work_images_20210719135804.webp)
 
 可以看到：
 
@@ -240,7 +240,7 @@ JavaScript 代码的，因此并不存在“整个 JavaScript
 
 **根据 JavaScript 中函数的调用方式不同，this的指向分为以下情况。**
 
-![](/images/s_poetries_work_images_20210719142723.png)
+![](/images/s_poetries_work_images_20210719142723.webp)
 
 > 可以看到，this在不同的情况下会有不同的指向，在 ES6 箭头函数还没出现之前，为了能正确获取某个运行环境下this对象，我们常常会使用var
 > that = this;、var self =

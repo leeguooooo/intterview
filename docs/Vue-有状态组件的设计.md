@@ -468,7 +468,7 @@ TIP
 `$parentVNode`**，假设根组件渲染了 `Foo` 组件，而 `Foo` 组件又渲染 `Bar` 组件，此时就形成了一条父子链：**`Bar`
 组件的父组件是 `Foo`**。
 
-![](/images/s_poetries_work_uploads_2024_02_f27d595b932c886a.png)
+![](/images/s_poetries_work_uploads_2024_02_f27d595b932c886a.webp)
 
 为什么子组件的标签描述 `VNode` 需要引用父组件的标签描述 `VNode` 呢？这是因为一个组件的标签描述 `VNode`
 中存储着该组件的实例对象，即 `VNode.children` 属性。还记得之前我们讲到过，对于组件来说，它的 `VNode.children`
@@ -620,7 +620,7 @@ TIP
 属性上。由于 `VNode` 具有不同的类型，不同类型的 `VNode` 其 `el` 属性所引用的真实DOM对象也不同，下图展示了所有 `VNode`
 类型：
 
-![](/images/s_poetries_work_uploads_2024_02_022e6a497c274c59.png)
+![](/images/s_poetries_work_uploads_2024_02_022e6a497c274c59.webp)
 
   * 1、`html/svg` 标签
 

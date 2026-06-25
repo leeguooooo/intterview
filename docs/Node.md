@@ -103,7 +103,7 @@
 
 ### koa洋葱模型怎么实现的
 
-![](/images/s_poetries_work_images_20210517094050.png)
+![](/images/s_poetries_work_images_20210517094050.webp)
 
   * 中间件执行就像洋葱一样，最早 `use` 的中间件，就放在最外层。处理顺序从左到右，左边接收一个 `request`，右边输出返回 `response`
   * 一般的中间件都会执行两次，调用 `next` 之前为第一次，调用 `next` 时把控制传递给下游的下一个中间件。当下游不再有中间件或者没有执行 `next` 函数时，就将依次恢复上游中间件的行为，让上游中间件执行 `next` 之后的代码
@@ -528,7 +528,7 @@
   * 在进程启动时，Node 便会创建一个类似于 while(true)的循环，每执行一次循环体的过程我们成为 Tick。
   * 每个 Tick 的过程就是查看是否有事件待处理。如果有就取出事件及其相关的回调函数。然后进入下一个循环，如果不再有事件处理，就退出进程。
 
-![](/images/s_poetries_work_images_20210517091829.png)
+![](/images/s_poetries_work_images_20210517091829.webp)
 
 ### 在每个 tick 的过程中，如何判断是否有事件需要处理呢
 
@@ -539,7 +539,7 @@
 
 ### 描述一下整个异步 I/O 的流程
 
-![](/images/s_poetries_work_images_20210517091909.png)
+![](/images/s_poetries_work_images_20210517091909.webp)
 
 ## 11 V8 的垃圾回收机制
 
@@ -569,7 +569,7 @@
 
 > 在 V8 中，主要将内存分为新生代和老生代两代。新生代中的对象存活时间较短的对象，老生代中的对象存活时间较长，或常驻内存的对象。
 
-![](/images/s_poetries_work_images_20210517092109.png)
+![](/images/s_poetries_work_images_20210517092109.webp)
 
 **新生代**
 
@@ -577,7 +577,7 @@
 > semispace。在这两个 semispace 空间中，只有一个处于使用中，另一个处于闲置状态。处于使用状态的 semispace 空间称为 From
 > 空间，处于闲置状态的空间称为 To 空间
 
-![](/images/s_poetries_work_images_20210517092136.png)
+![](/images/s_poetries_work_images_20210517092136.webp)
 
   * 当开始垃圾回收的时候，会检查 From 空间中的存活对象，这些存活对象将被复制到 To 空间中，而非存活对象占用的空间将会被释放。完成复制后，From 空间和 To 空间发生角色对换。
   * 应为新生代中对象的生命周期比较短，就比较适合这个算法。
@@ -592,7 +592,7 @@
 
 主要问题是每一次进行标记清除回收后，内存空间会出现不连续的状态
 
-![](/images/s_poetries_work_images_20210517092246.png)
+![](/images/s_poetries_work_images_20210517092246.webp)
 
   * 这种内存碎片会对后续内存分配造成问题，很可能出现需要分配一个大对象的情况，这时所有的碎片空间都无法完成此次分配，就会提前触发垃圾回收，而这次回收是不必要的。
   * 为了解决碎片问题，标记整理被提出来。就是在对象被标记死亡后，在整理的过程中，将活着的对象往一端移动，移动完成后，直接清理掉边界外的内存。
@@ -739,7 +739,7 @@
 
 ### https 验证身份也就是 TSL/SSL 身份验证的过程
 
-![](/images/s_poetries_work_images_20210517093635.png)
+![](/images/s_poetries_work_images_20210517093635.webp)
 
 ## 15 进程通信
 
@@ -748,7 +748,7 @@
 > 面对 node 单线程对多核 CPU 使用不足的情况，Node 提供了 `child_process` 模块，来实现进程的复制，node
 > 的多进程架构是主从模式，如下所示：
 
-![](/images/s_poetries_work_images_20210517093720.png)
+![](/images/s_poetries_work_images_20210517093720.webp)
 ```js
     var fork = require('child_process').fork;
     var cpus = require('os').cpus();
@@ -759,7 +759,7 @@
 
 > 在 linux 中，我们通过 `ps aux | grep worker.js` 查看进程
 
-![](/images/s_poetries_work_images_20210517093745.png)
+![](/images/s_poetries_work_images_20210517093745.webp)
 
 这就是著名的主从模式，`Master-Worker`
 

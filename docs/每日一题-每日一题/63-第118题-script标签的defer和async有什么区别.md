@@ -7,7 +7,7 @@
 
 > 注意：`JS`是单线程的，`JS`解析线程和`DOM`解析线程共用同一个线程，`JS执行和HTML解析是互斥的`，加载资源可以并行
 
-![](/images/s_poetries_work_images_20210314221335.png)
+![](/images/s_poetries_work_images_20210314221335.webp)
 
 > 蓝色线代表网络读取，红色线代表执行时间，这俩都是针对脚本的；绿色线代表 `HTML` 解析
 

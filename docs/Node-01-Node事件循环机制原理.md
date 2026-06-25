@@ -16,7 +16,7 @@
 
 图 为 Node.js 官网的事件循环原理的核心流程图。
 
-![](/images/s_poetries_work_images_20210424180608.png)
+![](/images/s_poetries_work_images_20210424180608.webp)
 
 可以看到，这一流程包含 6 个阶段，每个阶段代表的含义如下所示。
 
@@ -97,7 +97,7 @@ timer 的回调函数是运行起点吗？”
 
 `事件循环的主要包含微任务和宏任务。具体是怎么进行循环的呢`？如图
 
-![](/images/s_poetries_work_images_20210424181240.png)
+![](/images/s_poetries_work_images_20210424181240.webp)
 
 在解释上图之前，我们先来解释下两个概念，微任务和宏任务。
 

@@ -45,7 +45,7 @@
 
 > 这个API能帮我们得到整个页面请求的时间，如下图，在`Chrome`的`Console`是可以直接运行的
 
-![](/images/s_poetries_work_images_20210503170506.png)
+![](/images/s_poetries_work_images_20210503170506.webp)
 
 先解释下这些时间都是代表什么
 
@@ -71,7 +71,7 @@
 
 > 再来一张图，表示各阶段的开始与结束对应的时间
 
-![](/images/s_poetries_work_images_20210503170539.png)
+![](/images/s_poetries_work_images_20210503170539.webp)
 
 > 从以上的分析，我们就可以得到一些时间的计算
 
@@ -91,7 +91,7 @@
 
 > 这个API能帮我们获得资源的请求时间，包括JS、CSS、图片等
 
-![](/images/s_poetries_work_images_20210503170603.png)
+![](/images/s_poetries_work_images_20210503170603.webp)
 
 > 如上图可以看到这个API请求返回的是一个数组，这个数组包括整个页面所有的资源加载，上图打开了一个其中一个资源，可以看到如下信息
 
@@ -111,7 +111,7 @@
 >
 > `userdJSHeapSize`表示所有被使用的JS堆栈内存，`totalJSHeapSize`可使用的JS堆栈内存，如果`userdJSHeapSize`的值大于`totalJSHeapSize`，就可能出现内存泄漏
 
-![](/images/s_poetries_work_images_20210503170616.png)
+![](/images/s_poetries_work_images_20210503170616.webp)
 
 ## 三、动画帧率FPS
 
@@ -136,7 +136,7 @@
 
 > `Chrome` 提供给开发者的功能十分强大，在开发者工具中，我们进行如下选择调出 `FPS meter` 选项：
 
-![](/images/s_poetries_work_images_20210503170727.png)
+![](/images/s_poetries_work_images_20210503170727.webp)
 
 > 通过这个按钮，可以开启页面实时 `Frame Rate` (帧率) 观测及页面 `GPU` 使用率
 
@@ -152,7 +152,7 @@
 
   * 以 `Chrome` 浏览器内核 `Blink` 渲染页面为例。对早期的 `Chrome` 浏览器而言，每个页面 `Tab` 对应一个独立的 `renderer` 进程，`Renderer`进程中包含了主线程和合成线程。早期 `Chrome` 内核架构
 
-![](/images/s_poetries_work_images_20210503170748.png)
+![](/images/s_poetries_work_images_20210503170748.webp)
 
 **其中，主线程主要负责** ：
 
@@ -187,14 +187,14 @@
 
 它包含许多子类 API，完成不同的功能，大致如下
 
-![](/images/s_poetries_work_images_20210503170806.png)
+![](/images/s_poetries_work_images_20210503170806.webp)
 
 怎么使用呢？以 `Navigation Timing`, `Performance Timeline`, `Resource Timing`
 为例子，对于兼容它的浏览器，它以只读属性的形式对外暴露挂载在 `window.performance` 上。
 
 我们再来回顾这张图
 
-![](/images/s_poetries_work_images_20210503170828.png)
+![](/images/s_poetries_work_images_20210503170828.webp)
 
 > 通过这张图以及上面的 `window.performance.timing`，我们就可以轻松的统计出页面每个重要节点的耗时，这就是 `Web
 > Performance Timing API` 的强大之处，感兴趣的可以详细去研究研究，使用在页面统计上
@@ -237,7 +237,7 @@
 
 **看看 Web Performance Timing API 整体的兼容性**
 
-![](/images/s_poetries_work_images_20210503170845.png)
+![](/images/s_poetries_work_images_20210503170845.webp)
 
 > `Frame Timing API` 虽好，但是，现在 `Frame Timing API`
 > 的兼容性不算很友好，额，不友好到什么程度呢。还没有任何浏览器支持，处于实验性阶段，属于面向未来编程
@@ -303,7 +303,7 @@
 
 寻找一个有动画不断运行的页面进行测试，可以看到代码运行如下：
 
-![](/images/s_poetries_work_images_20210503170900.png)
+![](/images/s_poetries_work_images_20210503170900.webp)
 
   * 使用了我之前制作的一个页面进行了测试，使用`Chrome` 同时调出页面的 `FPS meter`，对比两边的实时 `FPS` 值，基本吻合。
   * 测试页面，`Solar System`。你可以将上面的代码贴到这个页面的 `console` 中，测试一下数据

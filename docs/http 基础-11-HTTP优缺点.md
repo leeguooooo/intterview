@@ -7,7 +7,7 @@
   * `HTTP` 是不安全的，无法验证通信双方的身份，也不能判断报文是否被窜改；
   * `HTTP` 的性能不算差，但不完全适应现在的互联网，还有很大的提升空间
 
-![](/images/s_poetries_work_gitee_2019_12_100.png)
+![](/images/s_poetries_work_gitee_2019_12_100.webp)
 
 阅读全文
 

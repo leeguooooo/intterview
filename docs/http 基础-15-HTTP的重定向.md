@@ -8,7 +8,7 @@
 
 我们再来看看第一个请求返回的响应报文：
 
-![](/images/s_poetries_work_gitee_2019_12_23.png)
+![](/images/s_poetries_work_gitee_2019_12_23.webp)
 
 这里出现了一个新的头字段“Location: /index.html”，它就是 301/302 重定向跳转的秘密所在。
 
@@ -109,7 +109,7 @@ URI，也不会有其他的多余动作，下次访问还是用原 URI。
   * 重定向可以把一个 `URI` 指向另一个 `URI`，也可以把多个 URI 指向同一个 `URI`，用途很多；
   * 使用重定向时需要当心性能损耗，还要避免出现循环跳转。
 
-![](/images/s_poetries_work_gitee_2019_12_103.png)
+![](/images/s_poetries_work_gitee_2019_12_103.webp)
 
 阅读全文
 

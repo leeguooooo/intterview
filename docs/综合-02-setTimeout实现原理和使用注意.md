@@ -98,7 +98,7 @@
 
 执行结果如图：
 
-![](/images/s_poetries_work_gitee_2020_07_74.png)
+![](/images/s_poetries_work_gitee_2020_07_74.webp)
 
 > 从结果可以看到，执行 `foo` 函数所消耗的时长是 `365` 毫秒，这也就意味着通过 `setTimeout` 设置的任务被推迟了 `365`
 > 毫秒才执行，而设置 `setTimeout` 的回调延迟时间是 `0`
@@ -146,7 +146,7 @@
     setTimeout(cb, 0);
 ```
 
-![](/images/s_poetries_work_gitee_2020_07_75.png)
+![](/images/s_poetries_work_gitee_2020_07_75.webp)
 
 > 从结果可以看出，前面五次调用的时间间隔比较小，嵌套调用超过五次以上，后面每次的调用最小时间间隔是 `4` 毫秒(我运行的结果，间隔基本是
 > `5ms`，考虑有代码执行的计算误差)。
@@ -190,7 +190,7 @@
 
 执行结果：
 
-![](/images/s_poetries_work_gitee_2020_07_76.png)
+![](/images/s_poetries_work_gitee_2020_07_76.webp)
 
 > 运行后可以看到，这段代码是立即被执行的。但如果将延时值修改为小于 `2147483647` 毫秒的某个值，那么执行时就没有问题了。
 

@@ -6,7 +6,7 @@
   * `@babel/polyfill`是`core-js`和`regenerator-runtime`的集合，能满足`ES6`、`ES7`等新语法的`Polyfill`需求
   * `@babel/polyfill`会污染全局变量，所以不推荐使用。在`Babel 7.4`之后，`@babel/polyfill`被废弃了，推荐使用`core-js`和`regenerator-runtime`来`Polyfill`
 
-![](/images/s_poetries_work_images_20210409165913.png)
+![](/images/s_poetries_work_images_20210409165913.webp)
 ```js
     // 代码中使用babel/polyfill
     // 配置按需引入babel-polyfill 这里不用手动导入
@@ -45,7 +45,7 @@
         ]
 ```
 
-![](/images/s_poetries_work_uploads_2023_02_d0145df746d805a0.png)
+![](/images/s_poetries_work_uploads_2023_02_d0145df746d805a0.webp)
 
 **@babel/polyfill的问题**
 

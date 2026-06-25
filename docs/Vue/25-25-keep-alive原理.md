@@ -108,7 +108,7 @@ alive`
 
 **扩展补充：LRU 算法是什么？**
 
-![](/images/s_poetries_work_uploads_2022_08_beabc92317439472.png)
+![](/images/s_poetries_work_uploads_2022_08_beabc92317439472.webp)
 
 > `LRU` 的核心思想是如果数据最近被访问过，那么将来被访问的几率也更高，所以我们将命中缓存的组件 `key` 重新插入到 `this.keys`
 > 的尾部，这样一来，`this.keys` 中越往头部的数据即将来被访问几率越低，所以当缓存数量达到最大值时，我们就删除将来被访问几率最低的数据，即

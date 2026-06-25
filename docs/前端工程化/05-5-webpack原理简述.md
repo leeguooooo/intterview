@@ -119,7 +119,7 @@ webpack 是一种模块打包工具，可以将各类型的资源，例如图片
 
 从 webpack 项目 `webpack.config.js` 文件 webpack 方法出发，可以看到初始化过程如下：
 
-![](/images/s_poetries_work_uploads_2022_09_195112577f1777bf.png)
+![](/images/s_poetries_work_uploads_2022_09_195112577f1777bf.webp)
 
   * 将命令行参数和用户的配置文件进行合并
   * 调用 `getValidateSchema` 对配置进行校验
@@ -181,7 +181,7 @@ webpack 是一种模块打包工具，可以将各类型的资源，例如图片
 在 webpack 函数执行完之后，就到主要的构建阶段，首先执行 `compiler.run()`，然后触发一系列钩子函数，执行
 `compiler.compile()`
 
-![](/images/s_poetries_work_uploads_2022_09_2b1da6bb8a3fd972.png)
+![](/images/s_poetries_work_uploads_2022_09_2b1da6bb8a3fd972.webp)
 
   * 在实例化 `compiler` 之后，执行 `compiler.run()`
   * 执行 `newCompilation` 函数，调用 `createCompilation` 初始化 `Compilation` 对象

@@ -487,7 +487,7 @@
     </template>
 ```
 
-![](/images/s_poetries_work_uploads_2023_06_3f31c0ea3122de49.png)
+![](/images/s_poetries_work_uploads_2023_06_3f31c0ea3122de49.webp)
 
 在这个例子中，我们选择将包含所有插槽 `prop` 的对象命名为 `slotProps`，但你也可以使用任意你喜欢的名字。
 

@@ -21,7 +21,7 @@
   * 初始化一个列表，把函数注册进去
   * 由每个`item`触发`next`执行（遇到`sleep`则异步触发，使用`setTimeout`）
 
-![](/images/s_poetries_work_uploads_2023_02_2600c71b11497adf.png)
+![](/images/s_poetries_work_uploads_2023_02_2600c71b11497adf.webp)
 ```js
     /**
      * @description lazy man

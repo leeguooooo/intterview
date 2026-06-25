@@ -2,11 +2,11 @@
 
 **require 基本原理**
 
-![](/images/s_poetries_work_uploads_2022_08_9aa839dd23f565a0.png)
+![](/images/s_poetries_work_uploads_2022_08_9aa839dd23f565a0.webp)
 
 **require 查找路径**
 
-![](/images/s_poetries_work_uploads_2022_08_fbd4839b18db27cd.png)
+![](/images/s_poetries_work_uploads_2022_08_fbd4839b18db27cd.webp)
 
 > `require` 和 `module.exports` 干的事情并不复杂，我们先假设有一个全局对象`{}`，初始情况下是空的，当你 `require`
 > 某个文件时，就将这个文件拿出来执行，如果这个文件里面存在`module.exports`，当运行到这行代码时将 `module.exports`

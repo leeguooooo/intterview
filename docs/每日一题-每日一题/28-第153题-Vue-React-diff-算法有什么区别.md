@@ -5,7 +5,7 @@
   * `Vue React diff` 不是对比文字，而是 `vdom` 树，即 `tree diff`
   * 传统的 `tree diff` 算法复杂度是 `O(n^3)` ，算法不可用。
 
-![](/images/s_poetries_work_uploads_2023_02_98d2444a4b7995d9.png)
+![](/images/s_poetries_work_uploads_2023_02_98d2444a4b7995d9.webp)
 
 **优化**
 
@@ -17,17 +17,17 @@
 
 > 最终把时间复杂度降低到 `O(n)` ，生产环境下可用。这一点 `Vue React` 都是相同的。
 
-![](/images/s_poetries_work_uploads_2023_02_49204f33f8e7a350.png)
+![](/images/s_poetries_work_uploads_2023_02_49204f33f8e7a350.webp)
 
 **React diff 特点 - 仅向右移动**
 
 > 比较子节点时，仅向右移动，不向左移动。
 
-![](/images/s_poetries_work_uploads_2023_02_7e0177856595febb.png)
+![](/images/s_poetries_work_uploads_2023_02_7e0177856595febb.webp)
 
 **Vue2 diff 特点 - 双端比较**
 
-![](/images/s_poetries_work_uploads_2023_02_dc386faff0955e94.png)
+![](/images/s_poetries_work_uploads_2023_02_dc386faff0955e94.webp)
 
 定义四个指针，分别比较
 
@@ -42,7 +42,7 @@
 
 > 例如数组 `[3，5，7，1，2，8]` 的最长递增子序列就是 `[3，5，7，8 ]` 。这是一个专门的算法。
 
-![](/images/s_poetries_work_uploads_2023_02_05879e82f60fa7af.png)
+![](/images/s_poetries_work_uploads_2023_02_05879e82f60fa7af.webp)
 
 **算法步骤**
 
@@ -66,7 +66,7 @@
 
 无论在 `Vue` 还是 React 中，`key` 的作用都非常大。以 `React` 为例，是否使用 `key` 对内部 `DOM` 变化影响非常大。
 
-![](/images/s_poetries_work_uploads_2023_02_a68a7962c0801e70.png)
+![](/images/s_poetries_work_uploads_2023_02_a68a7962c0801e70.webp)
 ```html
     <ul>
       <li v-for="(index, num) in nums" :key="index">

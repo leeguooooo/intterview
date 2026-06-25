@@ -57,8 +57,8 @@
       * **ES6模块和Commonjs模块区别**
         * `ES6`模块是静态引入，编译时引入
         * `Commonjs`是动态引入，执行时引入
-        * 只有`ES6 Module`才能静态分析，实现`Tree Shaking` ![](/images/s_poetries_work_uploads_2023_02_8c992a059adfd272.png)
+        * 只有`ES6 Module`才能静态分析，实现`Tree Shaking` ![](/images/s_poetries_work_uploads_2023_02_8c992a059adfd272.webp)
   * `Scope Hoisting`：是`webpack3`引入的一个新特性，它会分析出模块之间的依赖关系，尽可能地把打散的模块合并到一个函数中去，减少代码间的引用，从而减少代码体积 
     * 减少代码体积
     * 创建函数作用域更少
-    * 代码可读性更好 ![](/images/s_poetries_work_uploads_2023_02_4312a5cf7761b232.png)
+    * 代码可读性更好 ![](/images/s_poetries_work_uploads_2023_02_4312a5cf7761b232.webp)

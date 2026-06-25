@@ -7,7 +7,7 @@
   * `HTTP/2` 基于 Google 的 `SPDY` 协议，注重性能改善，但还未普及；
   * `HTTP/3` 基于 Google 的 `QUIC` 协议，是将来的发展方向
 
-![](/images/s_poetries_work_gitee_2019_12_89.png)
+![](/images/s_poetries_work_gitee_2019_12_89.webp)
 
 阅读全文
 

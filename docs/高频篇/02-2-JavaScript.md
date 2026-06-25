@@ -97,7 +97,7 @@
   * 转换为数字
   * 转换为字符串
 
-![](/images/s_poetries_work_gitee_2020_07_1.png)
+![](/images/s_poetries_work_gitee_2020_07_1.webp)
 
 **转Boolean**
 
@@ -249,7 +249,7 @@
   * 每个实例都有隐式原型`__proto__`
   * 实例的`__proto__`指向`class`的`prototype`
 
-![](/images/s_poetries_work_uploads_2023_02_6c4e92a507491e75.png)
+![](/images/s_poetries_work_uploads_2023_02_6c4e92a507491e75.webp)
 ```js
     // 父类
     class People {
@@ -289,7 +289,7 @@
     People.prototype === Student.prototype.__proto__
 ```
 
-![](/images/s_poetries_work_uploads_2023_02_bc261ce998487d1e.png)
+![](/images/s_poetries_work_uploads_2023_02_bc261ce998487d1e.webp)
 
 ### 原型继承和 Class 继承
 
@@ -684,7 +684,7 @@
 > 解决以上的缺点可以使用 **标记整理（Mark-Compact）算法**
 > 标记结束后，标记整理算法会将活着的对象（即不需要清理的对象）向内存的一端移动，最后清理掉边界的内存（如下图）
 
-![](/images/s_poetries_work_uploads_2022_08_9ab816979f615b6e.png)
+![](/images/s_poetries_work_uploads_2022_08_9ab816979f615b6e.webp)
 
 **引用计数的缺点：**
 
@@ -756,9 +756,9 @@
 
 打开开发者工具，选择 `Performance`，点击 `Record`，然后点击 `Stop`，在 `Memory` 选项卡中可以看到内存的使用情况。
 
-![](/images/s_poetries_work_uploads_2023_01_b8ae23cbae7287dc.png)
-![](/images/s_poetries_work_uploads_2023_01_d61278c2d0d42926.png)
-![](/images/s_poetries_work_uploads_2023_01_eafc2ab966c30f92.png)
+![](/images/s_poetries_work_uploads_2023_01_b8ae23cbae7287dc.webp)
+![](/images/s_poetries_work_uploads_2023_01_d61278c2d0d42926.webp)
+![](/images/s_poetries_work_uploads_2023_01_eafc2ab966c30f92.webp)
 
 **3\. 内存泄露的场景（Vue为例）**
 
@@ -1135,9 +1135,9 @@
 
 ### Event Loop执行机制过程
 
-![](/images/s_poetries_work_uploads_2023_02_4fdc86445fa2367b.png)
-![](/images/s_poetries_work_uploads_2023_02_0c93d362749fe612.png)
-![](/images/s_poetries_work_uploads_2023_02_facd54cb3df73dd0.png)
+![](/images/s_poetries_work_uploads_2023_02_4fdc86445fa2367b.webp)
+![](/images/s_poetries_work_uploads_2023_02_0c93d362749fe612.webp)
+![](/images/s_poetries_work_uploads_2023_02_facd54cb3df73dd0.webp)
 
   * 同步代码一行行放到`Call Stack`执行，执行完就出栈
   * 遇到异步优先记录下，等待时机（定时、网络请求）
@@ -1155,7 +1155,7 @@
 
 > `DOM`事件会放到`Web API中`等待用户点击，放到`Call Queue`，在移动到`Call Stack`执行
 
-![](/images/s_poetries_work_uploads_2023_02_181bf0446f68007f.png)
+![](/images/s_poetries_work_uploads_2023_02_181bf0446f68007f.webp)
 
   * `JS`是单线程的，异步(`setTimeout`、`Ajax`)使用回调，基于`Event Loop`
   * `DOM`事件也使用回调，`DOM`事件非异步，但也是基于`Event Loop`实现
@@ -1232,7 +1232,7 @@
   * **微任务** ：`ES` 语法标准之内，`JS` 引擎来统一处理。即，不用浏览器有任何干预，即可一次性处理完，更快更及时。
   * **宏任务** ：`ES` 语法没有，`JS` 引擎不处理，浏览器（或 `nodejs`）干预处理。
 
-![](/images/s_poetries_work_uploads_2023_02_facd54cb3df73dd0.png)
+![](/images/s_poetries_work_uploads_2023_02_facd54cb3df73dd0.webp)
 
 总结：正确的一次 Event loop 顺序是这样
 

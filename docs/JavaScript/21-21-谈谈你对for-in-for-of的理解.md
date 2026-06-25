@@ -15,8 +15,8 @@
     }
 ```
 
-![](/images/s_poetries_work_images_20210320102041.png)
-![](/images/s_poetries_work_images_20210320103701.png)
+![](/images/s_poetries_work_images_20210320102041.webp)
+![](/images/s_poetries_work_images_20210320103701.webp)
 ```js
     for(let key in obj) {
       // 不遍历原型上的属性

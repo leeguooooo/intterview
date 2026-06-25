@@ -86,13 +86,13 @@ Vite 官方目前提供了一个比较简单的脚手架：create-vite-app，可
 
 因为 Webpack Dev Server 在启动时，需要先 build 一遍，而 build 的过程是需要耗费很多时间的。
 
-![](/images/s_poetries_work_images_20210503215021.png)
+![](/images/s_poetries_work_images_20210503215021.webp)
 
 而 Vite 则完全不同，当我们执行 `vite serve` 时，内部直接启动了 Web Server，并不会先编译所有的代码文件。
 
 那仅仅是启动 Web Server，速度上自然就快了很多。
 
-![](/images/s_poetries_work_images_20210503215029.png)
+![](/images/s_poetries_work_images_20210503215029.webp)
 
 但是像 Webpack 这类工具的做法是将所有模块提前编译、打包进 bundle 里，换句话说，不管模块是否会被执行，都要被编译和打包到 bundle
 里。随着项目越来越大打包后的 bundle 也越来越大，打包的速度自然也就越来越慢。
@@ -147,23 +147,23 @@ Vite 的出现，引发了另外一个值得我们思考的问题：究竟还有
 
 随着浏览器的对 ES 标准支持的逐渐完善，第一个问题已经慢慢不存在了。现阶段绝大多数浏览器都是支持 ES Modules 的。
 
-![](/images/s_poetries_work_images_20210503215039.png)
+![](/images/s_poetries_work_images_20210503215039.webp)
 
 零散模块文件确实会产生大量的 HTTP 请求，而大量的 HTTP 请求在浏览器端就会并发请求资源的问题；
 
-![](/images/s_poetries_work_images_20210503215054.png)
+![](/images/s_poetries_work_images_20210503215054.webp)
 
 > 如上图所示，红色圈出来的请求就是并行请求，但是后面的请求就因为域名链接数已超过限制，而被挂起等待了一段时间。
 
 在 HTTP 1.1 的标准下，每次请求都需要单独建立 TCP 链接，经过完整的通讯过程，非常耗时；
 
-![](/images/s_poetries_work_images_20210503215110.png)
+![](/images/s_poetries_work_images_20210503215110.webp)
 
 而且每次请求除了请求体中的内容，请求头中也会包含很多数据，大量请求的情况下也会浪费很多资源。
 
 但是这些问题随着 HTTP 2 的出现，也就不复存在了。
 
-![](/images/s_poetries_work_images_20210503215117.png)
+![](/images/s_poetries_work_images_20210503215117.webp)
 
 关于 HTTP 1.1 与 HTTP 2 之间的差异，可以通过这个链接体验：https://http2.akamai.com/demo ，直观感受下
 HTTP/2 比 HTTP/1 到底快了多少。
