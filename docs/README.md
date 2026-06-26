@@ -6,7 +6,7 @@ heroText: 面试题集锦
 tagline: 帮助开发者更好地准备面试
 actions:
   - text: 开始学习
-    link: /基础篇.html
+    link: /基础篇/
     type: primary
   - text: 文章专栏
     link: /article/
@@ -35,7 +35,7 @@ footer: MIT 许可证 | 版权所有 © 2018-present VuePress Community
 ## 目录
 
 ### 基础篇
-- [基础篇](/基础篇.md)
+- [基础篇](/基础篇/)
 
 ### 进阶篇
 - [进阶篇](/进阶篇.html)
