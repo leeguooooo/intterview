@@ -11,6 +11,9 @@ actions:
   - text: 文章专栏
     link: /article/
     type: secondary
+  - text: 作者技术博客 →
+    link: https://leeguoo.com
+    type: secondary
 features:
   - title: 面试题库
     details: 涵盖广泛的技术领域，包括前端、后端、全栈及软件架构等。
@@ -83,3 +86,11 @@ footer: MIT 许可证 | 版权所有 © 2018-present VuePress Community
 ## 更多内容
 
 请访问各个页面了解详细内容。
+
+## 关于作者
+
+本站由 [**leeguoo**](https://leeguoo.com) 维护。更多原创技术文章、项目实战与开源工具，欢迎访问作者的技术博客：
+
+👉 **[leeguoo.com — 作者技术博客](https://leeguoo.com)**
+
+在这里你可以找到前端、全栈、AI 工程化等方向的深度文章与实践经验。
