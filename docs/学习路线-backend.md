@@ -69,9 +69,9 @@
 ## 数据工程师
 
 
-![](/images/roadmap/%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E5%B8%881.png)
+![](/images/roadmap/data-engineer-1.png)
 
-![](/images/roadmap/%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E5%B8%882.png)
+![](/images/roadmap/data-engineer-2.png)
 
 ---
 
