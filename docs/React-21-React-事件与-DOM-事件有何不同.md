@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/principle-docs/react/21-React%20%E4%BA%8B%E4%BB%B6%E4%B8%8E%20DOM%20%E4%BA%8B%E4%BB%B6%E6%9C%89%E4%BD%95%E4%B8%8D%E5%90%8C.html](https://interview.poetries.top/principle-docs/react/21-React%20%E4%BA%8B%E4%BB%B6%E4%B8%8E%20DOM%20%E4%BA%8B%E4%BB%B6%E6%9C%89%E4%BD%95%E4%B8%8D%E5%90%8C.html)
 
 ## 简版速记
 

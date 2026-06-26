@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/fe-base-docs/http-protocol/base/11-HTTP%E4%BC%98%E7%BC%BA%E7%82%B9.html](https://interview.poetries.top/fe-base-docs/http-protocol/base/11-HTTP%E4%BC%98%E7%BC%BA%E7%82%B9.html)
 
   * `HTTP` 最大的优点是简单、灵活和易于扩展；
   * `HTTP` 拥有成熟的软硬件环境，应用的非常广泛，是互联网的基础设施；

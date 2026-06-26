@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/docs/base/handwritten.html](https://interview.poetries.top/docs/base/handwritten.html)
 
 # 手写篇
 

@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/principle-docs/webpack/07-%E5%89%8D%E7%AB%AF%E6%9E%84%E5%BB%BA%E6%96%B0%E7%8E%A9%E6%B3%95%20Vite%20%E4%B8%8A%E6%89%8B%E4%B8%8E%E6%80%9D%E8%80%83.html](https://interview.poetries.top/principle-docs/webpack/07-%E5%89%8D%E7%AB%AF%E6%9E%84%E5%BB%BA%E6%96%B0%E7%8E%A9%E6%B3%95%20Vite%20%E4%B8%8A%E6%89%8B%E4%B8%8E%E6%80%9D%E8%80%83.html)
 
 ## 简版速记
 

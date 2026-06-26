@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/principle-docs/comprehensive/03-%E6%B5%85%E6%9E%90Promise%E5%8E%9F%E7%90%86.html](https://interview.poetries.top/principle-docs/comprehensive/03-%E6%B5%85%E6%9E%90Promise%E5%8E%9F%E7%90%86.html)
 
 ## 简版速记
 

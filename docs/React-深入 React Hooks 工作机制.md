@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/principle-docs/react/14-%E6%B7%B1%E5%85%A5%20React%20Hooks%20%E5%B7%A5%E4%BD%9C%E6%9C%BA%E5%88%B6.html](https://interview.poetries.top/principle-docs/react/14-%E6%B7%B1%E5%85%A5%20React%20Hooks%20%E5%B7%A5%E4%BD%9C%E6%9C%BA%E5%88%B6.html)
 
 ## 简版速记
 

@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/principle-docs/comprehensive/11-%E5%AF%B9%E6%AF%94%20Koa%20%E5%92%8C%20Redux-%E5%88%86%E6%9E%90%E5%89%8D%E7%AB%AF%E4%B8%AD%E7%9A%84%E4%B8%AD%E9%97%B4%E4%BB%B6%E7%90%86%E5%BF%B5.html](https://interview.poetries.top/principle-docs/comprehensive/11-%E5%AF%B9%E6%AF%94%20Koa%20%E5%92%8C%20Redux-%E5%88%86%E6%9E%90%E5%89%8D%E7%AB%AF%E4%B8%AD%E7%9A%84%E4%B8%AD%E9%97%B4%E4%BB%B6%E7%90%86%E5%BF%B5.html)
 
 ## 简版速记
 

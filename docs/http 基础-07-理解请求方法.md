@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/fe-base-docs/http-protocol/base/07-%E7%90%86%E8%A7%A3%E8%AF%B7%E6%B1%82%E6%96%B9%E6%B3%95.html](https://interview.poetries.top/fe-base-docs/http-protocol/base/07-%E7%90%86%E8%A7%A3%E8%AF%B7%E6%B1%82%E6%96%B9%E6%B3%95.html)
 
 ## 标准请求方法
 

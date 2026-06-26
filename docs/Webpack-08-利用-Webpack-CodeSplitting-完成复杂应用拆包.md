@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/principle-docs/webpack/08-%E5%88%A9%E7%94%A8%20Webpack%20CodeSplitting%20%E5%AE%8C%E6%88%90%E5%A4%8D%E6%9D%82%E5%BA%94%E7%94%A8%E6%8B%86%E5%8C%85.html](https://interview.poetries.top/principle-docs/webpack/08-%E5%88%A9%E7%94%A8%20Webpack%20CodeSplitting%20%E5%AE%8C%E6%88%90%E5%A4%8D%E6%9D%82%E5%BA%94%E7%94%A8%E6%8B%86%E5%8C%85.html)
 
 ## 简版速记
 

@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/fe-base-docs/http-protocol/advance/22-TLS1.2%E8%BF%9E%E6%8E%A5%E8%BF%87%E7%A8%8B%E8%A7%A3%E6%9E%90.html](https://interview.poetries.top/fe-base-docs/http-protocol/advance/22-TLS1.2%E8%BF%9E%E6%8E%A5%E8%BF%87%E7%A8%8B%E8%A7%A3%E6%9E%90.html)
 
 ## 简版速记
 

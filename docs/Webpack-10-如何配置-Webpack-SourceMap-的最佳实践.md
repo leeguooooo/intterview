@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/principle-docs/webpack/10-%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AE%20Webpack%20SourceMap%20%E7%9A%84%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5.html](https://interview.poetries.top/principle-docs/webpack/10-%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AE%20Webpack%20SourceMap%20%E7%9A%84%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5.html)
 
 ## 简版速记
 

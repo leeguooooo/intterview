@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/principle-docs/react/27-Taro%E5%8E%9F%E7%90%86.html](https://interview.poetries.top/principle-docs/react/27-Taro%E5%8E%9F%E7%90%86.html)
 
 ## 简版速记
 

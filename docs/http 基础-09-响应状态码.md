@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/fe-base-docs/http-protocol/base/09-%E5%93%8D%E5%BA%94%E7%8A%B6%E6%80%81%E7%A0%81.html](https://interview.poetries.top/fe-base-docs/http-protocol/base/09-%E5%93%8D%E5%BA%94%E7%8A%B6%E6%80%81%E7%A0%81.html)
 
   * 状态码在响应报文里表示了服务器对请求的处理结果；
   * 状态码后的原因短语是简单的文字描述，可以自定义；

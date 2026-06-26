@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/principle-docs/comprehensive/08-%E8%99%9A%E6%8B%9FDOM%EF%BC%88%E4%BA%8C%EF%BC%89.html](https://interview.poetries.top/principle-docs/comprehensive/08-%E8%99%9A%E6%8B%9FDOM%EF%BC%88%E4%BA%8C%EF%BC%89.html)
 
 ## 简版速记
 

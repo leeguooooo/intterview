@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/docs/excellent-docs/7-Vue.html](https://interview.poetries.top/docs/excellent-docs/7-Vue.html)
 
 # Vue
 

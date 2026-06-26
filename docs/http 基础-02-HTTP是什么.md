@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/fe-base-docs/http-protocol/base/02-HTTP%E6%98%AF%E4%BB%80%E4%B9%88.html](https://interview.poetries.top/fe-base-docs/http-protocol/base/02-HTTP%E6%98%AF%E4%BB%80%E4%B9%88.html)
 
   * `HTTP` 是一个用在计算机世界里的协议，它确立了一种计算机之间交流通信的规范，以及相关的各种控制和错误处理方式
   * `HTTP` 专门用来在两点之间传输数据，不能用于广播、寻址或路由

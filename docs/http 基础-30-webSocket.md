@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/fe-base-docs/http-protocol/extend/30-webSocket.html](https://interview.poetries.top/fe-base-docs/http-protocol/extend/30-webSocket.html)
 
 ## 简版速记
 

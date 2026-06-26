@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/fe-base-docs/http-protocol/base/16-HTTP%E7%9A%84Cookie%E6%9C%BA%E5%88%B6.html](https://interview.poetries.top/fe-base-docs/http-protocol/base/16-HTTP%E7%9A%84Cookie%E6%9C%BA%E5%88%B6.html)
 
 ## 简版速记
 

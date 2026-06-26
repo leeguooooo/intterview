@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/principle-docs/react/10-Immutable%E6%80%BB%E7%BB%93.html](https://interview.poetries.top/principle-docs/react/10-Immutable%E6%80%BB%E7%BB%93.html)
 
 ## 简版速记
 

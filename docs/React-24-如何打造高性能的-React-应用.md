@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/principle-docs/react/24-%E5%A6%82%E4%BD%95%E6%89%93%E9%80%A0%E9%AB%98%E6%80%A7%E8%83%BD%E7%9A%84%20React%20%E5%BA%94%E7%94%A8.html](https://interview.poetries.top/principle-docs/react/24-%E5%A6%82%E4%BD%95%E6%89%93%E9%80%A0%E9%AB%98%E6%80%A7%E8%83%BD%E7%9A%84%20React%20%E5%BA%94%E7%94%A8.html)
 
 ## 简版速记
 

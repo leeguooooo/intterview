@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/principle-docs/react/19-ReactDOM.render%20%E6%98%AF%E5%A6%82%E4%BD%95%E4%B8%B2%E8%81%94%E6%B8%B2%E6%9F%93%E9%93%BE%E8%B7%AF%E7%9A%84.html](https://interview.poetries.top/principle-docs/react/19-ReactDOM.render%20%E6%98%AF%E5%A6%82%E4%BD%95%E4%B8%B2%E8%81%94%E6%B8%B2%E6%9F%93%E9%93%BE%E8%B7%AF%E7%9A%84.html)
 
 ## 简版速记
 

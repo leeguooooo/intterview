@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/fe-base-docs/http-protocol/base/04-HTTP%E5%88%86%E5%B1%82.html](https://interview.poetries.top/fe-base-docs/http-protocol/base/04-HTTP%E5%88%86%E5%B1%82.html)
 
 ![](/images/s_poetries_work_gitee_2019_12_4.webp)
 

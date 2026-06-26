@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/docs/base/design-pattern.html](https://interview.poetries.top/docs/base/design-pattern.html)
 
 # 设计模式 2
 

@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/fe-base-docs/http-protocol/advance/26-HTTP2%E7%89%B9%E6%80%A7%E6%A6%82%E8%A7%88.html](https://interview.poetries.top/fe-base-docs/http-protocol/advance/26-HTTP2%E7%89%B9%E6%80%A7%E6%A6%82%E8%A7%88.html)
 
 ## 简版速记
 

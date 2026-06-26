@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/principle-docs/webpack/03-%E4%BB%8E%E6%BA%90%E7%A0%81%E7%AA%A5%E6%8E%A2Webpack4.x%E5%8E%9F%E7%90%86.html](https://interview.poetries.top/principle-docs/webpack/03-%E4%BB%8E%E6%BA%90%E7%A0%81%E7%AA%A5%E6%8E%A2Webpack4.x%E5%8E%9F%E7%90%86.html)
 
 ## 简版速记
 

@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/principle-docs/comprehensive/01-%E8%99%9A%E6%8B%9FDOM%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90.html#%E4%BB%80%E4%B9%88%E6%98%AF-virtual-dom](https://interview.poetries.top/principle-docs/comprehensive/01-%E8%99%9A%E6%8B%9FDOM%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90.html#%E4%BB%80%E4%B9%88%E6%98%AF-virtual-dom)
 
 ## 简版速记
 

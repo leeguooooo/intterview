@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/principle-docs/comprehensive/02-setTimeout%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86%E5%92%8C%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F.html](https://interview.poetries.top/principle-docs/comprehensive/02-setTimeout%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86%E5%92%8C%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F.html)
 
 ## 简版速记
 

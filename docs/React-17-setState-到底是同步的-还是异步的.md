@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/principle-docs/react/17-setState%20%E5%88%B0%E5%BA%95%E6%98%AF%E5%90%8C%E6%AD%A5%E7%9A%84%EF%BC%8C%E8%BF%98%E6%98%AF%E5%BC%82%E6%AD%A5%E7%9A%84.html](https://interview.poetries.top/principle-docs/react/17-setState%20%E5%88%B0%E5%BA%95%E6%98%AF%E5%90%8C%E6%AD%A5%E7%9A%84%EF%BC%8C%E8%BF%98%E6%98%AF%E5%BC%82%E6%AD%A5%E7%9A%84.html)
 
 ## 简版速记
 

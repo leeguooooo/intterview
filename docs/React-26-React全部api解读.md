@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/principle-docs/react/26-React%E5%85%A8%E9%83%A8api%E8%A7%A3%E8%AF%BB.html](https://interview.poetries.top/principle-docs/react/26-React%E5%85%A8%E9%83%A8api%E8%A7%A3%E8%AF%BB.html)
 
 ## 简版速记
 

@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/principle-docs/react/22-%E6%8F%AD%E7%A7%98%20Redux%20%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3%E4%B8%8E%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86.html](https://interview.poetries.top/principle-docs/react/22-%E6%8F%AD%E7%A7%98%20Redux%20%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3%E4%B8%8E%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86.html)
 
 ## 简版速记
 

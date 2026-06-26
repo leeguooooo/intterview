@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/principle-docs/node/03-koa%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95.html](https://interview.poetries.top/principle-docs/node/03-koa%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95.html)
 
 ## 简版速记
 

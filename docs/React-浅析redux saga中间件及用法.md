@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/principle-docs/react/04-%E6%B5%85%E6%9E%90redux%20saga%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%8F%8A%E7%94%A8%E6%B3%95.html](https://interview.poetries.top/principle-docs/react/04-%E6%B5%85%E6%9E%90redux%20saga%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%8F%8A%E7%94%A8%E6%B3%95.html)
 
 ## 简版速记
 

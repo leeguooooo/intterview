@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/docs/base/high-frequency.html](https://interview.poetries.top/docs/base/high-frequency.html)
 > 一天快速复习完高频面试题
 
 # 高频篇

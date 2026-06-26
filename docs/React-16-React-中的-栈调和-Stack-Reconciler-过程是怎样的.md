@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/principle-docs/react/16-React%20%E4%B8%AD%E7%9A%84%E2%80%9C%E6%A0%88%E8%B0%83%E5%92%8C%E2%80%9D%20Stack%20Reconciler%20%E8%BF%87%E7%A8%8B%E6%98%AF%E6%80%8E%E6%A0%B7%E7%9A%84.html](https://interview.poetries.top/principle-docs/react/16-React%20%E4%B8%AD%E7%9A%84%E2%80%9C%E6%A0%88%E8%B0%83%E5%92%8C%E2%80%9D%20Stack%20Reconciler%20%E8%BF%87%E7%A8%8B%E6%98%AF%E6%80%8E%E6%A0%B7%E7%9A%84.html)
 
 ## 简版速记
 

@@ -1,4 +1,3 @@
-原文链接: [https://sorrycc.com/speeding-up-javascript-ecosystem-part-9/](https://sorrycc.com/speeding-up-javascript-ecosystem-part-9/)
 
 ## 简版速记
 

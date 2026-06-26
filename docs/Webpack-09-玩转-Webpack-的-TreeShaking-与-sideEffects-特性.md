@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/principle-docs/webpack/09-%E7%8E%A9%E8%BD%AC%20Webpack%20%E7%9A%84%20TreeShaking%20%E4%B8%8E%20sideEffects%20%E7%89%B9%E6%80%A7.html](https://interview.poetries.top/principle-docs/webpack/09-%E7%8E%A9%E8%BD%AC%20Webpack%20%E7%9A%84%20TreeShaking%20%E4%B8%8E%20sideEffects%20%E7%89%B9%E6%80%A7.html)
 
 ## 简版速记
 

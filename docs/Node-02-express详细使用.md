@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/principle-docs/node/02-express%E8%AF%A6%E7%BB%86%E4%BD%BF%E7%94%A8.html](https://interview.poetries.top/principle-docs/node/02-express%E8%AF%A6%E7%BB%86%E4%BD%BF%E7%94%A8.html)
 
 ## 简版速记
 

@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/fe-base-docs/http-protocol/base/08-URI.html](https://interview.poetries.top/fe-base-docs/http-protocol/base/08-URI.html)
 
 ![](/images/s_poetries_work_gitee_2019_12_13.webp)
 

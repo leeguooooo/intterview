@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/principle-docs/js/02-%E5%8D%95%E7%BA%BF%E7%A8%8B%E7%9A%84%20JavaScript%20%E5%A6%82%E4%BD%95%E7%AE%A1%E7%90%86%E4%BB%BB%E5%8A%A1.html](https://interview.poetries.top/principle-docs/js/02-%E5%8D%95%E7%BA%BF%E7%A8%8B%E7%9A%84%20JavaScript%20%E5%A6%82%E4%BD%95%E7%AE%A1%E7%90%86%E4%BB%BB%E5%8A%A1.html)
 
 ## 简版速记
 

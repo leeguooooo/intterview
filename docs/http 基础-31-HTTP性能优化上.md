@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/fe-base-docs/http-protocol/extend/31-HTTP%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E4%B8%8A.html](https://interview.poetries.top/fe-base-docs/http-protocol/extend/31-HTTP%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E4%B8%8A.html)
 
 ## 简版速记
 

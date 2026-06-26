@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/fe-base-docs/http-protocol/base/01-HTTP%E7%9A%84%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F.html](https://interview.poetries.top/fe-base-docs/http-protocol/base/01-HTTP%E7%9A%84%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F.html)
 
   * `HTTP` 协议始于三十年前蒂姆·伯纳斯 - 李的一篇论文
   * `HTTP/0.9` 是个简单的文本协议，只能获取文本资源；

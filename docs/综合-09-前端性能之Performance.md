@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/principle-docs/comprehensive/09-%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%B9%8BPerformance.html](https://interview.poetries.top/principle-docs/comprehensive/09-%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%B9%8BPerformance.html)
 
 ## 简版速记
 

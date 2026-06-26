@@ -1,4 +1,3 @@
-原文链接: [https://interview.poetries.top/principle-docs/vue/02-%E7%BB%84%E4%BB%B6%E7%9A%84%E6%9C%AC%E8%B4%A8.html](https://interview.poetries.top/principle-docs/vue/02-%E7%BB%84%E4%BB%B6%E7%9A%84%E6%9C%AC%E8%B4%A8.html)
 
 ## 简版速记
 
