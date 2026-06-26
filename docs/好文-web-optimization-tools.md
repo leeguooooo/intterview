@@ -49,7 +49,7 @@
 
 
 2.插件 - 生成报告
-![](https://raw.githubusercontent.com/chenfengyanyu/my-web-accumulation/master/images/optimization-tools/lighthouse.png)
+![](/images/jartto/9b797f629a57.png)
 
 
 报告是我们的一个重要参考指标，这是网站评估的通用方法。
@@ -60,28 +60,28 @@
 
 3.优化建议
 `Lighthouse` 比较人性化的点在于他既提出了问题，同时也提出了解决建议。
-![](https://raw.githubusercontent.com/chenfengyanyu/my-web-accumulation/master/images/optimization-tools/performance.png)
+![](/images/jartto/8e6981a3428c.png)
 
 ## 三、PageSpeed
 
 
 1.使用 `PageSpeed`
 我们可以在「Chrome DevTools」菜单栏中找到并打开：
-![](https://raw.githubusercontent.com/chenfengyanyu/my-web-accumulation/master/images/optimization-tools/pagespeed.png)
+![](/images/jartto/e911b20cda2a.png)
 
 
 2.分析报告
-![](https://raw.githubusercontent.com/chenfengyanyu/my-web-accumulation/master/images/optimization-tools/pagescore.png)
+![](/images/jartto/012599b63ad7.png)
 
 ## 四、Chrome DevTools - Network
 
 
 1.关于 `Network` 我们重点关注标注的 3 处
-![](https://raw.githubusercontent.com/chenfengyanyu/my-web-accumulation/master/images/optimization-tools/network.png)
+![](/images/jartto/94d50d5abb1e.png)
 
 
 2.`Timing` 也是优化不可缺少的工具：
-![](https://raw.githubusercontent.com/chenfengyanyu/my-web-accumulation/master/images/optimization-tools/network1.png)
+![](/images/jartto/695b599da4fd.png)
 
 
 补充说明一下：
@@ -95,7 +95,7 @@
 
 
 1.概览
-![](https://raw.githubusercontent.com/chenfengyanyu/my-web-accumulation/master/images/optimization-tools/perf.png)
+![](/images/jartto/ac3f6e830dbc.png)
 
 
 2.版面主要由 4 部分构成
@@ -168,23 +168,23 @@ First Paint
 在栈里，上面的 `event` 调用了下面的 `event`。
 
 
-![](https://raw.githubusercontent.com/chenfengyanyu/my-web-accumulation/master/images/optimization-tools/perf1.png)
+![](/images/jartto/8ee6396d04b4.png)
 
 
 注意红色警告：
-![](https://raw.githubusercontent.com/chenfengyanyu/my-web-accumulation/master/images/optimization-tools/perf2.png)
+![](/images/jartto/9232644f5a7d.png)
 
 
 - JS Heap`JavaScript` 运行过程中的大部分数据都保存在堆 `Heap` 中，所以 `JavaScript` 性能分析另一个比较重要的方面是内存，也就是堆的分析。
 
 
-![](https://raw.githubusercontent.com/chenfengyanyu/my-web-accumulation/master/images/optimization-tools/perf3.png)
+![](/images/jartto/93c50d8d332a.png)
 
 
 - 打开 Performance 监视器
 
 
-![](https://raw.githubusercontent.com/chenfengyanyu/my-web-accumulation/master/images/optimization-tools/perf4.png)
+![](/images/jartto/655b0463af5d.png)
 
 ## 六、Chrome DevTools - Show Third Party Badges
 
@@ -196,11 +196,11 @@ First Paint
 
 
 2.打开控制面板：`Command + Shift + P`
-![](https://raw.githubusercontent.com/chenfengyanyu/my-web-accumulation/master/images/optimization-tools/badge.png)
+![](/images/jartto/bcc1e10fb49d.png)
 
 
 3.打开 `Network`，注意资源前面的彩色标志
-![](https://raw.githubusercontent.com/chenfengyanyu/my-web-accumulation/master/images/optimization-tools/badge1.png)
+![](/images/jartto/d1178d1b1081.png)
 
 
 三方资源都被标记出来了，移除或者替换那些影响性能的东西。
@@ -213,7 +213,7 @@ First Paint
 
 
 1.选中资源 - 右键 - `Block Request URL`
-![](https://raw.githubusercontent.com/chenfengyanyu/my-web-accumulation/master/images/optimization-tools/block.png)
+![](/images/jartto/fcd0227f9458.png)
 
 
 阻止某些资源加载，控制变量法来排查页面性能问题。
@@ -226,11 +226,11 @@ First Paint
 
 
 2.输入：`Show Coverage`
-![](https://raw.githubusercontent.com/chenfengyanyu/my-web-accumulation/master/images/optimization-tools/corvage.png)
+![](/images/jartto/c373873c3227.png)
 
 
 3.找到相应的文件，可以看到文件左侧已经标记出了部分代码的使用情况
-![](https://raw.githubusercontent.com/chenfengyanyu/my-web-accumulation/master/images/optimization-tools/coverage.png)
+![](/images/jartto/f57a1025ffe1.png)
 
 
 解决思路也很简单：
@@ -273,7 +273,7 @@ document
 
 
 1.打开 Rendering 选项
-![](https://raw.githubusercontent.com/chenfengyanyu/my-web-accumulation/master/images/optimization-tools/render.png)
+![](/images/jartto/052abb238dfd.png)
 
 
 2.刷新页面
@@ -282,7 +282,7 @@ document
 绿色区域越重，说明重复渲染的次数越多，通过优化 DOM 来减少无效渲染。
 
 
-![](https://raw.githubusercontent.com/chenfengyanyu/my-web-accumulation/master/images/optimization-tools/render.gif)
+![](/images/jartto/c795fa87e539.gif)
 
 ## 十一、Chrome DevTools - Layer
 
@@ -295,7 +295,7 @@ document
 
 1.打开控制面板：`Command + Shift + P`
 2.选择 `Layer` 选项
-![](https://raw.githubusercontent.com/chenfengyanyu/my-web-accumulation/master/images/optimization-tools/layer.png)
+![](/images/jartto/c38859c817e1.png)
 
 
 是不是图层问题就清清楚楚的摆在眼前了～

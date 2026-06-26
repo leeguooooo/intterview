@@ -25,16 +25,16 @@
 
 
 所以，我们经常会面临这样的问题：
-![](https://raw.githubusercontent.com/chenfengyanyu/my-web-accumulation/master/images/fmp/lighthouse.png)
+![](/images/jartto/21134369d826.png)
 `FCP` 在可接受范围，但是 `FMP` 却完全失控。
 
 
 也可能是这样的问题：
-![](https://raw.githubusercontent.com/chenfengyanyu/my-web-accumulation/master/images/fmp/fmp1.png)
+![](/images/jartto/23b67e159d00.png)
 
 
 或许还有这样的问题：
-![](https://raw.githubusercontent.com/chenfengyanyu/my-web-accumulation/master/images/fmp/fmp2.png)
+![](/images/jartto/f13fa2c79f13.png)
 
 
 为什么结构类似的站点，`FMP` 加载却千差万别。要了解 `FMP` 我们需要知道它的计算规则，下面让我们一层层抽丝剥茧。
@@ -49,14 +49,14 @@
 
 
 什么意思呢，我们先来看一张官方图片：
-![](https://raw.githubusercontent.com/chenfengyanyu/my-web-accumulation/master/images/fmp/fmp.png)
+![](/images/jartto/4c66ddb3be59.png)
 
 
 如果 `FCP` 是 `1.5s`，`FMP` 是 `3s`，那么 `FCP` 分数将会是 `99`，但是 `FMP` 分数将是 `75`。
 
 
 除了上述影响外，我们还需要关注 `Lighthouse V3` 的记分规则：
-![](https://raw.githubusercontent.com/chenfengyanyu/my-web-accumulation/master/images/fmp/score.png)
+![](/images/jartto/7dafcd43eb67.png)
 
 
 虽然 `FMP` 权重仅为 `1` ，很遗憾，因为如上规则的存在，我们站点无法到达满分💯。
@@ -110,7 +110,7 @@
 
 
 这里就不展开了，直接上图，看看红框部分：
-![](https://raw.githubusercontent.com/chenfengyanyu/my-web-accumulation/master/images/fmp/layout.png)
+![](/images/jartto/9227491d23a0.png)
 
 
 惊不惊喜，我们精简 `DOM` 似乎可以将公式中分子变小，或者让页面高度大于屏幕高度。到这里，所有谜团都解开了，优化 `FMP` 也就变得毫无挑战了。
