@@ -1221,6 +1221,11 @@ const config = defineUserConfig({
         ]
       },
       {
+        "text": "技术博客",
+        "link": "https://leeguoo.com",
+        "target": "_blank"
+      },
+      {
         "text": "隐私政策",
         "link": "/privacy.html"
       }
