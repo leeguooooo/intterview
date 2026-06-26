@@ -66,6 +66,7 @@ const config = defineUserConfig({
     // AdSense (immediate loader so Google's site-verification crawler detects it
     // without needing JS interaction) + account meta. pub id shared with leeguoo.com.
     ["meta", { "name": "google-adsense-account", "content": "ca-pub-4085449715128420" }],
+    ["meta", { "name": "baidu-site-verification", "content": "codeva-8ufx4awUOL" }],
     [
       "script",
       {
