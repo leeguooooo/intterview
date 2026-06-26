@@ -83,6 +83,14 @@ const config = defineUserConfig({
       {},
       "(function(){var M={\"leeguoo.com\":\"G-RCV0Z432Y8\",\"www.leeguoo.com\":\"G-RCV0Z432Y8\",\"blog.leeguoo.com\":\"G-1PPMNQSBQ5\",\"interview.leeguoo.com\":\"G-3J49P435VZ\"};var id=M[location.hostname];if(!id)return;if(document.querySelector('script[data-ga4]'))return;var g=document.createElement('script');g.async=true;g.src='https://www.googletagmanager.com/gtag/js?id='+id;g.setAttribute('data-ga4',id);document.head.appendChild(g);window.dataLayer=window.dataLayer||[];function gtag(){window.dataLayer.push(arguments);}window.gtag=gtag;gtag('js',new Date());gtag('config',id);})();"
     ],
+    // 引流转化埋点：点击任意指向 leeguoo.com（主站/博客）的外链时上报 GA4 事件
+    // outbound_to_blog，用于衡量「面试站 → leeguoo.com」导流效果。
+    // 在 GA4 后台「管理 → 事件」里把它标记为「关键事件」即成为转化。
+    [
+      "script",
+      {},
+      "(function(){document.addEventListener('click',function(e){var a=e.target&&e.target.closest&&e.target.closest('a[href*=\"leeguoo.com\"]');if(!a)return;var h;try{h=new URL(a.href,location.href).hostname;}catch(_){return;}if(h===location.hostname)return;if(h.indexOf('leeguoo.com')===-1)return;if(!window.gtag)return;window.gtag('event','outbound_to_blog',{link_url:a.href,link_domain:h,link_text:(a.innerText||'').trim().slice(0,100),source_page:location.pathname,transport_type:'beacon'});},true);})();"
+    ],
     // 额外的全站 GA4 属性(G-RK0BJ04WPX)：无条件加载，与上面按域名分流的 GA4 并存，
     // 不替代——用于跨多个域名统一汇总统计。
     [
