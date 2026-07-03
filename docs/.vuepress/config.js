@@ -27,6 +27,9 @@ const config = defineUserConfig({
   "title": "前端面试题集锦",
   "description": "为前端开发者准备的面试题库",
   "head": [
+    // First-party visitor analytics — central collector on blog.leeguoo.com
+    // (CORS-allowed for *.leeguoo.com); surfaces this site under 站点 in /admin/analytics.
+    ["script", { "src": "https://blog.leeguoo.com/scripts/visitor-beacon.js?v=20260703-2", "defer": "" }],
     ["link", { "rel": "stylesheet", "href": "/safe-area.css" }],
     ["link", { "rel": "stylesheet", "href": "/perf.css" }],
     ["link", { "rel": "manifest", "href": "/manifest.json" }],
@@ -81,7 +84,7 @@ const config = defineUserConfig({
     [
       "script",
       {},
-      "(function(){var M={\"leeguoo.com\":\"G-RCV0Z432Y8\",\"www.leeguoo.com\":\"G-RCV0Z432Y8\",\"blog.leeguoo.com\":\"G-1PPMNQSBQ5\",\"interview.leeguoo.com\":\"G-3J49P435VZ\"};var id=M[location.hostname];if(!id)return;if(document.querySelector('script[data-ga4]'))return;var g=document.createElement('script');g.async=true;g.src='https://www.googletagmanager.com/gtag/js?id='+id;g.setAttribute('data-ga4',id);document.head.appendChild(g);window.dataLayer=window.dataLayer||[];function gtag(){window.dataLayer.push(arguments);}window.gtag=gtag;gtag('js',new Date());gtag('config',id);})();"
+      "(function(){var M={\"leeguoo.com\":\"G-RCV0Z432Y8\",\"www.leeguoo.com\":\"G-RCV0Z432Y8\",\"blog.leeguoo.com\":\"G-1PPMNQSBQ5\",\"interview.leeguoo.com\":\"G-RCV0Z432Y8\"};var id=M[location.hostname];if(!id)return;if(document.querySelector('script[data-ga4]'))return;var g=document.createElement('script');g.async=true;g.src='https://www.googletagmanager.com/gtag/js?id='+id;g.setAttribute('data-ga4',id);document.head.appendChild(g);window.dataLayer=window.dataLayer||[];function gtag(){window.dataLayer.push(arguments);}window.gtag=gtag;gtag('js',new Date());gtag('config',id);})();"
     ],
     // 引流转化埋点：点击任意指向 leeguoo.com（主站/博客）的外链时上报 GA4 事件
     // outbound_to_blog，用于衡量「面试站 → leeguoo.com」导流效果。
@@ -91,20 +94,8 @@ const config = defineUserConfig({
       {},
       "(function(){document.addEventListener('click',function(e){var a=e.target&&e.target.closest&&e.target.closest('a[href*=\"leeguoo.com\"]');if(!a)return;var h;try{h=new URL(a.href,location.href).hostname;}catch(_){return;}if(h===location.hostname)return;if(h.indexOf('leeguoo.com')===-1)return;if(!window.gtag)return;window.gtag('event','outbound_to_blog',{link_url:a.href,link_domain:h,link_text:(a.innerText||'').trim().slice(0,100),source_page:location.pathname,transport_type:'beacon'});},true);})();"
     ],
-    // 额外的全站 GA4 属性(G-RK0BJ04WPX)：无条件加载，与上面按域名分流的 GA4 并存，
-    // 不替代——用于跨多个域名统一汇总统计。
-    [
-      "script",
-      {
-        "async": true,
-        "src": "https://www.googletagmanager.com/gtag/js?id=G-RK0BJ04WPX"
-      }
-    ],
-    [
-      "script",
-      {},
-      "window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-RK0BJ04WPX');"
-    ]
+    // (旧的全站汇总属性 G-RK0BJ04WPX 已移除——统一汇总由根域名流 G-RCV0Z432Y8
+    // 承担,按 hostname 维度分站;避免同属性多流把 PV 记多次。)
   ],
   "theme": defaultTheme({
     "logo": "images/logo.webp",
