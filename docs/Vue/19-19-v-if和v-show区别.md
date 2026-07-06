@@ -1,3 +1,7 @@
+---
+title: "v if和v show区别"
+---
+
 # 19 v-if和v-show区别
 
   * `v-show`隐藏则是为该元素添加`css--display:none`，`dom`元素依旧还在。`v-if`显示隐藏是将`dom`元素整个添加或删除

@@ -1,3 +1,7 @@
+---
+title: "instanceof 的原理"
+---
+
 # 15 instanceof 的原理
 
 > 涉及面试题：`instanceof` 的原理是什么？

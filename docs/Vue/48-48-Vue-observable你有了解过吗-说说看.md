@@ -1,3 +1,7 @@
+---
+title: "Vue observable你有了解过吗 说说看"
+---
+
 # 48 Vue.observable你有了解过吗？说说看
 
 ### Observable 是什么

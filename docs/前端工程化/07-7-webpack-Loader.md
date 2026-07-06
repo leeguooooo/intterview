@@ -1,3 +1,7 @@
+---
+title: "webpack Loader"
+---
+
 # 7 webpack Loader
 
 > 由于 Webpack 是基于 Node，因此 Webpack 其实是只能识别 js 模块，比如 css / html /

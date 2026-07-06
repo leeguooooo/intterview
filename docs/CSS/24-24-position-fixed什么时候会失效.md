@@ -1,3 +1,7 @@
+---
+title: "position fixed什么时候会失效"
+---
+
 # 24 position: fixed什么时候会失效？
 
 我们知道，设置了`position: fixed`固定定位属性的元素会脱离文档流，达到“超然脱俗”的境界。

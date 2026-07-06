@@ -1,3 +1,7 @@
+---
+title: "HTMLCollection和NodeList的区别"
+---
+
 # 第105题 HTMLCollection和NodeList的区别
 
 **Node和Element**

@@ -1,3 +1,7 @@
+---
+title: "require 具体实现原理是什么"
+---
+
 # 第80题 require 具体实现原理是什么
 
 **require 基本原理**

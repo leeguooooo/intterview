@@ -1,3 +1,7 @@
+---
+title: "setState和batchUpdate机制"
+---
+
 # 3 setState和batchUpdate机制
 
   * `setState`在`react`事件、生命周期中是异步的（在`react`上下文中是异步）；在`setTimeout`、自定义`DOM`事件中是同步的

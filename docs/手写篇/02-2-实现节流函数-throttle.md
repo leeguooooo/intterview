@@ -1,3 +1,7 @@
+---
+title: "实现节流函数 throttle"
+---
+
 # 2 实现节流函数（throttle）
 
 >

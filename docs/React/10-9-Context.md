@@ -1,3 +1,7 @@
+---
+title: "Context"
+---
+
 # 9 Context
 
 公共信息（语言、主题）传递给每个组件，用`props`太繁琐

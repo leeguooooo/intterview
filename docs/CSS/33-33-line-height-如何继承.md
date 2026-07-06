@@ -1,3 +1,7 @@
+---
+title: "line height 如何继承"
+---
+
 # 33 line-height 如何继承
 
   * 父元素的 `line-height` 写了具体数值，比如 `30px`，则子元素 `line-height` 继承该值。

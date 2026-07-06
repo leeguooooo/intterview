@@ -1,3 +1,7 @@
+---
+title: "实现一个compose函数"
+---
+
 # 24 实现一个compose函数
 
 > 组合多个函数，从右到左，比如：`compose(f, g, h)` 最终得到这个结果 `(...args) => f(g(h(...args))).`

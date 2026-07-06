@@ -1,3 +1,7 @@
+---
+title: "promise解决并发请求"
+---
+
 # 第9题 promise解决并发请求
 ```js
     var urls = [

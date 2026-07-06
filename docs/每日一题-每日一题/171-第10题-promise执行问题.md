@@ -1,3 +1,7 @@
+---
+title: "promise执行问题"
+---
+
 # 第10题 promise执行问题
 ```javascript
     //第一种

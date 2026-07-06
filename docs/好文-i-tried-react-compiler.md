@@ -1,3 +1,6 @@
+---
+title: "好文 i tried react compiler"
+---
 
 #  译：我今天尝试了 React Compiler，你猜怎么着…… 😉
 

@@ -1,3 +1,7 @@
+---
+title: "手写 call apply 及 bind 函数"
+---
+
 # 13 手写 call、apply 及 bind 函数
 
 > 首先从以下几点来考虑如何实现这几个函数

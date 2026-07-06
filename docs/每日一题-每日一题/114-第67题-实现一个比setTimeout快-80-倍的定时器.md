@@ -1,3 +1,7 @@
+---
+title: "实现一个比setTimeout快 80 倍的定时器"
+---
+
 # 第67题 实现一个比setTimeout快 80 倍的定时器
 
 > 在浏览器中，`setTimeout()/setInterval()` 的每调用一次定时器的最小间隔是

@@ -1,3 +1,6 @@
+---
+title: "http 基础 10 HTTP有哪些特点"
+---
 
 ![](/images/s_poetries_work_gitee_2019_12_14.webp)
 

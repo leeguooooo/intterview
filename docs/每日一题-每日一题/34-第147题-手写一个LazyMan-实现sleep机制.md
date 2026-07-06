@@ -1,3 +1,7 @@
+---
+title: "手写一个LazyMan 实现sleep机制"
+---
+
 # 第147题 手写一个LazyMan，实现sleep机制
 
   * 支持`sleep`和`eat`两个方法

@@ -1,3 +1,7 @@
+---
+title: "JavaScript相关 2"
+---
+
 # 三、JavaScript相关（2/4）
 
 ### 30 JS的基本数据类型和引用数据类型

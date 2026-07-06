@@ -1,3 +1,7 @@
+---
+title: "性能监测篇 Performance LightHouse 与性能 API"
+---
+
 # 十四、性能监测篇：Performance、LightHouse 与性能 API
 
   * 性能监测是前端性能优化的重要一环。监测的目的是为了确定性能瓶颈，从而有的放矢地开展具体的优化工作。

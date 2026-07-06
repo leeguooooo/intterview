@@ -1,3 +1,7 @@
+---
+title: "Class 与 Style 如何动态绑定"
+---
+
 # 43 Class 与 Style 如何动态绑定
 
 `Class` 可以通过对象语法和数组语法进行动态绑定

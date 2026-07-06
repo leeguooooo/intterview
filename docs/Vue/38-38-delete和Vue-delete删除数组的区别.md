@@ -1,3 +1,7 @@
+---
+title: "delete和Vue delete删除数组的区别"
+---
+
 # 38 delete和Vue.delete删除数组的区别？
 
   * `delete`只是被删除的元素变成了 `empty/undefined` 其他的元素的键值还是不变。

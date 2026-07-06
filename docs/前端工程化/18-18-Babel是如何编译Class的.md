@@ -1,3 +1,7 @@
+---
+title: "Babel是如何编译Class的"
+---
+
 # 18 Babel是如何编译Class的？
 
 就拿下面的类来说：

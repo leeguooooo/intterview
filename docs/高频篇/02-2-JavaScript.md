@@ -1,3 +1,7 @@
+---
+title: "JavaScript · 高频篇"
+---
+
 # 2 JavaScript
 
 ### typeof类型判断

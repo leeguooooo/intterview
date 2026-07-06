@@ -1,3 +1,7 @@
+---
+title: "用正则写一个根据name获取cookie中的值的方法"
+---
+
 # 第27题 用正则写一个根据name获取cookie中的值的方法
 ```js
     function getCookie(name) {

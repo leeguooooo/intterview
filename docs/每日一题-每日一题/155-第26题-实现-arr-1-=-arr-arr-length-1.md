@@ -1,3 +1,7 @@
+---
+title: "实现 arr 1 = arr arr length 1"
+---
+
 # 第26题 实现 arr[-1] = arr[arr.length - 1]
 ```js
     function createArr (...elements) {

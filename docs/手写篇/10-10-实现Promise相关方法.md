@@ -1,3 +1,7 @@
+---
+title: "实现Promise相关方法"
+---
+
 # 10 实现Promise相关方法
 
 ### 1 实现Promise的resolve

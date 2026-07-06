@@ -1,3 +1,7 @@
+---
+title: "Event Loop执行机制过程"
+---
+
 # 第172题 Event Loop执行机制过程
 
 ![事件循环：执行同步代码→清空所有微任务→取一个宏任务执行，如此循环往复](/images/diagrams/event-loop.webp)

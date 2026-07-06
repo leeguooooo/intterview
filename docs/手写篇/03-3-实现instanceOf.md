@@ -1,3 +1,7 @@
+---
+title: "实现instanceOf"
+---
+
 # 3 实现instanceOf
 
 ![原型链与 instanceof：实例沿 __proto__ 链逐层向上查找，命中构造函数 prototype 返回 true，到 null 返回 false](/images/diagrams/prototype-chain.webp)

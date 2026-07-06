@@ -1,3 +1,7 @@
+---
+title: "\"1\" \"2\" \"3\" map parseInt 答案是多少"
+---
+
 # 第132题 ["1", "2", "3"].map(parseInt) 答案是多少
 
 **parseInt(str, radix)**

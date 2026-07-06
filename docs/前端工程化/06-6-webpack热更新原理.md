@@ -1,3 +1,7 @@
+---
+title: "webpack热更新原理"
+---
+
 # 6 webpack热更新原理
 
 ![HMR 热更新：文件改动 → webpack 重新编译模块 → HMR Server 经 WebSocket 通知运行时 → 浏览器局部替换模块，页面不刷新、状态不丢失](/images/diagrams/webpack-hmr.webp)

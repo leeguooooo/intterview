@@ -1,3 +1,7 @@
+---
+title: "高阶组件和Render Props"
+---
+
 # 12 高阶组件和Render Props
 
 **关于组件公共逻辑的抽离**

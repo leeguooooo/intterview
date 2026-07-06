@@ -1,3 +1,7 @@
+---
+title: "一道让人失眠的promise then执行顺序问题"
+---
+
 # 第134题 一道让人失眠的promise then执行顺序问题
 ```js
     Promise.resolve().then(()=>{

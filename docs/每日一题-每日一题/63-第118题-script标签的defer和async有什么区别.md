@@ -1,3 +1,7 @@
+---
+title: "script标签的defer和async有什么区别"
+---
+
 # 第118题 script标签的defer和async有什么区别
 
   * `script`：`HTML`暂停解析，下载`JS`，执行`JS`，在继续解析`HTML`。

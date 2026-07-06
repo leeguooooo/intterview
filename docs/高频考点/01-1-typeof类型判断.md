@@ -1,3 +1,7 @@
+---
+title: "typeof类型判断"
+---
+
 # 1 typeof类型判断
 
 > `typeof` 是否能正确判断类型？`instanceof` 能正确判断对象的原理是什么

@@ -1,3 +1,7 @@
+---
+title: "v model双向绑定原理"
+---
+
 # 23 v-model双向绑定原理
 
 ### v-model实现原理

@@ -1,3 +1,7 @@
+---
+title: "webpack中如何处理图片的"
+---
+
 # 12 webpack中如何处理图片的？
 
 在`webpack`中有两种处理图片的`loader`：

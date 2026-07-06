@@ -1,3 +1,7 @@
+---
+title: "完整实现Promises A+规范"
+---
+
 # 第56题 完整实现Promises/A+规范
 ```js
     /**

@@ -1,3 +1,7 @@
+---
+title: "为什么 React 元素有一个 $$typeof 属性"
+---
+
 # 16 为什么 React 元素有一个 $$typeof 属性
 
 ![](/images/s_poetries_work_images_image_20210302200213923.webp)

@@ -1,3 +1,7 @@
+---
+title: "使用babel loader会有哪些问题 可以怎样优化"
+---
+
 # 16 使用babel-loader会有哪些问题？可以怎样优化？
 
   1. 会使得编译很慢。解决办法是可以在`webpack`的`babel-loader`配置中使用`exclude`这个可选项来去除一些不需要编译的文件夹(例如`node_modules`和`bower_components`)，另一种可以设置`cacheDirectory`选项为`true`, 开启缓存, 转译的结果将会缓存到文件系统中, 这样使`babel-loader`至少提速两倍(代码量越多效果应该越明显)。

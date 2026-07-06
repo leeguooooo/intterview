@@ -1,3 +1,7 @@
+---
+title: "说下$attrs和$listeners的使用场景"
+---
+
 # 35 说下$attrs和$listeners的使用场景
 
 API考察，但`$attrs`和`$listeners`是比较少用的边界知识，而且`vue3`有变化，`$listeners`已经移除，还是有细节可说的

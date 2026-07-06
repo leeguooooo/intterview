@@ -1,3 +1,7 @@
+---
+title: "React setState 笔试题 下面的代码输出什么"
+---
+
 # 第39题 React setState 笔试题，下面的代码输出什么？
 ```jsx
     import React from 'react'

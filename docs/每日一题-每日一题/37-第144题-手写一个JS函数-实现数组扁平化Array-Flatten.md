@@ -1,3 +1,7 @@
+---
+title: "手写一个JS函数 实现数组扁平化Array Flatten"
+---
+
 # 第144题 手写一个JS函数，实现数组扁平化Array Flatten
 
   * 写一个JS函数，实现数组扁平化，只减少一次嵌套

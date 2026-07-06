@@ -1,3 +1,7 @@
+---
+title: "computed和watch相关"
+---
+
 # 14 computed和watch相关
 
 ### computed和watch区别

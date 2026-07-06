@@ -1,3 +1,7 @@
+---
+title: "WebSocket和HTTP协议有什么区别"
+---
+
 # 第120题 WebSocket和HTTP协议有什么区别
 
   * 支持端对端通信

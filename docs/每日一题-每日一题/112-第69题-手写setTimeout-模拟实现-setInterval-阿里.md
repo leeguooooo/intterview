@@ -1,3 +1,7 @@
+---
+title: "手写setTimeout 模拟实现 setInterval 阿里"
+---
+
 # 第69题 手写setTimeout 模拟实现 setInterval（阿里）
 ```js
     function mySetInterval(fn, time = 1000) {

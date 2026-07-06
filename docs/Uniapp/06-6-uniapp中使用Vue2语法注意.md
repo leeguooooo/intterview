@@ -1,3 +1,7 @@
+---
+title: "uniapp中使用Vue2语法注意"
+---
+
 # 6 uniapp中使用Vue2语法注意
 
 ### 基础

@@ -1,3 +1,7 @@
+---
+title: "react和vue的区别"
+---
+
 # 21 react和vue的区别
 
 **共同**

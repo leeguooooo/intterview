@@ -1,3 +1,6 @@
+---
+title: "好文 html script element attributes async vs defer vs typemodule"
+---
 
 # [译：HTML 脚本元素属性：async 与 defer 与 type=’module’](https://sorrycc.com/html-
 script-element-attributes-async-vs-defer-vs-typemodule/)

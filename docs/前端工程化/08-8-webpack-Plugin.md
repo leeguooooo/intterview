@@ -1,3 +1,7 @@
+---
+title: "webpack Plugin"
+---
+
 # 8 webpack Plugin
 
 > 插件系统是 Webpack 成功的一个关键性因素。在编译的整个生命周期中，Webpack 会触发许多事件钩子，Plugin

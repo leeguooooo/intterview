@@ -1,3 +1,7 @@
+---
+title: "Vue为什么没有类似于React中shouldComponentUpdate的生命周期"
+---
+
 # 44 Vue为什么没有类似于React中shouldComponentUpdate的生命周期
 
   * 考点: `Vue`的变化侦测原理

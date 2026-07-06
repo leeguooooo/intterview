@@ -1,3 +1,7 @@
+---
+title: "setTimeout与setInterval实现"
+---
+
 # 25 setTimeout与setInterval实现
 
 ### 1 setTimeout 模拟实现 setInterval

@@ -1,3 +1,7 @@
+---
+title: "实现一个padStart 或padEnd 的polyfill"
+---
+
 # 第31题 实现一个padStart()或padEnd()的polyfill
 
 `String.prototype.padStart` 和

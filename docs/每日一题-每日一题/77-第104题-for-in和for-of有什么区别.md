@@ -1,3 +1,7 @@
+---
+title: "for in和for of有什么区别"
+---
+
 # 第104题 for in和for of有什么区别
 
 **适用不同的数据类型**

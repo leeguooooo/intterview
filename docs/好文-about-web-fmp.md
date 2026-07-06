@@ -1,3 +1,7 @@
+---
+title: "好文 about web fmp"
+---
+
 # 网站性能指标 - FMP
 
 > 原文：[http://jartto.wang/2020/03/30/about-web-fmp/](http://jartto.wang/2020/03/30/about-web-fmp/)

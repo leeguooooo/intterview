@@ -1,3 +1,7 @@
+---
+title: "inferno 所采用的核心 Diff 算法及原理"
+---
+
 # inferno 所采用的核心 Diff 算法及原理
 
 在 `Vue3` 中将采用另外一种核心 `Diff` 算法，它借鉴于 [ivi (opens new

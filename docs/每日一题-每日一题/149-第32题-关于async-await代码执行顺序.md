@@ -1,3 +1,7 @@
+---
+title: "关于async await代码执行顺序"
+---
+
 # 第32题 关于async/await代码执行顺序
 ```javascript
     function wait (delay) {

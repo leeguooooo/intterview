@@ -1,3 +1,7 @@
+---
+title: "References"
+---
+
 # References
 
   * <https://neil.fraser.name/writing/diff/>[ (opens new window)](https://neil.fraser.name/writing/diff/)

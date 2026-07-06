@@ -1,3 +1,7 @@
+---
+title: "React合成事件机制"
+---
+
 # 2 React合成事件机制
 
   * `React16`事件绑定到`document`上

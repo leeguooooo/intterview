@@ -1,3 +1,7 @@
+---
+title: "手写 Vue extend 实现"
+---
+
 # 第77题 手写 Vue.extend 实现
 ```js
     //  src/global-api/initExtend.js

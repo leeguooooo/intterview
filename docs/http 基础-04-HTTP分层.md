@@ -1,3 +1,6 @@
+---
+title: "http 基础 04 HTTP分层"
+---
 
 ![](/images/s_poetries_work_gitee_2019_12_4.webp)
 

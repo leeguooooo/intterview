@@ -1,3 +1,7 @@
+---
+title: "遍历一个数组用for和forEach哪个更快"
+---
+
 # 第110题 遍历一个数组用for和forEach哪个更快
 
   * `for`更快

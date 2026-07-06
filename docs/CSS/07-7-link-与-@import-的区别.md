@@ -1,3 +1,7 @@
+---
+title: "link 与 @import 的区别"
+---
+
 # 7 link 与 @import 的区别
 
   * `link`功能较多，可以定义 `RSS`，定义 `Rel` 等作用，而`@import`只能用于加载 `css`

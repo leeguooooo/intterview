@@ -1,3 +1,7 @@
+---
+title: "基于Promise all实现Ajax的串行和并行"
+---
+
 # 第20题 基于Promise.all实现Ajax的串行和并行
 
 > 基于Promise.all实现Ajax的串行和并行

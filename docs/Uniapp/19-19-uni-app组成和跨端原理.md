@@ -1,3 +1,7 @@
+---
+title: "uni app组成和跨端原理"
+---
+
 # 19 uni-app组成和跨端原理
 
 ![跨平台架构:一套代码经编译器编译后由各端 runtime(Web/App/小程序)解析运行](/images/diagrams/uniapp-architecture.webp)

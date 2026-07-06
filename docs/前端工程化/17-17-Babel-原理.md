@@ -1,3 +1,7 @@
+---
+title: "Babel 原理"
+---
+
 # 17 Babel 原理
 
 > `babel` 的编译过程分为三个阶段：**parsing** 、**transforming** 、**generating** ，以 ES6 编译为

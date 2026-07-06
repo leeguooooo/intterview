@@ -1,3 +1,7 @@
+---
+title: "实现ES6的extends"
+---
+
 # 20 实现ES6的extends
 ```js
     function B(name){

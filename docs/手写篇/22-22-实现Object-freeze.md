@@ -1,3 +1,7 @@
+---
+title: "实现Object freeze"
+---
+
 # 22 实现Object.freeze
 
 >

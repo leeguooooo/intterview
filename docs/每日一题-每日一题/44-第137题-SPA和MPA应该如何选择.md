@@ -1,3 +1,7 @@
+---
+title: "SPA和MPA应该如何选择"
+---
+
 # 第137题 SPA和MPA应该如何选择
 
   * `SPA（Single Page Application）` 单页面应用

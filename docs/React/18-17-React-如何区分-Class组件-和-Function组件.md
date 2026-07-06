@@ -1,3 +1,7 @@
+---
+title: "React 如何区分 Class组件 和 Function组件"
+---
+
 # 17 React 如何区分 Class组件 和 Function组件
 
 一般的方式是借助 `typeof` 和 `Function.prototype.toString` 来判断当前是不是 `class`，如下：

@@ -1,3 +1,7 @@
+---
+title: "回流 reflow 和重绘 repaint 的理解"
+---
+
 # 25 回流（reflow）和重绘（repaint）的理解
 
 ![回流与重绘:改几何(位置/尺寸)触发回流并必然重绘,改颜色等非几何只重绘;结合事件循环批量更新可避免频繁回流](/images/diagrams/reflow-repaint-eventloop.webp)

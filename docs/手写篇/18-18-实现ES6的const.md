@@ -1,3 +1,7 @@
+---
+title: "实现ES6的const"
+---
+
 # 18 实现ES6的const
 
 >

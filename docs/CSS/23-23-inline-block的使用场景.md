@@ -1,3 +1,7 @@
+---
+title: "inline block的使用场景"
+---
+
 # 23 inline-block的使用场景
 
   1. 要设置某些子元素在一行或者多行内显示，尤其是排列方向一致的情况下，应尽量用`inline-block`。

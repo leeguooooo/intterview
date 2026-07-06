@@ -1,3 +1,7 @@
+---
+title: "手写Promise加载一张图片"
+---
+
 # 第169题 手写Promise加载一张图片
 ```js
     function loadImg(src) {
