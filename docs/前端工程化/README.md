@@ -1,5 +1,6 @@
 ---
-title: "前端工程化"
+title: "前端工程化面试题精选"
+description: "前端工程化面试题:Webpack/Vite 原理、构建优化、Babel、Tree Shaking、模块化、CI/CD 与包管理。"
 ---
 
 # 前端工程化

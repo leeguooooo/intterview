@@ -1,5 +1,6 @@
 ---
 title: "HTTP 与网络面试题精选"
+description: "HTTP 与计算机网络面试题:HTTP/1.1/2/3、HTTPS、TCP、状态码、缓存、跨域、Cookie 与 Session,附详解。"
 ---
 
 ## 简版速记

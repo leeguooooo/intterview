@@ -47,26 +47,33 @@ footer: MIT 许可证 | 版权所有 © 2018-present VuePress Community
 - [高频篇](/高频篇.html)
 
 ### 各个技术篇
-- [HTML](/HTML.md)
-- [CSS](/CSS.md)
-- [JavaScript](/JavaScript.md)
-- [ES6](/ES6.md)
-- [浏览器](/浏览器.html)
-- [React](/React.html)
-- [Vue](/Vue.html)
-- [Node](/Node.html)
+- [HTML 面试题](/HTML.html)
+- [CSS 面试题](/CSS/)
+- [JavaScript 面试题](/JavaScript/)
+- [ES6 面试题](/ES6.html)
+- [浏览器原理](/浏览器.html)
+- [React 面试题](/React/)
+- [Vue 面试题](/Vue/)
+- [Node.js 面试题](/Node.html)
+
+### 面试实战 · 高频与手写
+- [前端面经汇总](/面经-前端面经汇总/)（大厂真实面经）
+- [高频考点](/高频考点/)
+- [手写题](/手写篇/)
+- [每日一题](/每日一题-每日一题/)
+- [面试指南](/面试指南/)
 
 ### 前端工程化与安全
-- [前端工程化](/前端工程化.html)
+- [前端工程化](/前端工程化/)
 - [移动多端开发](/移动多端开发.html)
 - [小程序](/小程序.html)
-- [Uniapp](/Uniapp.html)
+- [Uniapp](/Uniapp/)
 - [前端安全](/前端安全.html)
 
 ### 其他技术篇
 - [性能优化](/性能优化.html)
-- [HTTP](/HTTP.html)
-- [常用设计模式](/常用设计模式.html)
+- [HTTP 与网络](/HTTP.html)
+- [常用设计模式](/常用设计模式/)
 - [设计模式 2](/设计模式%202.html)
 - [框架通识](/框架通识.html)
 - [排序算法](/排序算法.html)

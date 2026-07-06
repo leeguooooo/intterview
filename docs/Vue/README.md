@@ -1,5 +1,6 @@
 ---
-title: "Vue"
+title: "Vue 面试题及答案精选"
+description: "Vue 高频面试题详解:响应式原理、虚拟 DOM、diff、生命周期、组件通信、Vuex、Vue Router 与源码要点。"
 ---
 
 # Vue

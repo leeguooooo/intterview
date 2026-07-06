@@ -1,5 +1,6 @@
 ---
 title: "ES6 面试题及答案精选"
+description: "ES6/ES2015+ 面试题:let/const、箭头函数、解构、Promise、Class、模块化、Symbol、迭代器,常考知识点速记。"
 ---
 
 ## 简版速记

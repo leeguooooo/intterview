@@ -1,5 +1,6 @@
 ---
-title: "CSS"
+title: "CSS 面试题及答案精选"
+description: "CSS 高频面试题及答案:盒模型、BFC、Flex/Grid 布局、居中、层叠上下文、动画与性能优化,前端面试必备。"
 ---
 
 # CSS

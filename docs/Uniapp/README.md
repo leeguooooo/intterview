@@ -1,5 +1,6 @@
 ---
-title: "Uniapp"
+title: "uni-app 面试题精选"
+description: "uni-app 面试题:跨端原理、条件编译、生命周期、组件与 API 差异、性能优化,一套代码多端发布。"
 ---
 
 # Uniapp

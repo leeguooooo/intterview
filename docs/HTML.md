@@ -1,5 +1,6 @@
 ---
 title: "HTML 面试题及答案精选"
+description: "HTML 高频面试题及详解:语义化、H5 新特性、DOCTYPE、meta、SEO、可访问性等,附答案与代码,前端面试速记。"
 ---
 
 ## 简版速记

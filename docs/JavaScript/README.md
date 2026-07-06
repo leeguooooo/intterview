@@ -1,5 +1,6 @@
 ---
-title: "JavaScript"
+title: "JavaScript 面试题及答案精选"
+description: "JavaScript 高频面试题详解:闭包、原型链、this、事件循环、Promise/async、深浅拷贝、防抖节流,附代码答案。"
 ---
 
 # JavaScript

@@ -1,5 +1,6 @@
 ---
-title: "React"
+title: "React 面试题及答案精选"
+description: "React 高频面试题及答案:Hooks、虚拟 DOM、Diff、合成事件、setState、Fiber、性能优化与状态管理原理。"
 ---
 
 # React

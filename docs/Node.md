@@ -1,5 +1,6 @@
 ---
 title: "Node.js 面试题及答案精选"
+description: "Node.js 面试题:事件循环、异步 IO、Stream、Buffer、进程与集群、中间件、性能与内存,后端面试速记。"
 ---
 
 ## 简版速记
