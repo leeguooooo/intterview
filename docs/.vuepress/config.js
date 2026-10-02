@@ -1,9 +1,19 @@
+import path from "node:path";
 import { blogPlugin } from "@vuepress/plugin-blog";
 import { defaultTheme } from "@vuepress/theme-default";
 import { defineUserConfig } from "vuepress";
 import { viteBundler } from "@vuepress/bundler-vite";
 import { pwaPlugin } from "@vuepress/plugin-pwa";
 import { sidebar } from "./sidebar.js";
+import { excludedPagePatterns, pruneNav, pruneSidebar, unlinkExcluded } from "./app-exclude.js";
+
+// APP_BUILD=1 构建给 iOS/Android 壳(Capacitor)用的离线包:输出到 dist-app,
+// 去掉广告(AdSense 不允许跑在 App WebView 里)、统计埋点和 Service Worker。
+const IS_APP = process.env.APP_BUILD === "1";
+// App 版主题选项:去掉指向 app-exclude.js 里排除页面的导航和侧边栏项
+const appTheme = (opts) =>
+  IS_APP ? { ...opts, navbar: pruneNav(opts.navbar), sidebar: pruneSidebar(opts.sidebar) } : opts;
+const APP_STRIP = /googlesyndication|google-adsense|baidu-site-verification|googletagmanager|gtag|posthog|visitor-beacon/;
 // {
 //   "text": "文章",
 //   "link": "/article/"
@@ -99,7 +109,7 @@ const config = defineUserConfig({
     // (旧的全站汇总属性 G-RK0BJ04WPX 已移除——统一汇总由根域名流 G-RCV0Z432Y8
     // 承担,按 hostname 维度分站;避免同属性多流把 PV 记多次。)
   ],
-  "theme": defaultTheme({
+  "theme": defaultTheme(appTheme({
     "logo": "images/logo.webp",
     "sidebar": sidebar,
     // Canonical is the interview subdomain, which serves the full styled site
@@ -1231,10 +1241,10 @@ const config = defineUserConfig({
         "link": "/privacy.html"
       }
     ]
-  }),
+  })),
 
   "plugins": [
-    pwaPlugin({
+    !IS_APP && pwaPlugin({
       "serviceWorker": true,
       "updatePopup": true,
       "showInstall": true,
@@ -1330,5 +1340,20 @@ const config = defineUserConfig({
   ],
   "bundler": viteBundler()
 });
+
+if (IS_APP) {
+  config.dest = "docs/.vuepress/dist-app";
+  config.pagePatterns = [
+    "**/*.md",
+    "!.vuepress",
+    "!node_modules",
+    ...excludedPagePatterns(path.resolve(config.source ?? "docs")),
+  ];
+  config.extendsMarkdown = unlinkExcluded;
+  config.head = config.head.filter(
+    (entry) => !APP_STRIP.test(JSON.stringify(entry)) && !/manifest\.json/.test(JSON.stringify(entry))
+  );
+}
+config.plugins = config.plugins.filter(Boolean);
 
 export default config;

@@ -2,199 +2,354 @@
 title: "渲染篇 最后一击——回流 Reflow 与重绘 Repaint"
 ---
 
-# 十一、渲染篇 5：最后一击——回流（Reflow）与重绘（Repaint）
+# 回流（Reflow）与重绘（Repaint）
 
-开篇我们先对上上节介绍的回流与重绘的基础知识做个复习（跳读的同学请自觉回到上上节补齐 →_→）。
+## 核心要点
 
-**回流** ：当我们对 DOM 的修改引发了 DOM
-几何尺寸的变化（比如修改元素的宽、高或隐藏元素等）时，浏览器需要重新计算元素的几何属性（其他元素的几何属性和位置也会因此受到影响），然后再将计算的结果绘制出来。这个过程就是回流（也叫重排）。
+- **回流**（也叫重排）：DOM 改动让元素的尺寸或位置变了，浏览器得重新算一遍布局，受牵连的父节点、兄弟节点、子节点都要跟着重算，算完再画。
+- **重绘**：改动只影响外观（颜色、背景、`visibility` 等），几何信息不变，浏览器跳过布局，直接重新绘制。
+- 两者的关系：**回流之后必然重绘，重绘不一定伴随回流**。回流做的事更多，代价更高，但两者都要花性能，能少则少。
+- 触发回流的操作按代价大致分三类：改几何属性（最贵）、增删移动节点（中等）、读取需要即时计算的布局属性（最隐蔽）。
+- 浏览器会把样式改动攒成一个队列，等到下一帧渲染时一次性处理，所以连续写四个样式通常只看到一次 Layout、一次 Paint。
+- 但只要在中途读取 `offsetTop`、`clientWidth`、`getComputedStyle()` 这类值，浏览器就得把队列立刻清空、当场布局，批处理被打断。这叫**强制同步布局**，在循环里反复出现就是**布局抖动**。
+- 常用的规避办法：把布局读数缓存在变量里、读写分离；用 class 一次性切换多条样式；把要大量修改的 DOM 先「离线」再放回；动画优先用 `transform` / `opacity`。
+- 浏览器自带批处理并不意味着可以不管：自己写的读操作随时会打断它，老旧或低端环境的表现也不可控，养成好的写法才稳。
 
-**重绘** ：当我们对 DOM
-的修改导致了样式的变化、却并未影响其几何属性（比如修改了颜色或背景色）时，浏览器不需重新计算元素的几何属性、直接为该元素绘制新的样式（跳过了上图所示的回流环节）。这个过程叫做重绘。
+## 先把两个概念分清
 
-由此我们可以看出，**重绘不一定导致回流，回流一定会导致重绘**
-。硬要比较的话，回流比重绘做的事情更多，带来的开销也更大。但这两个说到底都是吃性能的，所以都不是什么善茬。我们在开发中，要从代码层面出发，尽可能把回流和重绘的次数最小化。
+浏览器把 DOM 和 CSS 变成屏幕上的像素，要经过样式计算、布局、绘制、合成几个阶段。改动一个样式之后，浏览器要从哪一步开始重跑，取决于这个样式影响到了什么：
 
-### 哪些实际操作会导致回流与重绘
+![不同属性改动对应的渲染阶段：几何属性触发布局和绘制，外观属性只触发绘制，transform/opacity 只走合成](/images/rewrite/perf-reflow-repaint/pipeline-cost.webp)
 
-  * 要避免回流与重绘的发生，最直接的做法是避免掉可能会引发回流与重绘的 DOM 操作，就好像拆弹专家在解决一颗炸弹时，最重要的是掐灭它的导火索。
-  * 触发重绘的“导火索”比较好识别——只要是不触发回流，但又触发了样式改变的 DOM 操作，都会引起重绘，比如背景色、文字色、可见性(可见性这里特指形如visibility: hidden这样不改变元素位置和存在性的、单纯针对可见性的操作，注意与display:none进行区分)等。为此，我们要着重理解一下那些可能触发回流的操作。
+| | 回流（Reflow / 重排） | 重绘（Repaint） |
+| --- | --- | --- |
+| 触发条件 | 元素的几何信息变了：宽高、内外边距、位置、显示与否 | 只有外观变了，几何信息不变 |
+| 典型属性 | `width`、`height`、`padding`、`margin`、`border`、`top`、`left`、`display`、`font-size` | `color`、`background-color`、`visibility`、`outline`、`box-shadow` |
+| 浏览器要做的事 | 重新计算布局（波及相关节点）→ 重新绘制 | 直接重新绘制该元素 |
+| 代价 | 高 | 相对低 |
 
-**1\. 回流的“导火索”**
+为什么「回流必然导致重绘，反过来不成立」？因为布局变了，像素一定要重新画；但像素重新画，不代表布局需要重新算。
 
-最“贵”的操作：改变 DOM 元素的几何属性
+这里有一个容易混的点：`visibility: hidden` 只是让元素看不见，元素仍然占着原来的位置，所以只引起重绘；`display: none` 则把元素从布局里拿掉，周围的元素会补位，会引起回流。
 
-  * 这个改变几乎可以说是“牵一发动全身”——当一个DOM元素的几何属性发生变化时，所有和它相关的节点（比如父子节点、兄弟节点等）的几何属性都需要进行重新计算，它会带来巨大的计算量。
-  * 常见的几何属性有 `width`、`height`、`padding`、`margin`、`left`、`top`、`border` 等等。此处不再给大家一一列举。有的文章喜欢罗列属性表格，但我相信我今天列出来大家也不会看、看了也记不住（因为太多了）。我自己也不会去记这些——其实确实没必要记，️一个属性是不是几何属性、会不会导致空间布局发生变化，大家写样式的时候完全可以通过代码效果看出来。多说无益，还希望大家可以多写多试，形成自己的“肌肉记忆”。
+## 哪些操作会引起回流
 
-  * “价格适中”的操作：改变 DOM 树的结构
+重绘的触发条件比较好认：凡是改了样式、又没有动到几何信息的，都属于重绘。真正需要留心的是回流。想减少回流，最根本的办法是从源头上少做会引起回流的操作。按代价从高到低，可以分成三类。
 
-这里主要指的是节点的增减、移动等操作。浏览器引擎布局的过程，顺序上可以类比于树的前序遍历——它是一个从上到下、从左到右的过程。通常在这个过程中，当前元素不会再影响其前面已经遍历过的元素。
+### 1. 改几何属性：最贵
 
-  * 最容易被忽略的操作：获取一些特定属性的值
+一个元素的尺寸或位置变了，影响不会只停在它自己身上。父元素可能被撑高，后面的兄弟可能被挤下去，子元素的百分比宽度要重算……一处改动可能连锁地带动一大片节点重新布局。
 
-> 当你要用到像这样的属性：`offsetTop`、`offsetLeft`、
-> `offsetWidth`、`offsetHeight`、`scrollTop`、`scrollLeft`、`scrollWidth`、`scrollHeight`、`clientTop`、`clientLeft`、`clientWidth`、`clientHeight`
-> 时，你就要注意了！
+会影响几何信息的属性很多，典型的像 `height`、`width`、`margin`、`padding`、`border`、`left`、`top`、`font-size`。没必要把完整列表背下来：写样式时改一下属性，看页面上有没有别的东西跟着挪位、跟着变大变小，就能判断它会不会影响布局。多动手试几次，自然会有直觉。实在拿不准，可以打开 Chrome DevTools 的 Performance 面板录一段，看有没有出现 Layout 事件。
 
-  * “像这样”的属性，到底是像什么样？——这些值有一个共性，就是需要通过**即时计算** 得到。因此浏览器为了获取这些值，也会进行回流。
-  * 除此之外，当我们调用了 `getComputedStyle` 方法，或者 IE 里的 `currentStyle` 时，也会触发回流。原理是一样的，都为求一个“即时性”和“准确性”。
+### 2. 改 DOM 结构：中等
 
-### 如何规避回流与重绘
+插入、删除、移动节点都会改变布局树。浏览器布局的大致顺序是从上到下、从左到右，类似对树做一次前序遍历。正常文档流里，一个元素的变化一般不会回头影响排在它前面、已经算好的元素，主要波及的是它后面的内容。所以在列表末尾追加节点，通常比在开头插入受影响的范围小。
 
-了解了回流与重绘的“导火索”，我们就要尽量规避它们。但很多时候，我们不得不使用它们。当避无可避时，我们就要学会更聪明地使用它们。
+### 3. 读取需要即时计算的属性：最容易忽略
 
-**1\. 将“导火索”缓存起来，避免频繁改动**
+很多人以为只有「写」才会引起回流，其实「读」也会。下面这些属性的值都依赖最新的布局结果：
 
-有时我们想要通过多次计算得到一个元素的布局位置，我们可能会这样做：
-```html
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta http-equiv="X-UA-Compatible" content="ie=edge">
-      <title>Document</title>
-      <style>
-        #el {
-          width: 100px;
-          height: 100px;
-          background-color: yellow;
-          position: absolute;
-        }
-      </style>
-    </head>
-    <body>
-      <div id="el"></div>
-      <script>
-      // 获取el元素
-      const el = document.getElementById('el')
-      // 这里循环判定比较简单，实际中或许会拓展出比较复杂的判定需求
-      for(let i=0;i<10;i++) {
-          el.style.top  = el.offsetTop  + 10 + "px";
-          el.style.left = el.offsetLeft + 10 + "px";
-      }
-      </script>
-    </body>
-    </html>
+| 分组 | 属性 |
+| --- | --- |
+| offset 系列 | `offsetWidth`、`offsetHeight`、`offsetTop`、`offsetLeft` |
+| scroll 系列 | `scrollWidth`、`scrollHeight`、`scrollTop`、`scrollLeft` |
+| client 系列 | `clientWidth`、`clientHeight`、`clientTop`、`clientLeft` |
+| 方法 | `getComputedStyle()`（老 IE 里对应 `currentStyle`） |
+
+浏览器为了返回此刻准确的数值，必须先把还没处理的样式改动算掉，必要时当场做一次布局。同样会带来这个问题的还有 `getBoundingClientRect()`、`innerText`、`scrollIntoView()`、`focus()`、`window.innerWidth` / `innerHeight` 等。
+
+> 说得更准确一点：读这些属性本身并不一定引起回流。只有在读之前已经有尚未处理、而且会影响布局的改动时，浏览器才不得不提前布局。如果布局本来就是最新的，读取几乎不花什么成本。这一点正是下面「读写分离」能奏效的原因。
+
+## 浏览器的渲染队列：改四次，只算一次
+
+先看一个问题。下面给一个弹窗面板连续写四个样式：
+
+```js
+const panel = document.querySelector('.settings-panel')
+panel.style.width = '320px'
+panel.style.height = '480px'
+panel.style.border = '2px solid #3eaf7c'
+panel.style.color = '#2c3e50'
 ```
 
-> 这样做，每次循环都需要获取多次“敏感属性”，是比较糟糕的。我们可以将其以 JS 变量的形式缓存起来，待计算完毕再提交给浏览器发出重计算请求：
-```js
-    // 缓存offsetLeft与offsetTop的值
-    const el = document.getElementById('el') 
-    let offLeft = el.offsetLeft, offTop = el.offsetTop
-    
-    // 在JS层面进行计算
-    for(let i=0;i<10;i++) {
-      offLeft += 10
-      offTop  += 10
+浏览器会回流、重绘多少次？
+
+按前面的分类，很容易得出「`width`、`height`、`border` 各一次回流，`color` 一次重绘」。但在 Chrome 的 Performance 面板里录一下，主线程上只会看到**一次 Layout 和一次 Paint**：
+
+![四次样式写入在脚本执行期间只被标记，到下一帧统一完成一次样式计算、一次布局和一次绘制](/images/rewrite/perf-reflow-repaint/batched-frame.webp)
+
+原因是浏览器并不会每写一次样式就立刻重新布局。它把这些改动先记下来，把相关节点标记为「需要重新计算」，放进一个待处理的队列（常被称为 flush 队列或渲染队列）。等到下一帧真正要出画面、队列里积累的改动足够多，或者遇到不得不马上给出结果的时刻，再一次性处理。脚本里改了四次，最后只结算一次。
+
+问题出在「不得不马上给出结果」这种情况上。前面第 3 类里那些需要即时计算的属性，一旦在队列里还有改动时被读取，浏览器为了给出准确值，就只能提前清空队列、立刻布局。这就是**强制同步布局**（Forced Synchronous Layout）。如果在循环里写一次、读一次、再写一次，每一轮都会强制布局一次，这种情况叫**布局抖动**（Layout Thrashing）：
+
+![先写后读的循环每一轮都会触发一次强制布局，而先读、在 JS 中计算、最后一次性写入只在帧末布局一次](/images/rewrite/perf-reflow-repaint/forced-layout.webp)
+
+在 Performance 面板里，强制同步布局的 Layout 事件会带一个红色角标，并提示「Forced reflow is a likely performance bottleneck」，点进去能看到是哪一行 JS 触发的。
+
+## 怎么减少回流和重绘
+
+有些操作绕不开，那就想办法让它们发生的次数少一点、范围小一点。
+
+### 1. 把布局读数存进变量，读和写分开
+
+场景：让一个提示气泡沿对角线移动 8 步，每步向右 12px、向下 6px。直觉的写法是每一步都读当前位置、再写新位置：
+
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>气泡移动：反例</title>
+  <style>
+    .bubble {
+      position: absolute;
+      width: 140px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      background: #2c3e50;
+      color: #fff;
     }
-    
-    // 一次性将计算结果应用到DOM上
-    el.style.left = offLeft + "px"
-    el.style.top = offTop  + "px"
+  </style>
+</head>
+<body>
+  <div class="bubble" id="bubble">新消息</div>
+  <script>
+    const bubble = document.getElementById('bubble')
+    for (let step = 0; step < 8; step++) {
+      // 每一轮先读再写，下一轮读的时候上一轮的写还没结算
+      bubble.style.left = bubble.offsetLeft + 12 + 'px'
+      bubble.style.top = bubble.offsetTop + 6 + 'px'
+    }
+  </script>
+</body>
+</html>
 ```
 
-**2\. 避免逐条改变样式，使用类名去合并样式**
+这段代码每一轮都要读布局属性，而上一次写入还没结算，于是每一次读都是一次强制布局。改法是只读一次，把计算放在 JS 变量里完成，最后一次性写回 DOM：
 
-比如我们可以把这段单纯的代码：
 ```js
-    const container = document.getElementById('container')
-    container.style.width = '100px'
-    container.style.height = '200px'
-    container.style.border = '10px solid red'
-    container.style.color = 'red'
+const bubble = document.getElementById('bubble')
+
+// 只读一次布局信息
+let nextX = bubble.offsetLeft
+let nextY = bubble.offsetTop
+
+// 纯 JS 计算，不碰 DOM
+for (let step = 0; step < 8; step++) {
+  nextX += 12
+  nextY += 6
+}
+
+// 统一写回，交给浏览器在下一帧一起处理
+bubble.style.left = nextX + 'px'
+bubble.style.top = nextY + 'px'
 ```
 
-优化成一个有 `class` 加持的样子：
+用 node 写一个极简模拟就能看出差距：写样式只把节点标为「脏」，读布局属性时如果节点是脏的，就计一次强制布局。
+
+```js
+function createFakeNode() {
+  let dirty = false
+  const stats = { forcedLayouts: 0 }
+  const box = { x: 0, y: 0 }
+  const style = new Proxy({}, {
+    set(target, key, value) {
+      target[key] = value
+      dirty = true            // 只记账，不计算
+      return true
+    }
+  })
+  function flush() {
+    if (!dirty) return
+    box.x = parseFloat(style.left) || 0
+    box.y = parseFloat(style.top) || 0
+    dirty = false
+  }
+  return {
+    style,
+    get offsetLeft() { if (dirty) stats.forcedLayouts++; flush(); return box.x },
+    get offsetTop()  { if (dirty) stats.forcedLayouts++; flush(); return box.y },
+    stats,
+  }
+}
+
+// 反例：循环里先读后写
+const bubbleA = createFakeNode()
+for (let step = 0; step < 8; step++) {
+  bubbleA.style.left = bubbleA.offsetLeft + 12 + 'px'
+  bubbleA.style.top  = bubbleA.offsetTop  + 6  + 'px'
+}
+
+// 正例：只读一次，变量里算完，最后写一次
+const bubbleB = createFakeNode()
+let nextX = bubbleB.offsetLeft
+let nextY = bubbleB.offsetTop
+for (let step = 0; step < 8; step++) {
+  nextX += 12
+  nextY += 6
+}
+bubbleB.style.left = nextX + 'px'
+bubbleB.style.top  = nextY + 'px'
+
+const thrashCount = bubbleA.stats.forcedLayouts
+console.log('反例 强制布局次数:', thrashCount)
+console.log('正例 强制布局次数:', bubbleB.stats.forcedLayouts, '最终位置:', nextX, nextY)
+// 反例 强制布局次数: 15
+// 正例 强制布局次数: 0 最终位置: 96 48
+```
+
+反例里除了第一次读取，每次读都撞上了还没结算的写入，8 轮共 16 次读取，有 15 次是强制布局；正例一次都没有，最终位置完全相同。
+
+当多个组件分散在各处、各自都要「读一下再写一下」时，可以把读和写分别排进队列，在同一帧里先统一读、再统一写（[fastdom](https://github.com/wilsonpage/fastdom) 这类库就是这么做的）。下面是一个能在 node 里跑的最小版本：
+
+```js
+// node 里没有 requestAnimationFrame，用 setTimeout 模拟一帧
+const raf = globalThis.requestAnimationFrame || (cb => setTimeout(cb, 16))
+
+const reads = []
+const writes = []
+let scheduled = false
+
+function flushFrame() {
+  // 先执行所有读，再执行所有写，读写不会交错
+  reads.splice(0).forEach(job => job())
+  writes.splice(0).forEach(job => job())
+  scheduled = false
+}
+
+function schedule() {
+  if (!scheduled) {
+    scheduled = true
+    raf(flushFrame)
+  }
+}
+
+const measure = job => { reads.push(job); schedule() }
+const mutate  = job => { writes.push(job); schedule() }
+
+const log = []
+for (const name of ['header', 'sidebar', 'footer']) {
+  measure(() => log.push(`读 ${name}`))
+  mutate(() => log.push(`写 ${name}`))
+}
+setTimeout(() => console.log(log.join(' → ')), 50)
+// 读 header → 读 sidebar → 读 footer → 写 header → 写 sidebar → 写 footer
+```
+
+三个组件的调用顺序是读写交替，实际执行变成了先读完再写完，中间不会出现强制布局。
+
+### 2. 不要一条一条改样式，用 class 一次切换
+
+场景：消息提示条从隐藏状态变成展示状态，需要改尺寸、边框、字体颜色。逐条写 `style`：
+
+```js
+const toast = document.getElementById('toast')
+toast.style.width = '280px'
+toast.style.padding = '12px 16px'
+toast.style.borderLeft = '4px solid #3eaf7c'
+toast.style.color = '#1f6f4a'
+```
+
+把这组样式收进一个 class，JS 里只切换类名：
+
 ```html
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta http-equiv="X-UA-Compatible" content="ie=edge">
-      <title>Document</title>
-      <style>
-        .basic_style {
-          width: 100px;
-          height: 200px;
-          border: 10px solid red;
-          color: red;
-        }
-      </style>
-    </head>
-    <body>
-      <div id="container"></div>
-      <script>
-      const container = document.getElementById('container')
-      container.classList.add('basic_style')
-      </script>
-    </body>
-    </html>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>提示条：用 class 合并样式</title>
+  <style>
+    .toast--shown {
+      width: 280px;
+      padding: 12px 16px;
+      border-left: 4px solid #3eaf7c;
+      color: #1f6f4a;
+    }
+  </style>
+</head>
+<body>
+  <div id="toast">保存成功</div>
+  <script>
+    document.getElementById('toast').classList.add('toast--shown')
+  </script>
+</body>
+</html>
 ```
 
-  * 前者每次单独操作，都去触发一次渲染树更改，从而导致相应的回流与重绘过程。
-  * 合并之后，等于我们将所有的更改一次性发出，用一个 style 请求解决掉了。
+逐条修改时，每一条都会单独更新一次样式，在没有批处理的环境里就意味着每条都可能引起一次回流和重绘；换成 class 之后，所有改动随一次类名变化一起提交。额外的好处是样式回到了 CSS 里，结构和表现分开，更好维护。
 
-**3\. 将 DOM “离线”**
+如果样式值是运行时算出来的、没法提前写进 class，可以用 `el.style.cssText += '; width: 280px; padding: 12px 16px'` 一次写入多条。
 
-我们上文所说的回流和重绘，都是在“该元素位于页面上”的前提下会发生的。一旦我们给元素设置 display:
-none，将其从页面上“拿掉”，那么我们的后续操作，将无法触发回流与重绘——这个将元素“拿掉”的操作，就叫做 DOM 离线化。
+### 3. 把 DOM 先「离线」，改完再放回去
 
-仍以我们上文的代码片段为例：
+前面说的回流和重绘，前提都是元素正显示在页面上。如果先给元素设上 `display: none`，它就不参与布局了，之后对它做多少修改都不会引起回流和重绘。等全部改完再显示出来，这种做法叫 DOM 离线化。
+
+比如要对一个排行榜面板做一长串调整：
+
 ```js
-    const container = document.getElementById('container')
-    container.style.width = '100px'
-    container.style.height = '200px'
-    container.style.border = '10px solid red'
-    container.style.color = 'red'
-    ...（省略了许多类似的后续操作）
+const board = document.getElementById('leaderboard')
+board.style.width = '360px'
+board.style.padding = '16px'
+board.style.borderTop = '3px solid #3eaf7c'
+board.style.fontSize = '15px'
+// ……后面还有几十处类似的修改
 ```
 
-离线化后就是这样：
+离线化之后：
+
 ```js
-    let container = document.getElementById('container')
-    container.style.display = 'none'
-    container.style.width = '100px'
-    container.style.height = '200px'
-    container.style.border = '10px solid red'
-    container.style.color = 'red'
-    ...（省略了许多类似的后续操作）
-    container.style.display = 'block'
+const board = document.getElementById('leaderboard')
+board.style.display = 'none'      // 拿下来：触发一次回流
+
+board.style.width = '360px'
+board.style.padding = '16px'
+board.style.borderTop = '3px solid #3eaf7c'
+board.style.fontSize = '15px'
+// ……后面还有几十处类似的修改，都不会引起回流和重绘
+
+board.style.display = 'block'     // 放回去：再触发一次回流
 ```
 
->
-> 有的同学会问，拿掉一个元素再把它放回去，这不也会触发一次昂贵的回流吗？这话不假，但我们把它拿下来了，后续不管我操作这个元素多少次，每一步的操作成本都会非常低。当我们只需要进行很少的
-> DOM 操作时，DOM 离线化的优越性确实不太明显。一旦操作频繁起来，这“拿掉”和“放回”的开销都将会是非常值得的。
+隐藏和显示本身各会引起一次回流，这是不是得不偿失？要看改动量。只改两三处的时候，离线化确实没什么优势；改动一多，元素离线期间的每一步都很便宜，付出的这两次回流就很划算了。
 
-### Flush 队列：浏览器并没有那么简单
+还有两种离线的做法，在批量插入节点时更常用：
 
-  * 以我们现在的知识基础，理解上面的优化操作并不难。那么现在我问大家一个问题：
 ```js
-    let container = document.getElementById('container')
-    container.style.width = '100px'
-    container.style.height = '200px'
-    container.style.border = '10px solid red'
-    container.style.color = 'red'
+// 做法一：在 DocumentFragment 里组装好，一次性插入
+const list = document.getElementById('rank-list')
+const fragment = document.createDocumentFragment()
+for (const player of players) {
+  const li = document.createElement('li')
+  li.textContent = `${player.name}　${player.score} 分`
+  fragment.appendChild(li)
+}
+list.appendChild(fragment)   // 只在这里动一次真实 DOM
+
+// 做法二：克隆一份离线副本，改完整体替换
+const draft = list.cloneNode(true)
+draft.querySelectorAll('li').forEach(li => li.classList.add('rank-item'))
+list.replaceWith(draft)
 ```
 
-这段代码里，浏览器进行了多少次的回流或重绘呢？
+另外要注意：离线期间不要去读这个元素的布局属性，`display: none` 的元素读出来的 `offsetWidth` 等都是 0。
 
->
-> “`width`、`height`、`border`是几何属性，各触发一次回流；`color`只造成外观的变化，会触发一次重绘。”——如果你立刻这么想了，说明你是个能力不错的同学，认真阅读了前面的内容。那么我们现在立刻跑一跑这段代码，看看浏览器怎么说：
+### 4. 其他值得知道的做法
 
-![](/images/s_poetries_work_gitee_2020_07_performance_41.webp)
+- **动画用 `transform` 和 `opacity`**：位移用 `transform: translate()` 代替改 `top` / `left`，渐隐用 `opacity`。元素在独立的合成图层上时，这两个属性只需要合成，不回流也不重绘。可以提前用 `will-change: transform` 提示浏览器，但不要滥用，每个图层都占内存。
+- **让动画元素脱离文档流**：需要频繁变化尺寸的元素设成 `position: absolute` 或 `fixed`，它的变化就不会挤动周围的布局，回流的范围小得多。
+- **用 `contain` 圈定影响范围**：`contain: layout` 或 `contain: content` 告诉浏览器这个元素内部的变化不会影响外部，布局可以只在局部重算。长列表里离屏的部分还可以用 `content-visibility: auto` 直接跳过渲染。
+- **避免 table 布局**：表格里一个单元格的变化可能导致整张表重新计算宽度。
+- **用 `requestAnimationFrame` 安排写操作**：把视觉相关的改动放进 rAF 回调，和浏览器的帧节奏对齐，不会在一帧里重复布局。
 
-  * 这里为大家截取有“`Layout`”和“`Paint`”出镜的片段（这个图是通过 Chrome 的 `Performance` 面板得到的，后面会教大家用这个东西）。我们看到浏览器只进行了一次回流和一次重绘——和我们想的不一样啊，为啥呢？
-  * 因为现代浏览器是很聪明的。浏览器自己也清楚，如果每次 DOM 操作都即时地反馈一次回流或重绘，那么性能上来说是扛不住的。于是它自己缓存了一个 flush 队列，把我们触发的回流与重绘任务都塞进去，待到队列里的任务多起来、或者达到了一定的时间间隔，或者“不得已”的时候，再将这些任务一口气出队。因此我们看到，上面就算我们进行了 4 次 DOM 更改，也只触发了一次 `Layout` 和一次 `Paint`。
+## 浏览器已经会批处理，为什么还要自己操心
 
->
-> 大家这里尤其小心这个“不得已”的时候。前面我们在介绍回流的“导火索”的时候，提到过有一类属性很特别，它们有很强的“即时性”。当我们访问这些属性时，浏览器会为了获得此时此刻的、最准确的属性值，而提前将
-> flush 队列的任务出队——这就是所谓的“不得已”时刻。具体是哪些属性值，我们已经在“最容易被忽略的操作”这个小模块介绍过了，此处不再赘述。
+既然浏览器会把改动攒起来统一处理，开发者为什么还要在意这些细节？有两个原因。
 
-### 小结
+第一，批处理很脆弱。只要自己的代码在中间读了一次布局属性，攒起来的队列就得当场清空。很多强制同步布局藏在不起眼的地方，比如一个工具函数里顺手调了 `getBoundingClientRect()`，或者第三方组件在循环里读 `offsetHeight`。浏览器的优化管不到这些情况，只有自己避开。
 
-  * 整个一节读下来，可能会有同学感到疑惑：既然浏览器已经为我们做了批处理优化，为什么我们还要自己操心这么多事情呢？今天避免这个明天避免那个，多麻烦！
-  * 问题在于，**并不是所有的浏览器都是聪明的** 。我们刚刚的性能图表，是 Chrome 的开发者工具呈现给我们的。Chrome 里行得通的东西，到了别处（比如 IE）就不一定行得通了。而我们并不知道用户会使用什么样的浏览器。如果不手动做优化，那么一个页面在不同的环境下就会呈现不同的性能效果，这对我们、对用户都是不利的。因此，养成良好的编码习惯、从根源上解决问题，仍然是最周全的方法。
+第二，不能假设每个用户的环境都一样。上面的性能图来自 Chrome，现代主流浏览器都有类似的批处理机制，但早年的浏览器（比如老版本 IE）在这方面就差得多，低端设备上同样的布局开销也会被放大好几倍。用户用什么设备、什么浏览器，我们控制不了。如果全靠浏览器兜底，同一个页面在不同环境下的流畅度可能差别很大。从写法上避免多余的回流和重绘，才是不依赖环境的做法。
+
+## 面试速答模板
+
+> 回流是 DOM 改动影响了元素的几何信息，比如宽高、位置、显示隐藏、增删节点，浏览器要重新计算布局，而且会波及相关的父子和兄弟节点，算完还要重绘；重绘是只改了颜色、背景、`visibility` 这类外观，跳过布局直接重画。所以回流一定引起重绘，重绘不一定引起回流，回流代价更大。除了改几何属性和改 DOM 结构，读取 `offsetTop`、`scrollTop`、`clientWidth`、`getComputedStyle()`、`getBoundingClientRect()` 这类需要即时计算的值也会触发回流。浏览器平时会把样式改动放进队列，到下一帧统一做一次布局和绘制，但读这些属性会让它提前清空队列、强制同步布局，在循环里读写交替就会造成布局抖动。优化手段有：缓存布局读数、读写分离（可以借助 `requestAnimationFrame` 或 fastdom）；用 class 或 `cssText` 一次性改多条样式；用 `display: none`、DocumentFragment 或 `cloneNode` 让 DOM 离线后批量修改；动画用 `transform` 和 `opacity`，频繁变化的元素脱离文档流，必要时用 `contain` 限定影响范围。

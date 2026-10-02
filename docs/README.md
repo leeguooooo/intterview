@@ -21,7 +21,6 @@ features:
     details: 提供详尽的题目解答与解题思路，助你深入理解每个问题。
   - title: 持续更新
     details: 面试题目及解答持续更新，保证内容的时效性与技术的前沿性。
-footer: MIT 许可证 | 版权所有 © 2018-present VuePress Community
 ---
 
 ## 特点

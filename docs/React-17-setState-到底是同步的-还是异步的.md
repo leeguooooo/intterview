@@ -2,472 +2,557 @@
 title: "React setState 到底是同步的 还是异步的"
 ---
 
-## 简版速记
+## 核心要点
 
-| 调用场景 | 表现 | 原因 |
+| 在哪里调用 setState | React ≤ 17（以及 React 18 里仍用 `ReactDOM.render` 的老入口） | 背后的原因 |
 |---|---|---|
-| React 合成事件（onClick 等） | **异步**（批量更新） | 事件触发前 `isBatchingUpdates` 已被置为 `true` |
-| React 生命周期函数 | **异步**（批量更新） | 同上，React 在初始渲染时开启了 batch |
-| `setTimeout` / `setInterval` | **同步**（立即更新） | 回调在 React 事务之外执行，`isBatchingUpdates` 已恢复 `false` |
-| 原生 DOM 事件（`addEventListener`） | **同步**（立即更新） | 同上，不受 React 合成事件管控 |
+| React 合成事件，比如 `onClick`、`onChange` | 看起来**异步**：调用完读 `this.state` 还是旧值，多次调用合并成一次渲染 | 事件派发前 React 已经把批处理开关 `isBatchingUpdates` 打开 |
+| 生命周期，比如 `componentDidMount`、`componentDidUpdate` | 看起来**异步**，同样会合并 | 挂载、更新流程本身就跑在一个批处理里 |
+| `setTimeout`、`setInterval`、`Promise.then` 的回调 | 看起来**同步**：调用一次渲染一次，下一行就能读到新值 | 回调运行时，当初那次批处理早已结束，开关已经关上 |
+| 用 `addEventListener` 绑定的原生 DOM 事件 | 看起来**同步** | 事件根本没经过 React 的派发逻辑，没人替它开批处理 |
 
-**核心原理**：React 内部维护一个全局锁 `isBatchingUpdates`。在 React 管控范围内（合成事件/生命周期）执行 setState 时，更新被放入 `dirtyComponents` 队列，等事务 close 后统一 flush；而 `setTimeout` 等异步回调在 React 事务结束后才执行，此时锁已释放，setState 直接触发同步更新。
+几个要记牢的结论：
 
-**连续多次 setState 同属性**：React 只保留最后一次（对象式合并 `Object.assign`）。若每次都需基于最新值累加，应使用函数式写法：
-```js
-this.setState(prevState => ({ count: prevState.count + 1 }));
-```
+- **setState 本身没有「异步」的实现**，它没有用 `setTimeout` 或微任务把自己往后推。所谓异步，是 React 把这次更新**先放进队列、等这一批代码跑完再统一处理**，即「批量更新」。
+- 是否进队列，由一个全局开关决定（React 15 里叫 `isBatchingUpdates`）。开关打开，组件进 `dirtyComponents` 排队；开关关着，立刻走完整的更新流程。
+- 开关由**事务（Transaction）**打开和关闭：`perform` 前把开关置为 `true`，回调跑完后在 `close` 阶段先刷新队列，再把开关复位为 `false`。
+- `setTimeout` 并没有改变 setState，它只是让 setState 在批处理结束之后才执行，**躲开了 React 的批处理管控**。一句话：被 React 管着的 setState 一定是批量的。
+- 对象写法的多次 setState 会被浅合并，同一个字段只有最后一次生效。想基于上一次的结果继续算，要用函数写法：`this.setState(prev => ({ likes: prev.likes + 1 }))`。
+- React 18 用 `createRoot` 挂载后有了**自动批处理**，`setTimeout`、Promise、原生事件里的更新也会合并，不再有「同步」表现；真要立刻提交，用 `flushSync`。
 
-## 从一道面试题说起
+## 先做一道题：三个按钮各输出什么
 
-这是一道变体繁多的面试题，在 BAT 等一线大厂的面试中考察频率非常高。首先题目会给出一个这样的 App 组件，在它的内部会有如下代码所示的几个不同的
-setState 操作：
-```js
-    import React from "react";
-    import "./styles.css";
-    export default class App extends React.Component{
-      state = {
-        count: 0
-      }
-      increment = () => {
-        console.log('increment setState前的count', this.state.count)
-        this.setState({
-          count: this.state.count + 1
-        });
-        console.log('increment setState后的count', this.state.count)
-      }
-      triple = () => {
-        console.log('triple setState前的count', this.state.count)
-        this.setState({
-          count: this.state.count + 1
-        });
-        this.setState({
-          count: this.state.count + 1
-        });
-        this.setState({
-          count: this.state.count + 1
-        });
-        console.log('triple setState后的count', this.state.count)
-      }
-      reduce = () => {
-        setTimeout(() => {
-          console.log('reduce setState前的count', this.state.count)
-          this.setState({
-            count: this.state.count - 1
-          });
-          console.log('reduce setState后的count', this.state.count)
-        },0);
-      }
-      render(){
-        return <div>
-          <button onClick={this.increment}>点我增加</button>
-          <button onClick={this.triple}>点我增加三倍</button>
-          <button onClick={this.reduce}>点我减少</button>
-        </div>
-      }
-    }
-```
+下面这个点赞面板有三个按钮，分别在三种写法下调用 setState：
 
-接着我把组件挂载到 DOM 上：
-```js
-    import React from "react";
-    import ReactDOM from "react-dom";
-    import App from "./App";
-    const rootElement = document.getElementById("root");
-    ReactDOM.render(
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>,
-      rootElement
+```jsx
+import React from "react";
+
+export default class LikeBoard extends React.Component {
+  state = { likes: 0 };
+
+  // 合成事件里调一次
+  likeOnce = () => {
+    console.log("[likeOnce] 调用前 likes =", this.state.likes);
+    this.setState({ likes: this.state.likes + 1 });
+    console.log("[likeOnce] 调用后 likes =", this.state.likes);
+  };
+
+  // 合成事件里连调三次
+  likeThrice = () => {
+    console.log("[likeThrice] 调用前 likes =", this.state.likes);
+    this.setState({ likes: this.state.likes + 1 });
+    this.setState({ likes: this.state.likes + 1 });
+    this.setState({ likes: this.state.likes + 1 });
+    console.log("[likeThrice] 调用后 likes =", this.state.likes);
+  };
+
+  // 放进定时器里再调
+  unlikeLater = () => {
+    setTimeout(() => {
+      console.log("[unlikeLater] 调用前 likes =", this.state.likes);
+      this.setState({ likes: this.state.likes - 1 });
+      console.log("[unlikeLater] 调用后 likes =", this.state.likes);
+    }, 0);
+  };
+
+  render() {
+    return (
+      <div>
+        <p>当前点赞数：{this.state.likes}</p>
+        <button onClick={this.likeOnce}>点赞 +1</button>
+        <button onClick={this.likeThrice}>连赞三次</button>
+        <button onClick={this.unlikeLater}>稍后取消一个赞</button>
+      </div>
     );
+  }
+}
 ```
 
-此时浏览器里渲染出来的是如下图所示的三个按钮：
+入口文件用 React 17 的方式挂载，外面包一层 `StrictMode`（它只会让 `render` 等函数在开发环境多跑一次，不影响事件处理函数里的打印）：
 
-![](/images/s_poetries_work_images_20210501172748.webp)
+```jsx
+import React from "react";
+import ReactDOM from "react-dom";
+import LikeBoard from "./LikeBoard";
 
-此时有个问题，若从左到右依次点击每个按钮，控制台的输出会是什么样的？读到这里，建议你先暂停 1
-分钟在脑子里跑一下代码，看看和下图实际运行出来的结果是否有出入。
-
-![](/images/s_poetries_work_images_20210501172802.webp)
-
-如果你是一个熟手 React 开发，那么 `increment` 这个方法的输出结果想必难不倒你——正如许许多多的 React
-入门教学所声称的那样，“setState 是一个异步的方法”，这意味着当我们执行完 `setState` 后，`state` 本身并不会立刻发生改变。
-因此紧跟在 `setState` 后面输出的 `state` 值，仍然会维持在它的初始状态（0）。在同步代码执行完毕后的某个“神奇时刻”，`state`
-才会“恰恰好”地增加到 1。
-
-但这个“神奇时刻”到底何时发生，所谓的“恰恰好”又如何界定呢？如果你对这个问题搞不太清楚，那么 triple
-方法的输出对你来说就会有一定的迷惑性——setState 一次不好使， setState 三次也没用，state 到底是在哪个环节发生了变化呢？
-
-带着这样的困惑，你决定先抛开一切去看看 reduce 方法里是什么光景，结果更令人大跌眼镜，reduce 方法里的 setState
-竟然是同步更新的！这......到底是我们初学 React 时拿到了错误的基础教程，还是电脑坏了？
-
-要想理解眼前发生的这魔幻的一切，我们还得从 setState 的工作机制里去找线索。
-
-## 异步的动机和原理——批量更新的艺术
-
-我们首先要认知的一个问题：在 setState 调用之后，都发生了哪些事情？你可能会更倾向于站在生命周期的角度去思考这个问题，得出一个如下图所示的结论：
-
-![](/images/s_poetries_work_images_20210501173103.webp)
-
-从图上我们可以看出，一个完整的更新流程，涉及了包括 re-render（重渲染） 在内的多个步骤。re-render 本身涉及对 DOM
-的操作，它会带来较大的性能开销。假如说“一次 setState 就触发一个完整的更新流程”这个结论成立，那么每一次 setState 的调用都会触发一次
-re-render，我们的视图很可能没刷新几次就卡死了。这个过程如我们下面代码中的箭头流程图所示：
-```js
-    this.setState({
-      count: this.state.count + 1    ===>    shouldComponentUpdate->componentWillUpdate->render->componentDidUpdate
-    });
-    this.setState({
-      count: this.state.count + 1    ===>    shouldComponentUpdate->componentWillUpdate->render->componentDidUpdate
-    });
-    this.setState({
-      count: this.state.count + 1    ===>    shouldComponentUpdate->componentWillUpdate->render->componentDidUpdate
-    });
+ReactDOM.render(
+  <React.StrictMode>
+    <LikeBoard />
+  </React.StrictMode>,
+  document.querySelector("#app")
+);
 ```
 
-事实上，`这正是 setState 异步的一个重要的动机——避免频繁的 re-render`。
+页面上是一个计数和三个按钮：
 
-在实际的 React 运行时中，setState 异步的实现方式有点类似于 Vue 的 `$nextTick` 和浏览器里的 `Event-
-Loop`：`每来一个 setState，就把它塞进一个队列里“攒起来”`。等时机成熟，再把“攒起来”的 `state` 结果做合并，最后`只针对最新的
-state 值走一次更新流程`。这个过程，叫作“`批量更新`”，批量更新的过程正如下面代码中的箭头流程图所示：
-```js
-    this.setState({
-      count: this.state.count + 1    ===>    入队，[count+1的任务]
-    });
-    this.setState({
-      count: this.state.count + 1    ===>    入队，[count+1的任务，count+1的任务]
-    });
-    this.setState({
-      count: this.state.count + 1    ===>    入队, [count+1的任务，count+1的任务, count+1的任务]
-    });
-                                              ↓
-                                             合并 state，[count+1的任务]
-                                              ↓
-                                             执行 count+1的任务
+![LikeBoard 组件渲染出的点赞数和三个按钮](/images/rewrite/react-setstate-sync/buttons.webp)
+
+从左往右各点一次，控制台会打印什么？先自己推一遍，再对照实际结果。下面是在 React 17.0.2 下跑出来的输出：
+
+![依次点击三个按钮后的控制台输出：前两个按钮调用后读到旧值，第三个按钮调用后立即变化](/images/rewrite/react-setstate-sync/console-all.webp)
+
+逐个看：
+
+1. **likeOnce**：调用前后都是 0。这符合大多数人对「setState 是异步的」的印象，调用完 state 并没有马上变，过一会儿界面才变成 1。
+2. **likeThrice**：调用前是 1，三次 `+1` 之后读到的还是 1，而且界面最后只变成 2，不是 4。调三次和调一次效果一样。
+3. **unlikeLater**：调用前是 2，调用后立刻变成 1。到了定时器里，setState 居然**同步生效**了。
+
+第一个结果能用「异步」解释，第二个就开始让人困惑：那个「过一会儿」到底是什么时候，三次调用又为什么只算一次？第三个则直接推翻了「setState 是异步的」这个说法。要解释这三种现象，得看 setState 调用之后 React 内部到底做了什么。
+
+## 为什么要「攒一攒」：批量更新
+
+### 每次都立刻更新会怎样
+
+从类组件生命周期的角度，一次 setState 触发的更新要依次经过 `shouldComponentUpdate`、`componentWillUpdate`、`render`、`componentDidUpdate`，其中 `render` 之后还要做 diff 并改写真实 DOM，这是整个流程里最贵的部分。
+
+如果每调用一次 setState 就完整走一遍这条链路，一个事件处理函数里调三次就要渲染三次，写个循环调一百次就要渲染一百次，页面很快会卡住：
+
+![上：一次完整的类组件更新流程；中：每次 setState 都走一遍，三次调用三次 render；下：先入队、合并后只走一次](/images/rewrite/react-setstate-sync/naive-vs-batched.webp)
+
+把图中间那种「逐次更新」写成伪代码，大概是这样：
+
+```text
+setState({ likes: likes + 1 })  →  sCU → cWU → render → cDU   // 第 1 轮
+setState({ likes: likes + 1 })  →  sCU → cWU → render → cDU   // 第 2 轮
+setState({ likes: likes + 1 })  →  sCU → cWU → render → cDU   // 第 3 轮
 ```
 
-> 值得注意的是，只要我们的同步代码还在执行，“攒起来”这个动作就不会停止。（注：这里之所以多次 `+1` 最终只有一次生效，是因为在同一个方法中多次
-> setState 的合并动作不是单纯地将更新累加。比如这里对于相同属性的设置，React 只会为其保留最后一次的更新）。因此就算我们在 React
-> 中写了这样一个 100 次的 setState 循环：
+**避免这种重复渲染，正是 setState 表现为异步的根本动机。**
+
+### React 的做法：先入队，再合并，最后只更新一次
+
+React 的思路和 Vue 的 `nextTick`、浏览器事件循环里的任务队列很像：setState 来了先不处理，**把要改的内容放进队列攒着**；等当前这段同步代码执行完，再把攒下的状态一次性合并，**用最终结果只走一遍更新流程**。这就是「批量更新」（batched updates）：
+
+```text
+setState({ likes: likes + 1 })  →  入队：[+1]
+setState({ likes: likes + 1 })  →  入队：[+1, +1]
+setState({ likes: likes + 1 })  →  入队：[+1, +1, +1]
+                                        │
+                     同步代码结束，合并队列
+                                        ▼
+                     得到 { likes: 1 }，走一次 sCU → cWU → render → cDU
+```
+
+这里有两个细节：
+
+- **只要同步代码还没跑完，入队就不会停。** 队列什么时候被处理，取决于 React 何时结束这一批，而不是某个固定的时间间隔。
+- **合并不是累加。** 三次调用里的 `this.state.likes` 读到的都是同一个旧值 0，所以三个更新对象全是 `{ likes: 1 }`。合并时用的是类似 `Object.assign` 的浅合并，同名字段后面的覆盖前面的，结果当然是 1。这就是 likeThrice 只加了 1 的原因。
+
+把次数放大到 100 次也一样，只是队列变长，不会多渲染：
+
+```jsx
+likeMany = () => {
+  console.log("[likeMany] 循环前 likes =", this.state.likes);
+  for (let n = 0; n < 100; n++) {
+    this.setState({ likes: this.state.likes + 1 });
+  }
+  console.log("[likeMany] 循环后 likes =", this.state.likes);
+};
+```
+
+![循环调用 100 次 setState 后，读到的 likes 仍是 0，界面最终只显示 1](/images/rewrite/react-setstate-sync/console-loop.webp)
+
+如果确实想每次都在上一次的基础上加，就改用函数写法。函数会在合并阶段按顺序执行，每次拿到的 `prev` 都是前面更新累积后的结果：
+
+```jsx
+likeManyFn = () => {
+  for (let n = 0; n < 100; n++) {
+    this.setState(prev => ({ likes: prev.likes + 1 }));
+  }
+  // 这里读 this.state.likes 依然是旧值，但这一批结束后会一次性 +100
+};
+```
+
+在 React 17 下实测，同一批里对象写法连调 100 次只加 1，函数写法连调 100 次加 100，而且两者都只触发一次渲染。
+
+## setTimeout 做了什么
+
+### 去掉定时器，同步就消失了
+
+回到 unlikeLater。它和前两个按钮唯一的区别是 setState 外面多了一层 `setTimeout`。把这层去掉试试：
+
+```jsx
+unlikeLater = () => {
+  // 不再包 setTimeout
+  console.log("[unlikeLater] 调用前 likes =", this.state.likes);
+  this.setState({ likes: this.state.likes - 1 });
+  console.log("[unlikeLater] 调用后 likes =", this.state.likes);
+};
+```
+
+点击后，调用后读到的值和调用前一样，跟 likeOnce 的表现完全相同：
+
+![去掉 setTimeout 后，setState 调用前后读到的 likes 都是 0](/images/rewrite/react-setstate-sync/console-no-timer.webp)
+
+于是问题变成：**为什么套一层 setTimeout，setState 就从「延后生效」变成了「立刻生效」？**
+
+先给结论，后面再用源码验证：**setTimeout 没有给 setState 加任何能力，它只是让 setState 在 React 的批处理结束之后才执行，从而绕开了批处理。只要处在 React 的批处理管控之内，setState 就一定是批量、延后生效的。**
+
+### 用 React 15 的源码来看
+
+下面的源码分析以 React 15 为准。React 16 之后引入了 Fiber，内部实现换了一套，但就 setState 的批处理而言，React 15 的结构最直白，变量名和行为也最容易对上号；Fiber 下对应的实现放在后面的「React 16/17 里换成了什么」一节补充。
+
+先看 setState 调用之后的主干流程：
+
+![setState 主流程：setState → enqueueSetState → enqueueUpdate，再根据 isBatchingUpdates 决定排队还是立即更新](/images/rewrite/react-setstate-sync/setstate-flow.webp)
+
+**第一步：`setState` 只做分发。** 它把参数交给组件实例上的 `updater`，有回调就另外登记：
+
 ```js
-    test = () => {
-      console.log('循环100次 setState前的count', this.state.count)
-      for(let i=0;i<100;i++) {
-        this.setState({
-          count: this.state.count + 1
-        })
-      }
-      console.log('循环100次 setState后的count', this.state.count)
+// React 15：ReactComponent.js（精简）
+ReactComponent.prototype.setState = function (partialState, callback) {
+  this.updater.enqueueSetState(this, partialState);
+  if (callback) {
+    this.updater.enqueueCallback(this, callback, 'setState');
+  }
+};
+```
+
+**第二步：`enqueueSetState` 把新状态放进组件自己的待处理队列。** 以对象参数为例，它做的事可以概括成两件：
+
+- 根据组件实例找到内部实例，把 `partialState` 推进它的 `_pendingStateQueue` 数组；
+- 调用 `enqueueUpdate`，把「这个组件需要更新」这件事交给下一步处理。
+
+```js
+// ReactUpdateQueue.js（精简，中文注释是补充说明）
+enqueueSetState(publicInstance, partialState) {
+  const inst = getInternalInstanceReadyForUpdate(publicInstance, 'setState');
+  // 每个组件实例都有一个待合并的 state 数组，没有就先建一个
+  const pending = inst._pendingStateQueue || (inst._pendingStateQueue = []);
+  pending.push(partialState);
+  enqueueUpdate(inst);
+}
+```
+
+**第三步：`enqueueUpdate` 决定是现在更新还是排队。** 这是整件事的分水岭：
+
+```js
+// ReactUpdates.js（精简）
+function enqueueUpdate(component) {
+  ensureInjected();
+  // 当前不在批处理中：自己发起一次批处理，组件会被立刻更新
+  if (!batchingStrategy.isBatchingUpdates) {
+    batchingStrategy.batchedUpdates(enqueueUpdate, component);
+    return;
+  }
+  // 当前已在批处理中：登记到 dirtyComponents，等这一批结束
+  dirtyComponents.push(component);
+  if (component._updateBatchNumber == null) {
+    component._updateBatchNumber = updateBatchNumber + 1;
+  }
+}
+```
+
+这段代码引出了 `batchingStrategy` 这个对象。它的 `isBatchingUpdates` 决定组件是排队还是马上更新，它的 `batchedUpdates` 方法则负责真正启动一批更新。可以推断，React 正是靠它来管理批量更新的。
+
+### batchingStrategy：一把全局锁
+
+React 15 默认注入的批处理策略是 `ReactDefaultBatchingStrategy`，核心代码不长：
+
+```js
+// ReactDefaultBatchingStrategy.js（精简）
+var ReactDefaultBatchingStrategy = {
+  isBatchingUpdates: false,   // 全局唯一的「正在批处理」标记，初始为 false
+
+  batchedUpdates: function (callback, a, b, c, d, e) {
+    var wasBatching = ReactDefaultBatchingStrategy.isBatchingUpdates;
+    ReactDefaultBatchingStrategy.isBatchingUpdates = true;   // 上锁
+
+    if (wasBatching) {
+      // 外层已经在批处理里了，直接执行，不再嵌套开事务
+      return callback(a, b, c, d, e);
     }
+    // 最外层：放进事务里执行，事务结束时负责刷新队列、解锁
+    return transaction.perform(callback, null, a, b, c, d, e);
+  },
+};
 ```
 
-> 也只是会增加 state 任务入队的次数，并不会带来频繁的 re-render。当 100 次调用结束后，仅仅是 `state`
-> 的任务队列内容发生了变化， `state` 本身并不会立刻改变：
+把它理解成一个「锁管理器」最直观：
 
-![](/images/s_poetries_work_images_20210501173710.webp)
+- `isBatchingUpdates` 就是那把锁，初始是 `false`，表示当前没有在批处理。
+- 每次 React 通过 `batchedUpdates` 发起一批更新时，先把锁置为 `true`，意思是「现在正在批量处理」。
+- 锁住期间，所有需要更新的组件只能进 `dirtyComponents` 排队，等这一批统一处理，不能插队单独更新。
 
-## “同步现象”背后的故事：从源码角度看 setState 工作流
+这种「先上锁、集中排队、统一处理」的设计，让 React 在面对大量状态变化时依然能有序地分批完成更新。
 
-读到这里，相信你对异步这回事多少有些眉目了。接下来我们就要重点理解刚刚代码里最诡异的一部分——`setState 的同步现象`：
+`batchedUpdates` 里还有一行值得注意：`transaction.perform(...)`。锁是什么时候打开的、队列是什么时候被处理的，都藏在这个「事务」里。
+
+## React 15 的事务（Transaction）机制
+
+### 事务是什么
+
+`Transaction` 是 React 15 源码里使用非常广泛的一个类。调试 React 15 项目时，如果调用栈里出现了 `perform`、`initialize`、`close`、`closeAll`、`notifyAll` 这类方法名，基本可以确定当前正处在某个事务中。
+
+源码里对它的定位是：创建一个能把任意方法包起来的「黑盒」。需要在目标函数运行前后执行的固定逻辑都可以挂上去，而且**即使目标函数抛了异常，这些收尾逻辑也照样会执行**。使用时只需在创建事务时提供这些前后逻辑。
+
+源码注释里有一张 ASCII 图，意思可以概括成下面这样：
+
+```text
+                   wrapper A          wrapper B
+                  ┌──────────┐      ┌──────────┐
+perform(fn) ───▶  │initialize│ ───▶ │initialize│ ───▶ fn() ───▶ │close│ A ───▶ │close│ B ───▶ 结束
+                  └──────────┘      └──────────┘
+                  （fn 抛错时，所有 close 依然会被调用，保证收尾逻辑一定执行）
+```
+
+说白了，事务就是一层「壳」：
+
+- 一组 `initialize` + `close` 方法叫做一个 **wrapper**，一个事务可以挂多个 wrapper；
+- 目标函数不能直接调用，要通过事务暴露的 `perform` 执行；
+- `perform` 先依次调用所有 wrapper 的 `initialize`，然后执行目标函数，最后依次调用所有 wrapper 的 `close`。
+
+### 批处理事务的两个 wrapper
+
+`ReactDefaultBatchingStrategy` 里用的就是这样一个事务，它挂了两个 wrapper：
+
 ```js
-    reduce = () => {
-      setTimeout(() => {
-        console.log('reduce setState前的count', this.state.count)
-        this.setState({
-          count: this.state.count - 1
-        });
-        console.log('reduce setState后的count', this.state.count)
-      },0);
+// ReactDefaultBatchingStrategy.js（精简）
+var FLUSH_BATCHED_UPDATES = {
+  initialize: emptyFunction,
+  close: ReactUpdates.flushBatchedUpdates.bind(ReactUpdates), // 处理积攒的更新
+};
+var RESET_BATCHED_UPDATES = {
+  initialize: emptyFunction,
+  close: function () {
+    ReactDefaultBatchingStrategy.isBatchingUpdates = false;    // 解锁
+  },
+};
+var TRANSACTION_WRAPPERS = [FLUSH_BATCHED_UPDATES, RESET_BATCHED_UPDATES];
+```
+
+两个 `initialize` 都是空函数，真正干活的是 `close`。把它们代入事务的执行顺序，就得到一次批处理的完整过程：
+
+![批处理事务：initialize 为空，callback 中 setState 只入队；close 阶段先 flushBatchedUpdates 遍历 dirtyComponents 走完生命周期，再把 isBatchingUpdates 置回 false](/images/rewrite/react-setstate-sync/batch-transaction.webp)
+
+1. `batchedUpdates` 把锁置为 `true`，然后 `perform` 执行 callback（事件处理函数、首次挂载逻辑等），期间的 setState 全部只是入队。
+2. callback 执行完，`FLUSH_BATCHED_UPDATES` 的 close 调用 `flushBatchedUpdates`：遍历 `dirtyComponents`，对每个组件调用 `updateComponent`，合并 `_pendingStateQueue`，再依次走 `componentWillReceiveProps`（仅在 props 可能变化时）→ `shouldComponentUpdate` → `componentWillUpdate` → `render` → `componentDidUpdate`，完成更新。
+3. `RESET_BATCHED_UPDATES` 的 close 把 `isBatchingUpdates` 置回 `false`，锁打开。
+
+> 注意执行顺序：`close` 按 `TRANSACTION_WRAPPERS` 数组的顺序调用，所以是**先刷新队列，再解锁**。刷新期间锁仍然是 `true`，这时在 `componentDidUpdate` 等生命周期里再调 setState，组件会再次进入 `dirtyComponents`，由 `flushBatchedUpdates` 的循环继续处理，而不是立刻嵌套更新一次。
+
+### 用 70 行左右的代码复刻这套机制
+
+为了确认上面的理解没错，可以把「锁 + 队列 + 事务」抽出来，用纯 JS 写一个能直接跑的极简版本（命名是自己起的，结构对应 React 15）：
+
+```js
+// mini-batching.js —— node mini-batching.js 可直接运行
+class Transaction {
+  constructor(wrappers) { this.wrappers = wrappers; }
+  perform(fn, ...args) {
+    this.wrappers.forEach(w => w.initialize());
+    try {
+      return fn(...args);
+    } finally {
+      this.wrappers.forEach(w => w.close()); // 即使 fn 抛错，close 也会执行
     }
+  }
+}
+
+const pendingComponents = [];               // 对应 dirtyComponents
+const batching = {
+  locked: false,                            // 对应 isBatchingUpdates
+  run(fn, ...args) {
+    const wasLocked = batching.locked;
+    batching.locked = true;
+    if (wasLocked) return fn(...args);      // 已在批处理中，直接执行
+    return batchTx.perform(fn, ...args);    // 否则开一个事务
+  },
+};
+
+function flushPending() {
+  while (pendingComponents.length) {
+    const comp = pendingComponents.shift();
+    comp.applyPending();
+  }
+}
+const batchTx = new Transaction([
+  { initialize() {}, close: flushPending },                        // 先刷新队列
+  { initialize() {}, close() { batching.locked = false; } },       // 再解锁
+]);
+
+function scheduleUpdate(comp) {
+  if (!batching.locked) return batching.run(scheduleUpdate, comp); // 没锁：自己开批次，立即刷新
+  if (!pendingComponents.includes(comp)) pendingComponents.push(comp);
+}
+
+class MiniComponent {
+  constructor(state) { this.state = state; this.queue = []; this.renders = 0; }
+  setState(partial) { this.queue.push(partial); scheduleUpdate(this); }
+  applyPending() {
+    let next = { ...this.state };
+    for (const p of this.queue) Object.assign(next, typeof p === 'function' ? p(next) : p);
+    this.queue = [];
+    this.state = next;
+    this.renders++;
+  }
+}
+
+const cart = new MiniComponent({ items: 0 });
+// 模拟「合成事件」：框架先上锁再调用处理函数
+const dispatchClick = handler => batching.run(handler);
+
+dispatchClick(() => {
+  cart.setState({ items: cart.state.items + 1 });
+  cart.setState({ items: cart.state.items + 1 });
+  console.log('事件处理中: items =', cart.state.items);
+});
+console.log('事件结束后: items =', cart.state.items, 'renders =', cart.renders);
+
+dispatchClick(() => {
+  setTimeout(() => {
+    cart.setState({ items: cart.state.items + 10 });
+    console.log('setTimeout 中: items =', cart.state.items, 'renders =', cart.renders);
+  });
+});
 ```
 
-从题目上看，`setState` 似乎是在 `setTimeout` 函数的“保护”之下，才有了同步这一“特异功能”。事实也的确如此，假如我们把
-`setTimeout` 摘掉，`setState`前后的 `console` 表现将会与 `increment` 方法中无异：
+运行输出：
+
+```text
+事件处理中: items = 0
+事件结束后: items = 1 renders = 1
+setTimeout 中: items = 11 renders = 2
+```
+
+和 React 的表现完全一致：事件里两次 `+1` 被合并成一次渲染、只加了 1；定时器里的 setState 调用完立刻就是新值。
+
+## 同步现象的真正原因
+
+### 谁替我们上了锁
+
+到这里还差最后一块拼图：事件处理函数和生命周期执行时，锁为什么已经是 `true`？答案是 React 在这些地方**主动调用了 `batchedUpdates`**。在 React 15 源码里搜 `batchedUpdates`，和更新流程相关的调用点主要有两处。
+
+**一处在首次挂载。** `ReactMount` 渲染根组件时，把整个挂载过程放进了 `batchedUpdates`：
+
 ```js
-    reduce = () => {
-      // setTimeout(() => {
-      console.log('reduce setState前的count', this.state.count)
-      this.setState({
-        count: this.state.count - 1
-      });
-      console.log('reduce setState后的count', this.state.count)
-      // },0);
-    }
+// ReactMount.js（精简）
+_renderNewRootComponent(nextElement, container, shouldReuseMarkup, context) {
+  const componentInstance = instantiateReactComponent(nextElement);
+  // 首次渲染同样包在批处理里执行
+  ReactUpdates.batchedUpdates(
+    batchedMountComponentIntoNode,
+    componentInstance, container, shouldReuseMarkup, context
+  );
+  // ...
+}
 ```
 
-点击后的输出结果如下图所示：
+挂载过程中会按顺序调用各组件的生命周期，开发者完全可能在 `componentWillMount`、`componentDidMount` 里调用 setState。开启批处理后，这些更新都会先进 `dirtyComponents`，等挂载完成后统一处理，保证首屏渲染期间的 setState 都能生效且不会引起重复渲染。
 
-![](/images/s_poetries_work_images_20210501173922.webp)
+**另一处在事件派发。** React 的事件系统在调用你写的处理函数之前，同样先开好批处理：
 
-现在问题就变得清晰多了：`为什么 setTimeout 可以将 setState 的执行顺序从异步变为同步`？
-
-> 这里我先给出一个结论：`并不是 setTimeout 改变了 setState，而是 setTimeout 帮助 setState “逃脱”了
-> React 对它的管控`。`只要是在 React 管控下的 setState，一定是异步的`。
-
-接下来我们就从 React 源码里，去寻求佐证这个结论的线索。
-
-> 时下虽然市场里的 React 16、React 17 十分火热，但就 setState 这块知识来说，React 15
-> 仍然是最佳的学习素材。因此下文所有涉及源码的分析，都会围绕 React 15 展开。关于 React 16 之后 Fiber 机制给 setState
-> 带来的改变，不在本讲的讨论范围内
-
-## 解读 setState 工作流
-
-我们阅读任何框架的源码，都应该带着问题、带着目的去读。React 中对于功能的拆分是比较细致的，setState
-这部分涉及了多个方法。为了方便你理解，我这里先把主流程提取为一张大图：
-
-![](/images/s_poetries_work_images_20210501174113.webp)
-
-接下来我们就沿着这个流程，逐个在源码中对号入座。首先是 `setState` 入口函数：
 ```js
-    ReactComponent.prototype.setState = function (partialState, callback) {
-      this.updater.enqueueSetState(this, partialState);
-      if (callback) {
-        this.updater.enqueueCallback(this, callback, 'setState');
-      }
-    };
+// ReactEventListener.js（精简）
+dispatchEvent(topLevelType, nativeEvent) {
+  // ...
+  try {
+    // 在批处理中执行事件处理逻辑，处理函数里的 setState 都会被攒起来
+    ReactUpdates.batchedUpdates(handleTopLevelImpl, bookKeeping);
+  } finally {
+    TopLevelCallbackBookKeeping.release(bookKeeping);
+  }
+}
 ```
 
-入口函数在这里就是充当一个分发器的角色，根据入参的不同，将其分发到不同的功能函数中去。这里我们以对象形式的入参为例，可以看到它直接调用了
-`this.updater.enqueueSetState` 这个方法：
-```js
-    enqueueSetState: function (publicInstance, partialState) {
-      // 根据 this 拿到对应的组件实例
-      var internalInstance = getInternalInstanceReadyForUpdate(publicInstance, 'setState');
-      // 这个 queue 对应的就是一个组件实例的 state 数组
-      var queue = internalInstance._pendingStateQueue || (internalInstance._pendingStateQueue = []);
-      queue.push(partialState);
-      //  enqueueUpdate 用来处理当前的组件实例
-      enqueueUpdate(internalInstance);
-    }
+所以真相是：**合成事件和生命周期开始执行之前，React 已经悄悄把 `isBatchingUpdates` 置成了 `true`**；函数执行完毕，事务的 close 再把它改回 `false`。在这期间调用的 setState 自然不会立即生效。
+
+### 把锁画进代码里
+
+以 likeOnce 为例，加上 React 替我们做的事，等价于：
+
+```jsx
+likeOnce = () => {
+  // React 派发事件前：上锁
+  isBatchingUpdates = true;
+
+  console.log("[likeOnce] 调用前 likes =", this.state.likes);
+  this.setState({ likes: this.state.likes + 1 }); // 锁着 → 只入队
+  console.log("[likeOnce] 调用后 likes =", this.state.likes);
+
+  // 处理函数返回后：刷新队列，解锁
+  isBatchingUpdates = false;
+};
 ```
 
-这里我总结一下，`enqueueSetState` 做了两件事：
+在锁的约束下，这里的 setState 只能延后生效。再看 unlikeLater：
 
-  * 将新的 `state` 放进组件的状态队列里；
-  * 用 `enqueueUpdate` 来处理将要更新的实例对象
+```jsx
+unlikeLater = () => {
+  isBatchingUpdates = true; // React 上锁
 
-继续往下走，看看 `enqueueUpdate` 做了什么：
-```js
-    function enqueueUpdate(component) {
-      ensureInjected();
-      // 注意这一句是问题的关键，isBatchingUpdates标识着当前是否处于批量创建/更新组件的阶段
-      if (!batchingStrategy.isBatchingUpdates) {
-        // 若当前没有处于批量创建/更新组件的阶段，则立即更新组件
-        batchingStrategy.batchedUpdates(enqueueUpdate, component);
-        return;
-      }
-      // 否则，先把组件塞入 dirtyComponents 队列里，让它“再等等”
-      dirtyComponents.push(component);
-      if (component._updateBatchNumber == null) {
-        component._updateBatchNumber = updateBatchNumber + 1;
-      }
-    }
+  setTimeout(() => {
+    // 等这里执行时，下面那行早已跑完
+    console.log("[unlikeLater] 调用前 likes =", this.state.likes);
+    this.setState({ likes: this.state.likes - 1 }); // 锁已打开 → 立即更新
+    console.log("[unlikeLater] 调用后 likes =", this.state.likes);
+  }, 0);
+
+  isBatchingUpdates = false; // React 解锁
+};
 ```
 
-这个 `enqueueUpdate`
-非常有嚼头，它引出了一个关键的对象——`batchingStrategy`，该对象所具备的`isBatchingUpdates`属性直接决定了当下是要走更新流程，还是应该排队等待；其中的`batchedUpdates`
-方法更是能够直接发起更新流程。由此我们可以大胆推测，`batchingStrategy` 或许正是 `React` 内部专门用于管控批量更新的对象。
+锁的开关发生在同步代码里，而 `setTimeout` 的回调要等到之后的某个宏任务才执行。那时整个事件派发早已结束，`isBatchingUpdates` 已经是 `false`，于是 `enqueueUpdate` 走进「没上锁」的分支，自己发起一次批处理并马上刷新，调用返回时 state 已经更新完：
 
-接下来，我们就一起来研究研究这个 `batchingStrategy`。
-```js
-    /**
-     * batchingStrategy源码
-    **/
-     
-    var ReactDefaultBatchingStrategy = {
-      // 全局唯一的锁标识
-      isBatchingUpdates: false,
-     
-      // 发起更新动作的方法
-      batchedUpdates: function(callback, a, b, c, d, e) {
-        // 缓存锁变量
-        var alreadyBatchingStrategy = ReactDefaultBatchingStrategy.isBatchingUpdates
-        // 把锁“锁上”
-        ReactDefaultBatchingStrategy.isBatchingUpdates = true
-    
-        if (alreadyBatchingStrategy) {
-          callback(a, b, c, d, e)
-        } else {
-          // 启动事务，将 callback 放进事务里执行
-          transaction.perform(callback, null, a, b, c, d, e)
-        }
-      }
-    }
+![时间线：点击「稍后取消一个赞」后锁为 true，unlikeLater 的同步部分只注册了定时器，事件结束时 flush 并解锁；setTimeout 回调在下一个宏任务执行，此时锁为 false，setState 立即更新](/images/rewrite/react-setstate-sync/lock-timeline.webp)
+
+所以说 setState 并没有「同步」这个特性，它只是在某些场景下**逃出了 React 的批处理管控**。同理，`Promise.then`、`async/await` 之后的代码、`addEventListener` 绑定的原生事件回调，执行时都不在 React 开启的批处理里，表现也都是「同步」的。
+
+在 React 17.0.2 下实测（jsdom 环境）还能看到两点：
+
+- `componentDidMount` 里调用 setState 后立即读 `this.state`，仍是旧值，说明生命周期确实在批处理中。
+- 在 `setTimeout` 回调里连续调用两次 setState，会触发**两次**渲染，每次调用后都能读到新值，没有任何合并。
+
+## React 16/17 里换成了什么
+
+Fiber 架构下 `Transaction` 类被拿掉了，但「锁」本身是分两步演变的：React 16.0 到 16.8 的 `ReactFiberScheduler` 里仍然有模块级的 `isBatchingUpdates` 变量（外加一个 `isUnbatchingUpdates`），`batchedUpdates` 用 try/finally 把它置为 `true` 再复位，`requestWork` 里检查它来决定是排队还是立刻同步执行；从 16.9 起工作循环重写为 `ReactFiberWorkLoop`，这个布尔变量才被位掩码 `executionContext` 取代，React 17 用的就是这一套。下表右列以 16.9+ / 17 为准：
+
+| React 15 | React 16.9+ / 17（legacy 模式） |
+|---|---|
+| `isBatchingUpdates` 锁 | `executionContext` 上的 `BatchedContext` / `EventContext` 等标志位 |
+| 事务 close 时 `flushBatchedUpdates` | 批处理结束、`executionContext` 回到 `NoContext` 时执行 `flushSyncCallbackQueue` |
+| 不在批处理中则立即更新 | `scheduleUpdateOnFiber` 发现当前是 `NoContext`，就立刻同步刷新 |
+
+所以 React 16、17 里的现象和 React 15 完全一样：合成事件和生命周期中批量更新，`setTimeout`、Promise、原生事件中同步更新。这也适用于函数组件：React 17 里在定时器中连续调用两次 `setCount` 会渲染两次（只是函数组件里的 `count` 变量本身来自闭包，无论如何都读不到新值）。
+
+如果在 React 17 里想让定时器、Promise 中的多次更新也合并，可以手动包一层：
+
+```jsx
+import { unstable_batchedUpdates } from "react-dom";
+
+fetchLikes().then(total => {
+  unstable_batchedUpdates(() => {
+    this.setState({ likes: total });
+    this.setState({ loading: false }); // 两次更新合并为一次渲染
+  });
+});
 ```
 
-`batchingStrategy` 对象并不复杂，你可以理解为它是一个“锁管理器”。
+## React 18：自动批处理
 
-这里的“锁”，是指 React 全局唯一的 `isBatchingUpdates` 变量，`isBatchingUpdates` 的初始值是
-`false`，意味着“当前并未进行任何批量更新操作”。每当 React 调用 `batchedUpdate`
-去执行更新动作时，会先把这个锁给“锁上”（置为 true），表明“现在正处于批量更新过程中”。当锁被“锁上”的时候，任何需要更新的组件都只能暂时进入
-`dirtyComponents` 里排队等候下一次的批量更新，而不能随意“插队”。此处体现的“任务锁”的思想，是 React
-面对大量状态仍然能够实现有序分批处理的基石。
+React 18 使用 `createRoot` 挂载后，引入了**自动批处理（Automatic Batching）**：不管更新来自合成事件、`setTimeout`、Promise 还是原生事件，同一个任务里的多次更新都会合并，统一在稍后处理。上文那种「定时器里同步生效」的现象不复存在。
 
-理解了批量更新整体的管理机制，还需要注意 `batchedUpdates` 中，有一个引人注目的调用：
-```js
-    transaction.perform(callback, null, a, b, c, d, e)
+需要立刻把某次更新提交到 DOM 时（比如更新后马上要测量元素尺寸），用 `flushSync`：
+
+```jsx
+import { flushSync } from "react-dom";
+
+setTimeout(() => {
+  flushSync(() => {
+    this.setState({ likes: this.state.likes + 5 });
+  });
+  // 走到这里时，DOM 和 this.state 都已经是新值
+}, 0);
 ```
 
-这行代码为我们引出了一个更为硬核的概念——React 中的 `Transaction`（事务）机制。
+在 React 18.3.1 下实测：
 
-## 理解 React 中的 Transaction（事务） 机制
+- `createRoot` 下，`setTimeout` 里连续调两次 setState，调用后读到的仍是旧值，此刻渲染次数为 0；稍后只渲染 1 次。
+- 包上 `flushSync` 后，调用返回时 state 已经更新，渲染了 1 次。
+- 同一份代码改用 `ReactDOM.render` 挂载（React 18 中已废弃，但仍可用），行为和 React 17 完全一样：定时器里每次 setState 都立即渲染。
 
-`Transaction` 在 React 源码中的分布可以说非常广泛。如果你在 Debug React 项目的过程中，发现函数调用栈中出现了
-`initialize`、`perform`、`close`、`closeAll` 或者 `notifyAll` 这样的方法名，那么很可能你当前就处于一个
-`Transaction` 中
+因此，本文讲的「有时异步、有时同步」，适用于 React 17 及以下，以及 React 18 中仍使用 `ReactDOM.render` 的老代码。用 `createRoot` 的 React 18+ 项目里，setState 默认一律批量处理。
 
-`Transaction` 在 React 源码中表现为一个核心类，React 官方曾经这样描述它：`Transaction
-是创建一个黑盒，该黑盒能够封装任何的方法`。因此，那些需要在函数运行前、后运行的方法可以通过此方法封装（即使函数运行中有异常抛出，这些固定的方法仍可运行），实例化
-Transaction 时只需提供相关的方法即可。
+## 面试速答模板
 
-这段话初读有点拗口，这里我推荐你结合 React 源码中的一段针对 `Transaction` 的注释来理解它：
-```javascript
-    * <pre>
-     *                       wrappers (injected at creation time)
-     *                                      +        +
-     *                                      |        |
-     *                    +-----------------|--------|--------------+
-     *                    |                 v        |              |
-     *                    |      +---------------+   |              |
-     *                    |   +--|    wrapper1   |---|----+         |
-     *                    |   |  +---------------+   v    |         |
-     *                    |   |          +-------------+  |         |
-     *                    |   |     +----|   wrapper2  |--------+   |
-     *                    |   |     |    +-------------+  |     |   |
-     *                    |   |     |                     |     |   |
-     *                    |   v     v                     v     v   | wrapper
-     *                    | +---+ +---+   +---------+   +---+ +---+ | invariants
-     * perform(anyMethod) | |   | |   |   |         |   |   | |   | | maintained
-     * +----------------->|-|---|-|---|-->|anyMethod|---|---|-|---|-|-------->
-     *                    | |   | |   |   |         |   |   | |   | |
-     *                    | |   | |   |   |         |   |   | |   | |
-     *                    | |   | |   |   |         |   |   | |   | |
-     *                    | +---+ +---+   +---------+   +---+ +---+ |
-     *                    |  initialize                    close    |
-     *                    +-----------------------------------------+
-     * </pre>
-     * 
-```
-
-说白了，`Transaction` 就像是一个“壳子”，它首先会将目标函数用 `wrapper`（一组 `initialize` 及 `close`
-方法称为一个 `wrappe`r） 封装起来，同时需要使用 `Transaction` 类暴露的 `perform` 方法去执行它。如上面的注释所示，在
-anyMethod 执行之前，perform 会先执行所有 wrapper 的 initialize 方法，执行完后，再执行所有 wrapper 的
-close 方法。这就是 React 中的事务机制。
-
-## “同步现象”的本质
-
-下面结合对事务机制的理解，我们继续来看在 `ReactDefaultBatchingStrategy`
-这个对象。`ReactDefaultBatchingStrategy` 其实就是一个批量更新策略事务，它的 `wrapper`
-有两个：`FLUSH_BATCHED_UPDATES` 和 `RESET_BATCHED_UPDATES`
-```js
-    var RESET_BATCHED_UPDATES = {
-      initialize: emptyFunction,
-      close: function () {
-        ReactDefaultBatchingStrategy.isBatchingUpdates = false;
-      }
-    };
-    var FLUSH_BATCHED_UPDATES = {
-      initialize: emptyFunction,
-      close: ReactUpdates.flushBatchedUpdates.bind(ReactUpdates)
-    };
-    var TRANSACTION_WRAPPERS = [FLUSH_BATCHED_UPDATES, RESET_BATCHED_UPDATES];
-```
-
-我们把这两个 `wrapper` 套进 `Transaction` 的执行机制里，不难得出一个这样的流程：
-
-![](/images/s_poetries_work_images_20210501175133.webp)
-
-到这里，相信你对 `isBatchingUpdates` 管控下的批量更新机制已经了然于胸。但是 `setState`
-为何会表现同步这个问题，似乎还是没有从当前展示出来的源码里得到根本上的回答。这是因为 `batchingUpdates` 这个方法，不仅仅会在
-`setState` 之后才被调用。若我们在 React 源码中全局搜索
-`batchingUpdates`，会发现调用它的地方很多，但与更新流有关的只有这两个地方：
-```js
-    // ReactMount.js
-    _renderNewRootComponent: function( nextElement, container, shouldReuseMarkup, context ) {
-      // 实例化组件
-      var componentInstance = instantiateReactComponent(nextElement);
-      // 初始渲染直接调用 batchedUpdates 进行同步渲染
-      ReactUpdates.batchedUpdates(
-        batchedMountComponentIntoNode,
-        componentInstance,
-        container,
-        shouldReuseMarkup,
-        context
-      );
-      ...
-    }
-```
-
-这段代码是在首次渲染组件时会执行的一个方法，我们看到它内部调用了一次
-`batchedUpdates`，这是因为在组件的渲染过程中，会按照顺序调用各个生命周期函数。开发者很有可能在声明周期函数中调用
-`setState`。因此，我们需要通过开启 batch 来确保所有的更新都能够进入 `dirtyComponents` 里去，进而确保初始渲染流程中所有的
-`setState` 都是生效的。
-
-下面代码是 React 事件系统的一部分。当我们在组件上绑定了事件之后，事件中也有可能会触发 setState。为了确保每一次 setState
-都有效，React 同样会在此处手动开启批量更新。
-```js
-    // ReactEventListener.js
-    dispatchEvent: function (topLevelType, nativeEvent) {
-      ...
-      try {
-        // 处理事件
-        ReactUpdates.batchedUpdates(handleTopLevelImpl, bookKeeping);
-      } finally {
-        TopLevelCallbackBookKeeping.release(bookKeeping);
-      }
-    }
-```
-
-话说到这里，一切都变得明朗了起来：`isBatchingUpdates` 这个变量，在 React 的生命周期函数以及合成事件执行前，已经被 React
-悄悄修改为了 true，这时我们所做的 `setState`操作自然不会立即生效。当函数执行完毕后，事务的 close 方法会再把
-`isBatchingUpdates` 改为 false。
-
-以开头示例中的 increment 方法为例，整个过程像是这样：
-```js
-    increment = () => {
-      // 进来先锁上
-      isBatchingUpdates = true
-      console.log('increment setState前的count', this.state.count)
-      this.setState({
-        count: this.state.count + 1
-      });
-      console.log('increment setState后的count', this.state.count)
-      // 执行完函数再放开
-      isBatchingUpdates = false
-    }
-```
-
-很明显，在 `isBatchingUpdates` 的约束下，`setState` 只能是异步的。而当 `setTimeout`
-从中作祟时，事情就会发生一点点变化
-```js
-    reduce = () => {
-      // 进来先锁上
-      isBatchingUpdates = true
-      setTimeout(() => {
-        console.log('reduce setState前的count', this.state.count)
-        this.setState({
-          count: this.state.count - 1
-        });
-        console.log('reduce setState后的count', this.state.count)
-      },0);
-      // 执行完函数再放开
-      isBatchingUpdates = false
-    }
-```
-
-会发现，咱们开头锁上的那个 `isBatchingUpdates`，对 `setTimeout` 内部的执行逻辑完全没有约束力。因为
-`isBatchingUpdates`是在同步代码中变化的，而 `setTimeout` 的逻辑是异步执行的。当 `this.setState`
-调用真正发生的时候，`isBatchingUpdates` 早已经被重置为了 `false`，这就使得当前场景下的 `setState`
-具备了立刻发起同步更新的能力。所以咱们前面说的没错—— `setState` 并不是具备同步这种特性，只是在特定的情境下，它会从 React
-的异步管控中“逃脱”掉。
-
-## 总结
-
-`setState` 并不是单纯同步/异步的，它的表现会因调用场景的不同而不同：`在 React 钩子函数及合成事件中，它表现为异步`；`而在
-setTimeout、setInterval 等函数中，包括在 DOM 原生事件中，它都表现为同步`。这种差异，本质上是`由 React
-事务机制`和`批量更新机制`的工作方式来决定的。
-
-> 补充（现代做法）：React 18 引入 `createRoot` 后，**自动批量更新（Automatic Batching）** 覆盖了所有场景——包括 `setTimeout`、`Promise` 回调和原生事件，不再有"同步"表现。若需要在 React 18 中强制立即刷新，可使用 `ReactDOM.flushSync(() => { ... })`。因此本文描述的同步/异步差异主要适用于 React 17 及以下；React 18 下所有 `setState` 在默认情况下均批量异步执行。
-
-阅读全文
-
+> setState 不能简单说是同步还是异步，它没有用任何异步 API，表现取决于调用时是否处在 React 的批处理中。React 内部有一个全局标记（React 15 里叫 `isBatchingUpdates`），setState 调用后会经过 `enqueueSetState` 把新状态放进组件的待处理队列，再由 `enqueueUpdate` 检查这个标记：如果正在批处理，就把组件放进 `dirtyComponents` 排队；如果不在，就立刻发起一次更新。React 在派发合成事件、执行挂载和生命周期之前，会通过 `batchedUpdates` 以事务的形式把标记置为 `true`，事务的 close 阶段先 `flushBatchedUpdates` 统一合并、渲染，再把标记复位。所以合成事件和生命周期里的 setState 会被合并，调用后读不到新值，看起来是异步的；而 `setTimeout`、Promise 回调和原生事件执行时这次批处理早就结束了，setState 会立刻触发更新，看起来是同步的。这样设计是为了避免多次 setState 造成多次重复渲染。对象写法的多次调用会浅合并，同名字段只保留最后一次，需要依赖上一次结果时用函数写法。React 16 前期在 Fiber 里仍沿用 `isBatchingUpdates`（但不再有事务），16.9+/17 改用 `executionContext`，行为不变；React 18 用 `createRoot` 后有了自动批处理，所有场景都会合并，需要立即生效时用 `flushSync`。

@@ -1,7 +1,7 @@
 {
   "appId": "com.leeguoo.interview",
   "appName": "前端面试集锦",
-  "webDir": "docs/.vuepress/dist",
+  "webDir": "docs/.vuepress/dist-app",
   "plugins": {
     "StatusBar": {
       "style": "DARK",

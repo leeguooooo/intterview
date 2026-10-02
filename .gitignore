@@ -6,3 +6,4 @@ docs/.vuepress/dist/*
 node_modules/*
 docs/.vuepress/.cache/*
 __pycache__/*
+docs/.vuepress/dist-app

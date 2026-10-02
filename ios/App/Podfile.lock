@@ -19,10 +19,10 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/.pnpm/@capacitor+filesystem@6.0.0_@capacitor+core@6.0.0/node_modules/@capacitor/filesystem"
 
 SPEC CHECKSUMS:
-  Capacitor: 559d073c4ca6c27f8e7002c807eea94c3ba435a9
+  Capacitor: c527d208447590a004f0a4a2c42a5f361848fa8a
   CapacitorCordova: 8c4bfdf69368512e85b1d8b724dd7546abeb30af
-  CapacitorFilesystem: 60e59ba274c234a979e7a3be2552feaadcee4263
+  CapacitorFilesystem: 9c2cc1e89d3b8b91503b316e9f6c2915c9bf9419
 
-PODFILE CHECKSUM: 2ec8620ee642ea5fc02e052762bc070bd9eb0cb0
+PODFILE CHECKSUM: cf0df033823c6e63878d0357604e46a70657af74
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.17.0

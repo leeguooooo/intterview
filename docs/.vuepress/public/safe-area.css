@@ -1,12 +1,40 @@
+/* 刘海 / 灵动岛 / iPad 状态栏的安全区域(App 内 WebView 与 iOS 主屏 PWA 生效,
+   普通浏览器里 env() 为 0)。选择器加 html 前缀,压过主题后加载的 .navbar padding 简写。 */
+:root {
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
 body {
-  padding-top: env(safe-area-inset-top);
-  padding-bottom: env(safe-area-inset-bottom);
+  padding-top: var(--safe-top);
+  padding-bottom: var(--safe-bottom);
 }
 
-.navbar {
-  padding-top: env(safe-area-inset-top);
+html .navbar {
+  height: calc(var(--navbar-height) + var(--safe-top));
+  padding-top: calc(var(--navbar-padding-v) + var(--safe-top));
 }
 
-.footer {
-  padding-bottom: env(safe-area-inset-bottom);
+html .navbar .navbar-items-wrapper {
+  top: calc(var(--navbar-padding-v) + var(--safe-top));
+}
+
+html .toggle-sidebar-button {
+  top: calc(0.6rem + var(--safe-top));
+}
+
+html .sidebar {
+  top: calc(var(--navbar-height) + var(--safe-top));
+  padding-bottom: var(--safe-bottom);
+}
+
+@media (max-width: 719px) {
+  html .sidebar {
+    top: 0;
+    padding-top: calc(var(--navbar-height) + var(--safe-top));
+  }
+}
+
+html .footer {
+  padding-bottom: var(--safe-bottom);
 }
