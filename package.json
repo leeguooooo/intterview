@@ -38,5 +38,8 @@
     "@capacitor/ios": "^6.0.0",
     "@vuepress/client": "2.0.0-rc.2",
     "eslint-define-config": "^2.1.0"
+  },
+  "engines": {
+    "node": "24.x"
   }
 }
