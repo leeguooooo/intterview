@@ -3,7 +3,8 @@
 - Bundle ID：`com.leeguoo.interview`（已注册到 LI GUO / 6ZPXG4KVVS）
 - App Store Connect App ID：`6818495898`（SKU `frontend-interview-ios`，2026-10-02 创建）
 - 已通过 API 填好：副标题、描述、关键词、支持 URL、隐私政策 URL、分类、版权、年龄分级问卷（全部「无」）、价格（免费）、销售地区（175 个，含新地区）
-- 待办：App 隐私（营养标签，选「不收集数据」）、截图、上传构建版本
+- 1.0（build 202610022046）2026-10-02 已提交审核：含首批 10 篇改写，其余付费内容排除；App 隐私「不收集数据」已发布；内容版权声明 USES_THIRD_PARTY_CONTENT
+- 下一步：91 篇改写完成后发 1.1
 - 平台：iPhone + iPad（通用 App），最低 iOS 13
 - 主要语言：简体中文
 - 类别：教育（主）/ 参考资料（次）
