@@ -21,6 +21,8 @@ features:
     details: 提供详尽的题目解答与解题思路，助你深入理解每个问题。
   - title: 持续更新
     details: 面试题目及解答持续更新，保证内容的时效性与技术的前沿性。
+footer: 作者 <a href="https://leeguoo.com/about" rel="author">郭立</a>（leeguoo）· <a href="https://blog.leeguoo.com/zh/">郭立的技术博客</a>
+footerHtml: true
 ---
 
 ## 特点
@@ -95,7 +97,7 @@ features:
 
 ## 关于作者
 
-本站由 [**leeguoo**](https://leeguoo.com) 维护。更多原创技术文章、项目实战与开源工具，欢迎访问作者的技术博客：
+本站由 [**郭立**（leeguoo）](https://leeguoo.com) 维护。更多原创技术文章、项目实战与开源工具，欢迎访问作者的技术博客：
 
 👉 **[leeguoo.com — 作者技术博客](https://leeguoo.com)**
 
