@@ -1,5 +1,10 @@
 <script setup>
 const items = [
+  ...(__IS_APP__ ? [] : [{
+    name: '前端面试集锦 App',
+    desc: '本站题库的 iPhone / iPad 版，离线刷题，免费。',
+    href: 'https://apps.apple.com/cn/app/id6818495898',
+  }]),
   {
     name: 'ChooseBrowser',
     desc: '按网址规则，把每个链接自动用对的浏览器 / Profile 打开的 Mac 小工具。',
