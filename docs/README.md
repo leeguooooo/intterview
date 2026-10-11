@@ -95,6 +95,8 @@ footerHtml: true
 
 请访问各个页面了解详细内容。
 
+<ProductShowcase />
+
 ## 关于作者
 
 本站由 [**郭立**（leeguoo）](https://leeguoo.com) 维护。更多原创技术文章、项目实战与开源工具，欢迎访问作者的技术博客：

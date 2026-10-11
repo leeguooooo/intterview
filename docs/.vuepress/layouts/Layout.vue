@@ -2,10 +2,14 @@
 import ParentLayout from '@vuepress/theme-default/layouts/Layout.vue'
 import MoreFromAuthor from '../components/MoreFromAuthor.vue'
 import AppCta from '../components/AppCta.vue'
+import SidebarProducts from '../components/SidebarProducts.vue'
 </script>
 
 <template>
   <ParentLayout>
+    <template #sidebar-top>
+      <SidebarProducts />
+    </template>
     <!-- page-bottom 只在普通内容页渲染（首页 home:true 走 Home 组件，不含此插槽） -->
     <template #page-top>
       <AppCta />
