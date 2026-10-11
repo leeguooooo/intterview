@@ -1,4 +1,5 @@
 <script setup>
+const ALL_URL = 'https://app.leeguoo.com/?utm_source=interview.leeguoo.com&utm_medium=cta&utm_campaign=app-center'
 const items = [
   ...(__IS_APP__ ? [] : [{
     name: '前端面试集锦 App',
@@ -6,14 +7,14 @@ const items = [
     href: 'https://apps.apple.com/cn/app/id6818495898',
   }]),
   {
-    name: 'ChooseBrowser',
-    desc: '按网址规则，把每个链接自动用对的浏览器 / Profile 打开的 Mac 小工具。',
-    href: 'https://choosebrowser.leeguoo.com/choose-browser/?utm_source=interview.leeguoo.com&utm_medium=cta&utm_campaign=choosebrowser',
+    name: 'Thermo',
+    desc: 'Mac 卡、发烫、磁盘满了，一句话告诉你原因；能清理 Claude Code / Codex 的旧会话和模型。免费。',
+    href: 'https://app.leeguoo.com/thermo?utm_source=interview.leeguoo.com&utm_medium=cta&utm_campaign=thermo',
   },
   {
-    name: 'Pastyx',
-    desc: '在线剪贴板，免安装，多设备实时同步（也有原生 Mac 版）。',
-    href: 'https://paste.leeguoo.com/?utm_source=interview.leeguoo.com&utm_medium=cta&utm_campaign=pastyx',
+    name: 'Cookie Use',
+    desc: '在真实 Chrome 里一键切换多个登录账号，测试多账号不用反复登录。',
+    href: 'https://app.leeguoo.com/cookie-use?utm_source=interview.leeguoo.com&utm_medium=cta&utm_campaign=cookie-use',
   },
 ]
 </script>
@@ -27,6 +28,7 @@ const items = [
         <span class="more-from-author-desc"> — {{ item.desc }}</span>
       </li>
     </ul>
+    <a class="more-from-author-all" :href="ALL_URL" target="_blank" rel="noopener">全部产品 →</a>
   </aside>
 </template>
 
@@ -52,6 +54,11 @@ const items = [
 
   li {
     margin: 0.15rem 0;
+  }
+
+  .more-from-author-all {
+    display: inline-block;
+    margin-top: 0.35rem;
   }
 
   a {
