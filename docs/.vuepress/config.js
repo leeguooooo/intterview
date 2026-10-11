@@ -1,3 +1,4 @@
+import fs from "node:fs/promises";
 import path from "node:path";
 import { blogPlugin } from "@vuepress/plugin-blog";
 import { defaultTheme } from "@vuepress/theme-default";
@@ -1351,6 +1352,17 @@ if (IS_APP) {
     ...excludedPagePatterns(path.resolve(config.source ?? "docs")),
   ];
   config.extendsMarkdown = unlinkExcluded;
+  // 顶部导航整排约 1550px,任何 iPad 都放不下(1.0 审核以 Guideline 4 被拒)。
+  // 主题 _variables.scss 先 @import 调色板再写 `$MQMobile: 719px !default`,
+  // 所以在调色板临时文件末尾追加断点,App 内始终用汉堡菜单 + 侧边栏抽屉。
+  config.plugins.push({
+    name: "app-mobile-breakpoint",
+    onPrepared: async (app) => {
+      const file = app.dir.temp("styles/palette.scss");
+      const content = await fs.readFile(file, "utf8").catch(() => "");
+      await app.writeTemp("styles/palette.scss", `${content}$MQMobile: 1599px;\n`);
+    },
+  });
   config.head = config.head.filter(
     (entry) => !APP_STRIP.test(JSON.stringify(entry)) && !/manifest\.json/.test(JSON.stringify(entry))
   );
