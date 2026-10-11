@@ -28,6 +28,9 @@ const showApp = !__IS_APP__
   align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
+  // 主题标题用负 margin-top 给锚点让出导航栏高度，会盖住紧挨着的横幅，抬到上层才点得到
+  position: relative;
+  z-index: 1;
   box-sizing: border-box;
   max-width: var(--content-width, 740px);
   margin: 1.25rem auto 0;
