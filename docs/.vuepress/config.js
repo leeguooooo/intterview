@@ -80,18 +80,9 @@ const config = defineUserConfig({
       }
     ],
     ["meta", { "name": "msapplication-TileColor", "content": "#000000" }],
-    // AdSense (immediate loader so Google's site-verification crawler detects it
-    // without needing JS interaction) + account meta. pub id shared with leeguoo.com.
-    ["meta", { "name": "google-adsense-account", "content": "ca-pub-4085449715128420" }],
+    // AdSense 只审根域 leeguoo.com 且尚未过审(2026-10 暂缓申请),这里不再加载 adsbygoogle:
+    // 出不了广告只拖慢页面,而且题库多为第三方内容,将来过审也不该在这些页面放自动广告。
     ["meta", { "name": "baidu-site-verification", "content": "codeva-8ufx4awUOL" }],
-    [
-      "script",
-      {
-        "async": true,
-        "src": "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4085449715128420",
-        "crossorigin": "anonymous"
-      }
-    ],
     // Host-aware GA4: same map as the blog so the proxied copy at leeguoo.com/*.html
     // picks the leeguoo.com stream, while direct interview.leeguoo.com visits use
     // their own stream. data-ga4 guard avoids a double-load.
