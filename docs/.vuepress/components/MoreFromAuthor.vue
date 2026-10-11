@@ -1,21 +1,14 @@
 <script setup>
-const ALL_URL = 'https://app.leeguoo.com/?utm_source=interview.leeguoo.com&utm_medium=cta&utm_campaign=app-center'
+import { ALL_PRODUCTS_URL, APP_STORE_URL, PRODUCTS } from './products.js'
+
+const ALL_URL = ALL_PRODUCTS_URL
 const items = [
   ...(__IS_APP__ ? [] : [{
     name: '前端面试集锦 App',
     desc: '本站题库的 iPhone / iPad 版，离线刷题，免费。',
-    href: 'https://apps.apple.com/cn/app/id6818495898',
+    href: APP_STORE_URL,
   }]),
-  {
-    name: 'Thermo',
-    desc: 'Mac 卡、发烫、磁盘满了，一句话告诉你原因；能清理 Claude Code / Codex 的旧会话和模型。免费。',
-    href: 'https://app.leeguoo.com/thermo?utm_source=interview.leeguoo.com&utm_medium=cta&utm_campaign=thermo',
-  },
-  {
-    name: 'Cookie Use',
-    desc: '在真实 Chrome 里一键切换多个登录账号，测试多账号不用反复登录。',
-    href: 'https://app.leeguoo.com/cookie-use?utm_source=interview.leeguoo.com&utm_medium=cta&utm_campaign=cookie-use',
-  },
+  ...PRODUCTS,
 ]
 </script>
 
